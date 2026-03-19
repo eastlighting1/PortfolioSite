@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../data/site";
+---
+
+<BaseLayout title="404 | Eunseok Lee" description="Page not found." pathname="/404/">
+  <section class="section">
+    <div class="container">
+      <div class="page-hero">
+        <div class="eyebrow">404</div>
+        <h1 class="section-title">The requested page is not available.</h1>
+        <p class="section-lead">
+          The portfolio uses static Astro routes, so the most reliable next step is to return to the site index or jump to one of the main catalogues.
+        </p>
+        <div class="hero-actions" style="margin-top: 1rem;">
+          <a class="button-link" href={withBase("/")}>Go Home</a>
+          <a class="button-link-secondary" href={withBase("/projects/")}>Projects</a>
+          <a class="button-link-secondary" href={withBase("/research/")}>Research</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

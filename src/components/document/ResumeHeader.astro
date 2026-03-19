@@ -1,0 +1,18 @@
+---
+import { profile } from "../../data/profile";
+import { siteConfig } from "../../data/site";
+import { externalProfiles } from "../../data/links";
+---
+
+<header class="document-header">
+  <span class="small-label">Resume</span>
+  <h1 class="section-title" style="margin-bottom:0.5rem;">{profile.name}</h1>
+  <p class="section-lead">{profile.headline}</p>
+  <div class="inline-links inline-links--dense" style="margin-top: 0.75rem;">
+    <span>{siteConfig.location}</span>
+    <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+    {externalProfiles.map((link) => (
+      <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+    ))}
+  </div>
+</header>

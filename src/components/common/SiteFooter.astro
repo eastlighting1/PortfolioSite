@@ -1,0 +1,19 @@
+---
+import { siteConfig } from "../../data/site";
+import { externalProfiles } from "../../data/links";
+---
+
+<footer class="site-footer screen-only">
+  <div class="container site-footer__inner">
+    <div>
+      <div class="site-brand">{siteConfig.name}</div>
+      <p class="footer-copy">{siteConfig.primaryRole} with applied research, data engineering, and MLOps range.</p>
+    </div>
+    <div class="inline-links">
+      {externalProfiles.map((link) => (
+        <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+      ))}
+      <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+    </div>
+  </div>
+</footer>

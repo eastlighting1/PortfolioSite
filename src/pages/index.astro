@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroBlock from "../components/home/HeroBlock.astro";
+import AnimatedPipeline from "../components/home/AnimatedPipeline.astro";
+import FeaturedProjects from "../components/home/FeaturedProjects.astro";
+import ResearchPreview from "../components/home/ResearchPreview.astro";
+import ExperienceSnapshot from "../components/home/ExperienceSnapshot.astro";
+import CapabilityMap from "../components/home/CapabilityMap.astro";
+import DocumentCTA from "../components/home/DocumentCTA.astro";
+import { siteConfig } from "../data/site";
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => b.data.year - a.data.year)
+  .filter((project) => project.data.featured)
+  .slice(0, 3);
+
+const research = (await getCollection("research"))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 3);
+---
+
+<BaseLayout title={siteConfig.title} description={siteConfig.description} pathname="/">
+  <HeroBlock />
+  <AnimatedPipeline />
+  <FeaturedProjects projects={projects} />
+  <ResearchPreview research={research} />
+  <ExperienceSnapshot />
+  <CapabilityMap />
+  <DocumentCTA />
+</BaseLayout>

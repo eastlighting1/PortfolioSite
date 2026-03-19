@@ -1,0 +1,12 @@
+---
+interface Props {
+  abstract: string;
+}
+
+const { abstract } = Astro.props;
+---
+
+<section class="resume-section" data-reveal="2">
+  <div class="eyebrow">Abstract</div>
+  <p style="margin-bottom:0;">{abstract}</p>
+</section>

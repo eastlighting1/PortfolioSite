@@ -1,0 +1,53 @@
+---
+import ExternalLinks from "../common/ExternalLinks.astro";
+import { entrySlug } from "../../data/content";
+import { withBase } from "../../data/site";
+
+interface Props {
+  project: any;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+---
+
+<section class="case-study case-study--sheet">
+  <span class="small-label">Case Study {index + 1}</span>
+  <h3>{project.data.title}</h3>
+  <p class="muted">{project.data.type} | {project.data.year} | {project.data.roles.join(", ")}</p>
+  <div class="case-study-grid">
+    <div class="document-item">
+      <span class="small-label">Problem</span>
+      <p>{project.data.portfolioProblem ?? project.data.summary}</p>
+    </div>
+    <div class="document-item">
+      <span class="small-label">Approach</span>
+      <p>{project.data.portfolioApproach ?? project.data.summary}</p>
+    </div>
+    <div class="document-item">
+      <span class="small-label">Outcome</span>
+      <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
+      <div class="meta-row">
+        {project.data.metrics.map((metric: string) => (
+          <span class="metric-badge">{metric}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+  <div class="tag-row" style="margin-top: 1rem;">
+    {project.data.tags.map((tag: string) => (
+      <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <ExternalLinks
+    links={[
+      { label: "GitHub Repo", href: project.data.repoUrl },
+      { label: "Demo", href: project.data.demoUrl },
+      { label: "Paper", href: project.data.paperUrl },
+      { label: "Slides", href: project.data.slidesUrl }
+    ]}
+  />
+  <div style="margin-top: 1rem;">
+    <a class="button-link-secondary" href={withBase(`projects/${entrySlug(project)}/`)}>Read Full Case Study</a>
+  </div>
+</section>

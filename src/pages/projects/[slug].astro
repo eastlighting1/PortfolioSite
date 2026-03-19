@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from "astro:content";
+import DetailLayout from "../../layouts/DetailLayout.astro";
+import ProjectDetailHero from "../../components/projects/ProjectDetailHero.astro";
+import { withBase } from "../../data/site";
+import { entrySlug } from "../../data/content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: entrySlug(project) },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<DetailLayout
+  title={`${project.data.title} | Projects`}
+  description={project.data.summary}
+  pathname={`/projects/${entrySlug(project)}/`}
+>
+  <div style="margin-bottom: 1rem;">
+    <a class="button-link-secondary screen-only" href={withBase("/projects/")}>Back to Projects</a>
+  </div>
+  <ProjectDetailHero project={project} />
+  <article class="prose" style="padding-top: 2rem;">
+    <Content />
+  </article>
+</DetailLayout>

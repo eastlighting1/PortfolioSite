@@ -1,0 +1,43 @@
+---
+import ExternalLinks from "../common/ExternalLinks.astro";
+import { withBase } from "../../data/site";
+import { entrySlug } from "../../data/content";
+import ProjectQuickPreview from "./ProjectQuickPreview.astro";
+
+interface Props {
+  project: any;
+  dataReveal?: string;
+}
+
+const { project, dataReveal = "1" } = Astro.props;
+const href = withBase(`projects/${entrySlug(project)}/`);
+---
+
+<article class="project-card" data-reveal={dataReveal}>
+  <span class="small-label">{project.data.type} | {project.data.year}</span>
+  <h3>{project.data.title}</h3>
+  <p class="muted">{project.data.summary}</p>
+  <div class="meta-row">
+    <span class="tag-chip">{project.data.role}</span>
+    {project.data.metrics.map((metric: string) => (
+      <span class="metric-badge">{metric}</span>
+    ))}
+  </div>
+  <div class="tag-row" style="margin-top: 1rem;">
+    {project.data.tags.map((tag: string) => (
+      <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <ExternalLinks
+    links={[
+      { label: "GitHub Repo", href: project.data.repoUrl },
+      { label: "Demo", href: project.data.demoUrl },
+      { label: "Paper", href: project.data.paperUrl },
+      { label: "Slides", href: project.data.slidesUrl }
+    ]}
+  />
+  <div class="hero-actions" style="margin-top: 1rem;">
+    <ProjectQuickPreview project={project} />
+    <a class="button-link-secondary" href={href}>Open Case Study</a>
+  </div>
+</article>

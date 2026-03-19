@@ -1,0 +1,19 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  pathname?: string;
+}
+
+const props = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <section class="section-tight">
+    <div class="reading-container">
+      <slot />
+    </div>
+  </section>
+</BaseLayout>

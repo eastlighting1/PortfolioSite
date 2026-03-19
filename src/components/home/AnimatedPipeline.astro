@@ -1,0 +1,22 @@
+---
+import { profile } from "../../data/profile";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">System Intro</div>
+    <h2 class="section-title">A data-to-deployment workflow with role clarity at each layer.</h2>
+    <p class="section-lead">
+      The site centers on data systems first, with research and operations framed as connected responsibilities rather than separate identities.
+    </p>
+    <div class="system-grid" style="margin-top: 2rem;">
+      {profile.pipeline.map((stage, index) => (
+        <article class="system-stage" data-reveal={`${(index % 4) + 1}`}>
+          <span class="small-label">{stage.emphasis}</span>
+          <h3>{stage.title}</h3>
+          <p class="muted">{stage.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

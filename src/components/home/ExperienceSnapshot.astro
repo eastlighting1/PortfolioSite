@@ -1,0 +1,28 @@
+---
+import { withBase } from "../../data/site";
+import { experience } from "../../data/experience";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Experience Snapshot</div>
+    <h2 class="section-title">Experience across data platform, applied modeling, and research handoff.</h2>
+    <div class="timeline-grid" style="margin-top: 2rem;">
+      {experience.map((item, index) => (
+        <article class="snapshot-card" data-reveal={`${(index % 4) + 1}`}>
+          <span class="small-label">{item.period}</span>
+          <h3>{item.role}</h3>
+          <p class="muted" style="margin-top:0;">{item.organization}</p>
+          <ul>
+            {item.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+    <div style="margin-top: 1.5rem;">
+      <a class="button-link-secondary" href={withBase("/resume/")}>Open Full Resume</a>
+    </div>
+  </div>
+</section>

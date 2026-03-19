@@ -1,0 +1,52 @@
+---
+import { profile } from "../../data/profile";
+import { siteConfig, withBase } from "../../data/site";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="hero-panel soft-card">
+      <div>
+        <div class="eyebrow" data-reveal="1">Machine Learning Portfolio</div>
+        <h1 class="hero-title" data-reveal="2">{profile.name}</h1>
+        <p class="hero-copy" data-reveal="3">
+          {siteConfig.primaryRole} focused on trustworthy data systems, applied research, and production delivery.
+        </p>
+        <p class="hero-copy" data-reveal="4">{profile.intro}</p>
+        <div class="chip-row" data-reveal="4">
+          <span class="role-chip">{siteConfig.primaryRole}</span>
+          {siteConfig.secondaryRoles.map((role) => (
+            <span class="role-chip">{role}</span>
+          ))}
+        </div>
+        <div class="hero-actions" data-reveal="4">
+          <a class="button-link" href={withBase("/projects/")}>Browse Projects</a>
+          <a class="button-link-secondary" href={withBase("/research/")}>Read Research</a>
+          <a class="button-link-secondary" href={withBase("/resume/")}>Open Resume</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="small-label">Working Focus</span>
+        <h2 class="section-title" style="font-size:2rem; margin-top:0.6rem;">Systems that stay readable under production pressure.</h2>
+        <p class="muted">
+          From data contracts and evaluation design to monitored release workflows, this portfolio is organized as a serious
+          reading surface rather than a one-page marketing page.
+        </p>
+        <div class="compact-list">
+          <div>
+            <span class="small-label">Primary Lens</span>
+            <strong>Data quality and model reliability</strong>
+          </div>
+          <div>
+            <span class="small-label">Secondary Lens</span>
+            <strong>Research translation into deployable systems</strong>
+          </div>
+          <div>
+            <span class="small-label">Document Surfaces</span>
+            <strong>Print-safe resume and portfolio</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,66 @@
+---
+import { siteConfig, withBase } from "../../data/site";
+import { externalProfiles } from "../../data/links";
+
+interface Props {
+  pathname?: string;
+}
+
+const { pathname = "/" } = Astro.props;
+
+const normalize = (value: string) => (value.endsWith("/") ? value : `${value}/`);
+const isActive = (currentPath: string, itemHref: string) => {
+  const current = normalize(currentPath);
+  const target = normalize(itemHref);
+  if (target === "/") return current === "/";
+  return current === target || current.startsWith(target);
+};
+---
+
+<header class="site-header screen-only">
+  <div class="container site-header__inner">
+    <a class="site-brand" href={withBase("/")}>{siteConfig.name}</a>
+    <nav class="site-nav site-nav--desktop" aria-label="Primary">
+      {siteConfig.nav.map((item) => {
+        const active = isActive(pathname, item.href);
+        return (
+          <a href={withBase(item.href)} aria-current={active ? "page" : undefined}>
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+    <div class="header-utility">
+      <div class="utility-links">
+        {externalProfiles.slice(0, 2).map((link) => (
+          <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+        ))}
+      </div>
+      <a class="button-link-secondary" href={withBase("/resume/")}>Resume</a>
+    </div>
+    <details class="mobile-nav">
+      <summary class="mobile-nav__toggle" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </summary>
+      <div class="mobile-nav__panel">
+        <nav class="mobile-nav__links" aria-label="Mobile primary">
+          {siteConfig.nav.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <a href={withBase(item.href)} aria-current={active ? "page" : undefined}>
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
+        <div class="mobile-nav__meta">
+          {externalProfiles.slice(0, 2).map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+          ))}
+        </div>
+      </div>
+    </details>
+  </div>
+</header>

@@ -1,0 +1,72 @@
+---
+import SiteHeader from "../components/common/SiteHeader.astro";
+import SiteFooter from "../components/common/SiteFooter.astro";
+import { siteConfig, withBase } from "../data/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  pathname?: string;
+}
+
+const { title, description = siteConfig.description, pathname = "/" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <SiteHeader pathname={pathname} />
+      <main>
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
+    <script is:inline>
+      const setupScrollReveal = () => {
+        const items = document.querySelectorAll("[data-reveal]");
+        if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          items.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+        );
+
+        items.forEach((item) => {
+          item.classList.remove("is-visible");
+          observer.observe(item);
+        });
+      };
+
+      setupScrollReveal();
+      document.addEventListener("astro:page-load", setupScrollReveal);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import "../styles/global.css";
+  @import "../styles/components.css";
+  @import "../styles/motion.css";
+  @import "../styles/print.css";
+</style>

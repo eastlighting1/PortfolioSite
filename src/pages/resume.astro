@@ -1,0 +1,90 @@
+---
+import { getCollection } from "astro:content";
+import DocumentLayout from "../layouts/DocumentLayout.astro";
+import PrintToolbar from "../components/document/PrintToolbar.astro";
+import ResumeHeader from "../components/document/ResumeHeader.astro";
+import ResumeSection from "../components/document/ResumeSection.astro";
+import { profile } from "../data/profile";
+import { experience } from "../data/experience";
+import { education } from "../data/education";
+
+const selectedProjects = (await getCollection("projects"))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 2);
+
+const selectedResearch = (await getCollection("research"))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 1);
+
+const featuredExperience = experience.slice(0, 2);
+---
+
+<DocumentLayout
+  title="Resume | Eunseok Lee"
+  description="Print-safe resume for a data specialist working across ML systems, research, and data engineering."
+  pathname="/resume/"
+>
+  <PrintToolbar label="Optimized for browser print and PDF export." />
+  <div class="paper-sheet paper-sheet--resume document-shell">
+    <ResumeHeader />
+    <div class="resume-compact-grid">
+      <div class="document-list">
+        <ResumeSection title="Summary" className="resume-section--summary">
+          <p>{profile.summary}</p>
+        </ResumeSection>
+        <ResumeSection title="Experience" className="resume-section--experience">
+          {featuredExperience.map((item) => (
+            <div class="resume-item resume-item--tight">
+              <strong>{item.role}</strong>
+              <div class="muted">{item.organization} | {item.period}</div>
+              <ul class="compact-bullets">
+                {item.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </ResumeSection>
+        <ResumeSection title="Selected Projects" className="resume-section--projects">
+          {selectedProjects.map((project) => (
+            <div class="resume-item resume-item--tight">
+              <strong>{project.data.title}</strong>
+              <div class="muted">{project.data.type} | {project.data.year}</div>
+              <p>{project.data.summary}</p>
+            </div>
+          ))}
+        </ResumeSection>
+      </div>
+      <div class="document-list">
+        <ResumeSection title="Skills" className="resume-section--skills">
+          <div class="compact-skill-grid">
+            {profile.capabilityGroups.map((group) => (
+              <div class="resume-item resume-item--tight">
+                <strong>{group.title}</strong>
+                <p class="muted">{group.skills.join(" | ")}</p>
+              </div>
+            ))}
+          </div>
+        </ResumeSection>
+        <ResumeSection title="Research" className="resume-section--research">
+          {selectedResearch.map((item) => (
+            <div class="resume-item resume-item--tight">
+              <strong>{item.data.title}</strong>
+              <div class="muted">{item.data.venue} | {item.data.year}</div>
+              <p>{item.data.abstract}</p>
+            </div>
+          ))}
+        </ResumeSection>
+        <ResumeSection title="Education" className="resume-section--education">
+          {education.map((item) => (
+            <div class="resume-item resume-item--tight">
+              <strong>{item.degree}</strong>
+              <div class="muted">{item.school} | {item.period}</div>
+              <p>{item.detail}</p>
+            </div>
+          ))}
+        </ResumeSection>
+      </div>
+    </div>
+  </div>
+</DocumentLayout>

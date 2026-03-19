@@ -1,0 +1,41 @@
+---
+import ExternalLinks from "../common/ExternalLinks.astro";
+
+interface Props {
+  item: any;
+}
+
+const { item } = Astro.props;
+---
+
+<section class="detail-hero" data-reveal="1">
+  <div class="eyebrow">Research Detail</div>
+  <h1 class="section-title">{item.data.title}</h1>
+  <p class="section-lead">{item.data.abstract}</p>
+  <div class="meta-list">
+    <div class="meta-item">
+      <span>Venue</span>
+      <span>{item.data.venue}</span>
+    </div>
+    <div class="meta-item">
+      <span>Year</span>
+      <span>{item.data.year}</span>
+    </div>
+    <div class="meta-item">
+      <span>Type</span>
+      <span>{item.data.type}</span>
+    </div>
+  </div>
+  <div class="tag-row" style="margin-top: 1rem;">
+    {item.data.tags.map((tag: string) => (
+      <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <ExternalLinks
+    links={[
+      { label: "PDF", href: item.data.pdfUrl },
+      { label: "Repo", href: item.data.repoUrl },
+      { label: "Slides", href: item.data.slidesUrl }
+    ]}
+  />
+</section>

@@ -1,0 +1,28 @@
+---
+import { withBase } from "../../data/site";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Documents</div>
+    <h2 class="section-title">Dedicated printable surfaces for recruiters and technical reviewers.</h2>
+    <div class="document-grid two-column" style="margin-top: 2rem;">
+      <article class="document-card" data-reveal="1">
+        <span class="small-label">Resume</span>
+        <h3>Screen-readable, print-safe CV</h3>
+        <p class="muted">
+          A disciplined resume layout with summary, experience, projects, research, and skills arranged for browser print.
+        </p>
+        <a class="button-link-secondary" href={withBase("/resume/")}>Open Resume</a>
+      </article>
+      <article class="document-card" data-reveal="2">
+        <span class="small-label">Portfolio</span>
+        <h3>Case-study portfolio document</h3>
+        <p class="muted">
+          A document-style compilation of selected projects with problem, approach, and outcome structure designed for review and print.
+        </p>
+        <a class="button-link-secondary" href={withBase("/portfolio/")}>Open Portfolio</a>
+      </article>
+    </div>
+  </div>
+</section>

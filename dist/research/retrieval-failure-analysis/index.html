@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Failure Slice Analysis for Support Retrieval Systems | Research</title><meta name="description" content="Explores how slice-based benchmark construction can reveal failure patterns in technical support retrieval systems that aggregate metrics hide."><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>
+      document.documentElement.classList.add("js");
+    </script><link rel="stylesheet" href="/_astro/_slug_.O2dQwKfc.css"></head> <body> <div class="site-shell"> <header class="site-header screen-only"> <div class="container site-header__inner"> <a class="site-brand" href="/">Eunseok Lee</a> <nav class="site-nav site-nav--desktop" aria-label="Primary"> <a href="/"> Home </a><a href="/projects/"> Projects </a><a href="/research/" aria-current="page"> Research </a><a href="/resume/"> Resume </a><a href="/portfolio/"> Portfolio </a><a href="/about/"> About </a><a href="/contact/"> Contact </a> </nav> <div class="header-utility"> <div class="utility-links"> <a href="https://github.com/eastlighting" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/eastlighting" target="_blank" rel="noreferrer">LinkedIn</a> </div> <a class="button-link-secondary" href="/resume/">Resume</a> </div> <details class="mobile-nav"> <summary class="mobile-nav__toggle" aria-label="Open navigation"> <span></span> <span></span> <span></span> </summary> <div class="mobile-nav__panel"> <nav class="mobile-nav__links" aria-label="Mobile primary"> <a href="/"> Home </a><a href="/projects/"> Projects </a><a href="/research/" aria-current="page"> Research </a><a href="/resume/"> Resume </a><a href="/portfolio/"> Portfolio </a><a href="/about/"> About </a><a href="/contact/"> Contact </a> </nav> <div class="mobile-nav__meta"> <a href="https://github.com/eastlighting" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/eastlighting" target="_blank" rel="noreferrer">LinkedIn</a> </div> </div> </details> </div> </header> <main>  <section class="section-tight"> <div class="reading-container">  <div style="margin-bottom: 1rem;"> <a class="button-link-secondary screen-only" href="/research/">Back to Research</a> </div> <section class="detail-hero" data-reveal="1"> <div class="eyebrow">Research Detail</div> <h1 class="section-title">Failure Slice Analysis for Support Retrieval Systems</h1> <p class="section-lead">Explores how slice-based benchmark construction can reveal failure patterns in technical support retrieval systems that aggregate metrics hide.</p> <div class="meta-list"> <div class="meta-item"> <span>Venue</span> <span>Applied ML Workshop</span> </div> <div class="meta-item"> <span>Year</span> <span>2024</span> </div> <div class="meta-item"> <span>Type</span> <span>Workshop Paper</span> </div> </div> <div class="tag-row" style="margin-top: 1rem;"> <span class="tag-chip">Retrieval</span><span class="tag-chip">Failure Analysis</span><span class="tag-chip">Benchmarking</span> </div> <div class="external-links" aria-label="External links"><a class="external-link" href="https://example.com/research/failure-slice-analysis.pdf" target="_blank" rel="noreferrer">PDF</a><a class="external-link" href="https://github.com/eastlighting/retrieval-failure-analysis" target="_blank" rel="noreferrer">Repo</a></div> </section> <div style="padding-top: 2rem;"> <section class="resume-section" data-reveal="2"> <div class="eyebrow">Abstract</div> <p style="margin-bottom:0;">Explores how slice-based benchmark construction can reveal failure patterns in technical support retrieval systems that aggregate metrics hide.</p> </section> <article class="prose" style="padding-top: 2rem;"> <h2 id="overview">Overview</h2>
+<p>This paper examines retrieval failures through structured benchmark slices such as policy lookups, ambiguous troubleshooting, and freshness-sensitive product changes.</p>
+<h2 id="contributions">Contributions</h2>
+<p>The work demonstrates that a hybrid retrieval stack may look acceptable in aggregate while repeatedly underperforming on high-friction support categories. Slice design creates a clearer path for iterative quality gains.</p>
+<h2 id="methods">Methods</h2>
+<p>We constructed evaluation cohorts, paired them with human relevance judgments, and tracked performance changes across retriever variants. The emphasis was on diagnostic value rather than leaderboard optimization.</p>
+<h2 id="results">Results</h2>
+<p>Slice-based analysis surfaced where embedding-heavy approaches needed lexical support and where dataset freshness constrained deployment choices.</p> </article> <section class="resume-section" style="margin-top: 2rem;"> <div class="eyebrow">Related Projects</div> <div class="document-list" style="margin-top: 1rem;"> <div class="resume-item"> <strong>Retrieval Evaluation Bench for Technical Support Search</strong> <div class="muted">Applied Research System | 2024</div> <p>Built an evaluation bench for support search retrieval quality with slice-based diagnostics, benchmark sets, and deployment notes.</p> <a class="button-link-secondary" href="/projects/retrieval-eval-bench/">Open Related Project</a> </div> </div> </section> </div>  </div> </section>  </main> <footer class="site-footer screen-only"> <div class="container site-footer__inner"> <div> <div class="site-brand">Eunseok Lee</div> <p class="footer-copy">Data Specialist with applied research, data engineering, and MLOps range.</p> </div> <div class="inline-links"> <a href="https://github.com/eastlighting" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/eastlighting" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://scholar.google.com/" target="_blank" rel="noreferrer">Google Scholar</a> <a href="mailto:eunseok.lee@example.com">eunseok.lee@example.com</a> </div> </div> </footer> </div> <script>
+      const setupScrollReveal = () => {
+        const items = document.querySelectorAll("[data-reveal]");
+        if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          items.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+        );
+
+        items.forEach((item) => {
+          item.classList.remove("is-visible");
+          observer.observe(item);
+        });
+      };
+
+      setupScrollReveal();
+      document.addEventListener("astro:page-load", setupScrollReveal);
+    </script> </body> </html> 

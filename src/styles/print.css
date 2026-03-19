@@ -1,0 +1,289 @@
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+@media print {
+  :root {
+    --bg: white;
+    --surface: white;
+    --surface-strong: white;
+    --surface-muted: #f3f4f6;
+    --text: #111827;
+    --text-soft: #374151;
+    --border: #d1d5db;
+    --shadow: none;
+  }
+
+  body {
+    background: white !important;
+    color: var(--text);
+    font-size: 9.6pt;
+  }
+
+  .site-header,
+  .site-footer,
+  .screen-only,
+  .doc-toolbar {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .document-shell,
+  .resume-section,
+  .case-study,
+  .page-hero,
+  .detail-hero,
+  .project-card,
+  .research-card,
+  .document-card {
+    box-shadow: none !important;
+    background: white !important;
+    border-color: #d1d5db !important;
+  }
+
+  .document-shell {
+    padding: 0;
+    border: none;
+  }
+
+  .resume-grid,
+  .resume-compact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .paper-sheet {
+    width: 100%;
+    max-width: none;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  .paper-sheet--resume {
+    height: auto;
+    min-height: auto;
+    font-size: 8.8pt;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .paper-sheet--resume .section-title {
+    font-size: 17pt;
+  }
+
+  .paper-sheet--resume .section-lead {
+    font-size: 9.3pt;
+  }
+
+  .paper-sheet--resume p,
+  .paper-sheet--resume li,
+  .paper-sheet--resume .muted,
+  .paper-sheet--resume .inline-links--dense {
+    font-size: 8.2pt;
+    line-height: 1.24;
+  }
+
+  .paper-sheet--resume .resume-section {
+    padding: 0 !important;
+    margin: 0 0 4mm 0;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .paper-sheet--resume .document-header {
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .paper-sheet--resume .resume-compact-grid {
+    display: grid !important;
+    grid-template-columns: 1.45fr 0.95fr !important;
+    gap: 6mm !important;
+    align-items: start;
+  }
+
+  .paper-sheet--resume .document-list {
+    gap: 0 !important;
+  }
+
+  .paper-sheet--resume .resume-item + .resume-item,
+  .paper-sheet--resume .document-item + .document-item {
+    margin-top: 0.45rem;
+    padding-top: 0.45rem;
+  }
+
+  .paper-sheet--resume .resume-item,
+  .paper-sheet--resume .resume-item--tight {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none !important;
+  }
+
+  .paper-sheet--resume .resume-section h2 {
+    margin: 0 0 1.8mm;
+    padding-bottom: 1.2mm;
+    border-bottom: 0.4pt solid #cbd5e1;
+    font-size: 9.8pt;
+    line-height: 1.2;
+  }
+
+  .paper-sheet--resume .compact-bullets {
+    margin-top: 1.2mm;
+    margin-bottom: 0;
+    padding-left: 4mm;
+  }
+
+  .paper-sheet--resume .compact-bullets li {
+    margin-top: 0;
+    margin-bottom: 0.8mm;
+  }
+
+  .paper-sheet--resume .inline-links--dense {
+    gap: 1.2mm 3mm;
+  }
+
+  .paper-sheet--resume .small-label {
+    font-size: 6.6pt;
+  }
+
+  .paper-sheet--resume .document-header {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  .paper-sheet--resume .resume-compact-grid {
+    break-before: avoid-page;
+    page-break-before: avoid;
+    margin-top: 0;
+  }
+
+  .paper-sheet--resume .resume-section--projects .resume-item:nth-child(n+2),
+  .paper-sheet--resume .resume-section--education .resume-item:nth-child(n+2) {
+    display: none;
+  }
+
+  .paper-sheet--resume .resume-section--summary p,
+  .paper-sheet--resume .resume-section--research p {
+    margin: 0;
+  }
+
+  .paper-sheet--portfolio {
+    min-height: 277mm;
+    font-size: 9.1pt;
+  }
+
+  .paper-sheet--portfolio .portfolio-overview-grid {
+    display: grid !important;
+    grid-template-columns: 1.05fr 0.95fr !important;
+    gap: 7mm !important;
+    align-items: start;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover {
+    padding: 0 0 4mm 0;
+    margin-bottom: 4mm;
+    border: none !important;
+    border-bottom: 0.5pt solid #cbd5e1 !important;
+  }
+
+  .paper-sheet--portfolio .resume-section,
+  .paper-sheet--portfolio .portfolio-section {
+    padding: 0 !important;
+    margin: 0 0 4mm 0;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .paper-sheet--portfolio .resume-section h2 {
+    margin: 0 0 1.8mm;
+    padding-bottom: 1.2mm;
+    border-bottom: 0.4pt solid #cbd5e1;
+    font-size: 10pt;
+    line-height: 1.2;
+  }
+
+  .paper-sheet--portfolio p,
+  .paper-sheet--portfolio li,
+  .paper-sheet--portfolio .muted {
+    font-size: 8.4pt;
+    line-height: 1.28;
+  }
+
+  .paper-sheet--portfolio .resume-item,
+  .paper-sheet--portfolio .resume-item--tight,
+  .paper-sheet--portfolio .document-item {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none !important;
+  }
+
+  .paper-sheet--portfolio .resume-item + .resume-item,
+  .paper-sheet--portfolio .document-item + .document-item {
+    margin-top: 2.2mm;
+    padding-top: 2.2mm;
+    border-top: 0.4pt solid #e2e8f0 !important;
+  }
+
+  .paper-sheet--portfolio .case-study {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .paper-sheet--portfolio .case-study--sheet h3 {
+    margin: 0 0 1.8mm;
+    font-size: 16pt;
+    line-height: 1.1;
+  }
+
+  .paper-sheet--portfolio .case-study-grid {
+    gap: 3.2mm;
+  }
+
+  .paper-sheet--portfolio .metric-badge,
+  .paper-sheet--portfolio .tag-chip,
+  .paper-sheet--portfolio .external-link,
+  .paper-sheet--portfolio .button-link-secondary {
+    box-shadow: none !important;
+    background: transparent !important;
+    border: 0.4pt solid #cbd5e1 !important;
+    color: #111827 !important;
+  }
+
+  .paper-sheet--portfolio .external-links,
+  .paper-sheet--portfolio .tag-row,
+  .paper-sheet--portfolio .meta-row {
+    gap: 1.6mm;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .resume-section,
+  .case-study,
+  .document-header,
+  .portfolio-cover,
+  .resume-item,
+  .document-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .page-break {
+    break-before: page;
+    page-break-before: always;
+  }
+}

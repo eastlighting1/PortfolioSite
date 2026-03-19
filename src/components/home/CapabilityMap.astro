@@ -1,0 +1,23 @@
+---
+import { profile } from "../../data/profile";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Capability Map</div>
+    <h2 class="section-title">Organized around the work of making ML systems dependable.</h2>
+    <div class="catalog-grid" style="margin-top: 2rem;">
+      {profile.capabilityGroups.map((group, index) => (
+        <article class="capability-card" data-reveal={`${(index % 4) + 1}`}>
+          <h3>{group.title}</h3>
+          <p class="muted">{group.description}</p>
+          <div class="tag-row">
+            {group.skills.map((skill) => (
+              <span class="tag-chip">{skill}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

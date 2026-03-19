@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/common/PageHero.astro";
+import ResearchList from "../../components/research/ResearchList.astro";
+
+const research = (await getCollection("research")).sort((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout
+  title="Research | Eunseok Lee"
+  description="Research notes, workshop papers, and technical writing connected to production ML systems."
+  pathname="/research/"
+>
+  <section class="section">
+    <div class="container">
+      <PageHero
+        className="page-hero--catalog"
+        eyebrow="Research"
+        title="Research and technical writing"
+        description="A dedicated reading surface for papers, workshop notes, and engineering documents. Each entry leads to its own long-form page rather than collapsing everything into cards."
+        meta={[`${research.length} entries`, "Workshop and engineering notes", "Long-form detail pages"]}
+      />
+      <div class="section-tight">
+        <ResearchList research={research} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

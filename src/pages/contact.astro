@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/common/PageHero.astro";
+import { siteConfig } from "../data/site";
+import { externalProfiles } from "../data/links";
+---
+
+<BaseLayout title="Contact | Eunseok Lee" description="Contact options for collaboration and hiring." pathname="/contact/">
+  <section class="section">
+    <div class="container">
+      <PageHero
+        eyebrow="Contact"
+        title="A simple endpoint for conversation"
+        description="Open to technical portfolio reviews, ML engineering roles, research collaboration, and data platform work."
+      />
+      <div class="contact-grid three-column section-tight">
+        <article class="contact-card">
+          <span class="small-label">Email</span>
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+        </article>
+        {externalProfiles.map((link) => (
+          <article class="contact-card">
+            <span class="small-label">{link.label}</span>
+            <a href={link.href} target="_blank" rel="noreferrer">{link.href}</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

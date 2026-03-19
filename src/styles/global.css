@@ -1,0 +1,201 @@
+:root {
+  --bg: #f4f1ea;
+  --surface: #fffdf8;
+  --surface-strong: #f7f4ed;
+  --surface-muted: #ede8de;
+  --text: #18212b;
+  --text-soft: #4e5a67;
+  --border: #d7cfbf;
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --accent-soft: rgba(15, 118, 110, 0.1);
+  --ink: #0f172a;
+  --max-width: 1180px;
+  --reading-width: 760px;
+  --document-width: 900px;
+  --shadow: 0 16px 40px rgba(24, 33, 43, 0.08);
+  --radius: 18px;
+  --radius-sm: 10px;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-mono: "IBM Plex Mono", "Consolas", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background:
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.08), transparent 24rem),
+    linear-gradient(180deg, #f9f7f1 0%, var(--bg) 100%);
+  line-height: 1.65;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.15em;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+main {
+  min-height: 70vh;
+}
+
+.container {
+  width: min(calc(100% - 2rem), var(--max-width));
+  margin: 0 auto;
+}
+
+.reading-container {
+  width: min(calc(100% - 2rem), var(--reading-width));
+  margin: 0 auto;
+}
+
+.document-container {
+  width: min(calc(100% - 2rem), var(--document-width));
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.section {
+  padding: 4.5rem 0;
+}
+
+.section-tight {
+  padding: 2.5rem 0;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.08;
+  margin: 0.8rem 0 1rem;
+}
+
+.section-lead {
+  max-width: 62ch;
+  color: var(--text-soft);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.two-column {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.three-column {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.soft-card {
+  background: rgba(255, 253, 248, 0.78);
+  border: 1px solid rgba(215, 207, 191, 0.85);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+}
+
+.prose {
+  font-size: 1.06rem;
+}
+
+.prose h2,
+.prose h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  margin-top: 2.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.prose h2 {
+  font-size: 1.9rem;
+}
+
+.prose h3 {
+  font-size: 1.45rem;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  color: var(--text);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+}
+
+.prose li + li {
+  margin-top: 0.35rem;
+}
+
+.muted {
+  color: var(--text-soft);
+}
+
+.screen-only {
+  display: block;
+}
+
+.print-only {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .two-column,
+  .three-column {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 3.5rem 0;
+  }
+}

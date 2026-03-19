@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from "astro:content";
+import DetailLayout from "../../layouts/DetailLayout.astro";
+import ResearchDetailHero from "../../components/research/ResearchDetailHero.astro";
+import AbstractBlock from "../../components/research/AbstractBlock.astro";
+import { withBase } from "../../data/site";
+import { entrySlug } from "../../data/content";
+
+export async function getStaticPaths() {
+  const research = await getCollection("research");
+  return research.map((item) => ({
+    params: { slug: entrySlug(item) },
+    props: { item }
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const projects = await getCollection("projects");
+const linkedProjects = projects.filter((project) => item.data.linkedProjects.includes(entrySlug(project)));
+---
+
+<DetailLayout
+  title={`${item.data.title} | Research`}
+  description={item.data.abstract}
+  pathname={`/research/${entrySlug(item)}/`}
+>
+  <div style="margin-bottom: 1rem;">
+    <a class="button-link-secondary screen-only" href={withBase("/research/")}>Back to Research</a>
+  </div>
+  <ResearchDetailHero item={item} />
+  <div style="padding-top: 2rem;">
+    <AbstractBlock abstract={item.data.abstract} />
+    <article class="prose" style="padding-top: 2rem;">
+      <Content />
+    </article>
+    {linkedProjects.length > 0 && (
+      <section class="resume-section" style="margin-top: 2rem;">
+        <div class="eyebrow">Related Projects</div>
+        <div class="document-list" style="margin-top: 1rem;">
+          {linkedProjects.map((project) => (
+            <div class="resume-item">
+              <strong>{project.data.title}</strong>
+              <div class="muted">{project.data.type} | {project.data.year}</div>
+              <p>{project.data.summary}</p>
+              <a class="button-link-secondary" href={withBase(`projects/${entrySlug(project)}/`)}>Open Related Project</a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</DetailLayout>

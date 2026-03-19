@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/common/PageHero.astro";
+import { profile } from "../data/profile";
+---
+
+<BaseLayout title="About | Eunseok Lee" description="Working philosophy and longer narrative for the portfolio." pathname="/about/">
+  <section class="section">
+    <div class="container">
+      <PageHero
+        eyebrow="About"
+        title="Working style and technical philosophy"
+        description="A longer narrative page for how I think about reliable ML systems, documentation, and cross-functional delivery."
+      />
+      <div class="section-tight reading-container prose">
+        <h2>Positioning</h2>
+        <p>{profile.summary}</p>
+        <h2>Working Philosophy</h2>
+        <ul>
+          {profile.philosophy.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <h2>What matters in ML systems</h2>
+        <p>
+          Good ML systems are not only accurate. They remain measurable when upstream data changes, understandable when teams
+          need to review them, and maintainable when the original builder is no longer in the room.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

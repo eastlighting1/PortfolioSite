@@ -1,0 +1,12 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label = "Print or save as PDF" } = Astro.props;
+---
+
+<div class="doc-toolbar screen-only">
+  <span class="muted">{label}</span>
+  <button type="button" onclick="window.print()">Print</button>
+</div>

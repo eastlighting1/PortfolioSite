@@ -1,0 +1,51 @@
+---
+import ExternalLinks from "../common/ExternalLinks.astro";
+
+interface Props {
+  project: any;
+}
+
+const { project } = Astro.props;
+---
+
+<section class="detail-hero" data-reveal="1">
+  <div class="eyebrow">Project Detail</div>
+  <h1 class="section-title">{project.data.title}</h1>
+  <p class="section-lead">{project.data.summary}</p>
+  <div class="meta-list">
+    <div class="meta-item">
+      <span>Type</span>
+      <span>{project.data.type}</span>
+    </div>
+    <div class="meta-item">
+      <span>Year</span>
+      <span>{project.data.year}</span>
+    </div>
+    <div class="meta-item">
+      <span>Primary Role</span>
+      <span>{project.data.role}</span>
+    </div>
+    <div class="meta-item">
+      <span>Roles</span>
+      <span>{project.data.roles.join(", ")}</span>
+    </div>
+  </div>
+  <div class="tag-row" style="margin-top: 1rem;">
+    {project.data.tags.map((tag: string) => (
+      <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <div class="meta-row" style="margin-top: 1rem;">
+    {project.data.metrics.map((metric: string) => (
+      <span class="metric-badge">{metric}</span>
+    ))}
+  </div>
+  <ExternalLinks
+    links={[
+      { label: "GitHub Repo", href: project.data.repoUrl },
+      { label: "Demo", href: project.data.demoUrl },
+      { label: "Paper", href: project.data.paperUrl },
+      { label: "Slides", href: project.data.slidesUrl }
+    ]}
+  />
+</section>

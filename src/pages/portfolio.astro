@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+import DocumentLayout from "../layouts/DocumentLayout.astro";
+import PrintToolbar from "../components/document/PrintToolbar.astro";
+import PortfolioCover from "../components/document/PortfolioCover.astro";
+import CaseStudySection from "../components/document/CaseStudySection.astro";
+import { profile } from "../data/profile";
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 3);
+
+const research = (await getCollection("research"))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 2);
+---
+
+<DocumentLayout
+  title="Portfolio | Eunseok Lee"
+  description="Printable case-study portfolio spanning data systems, applied research, and ML delivery."
+  pathname="/portfolio/"
+>
+  <PrintToolbar label="Portfolio document with print-aware case study page flow." />
+  <div class="paper-sheet paper-sheet--portfolio document-shell">
+    <PortfolioCover />
+    <div class="portfolio-overview-grid">
+      <section class="resume-section portfolio-section portfolio-section--intro">
+        <h2>Profile Summary</h2>
+        <p>{profile.summary}</p>
+        <p>
+          This portfolio is structured for print review: an overview page first, followed by one case-study sheet per project.
+        </p>
+      </section>
+      <div class="document-list">
+        <section class="resume-section portfolio-section portfolio-section--capability">
+          <h2>Capability Summary</h2>
+          <div class="compact-skill-grid">
+            {profile.capabilityGroups.map((group) => (
+              <div class="resume-item resume-item--tight">
+                <strong>{group.title}</strong>
+                <p>{group.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section class="resume-section portfolio-section portfolio-section--research">
+          <h2>Research Highlights</h2>
+          {research.map((item) => (
+            <div class="resume-item resume-item--tight">
+              <strong>{item.data.title}</strong>
+              <div class="muted">{item.data.venue} | {item.data.year}</div>
+              <p>{item.data.abstract}</p>
+            </div>
+          ))}
+        </section>
+      </div>
+    </div>
+  </div>
+  {projects.map((project, index) => (
+    <div class={`paper-sheet paper-sheet--portfolio document-shell ${index >= 0 ? "page-break" : ""}`}>
+      <CaseStudySection project={project} index={index} />
+    </div>
+  ))}
+</DocumentLayout>

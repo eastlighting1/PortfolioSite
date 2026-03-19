@@ -1,0 +1,48 @@
+---
+import { siteConfig, withBase } from "../data/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  pathname?: string;
+}
+
+const { title, description = siteConfig.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+  </head>
+  <body class="document-page">
+    <main>
+      <section class="section-tight">
+        <div class="document-container">
+          <div class="document-page__frame screen-only">
+            <div class="document-page__masthead">
+              <a class="site-brand" href={withBase("/")}>{siteConfig.name}</a>
+              <div class="inline-links">
+                <a href={withBase("/projects/")}>Projects</a>
+                <a href={withBase("/research/")}>Research</a>
+                <a href={withBase("/about/")}>About</a>
+              </div>
+            </div>
+          </div>
+          <slot />
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @import "../styles/global.css";
+  @import "../styles/components.css";
+  @import "../styles/motion.css";
+  @import "../styles/print.css";
+</style>

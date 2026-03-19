@@ -1,0 +1,15 @@
+---
+import ResearchCard from "./ResearchCard.astro";
+
+interface Props {
+  research: any[];
+}
+
+const { research } = Astro.props;
+---
+
+<div class="research-list">
+  {research.map((item, index) => (
+    <ResearchCard item={item} dataReveal={`${(index % 4) + 1}`} />
+  ))}
+</div>

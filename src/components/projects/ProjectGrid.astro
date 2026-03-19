@@ -1,0 +1,15 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+
+interface Props {
+  projects: any[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div class="catalog-grid">
+  {projects.map((project, index) => (
+    <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} />
+  ))}
+</div>

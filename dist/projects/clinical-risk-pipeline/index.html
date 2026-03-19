@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Clinical Risk Scoring Pipeline with Scheduled Validation | Projects</title><meta name="description" content="Moved a research-origin risk model into a scheduled validation and deployment pipeline with reproducible training artifacts."><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>
+      document.documentElement.classList.add("js");
+    </script><link rel="stylesheet" href="/_astro/_slug_.O2dQwKfc.css"></head> <body> <div class="site-shell"> <header class="site-header screen-only"> <div class="container site-header__inner"> <a class="site-brand" href="/">Eunseok Lee</a> <nav class="site-nav site-nav--desktop" aria-label="Primary"> <a href="/"> Home </a><a href="/projects/" aria-current="page"> Projects </a><a href="/research/"> Research </a><a href="/resume/"> Resume </a><a href="/portfolio/"> Portfolio </a><a href="/about/"> About </a><a href="/contact/"> Contact </a> </nav> <div class="header-utility"> <div class="utility-links"> <a href="https://github.com/eastlighting" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/eastlighting" target="_blank" rel="noreferrer">LinkedIn</a> </div> <a class="button-link-secondary" href="/resume/">Resume</a> </div> <details class="mobile-nav"> <summary class="mobile-nav__toggle" aria-label="Open navigation"> <span></span> <span></span> <span></span> </summary> <div class="mobile-nav__panel"> <nav class="mobile-nav__links" aria-label="Mobile primary"> <a href="/"> Home </a><a href="/projects/" aria-current="page"> Projects </a><a href="/research/"> Research </a><a href="/resume/"> Resume </a><a href="/portfolio/"> Portfolio </a><a href="/about/"> About </a><a href="/contact/"> Contact </a> </nav> <div class="mobile-nav__meta"> <a href="https://github.com/eastlighting" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/eastlighting" target="_blank" rel="noreferrer">LinkedIn</a> </div> </div> </details> </div> </header> <main>  <section class="section-tight"> <div class="reading-container">  <div style="margin-bottom: 1rem;"> <a class="button-link-secondary screen-only" href="/projects/">Back to Projects</a> </div> <section class="detail-hero" data-reveal="1"> <div class="eyebrow">Project Detail</div> <h1 class="section-title">Clinical Risk Scoring Pipeline with Scheduled Validation</h1> <p class="section-lead">Moved a research-origin risk model into a scheduled validation and deployment pipeline with reproducible training artifacts.</p> <div class="meta-list"> <div class="meta-item"> <span>Type</span> <span>Healthcare ML Delivery</span> </div> <div class="meta-item"> <span>Year</span> <span>2023</span> </div> <div class="meta-item"> <span>Primary Role</span> <span>Data Engineer</span> </div> <div class="meta-item"> <span>Roles</span> <span>Data Engineer, MLOps Engineer</span> </div> </div> <div class="tag-row" style="margin-top: 1rem;"> <span class="tag-chip">Healthcare</span><span class="tag-chip">Airflow</span><span class="tag-chip">Validation</span><span class="tag-chip">MLflow</span> </div> <div class="meta-row" style="margin-top: 1rem;"> <span class="metric-badge">Weekly validated runs</span><span class="metric-badge">30% faster retraining cycle</span><span class="metric-badge">Audit-ready artifacts</span> </div> <div class="external-links" aria-label="External links"><a class="external-link" href="https://github.com/eastlighting/clinical-risk-pipeline" target="_blank" rel="noreferrer">GitHub Repo</a><a class="external-link" href="https://example.com/slides/clinical-risk-pipeline" target="_blank" rel="noreferrer">Slides</a></div> </section> <article class="prose" style="padding-top: 2rem;"> <h2 id="context">Context</h2>
+<p>The starting point was a promising clinical risk model that existed mostly in notebooks and local scripts. Teams needed a delivery path that preserved reproducibility and traceability without overcomplicating the deployment footprint.</p>
+<h2 id="problem">Problem</h2>
+<p>Clinical environments demand disciplined validation and documentation. Ad hoc workflows made it difficult to verify whether a model run used the expected cohort definitions, preprocessing logic, and calibration settings.</p>
+<h2 id="implementation">Implementation</h2>
+<p>I built scheduled data validation, parameterized training, and artifact tracking into a weekly pipeline. Each run emitted cohort summaries, evaluation tables, and versioned models so reviewers could compare runs without relying on memory.</p>
+<h2 id="outcome">Outcome</h2>
+<p>The resulting pipeline gave the research team a repeatable handoff path and reduced the friction of preparing evidence for internal review and compliance discussions.</p> </article>  </div> </section>  </main> <footer class="site-footer screen-only"> <div class="container site-footer__inner"> <div> <div class="site-brand">Eunseok Lee</div> <p class="footer-copy">Data Specialist with applied research, data engineering, and MLOps range.</p> </div> <div class="inline-links"> <a href="https://github.com/eastlighting" target="_blank" rel="noreferrer">GitHub</a><a href="https://www.linkedin.com/in/eastlighting" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://scholar.google.com/" target="_blank" rel="noreferrer">Google Scholar</a> <a href="mailto:eunseok.lee@example.com">eunseok.lee@example.com</a> </div> </div> </footer> </div> <script>
+      const setupScrollReveal = () => {
+        const items = document.querySelectorAll("[data-reveal]");
+        if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          items.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+        );
+
+        items.forEach((item) => {
+          item.classList.remove("is-visible");
+          observer.observe(item);
+        });
+      };
+
+      setupScrollReveal();
+      document.addEventListener("astro:page-load", setupScrollReveal);
+    </script> </body> </html> 
