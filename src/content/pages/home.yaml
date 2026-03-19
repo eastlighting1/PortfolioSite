@@ -9,7 +9,7 @@ sectionOrder:
   - documents
 hero:
   enabled: true
-  eyebrow: Machine Learning Portfolio
+  eyebrow: AI Engineer Portfolio
   summary: Data Specialist focused on trustworthy data systems, applied research, and production delivery.
   actions:
     - label: Browse Projects
@@ -18,7 +18,7 @@ hero:
     - label: Read Research
       href: /research/
       variant: secondary
-    - label: Open Resume
+    - label: Read Resume
       href: /resume/
       variant: secondary
   focusCard:

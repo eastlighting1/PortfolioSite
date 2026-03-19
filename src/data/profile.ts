@@ -1,5 +1,5 @@
 export const profile = {
-  name: "Eunseok Lee",
+  name: "Donghyeon Kim",
   headline: "Data Specialist building production-grade ML systems from data contracts to monitored deployment.",
   intro:
     "I work at the intersection of applied machine learning, data engineering, and research delivery. My focus is on turning noisy operational data into measurable systems that stakeholders can trust.",
