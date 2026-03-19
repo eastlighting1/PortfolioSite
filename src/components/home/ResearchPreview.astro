@@ -4,15 +4,20 @@ import { entrySlug } from "../../data/content";
 
 interface Props {
   research: any[];
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  ctaLabel: string;
 }
 
-const { research } = Astro.props;
+const { research, eyebrow, title, lead, ctaLabel } = Astro.props;
 ---
 
 <section class="section">
   <div class="container">
-    <div class="eyebrow">Research Preview</div>
-    <h2 class="section-title">Applied research and technical notes anchored in delivery concerns.</h2>
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title">{title}</h2>
+    {lead && <p class="section-lead">{lead}</p>}
     <div class="research-list" style="margin-top: 2rem;">
       {research.map((item, index) => (
         <article class="research-card" data-reveal={`${(index % 4) + 1}`}>
@@ -25,7 +30,9 @@ const { research } = Astro.props;
             ))}
           </div>
           <div style="margin-top: 1rem;">
-            <a class="button-link-secondary" href={withBase(`research/${entrySlug(item)}/`)}>Read Research</a>
+            <a class="button-link-secondary" href={withBase(`research/${entrySlug(item)}/`)}>
+              {ctaLabel}
+            </a>
           </div>
         </article>
       ))}

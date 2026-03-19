@@ -1,0 +1,76 @@
+pageType: home
+sectionOrder:
+  - hero
+  - pipeline
+  - featuredProjects
+  - researchPreview
+  - experienceSnapshot
+  - capabilityMap
+  - documents
+hero:
+  enabled: true
+  eyebrow: Machine Learning Portfolio
+  summary: Data Specialist focused on trustworthy data systems, applied research, and production delivery.
+  actions:
+    - label: Browse Projects
+      href: /projects/
+      variant: primary
+    - label: Read Research
+      href: /research/
+      variant: secondary
+    - label: Open Resume
+      href: /resume/
+      variant: secondary
+  focusCard:
+    label: Working Focus
+    title: Systems that stay readable under production pressure.
+    body: From data contracts and evaluation design to monitored release workflows, this portfolio is organized as a serious reading surface rather than a one-page marketing page.
+    items:
+      - label: Primary Lens
+        value: Data quality and model reliability
+      - label: Secondary Lens
+        value: Research translation into deployable systems
+      - label: Document Surfaces
+        value: Print-safe resume and portfolio
+pipeline:
+  enabled: true
+  eyebrow: System Intro
+  title: A data-to-deployment workflow with role clarity at each layer.
+  lead: The site centers on data systems first, with research and operations framed as connected responsibilities rather than separate identities.
+featuredProjects:
+  enabled: true
+  eyebrow: Selected Projects
+  title: Case studies with operational context, not just screenshots.
+  lead: Featured work emphasizes system framing, measurable outcomes, and the boundary between internal contributions and public assets.
+  count: 3
+researchPreview:
+  enabled: true
+  eyebrow: Research Preview
+  title: Applied research and technical notes anchored in delivery concerns.
+  count: 3
+  ctaLabel: Read Research
+experienceSnapshot:
+  enabled: true
+  eyebrow: Experience Snapshot
+  title: Experience across data platform, applied modeling, and research handoff.
+  count: 3
+  ctaLabel: Open Full Resume
+capabilityMap:
+  enabled: true
+  eyebrow: Capability Map
+  title: Organized around the work of making ML systems dependable.
+documents:
+  enabled: true
+  eyebrow: Documents
+  title: Dedicated printable surfaces for recruiters and technical reviewers.
+  cards:
+    - label: Resume
+      title: Screen-readable, print-safe CV
+      body: A disciplined resume layout with summary, experience, projects, research, and skills arranged for browser print.
+      href: /resume/
+      ctaLabel: Open Resume
+    - label: Portfolio
+      title: Case-study portfolio document
+      body: A document-style compilation of selected projects with problem, approach, and outcome structure designed for review and print.
+      href: /portfolio/
+      ctaLabel: Open Portfolio

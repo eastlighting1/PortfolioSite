@@ -1,11 +1,18 @@
 ---
 import { profile } from "../../data/profile";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+}
+
+const { eyebrow, title } = Astro.props;
 ---
 
 <section class="section">
   <div class="container">
-    <div class="eyebrow">Capability Map</div>
-    <h2 class="section-title">Organized around the work of making ML systems dependable.</h2>
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title">{title}</h2>
     <div class="catalog-grid" style="margin-top: 2rem;">
       {profile.capabilityGroups.map((group, index) => (
         <article class="capability-card" data-reveal={`${(index % 4) + 1}`}>

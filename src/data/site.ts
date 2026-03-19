@@ -1,13 +1,13 @@
 export const siteConfig = {
-  name: "Eunseok Lee",
-  shortName: "Eunseok",
-  title: "Eunseok Lee | Data Specialist",
+  name: "Donghyeon Kim",
+  shortName: "Donghyeon",
+  title: "Donghyeon Kim | Data Specialist",
   description:
     "Multipage portfolio for a data specialist focused on dependable ML systems, applied research, and production data platforms.",
   primaryRole: "Data Specialist",
   secondaryRoles: ["AI Researcher", "Data Engineer", "MLOps Engineer"],
-  location: "Seoul, South Korea",
-  email: "eunseok.lee@example.com",
+  location: "Incheon, South Korea",
+  email: "eastlighting1@gachon.ac.kr",
   siteUrl: "https://eastlighting.github.io",
   nav: [
     { href: "/", label: "Home" },

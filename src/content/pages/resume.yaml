@@ -1,0 +1,35 @@
+pageType: resume
+documentTitle: Resume | Eunseok Lee
+documentDescription: Print-safe resume for a data specialist working across ML systems, research, and data engineering.
+printToolbarLabel: Optimized for browser print and PDF export.
+layout:
+  leftColumn:
+    - summary
+    - experience
+    - projects
+  rightColumn:
+    - skills
+    - research
+    - education
+sections:
+  summary:
+    enabled: true
+    title: Summary
+  experience:
+    enabled: true
+    title: Experience
+    count: 2
+  projects:
+    enabled: true
+    title: Selected Projects
+    count: 2
+  skills:
+    enabled: true
+    title: Skills
+  research:
+    enabled: true
+    title: Research
+    count: 1
+  education:
+    enabled: true
+    title: Education

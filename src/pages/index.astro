@@ -10,22 +10,79 @@ import CapabilityMap from "../components/home/CapabilityMap.astro";
 import DocumentCTA from "../components/home/DocumentCTA.astro";
 import { siteConfig } from "../data/site";
 
+const pageEntries = await getCollection("pages");
+const homePage = pageEntries.find((entry) => entry.id === "home");
+
+if (!homePage || homePage.data.pageType !== "home") {
+  throw new Error("Missing home page content configuration.");
+}
+
 const projects = (await getCollection("projects"))
   .sort((a, b) => b.data.year - a.data.year)
   .filter((project) => project.data.featured)
-  .slice(0, 3);
+  .slice(0, homePage.data.featuredProjects.count);
 
 const research = (await getCollection("research"))
   .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, 3);
+  .slice(0, homePage.data.researchPreview.count);
 ---
 
 <BaseLayout title={siteConfig.title} description={siteConfig.description} pathname="/">
-  <HeroBlock />
-  <AnimatedPipeline />
-  <FeaturedProjects projects={projects} />
-  <ResearchPreview research={research} />
-  <ExperienceSnapshot />
-  <CapabilityMap />
-  <DocumentCTA />
+  {homePage.data.sectionOrder.map((sectionId) => {
+    if (sectionId === "hero" && homePage.data.hero.enabled) {
+      return <HeroBlock {...homePage.data.hero} />;
+    }
+    if (sectionId === "pipeline" && homePage.data.pipeline.enabled) {
+      return <AnimatedPipeline {...homePage.data.pipeline} />;
+    }
+    if (sectionId === "featuredProjects" && homePage.data.featuredProjects.enabled) {
+      return (
+        <FeaturedProjects
+          projects={projects}
+          eyebrow={homePage.data.featuredProjects.eyebrow}
+          title={homePage.data.featuredProjects.title}
+          lead={homePage.data.featuredProjects.lead}
+        />
+      );
+    }
+    if (sectionId === "researchPreview" && homePage.data.researchPreview.enabled) {
+      return (
+        <ResearchPreview
+          research={research}
+          eyebrow={homePage.data.researchPreview.eyebrow}
+          title={homePage.data.researchPreview.title}
+          lead={homePage.data.researchPreview.lead}
+          ctaLabel={homePage.data.researchPreview.ctaLabel}
+        />
+      );
+    }
+    if (sectionId === "experienceSnapshot" && homePage.data.experienceSnapshot.enabled) {
+      return (
+        <ExperienceSnapshot
+          eyebrow={homePage.data.experienceSnapshot.eyebrow}
+          title={homePage.data.experienceSnapshot.title}
+          ctaLabel={homePage.data.experienceSnapshot.ctaLabel}
+          count={homePage.data.experienceSnapshot.count}
+        />
+      );
+    }
+    if (sectionId === "capabilityMap" && homePage.data.capabilityMap.enabled) {
+      return (
+        <CapabilityMap
+          eyebrow={homePage.data.capabilityMap.eyebrow}
+          title={homePage.data.capabilityMap.title}
+        />
+      );
+    }
+    if (sectionId === "documents" && homePage.data.documents.enabled) {
+      return (
+        <DocumentCTA
+          eyebrow={homePage.data.documents.eyebrow}
+          title={homePage.data.documents.title}
+          cards={homePage.data.documents.cards}
+        />
+      );
+    }
+    return null;
+  })}
 </BaseLayout>

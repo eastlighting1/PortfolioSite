@@ -6,53 +6,71 @@ import PortfolioCover from "../components/document/PortfolioCover.astro";
 import CaseStudySection from "../components/document/CaseStudySection.astro";
 import { profile } from "../data/profile";
 
-const projects = (await getCollection("projects"))
-  .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, 3);
+const pageEntries = await getCollection("pages");
+const portfolioPage = pageEntries.find((entry) => entry.id === "portfolio");
+
+if (!portfolioPage || portfolioPage.data.pageType !== "portfolio") {
+  throw new Error("Missing portfolio page content configuration.");
+}
+
+const allProjects = (await getCollection("projects")).sort((a, b) => b.data.year - a.data.year);
+const selectedProjectSlugs = portfolioPage.data.selection.selectedProjectSlugs;
+const projects =
+  selectedProjectSlugs.length > 0
+    ? selectedProjectSlugs
+        .map((slug) => allProjects.find((project) => project.id.replace(/\.[^/.]+$/, "") === slug))
+        .filter(Boolean)
+    : allProjects.slice(0, portfolioPage.data.selection.projectCount);
 
 const research = (await getCollection("research"))
   .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, 2);
+  .slice(0, portfolioPage.data.selection.researchCount);
 ---
 
 <DocumentLayout
-  title="Portfolio | Eunseok Lee"
-  description="Printable case-study portfolio spanning data systems, applied research, and ML delivery."
+  title={portfolioPage.data.documentTitle}
+  description={portfolioPage.data.documentDescription}
   pathname="/portfolio/"
 >
-  <PrintToolbar label="Portfolio document with print-aware case study page flow." />
+  <PrintToolbar label={portfolioPage.data.printToolbarLabel} />
   <div class="paper-sheet paper-sheet--portfolio document-shell">
-    <PortfolioCover />
+    <PortfolioCover label={portfolioPage.data.cover.label} title={portfolioPage.data.cover.title} />
     <div class="portfolio-overview-grid">
-      <section class="resume-section portfolio-section portfolio-section--intro">
-        <h2>Profile Summary</h2>
-        <p>{profile.summary}</p>
-        <p>
-          This portfolio is structured for print review: an overview page first, followed by one case-study sheet per project.
-        </p>
-      </section>
-      <div class="document-list">
-        <section class="resume-section portfolio-section portfolio-section--capability">
-          <h2>Capability Summary</h2>
-          <div class="compact-skill-grid">
-            {profile.capabilityGroups.map((group) => (
-              <div class="resume-item resume-item--tight">
-                <strong>{group.title}</strong>
-                <p>{group.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-        <section class="resume-section portfolio-section portfolio-section--research">
-          <h2>Research Highlights</h2>
-          {research.map((item) => (
-            <div class="resume-item resume-item--tight">
-              <strong>{item.data.title}</strong>
-              <div class="muted">{item.data.venue} | {item.data.year}</div>
-              <p>{item.data.abstract}</p>
-            </div>
+      {portfolioPage.data.overview.intro.enabled && (
+        <section class="resume-section portfolio-section portfolio-section--intro">
+          <h2>{portfolioPage.data.overview.intro.title}</h2>
+          <p>{profile.summary}</p>
+          {portfolioPage.data.overview.intro.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
           ))}
         </section>
+      )}
+      <div class="document-list">
+        {portfolioPage.data.overview.capability.enabled && (
+          <section class="resume-section portfolio-section portfolio-section--capability">
+            <h2>{portfolioPage.data.overview.capability.title}</h2>
+            <div class="compact-skill-grid">
+              {profile.capabilityGroups.map((group) => (
+                <div class="resume-item resume-item--tight">
+                  <strong>{group.title}</strong>
+                  <p>{group.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+        {portfolioPage.data.overview.research.enabled && (
+          <section class="resume-section portfolio-section portfolio-section--research">
+            <h2>{portfolioPage.data.overview.research.title}</h2>
+            {research.map((item) => (
+              <div class="resume-item resume-item--tight">
+                <strong>{item.data.title}</strong>
+                <div class="muted">{item.data.venue} | {item.data.year}</div>
+                <p>{item.data.abstract}</p>
+              </div>
+            ))}
+          </section>
+        )}
       </div>
     </div>
   </div>

@@ -1,11 +1,18 @@
 ---
 import { profile } from "../../data/profile";
 import { siteConfig } from "../../data/site";
+
+interface Props {
+  label: string;
+  title: string;
+}
+
+const { label, title } = Astro.props;
 ---
 
 <section class="portfolio-cover">
-  <span class="small-label">Portfolio Document</span>
-  <h1 class="section-title" style="margin-top:0.6rem;">Selected ML Systems and Applied Research</h1>
+  <span class="small-label">{label}</span>
+  <h1 class="section-title" style="margin-top:0.6rem;">{title}</h1>
   <p class="section-lead">{profile.summary}</p>
   <div class="inline-links inline-links--dense" style="margin-top: 0.75rem;">
     <span>{profile.name}</span>

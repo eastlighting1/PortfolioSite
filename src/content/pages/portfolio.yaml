@@ -1,0 +1,23 @@
+pageType: portfolio
+documentTitle: Portfolio | Eunseok Lee
+documentDescription: Printable case-study portfolio spanning data systems, applied research, and ML delivery.
+printToolbarLabel: Portfolio document with print-aware case study page flow.
+cover:
+  label: Portfolio Document
+  title: Selected ML Systems and Applied Research
+overview:
+  intro:
+    enabled: true
+    title: Profile Summary
+    paragraphs:
+      - This portfolio is structured for print review: an overview page first, followed by one case-study sheet per project.
+  capability:
+    enabled: true
+    title: Capability Summary
+  research:
+    enabled: true
+    title: Research Highlights
+selection:
+  projectCount: 3
+  researchCount: 2
+  selectedProjectSlugs: []

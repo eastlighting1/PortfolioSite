@@ -1,14 +1,23 @@
 ---
 import { withBase } from "../../data/site";
 import { experience } from "../../data/experience";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  ctaLabel: string;
+  count: number;
+}
+
+const { eyebrow, title, ctaLabel, count } = Astro.props;
 ---
 
 <section class="section">
   <div class="container">
-    <div class="eyebrow">Experience Snapshot</div>
-    <h2 class="section-title">Experience across data platform, applied modeling, and research handoff.</h2>
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title">{title}</h2>
     <div class="timeline-grid" style="margin-top: 2rem;">
-      {experience.map((item, index) => (
+      {experience.slice(0, count).map((item, index) => (
         <article class="snapshot-card" data-reveal={`${(index % 4) + 1}`}>
           <span class="small-label">{item.period}</span>
           <h3>{item.role}</h3>
@@ -22,7 +31,7 @@ import { experience } from "../../data/experience";
       ))}
     </div>
     <div style="margin-top: 1.5rem;">
-      <a class="button-link-secondary" href={withBase("/resume/")}>Open Full Resume</a>
+      <a class="button-link-secondary" href={withBase("/resume/")}>{ctaLabel}</a>
     </div>
   </div>
 </section>

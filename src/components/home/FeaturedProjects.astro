@@ -3,18 +3,19 @@ import ProjectCard from "../projects/ProjectCard.astro";
 
 interface Props {
   projects: any[];
+  eyebrow: string;
+  title: string;
+  lead?: string;
 }
 
-const { projects } = Astro.props;
+const { projects, eyebrow, title, lead } = Astro.props;
 ---
 
 <section class="section">
   <div class="container">
-    <div class="eyebrow">Selected Projects</div>
-    <h2 class="section-title">Case studies with operational context, not just screenshots.</h2>
-    <p class="section-lead">
-      Featured work emphasizes system framing, measurable outcomes, and the boundary between internal contributions and public assets.
-    </p>
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title">{title}</h2>
+    {lead && <p class="section-lead">{lead}</p>}
     <div class="preview-grid" style="margin-top: 2rem;">
       {projects.map((project, index) => (
         <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} />
