@@ -1,4 +1,6 @@
 ---
+import { getUiEntry } from "../../data/content";
+
 interface LinkItem {
   label: string;
   href?: string;
@@ -10,10 +12,12 @@ interface Props {
 
 const { links } = Astro.props;
 const visibleLinks = links.filter((link) => link.href);
+const uiEntry = await getUiEntry("labels");
+const ui = uiEntry.data;
 ---
 
 {visibleLinks.length > 0 && (
-  <div class="external-links" aria-label="External links">
+  <div class="external-links" aria-label={ui.externalLinksAriaLabel}>
     {visibleLinks.map((link) => (
       <a class="external-link" href={link.href} target="_blank" rel="noreferrer">
         {link.label}

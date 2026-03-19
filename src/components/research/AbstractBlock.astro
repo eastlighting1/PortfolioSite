@@ -1,12 +1,16 @@
 ---
+import { getUiEntry } from "../../data/content";
+
 interface Props {
   abstract: string;
 }
 
 const { abstract } = Astro.props;
+const uiEntry = await getUiEntry("labels");
+const ui = uiEntry.data;
 ---
 
 <section class="resume-section" data-reveal="2">
-  <div class="eyebrow">Abstract</div>
+  <div class="eyebrow">{ui.research.abstractEyebrow}</div>
   <p style="margin-bottom:0;">{abstract}</p>
 </section>

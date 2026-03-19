@@ -1,0 +1,17 @@
+pageType: not-found
+documentTitle: 404 | Eunseok Lee
+documentDescription: Page not found.
+hero:
+  eyebrow: "404"
+  title: The requested page is not available.
+  description: The portfolio uses static Astro routes, so the most reliable next step is to return to the site index or jump to one of the main catalogues.
+  actions:
+    - label: Go Home
+      href: /
+      variant: primary
+    - label: Projects
+      href: /projects/
+      variant: secondary
+    - label: Research
+      href: /research/
+      variant: secondary

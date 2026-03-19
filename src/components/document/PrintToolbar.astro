@@ -1,12 +1,16 @@
 ---
+import { getUiEntry } from "../../data/content";
+
 interface Props {
   label?: string;
 }
 
-const { label = "Print or save as PDF" } = Astro.props;
+const uiEntry = await getUiEntry("labels");
+const ui = uiEntry.data;
+const { label = ui.printToolbar.defaultLabel } = Astro.props;
 ---
 
 <div class="doc-toolbar screen-only">
   <span class="muted">{label}</span>
-  <button type="button" onclick="window.print()">Print</button>
+  <button type="button" onclick="window.print()">{ui.printToolbar.printButtonLabel}</button>
 </div>

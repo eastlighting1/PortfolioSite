@@ -10,7 +10,7 @@ overview:
     enabled: true
     title: Profile Summary
     paragraphs:
-      - This portfolio is structured for print review: an overview page first, followed by one case-study sheet per project.
+      - "This portfolio is structured for print review: an overview page first, followed by one case-study sheet per project."
   capability:
     enabled: true
     title: Capability Summary

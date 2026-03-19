@@ -3,22 +3,29 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/common/PageHero.astro";
 import ProjectGrid from "../../components/projects/ProjectGrid.astro";
+import { getPageEntry } from "../../data/content";
+
+const projectsPage = await getPageEntry("projects");
+if (projectsPage.data.pageType !== "projects") {
+  throw new Error("Missing projects page content configuration.");
+}
 
 const projects = (await getCollection("projects")).sort((a, b) => b.data.year - a.data.year);
+const heroMeta = [`${projects.length} projects`, ...projectsPage.data.hero.meta];
 ---
 
 <BaseLayout
-  title="Projects | Eunseok Lee"
-  description="Project catalogue covering data systems, applied research, and production ML delivery."
+  title={projectsPage.data.documentTitle}
+  description={projectsPage.data.documentDescription}
   pathname="/projects/"
 >
   <section class="section">
     <div class="container">
       <PageHero
-        eyebrow="Projects"
-        title="Project catalogue"
-        description="A dedicated catalogue of applied ML, data platform, and delivery work. Filtering can be added later, but the information architecture is already split into clear project detail pages."
-        meta={[`${projects.length} projects`, "Case-study format", "External links supported"]}
+        eyebrow={projectsPage.data.hero.eyebrow}
+        title={projectsPage.data.hero.title}
+        description={projectsPage.data.hero.description}
+        meta={heroMeta}
       />
       <div class="section-tight">
         <ProjectGrid projects={projects} />

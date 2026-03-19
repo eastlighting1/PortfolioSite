@@ -1,12 +1,18 @@
 ---
-import { siteConfig, withBase } from "../../data/site";
-import { externalProfiles } from "../../data/links";
+import { getGlobalEntry, getUiEntry } from "../../data/content";
+import { withBase } from "../../data/site";
 
 interface Props {
   pathname?: string;
 }
 
 const { pathname = "/" } = Astro.props;
+const siteEntry = await getGlobalEntry("site");
+const linksEntry = await getGlobalEntry("links");
+const uiEntry = await getUiEntry("labels");
+const siteConfig = siteEntry.data;
+const externalProfiles = linksEntry.data.externalProfiles;
+const ui = uiEntry.data;
 
 const normalize = (value: string) => (value.endsWith("/") ? value : `${value}/`);
 const isActive = (currentPath: string, itemHref: string) => {
@@ -36,10 +42,10 @@ const isActive = (currentPath: string, itemHref: string) => {
           <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
         ))}
       </div>
-      <a class="button-link-secondary" href={withBase("/resume/")}>Resume</a>
+      <a class="button-link-secondary" href={withBase("/resume/")}>{ui.header.resumeButtonLabel}</a>
     </div>
     <details class="mobile-nav">
-      <summary class="mobile-nav__toggle" aria-label="Open navigation">
+      <summary class="mobile-nav__toggle" aria-label={ui.header.mobileToggleLabel}>
         <span></span>
         <span></span>
         <span></span>

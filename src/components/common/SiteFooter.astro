@@ -1,13 +1,19 @@
 ---
-import { siteConfig } from "../../data/site";
-import { externalProfiles } from "../../data/links";
+import { getGlobalEntry, getUiEntry } from "../../data/content";
+
+const siteEntry = await getGlobalEntry("site");
+const linksEntry = await getGlobalEntry("links");
+const uiEntry = await getUiEntry("labels");
+const siteConfig = siteEntry.data;
+const externalProfiles = linksEntry.data.externalProfiles;
+const ui = uiEntry.data;
 ---
 
 <footer class="site-footer screen-only">
   <div class="container site-footer__inner">
     <div>
       <div class="site-brand">{siteConfig.name}</div>
-      <p class="footer-copy">{siteConfig.primaryRole} with applied research, data engineering, and MLOps range.</p>
+      <p class="footer-copy">{ui.footer.summary}</p>
     </div>
     <div class="inline-links">
       {externalProfiles.map((link) => (

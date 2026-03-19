@@ -1,4 +1,5 @@
 ---
+import { getUiEntry } from "../../data/content";
 import ExternalLinks from "../common/ExternalLinks.astro";
 
 interface Props {
@@ -6,23 +7,25 @@ interface Props {
 }
 
 const { item } = Astro.props;
+const uiEntry = await getUiEntry("labels");
+const ui = uiEntry.data;
 ---
 
 <section class="detail-hero" data-reveal="1">
-  <div class="eyebrow">Research Detail</div>
+  <div class="eyebrow">{ui.research.detailEyebrow}</div>
   <h1 class="section-title">{item.data.title}</h1>
   <p class="section-lead">{item.data.abstract}</p>
   <div class="meta-list">
     <div class="meta-item">
-      <span>Venue</span>
+      <span>{ui.research.fieldLabels.venue}</span>
       <span>{item.data.venue}</span>
     </div>
     <div class="meta-item">
-      <span>Year</span>
+      <span>{ui.research.fieldLabels.year}</span>
       <span>{item.data.year}</span>
     </div>
     <div class="meta-item">
-      <span>Type</span>
+      <span>{ui.research.fieldLabels.type}</span>
       <span>{item.data.type}</span>
     </div>
   </div>
@@ -33,9 +36,9 @@ const { item } = Astro.props;
   </div>
   <ExternalLinks
     links={[
-      { label: "PDF", href: item.data.pdfUrl },
-      { label: "Repo", href: item.data.repoUrl },
-      { label: "Slides", href: item.data.slidesUrl }
+      { label: ui.research.linkLabels.pdf, href: item.data.pdfUrl },
+      { label: ui.research.linkLabels.repo, href: item.data.repoUrl },
+      { label: ui.research.linkLabels.slides, href: item.data.slidesUrl }
     ]}
   />
 </section>

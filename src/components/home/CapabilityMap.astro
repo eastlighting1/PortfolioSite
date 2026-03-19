@@ -1,5 +1,5 @@
 ---
-import { profile } from "../../data/profile";
+import { getGlobalEntry } from "../../data/content";
 
 interface Props {
   eyebrow: string;
@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { eyebrow, title } = Astro.props;
+const profileEntry = await getGlobalEntry("profile");
+const profile = profileEntry.data;
 ---
 
 <section class="section">

@@ -8,12 +8,12 @@ import ResearchPreview from "../components/home/ResearchPreview.astro";
 import ExperienceSnapshot from "../components/home/ExperienceSnapshot.astro";
 import CapabilityMap from "../components/home/CapabilityMap.astro";
 import DocumentCTA from "../components/home/DocumentCTA.astro";
-import { siteConfig } from "../data/site";
+import { getGlobalEntry, getPageEntry } from "../data/content";
 
-const pageEntries = await getCollection("pages");
-const homePage = pageEntries.find((entry) => entry.id === "home");
-
-if (!homePage || homePage.data.pageType !== "home") {
+const homePage = await getPageEntry("home");
+const siteEntry = await getGlobalEntry("site");
+const siteConfig = siteEntry.data;
+if (homePage.data.pageType !== "home") {
   throw new Error("Missing home page content configuration.");
 }
 

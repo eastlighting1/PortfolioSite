@@ -1,6 +1,6 @@
 ---
+import { getGlobalEntry } from "../../data/content";
 import { withBase } from "../../data/site";
-import { experience } from "../../data/experience";
 
 interface Props {
   eyebrow: string;
@@ -10,6 +10,8 @@ interface Props {
 }
 
 const { eyebrow, title, ctaLabel, count } = Astro.props;
+const experienceEntry = await getGlobalEntry("experience");
+const experience = experienceEntry.data.items;
 ---
 
 <section class="section">

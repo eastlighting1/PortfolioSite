@@ -1,5 +1,6 @@
 ---
-import { siteConfig, withBase } from "../data/site";
+import { getGlobalEntry, getUiEntry } from "../data/content";
+import { withBase } from "../data/site";
 
 interface Props {
   title: string;
@@ -7,6 +8,10 @@ interface Props {
   pathname?: string;
 }
 
+const siteEntry = await getGlobalEntry("site");
+const uiEntry = await getUiEntry("labels");
+const siteConfig = siteEntry.data;
+const ui = uiEntry.data;
 const { title, description = siteConfig.description } = Astro.props;
 ---
 
@@ -27,9 +32,9 @@ const { title, description = siteConfig.description } = Astro.props;
             <div class="document-page__masthead">
               <a class="site-brand" href={withBase("/")}>{siteConfig.name}</a>
               <div class="inline-links">
-                <a href={withBase("/projects/")}>Projects</a>
-                <a href={withBase("/research/")}>Research</a>
-                <a href={withBase("/about/")}>About</a>
+                {ui.documentLayout.mastheadLinks.map((link) => (
+                  <a href={withBase(link.href)}>{link.label}</a>
+                ))}
               </div>
             </div>
           </div>

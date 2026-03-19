@@ -1,7 +1,8 @@
 ---
 import SiteHeader from "../components/common/SiteHeader.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
-import { siteConfig, withBase } from "../data/site";
+import { getGlobalEntry } from "../data/content";
+import { withBase } from "../data/site";
 
 interface Props {
   title: string;
@@ -9,6 +10,8 @@ interface Props {
   pathname?: string;
 }
 
+const siteEntry = await getGlobalEntry("site");
+const siteConfig = siteEntry.data;
 const { title, description = siteConfig.description, pathname = "/" } = Astro.props;
 ---
 

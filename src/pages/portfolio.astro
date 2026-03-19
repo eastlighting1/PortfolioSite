@@ -4,12 +4,13 @@ import DocumentLayout from "../layouts/DocumentLayout.astro";
 import PrintToolbar from "../components/document/PrintToolbar.astro";
 import PortfolioCover from "../components/document/PortfolioCover.astro";
 import CaseStudySection from "../components/document/CaseStudySection.astro";
-import { profile } from "../data/profile";
+import { getGlobalEntry, getPageEntry } from "../data/content";
 
-const pageEntries = await getCollection("pages");
-const portfolioPage = pageEntries.find((entry) => entry.id === "portfolio");
+const portfolioPage = await getPageEntry("portfolio");
+const profileEntry = await getGlobalEntry("profile");
+const profile = profileEntry.data;
 
-if (!portfolioPage || portfolioPage.data.pageType !== "portfolio") {
+if (portfolioPage.data.pageType !== "portfolio") {
   throw new Error("Missing portfolio page content configuration.");
 }
 

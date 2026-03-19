@@ -1,0 +1,11 @@
+pageType: research
+documentTitle: Research | Eunseok Lee
+documentDescription: Research notes, workshop papers, and technical writing connected to production ML systems.
+hero:
+  eyebrow: Research
+  title: Research and technical writing
+  description: A dedicated reading surface for papers, workshop notes, and engineering documents. Each entry leads to its own long-form page rather than collapsing everything into cards.
+  className: page-hero--catalog
+  meta:
+    - Workshop and engineering notes
+    - Long-form detail pages

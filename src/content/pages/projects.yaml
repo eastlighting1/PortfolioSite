@@ -1,0 +1,10 @@
+pageType: projects
+documentTitle: Projects | Eunseok Lee
+documentDescription: Project catalogue covering data systems, applied research, and production ML delivery.
+hero:
+  eyebrow: Projects
+  title: Project catalogue
+  description: A dedicated catalogue of applied ML, data platform, and delivery work. Filtering can be added later, but the information architecture is already split into clear project detail pages.
+  meta:
+    - Case-study format
+    - External links supported

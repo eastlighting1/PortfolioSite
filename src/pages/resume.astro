@@ -4,14 +4,17 @@ import DocumentLayout from "../layouts/DocumentLayout.astro";
 import PrintToolbar from "../components/document/PrintToolbar.astro";
 import ResumeHeader from "../components/document/ResumeHeader.astro";
 import ResumeSection from "../components/document/ResumeSection.astro";
-import { profile } from "../data/profile";
-import { experience } from "../data/experience";
-import { education } from "../data/education";
+import { getGlobalEntry, getPageEntry } from "../data/content";
 
-const pageEntries = await getCollection("pages");
-const resumePage = pageEntries.find((entry) => entry.id === "resume");
+const resumePage = await getPageEntry("resume");
+const profileEntry = await getGlobalEntry("profile");
+const experienceEntry = await getGlobalEntry("experience");
+const educationEntry = await getGlobalEntry("education");
+const profile = profileEntry.data;
+const experience = experienceEntry.data.items;
+const education = educationEntry.data.items;
 
-if (!resumePage || resumePage.data.pageType !== "resume") {
+if (resumePage.data.pageType !== "resume") {
   throw new Error("Missing resume page content configuration.");
 }
 

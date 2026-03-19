@@ -1,21 +1,30 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPageEntry } from "../data/content";
 import { withBase } from "../data/site";
+
+const notFoundPage = await getPageEntry("not-found");
+if (notFoundPage.data.pageType !== "not-found") {
+  throw new Error("Missing not-found page content configuration.");
+}
 ---
 
-<BaseLayout title="404 | Eunseok Lee" description="Page not found." pathname="/404/">
+<BaseLayout title={notFoundPage.data.documentTitle} description={notFoundPage.data.documentDescription} pathname="/404/">
   <section class="section">
     <div class="container">
       <div class="page-hero">
-        <div class="eyebrow">404</div>
-        <h1 class="section-title">The requested page is not available.</h1>
-        <p class="section-lead">
-          The portfolio uses static Astro routes, so the most reliable next step is to return to the site index or jump to one of the main catalogues.
-        </p>
+        <div class="eyebrow">{notFoundPage.data.hero.eyebrow}</div>
+        <h1 class="section-title">{notFoundPage.data.hero.title}</h1>
+        <p class="section-lead">{notFoundPage.data.hero.description}</p>
         <div class="hero-actions" style="margin-top: 1rem;">
-          <a class="button-link" href={withBase("/")}>Go Home</a>
-          <a class="button-link-secondary" href={withBase("/projects/")}>Projects</a>
-          <a class="button-link-secondary" href={withBase("/research/")}>Research</a>
+          {notFoundPage.data.hero.actions.map((action) => (
+            <a
+              class={action.variant === "primary" ? "button-link" : "button-link-secondary"}
+              href={withBase(action.href)}
+            >
+              {action.label}
+            </a>
+          ))}
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 ---
-import { profile } from "../../data/profile";
-import { siteConfig } from "../../data/site";
+import { getGlobalEntry } from "../../data/content";
 
 interface Props {
   label: string;
@@ -8,6 +7,10 @@ interface Props {
 }
 
 const { label, title } = Astro.props;
+const profileEntry = await getGlobalEntry("profile");
+const siteEntry = await getGlobalEntry("site");
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
 ---
 
 <section class="portfolio-cover">

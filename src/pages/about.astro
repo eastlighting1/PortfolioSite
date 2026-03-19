@@ -1,31 +1,36 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/common/PageHero.astro";
-import { profile } from "../data/profile";
+import { getGlobalEntry, getPageEntry } from "../data/content";
+
+const aboutPage = await getPageEntry("about");
+const profileEntry = await getGlobalEntry("profile");
+const profile = profileEntry.data;
+
+if (aboutPage.data.pageType !== "about") {
+  throw new Error("Missing about page content configuration.");
+}
 ---
 
-<BaseLayout title="About | Eunseok Lee" description="Working philosophy and longer narrative for the portfolio." pathname="/about/">
+<BaseLayout title={aboutPage.data.documentTitle} description={aboutPage.data.documentDescription} pathname="/about/">
   <section class="section">
     <div class="container">
       <PageHero
-        eyebrow="About"
-        title="Working style and technical philosophy"
-        description="A longer narrative page for how I think about reliable ML systems, documentation, and cross-functional delivery."
+        eyebrow={aboutPage.data.hero.eyebrow}
+        title={aboutPage.data.hero.title}
+        description={aboutPage.data.hero.description}
       />
       <div class="section-tight reading-container prose">
-        <h2>Positioning</h2>
+        <h2>{aboutPage.data.sections.positioningTitle}</h2>
         <p>{profile.summary}</p>
-        <h2>Working Philosophy</h2>
+        <h2>{aboutPage.data.sections.philosophyTitle}</h2>
         <ul>
           {profile.philosophy.map((item) => (
             <li>{item}</li>
           ))}
         </ul>
-        <h2>What matters in ML systems</h2>
-        <p>
-          Good ML systems are not only accurate. They remain measurable when upstream data changes, understandable when teams
-          need to review them, and maintainable when the original builder is no longer in the room.
-        </p>
+        <h2>{aboutPage.data.sections.systemsTitle}</h2>
+        <p>{aboutPage.data.sections.systemsBody}</p>
       </div>
     </div>
   </section>

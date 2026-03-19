@@ -1,7 +1,12 @@
 ---
-import { profile } from "../../data/profile";
-import { siteConfig } from "../../data/site";
-import { externalProfiles } from "../../data/links";
+import { getGlobalEntry } from "../../data/content";
+
+const profileEntry = await getGlobalEntry("profile");
+const siteEntry = await getGlobalEntry("site");
+const linksEntry = await getGlobalEntry("links");
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
+const externalProfiles = linksEntry.data.externalProfiles;
 ---
 
 <header class="document-header">

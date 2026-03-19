@@ -1,6 +1,6 @@
 ---
-import { profile } from "../../data/profile";
-import { siteConfig, withBase } from "../../data/site";
+import { getGlobalEntry } from "../../data/content";
+import { withBase } from "../../data/site";
 
 interface Props {
   eyebrow: string;
@@ -22,6 +22,10 @@ interface Props {
 }
 
 const { eyebrow, summary, actions, focusCard } = Astro.props;
+const profileEntry = await getGlobalEntry("profile");
+const siteEntry = await getGlobalEntry("site");
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
 ---
 
 <section class="section">

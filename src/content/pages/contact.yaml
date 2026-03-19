@@ -1,0 +1,10 @@
+pageType: contact
+documentTitle: Contact | Eunseok Lee
+documentDescription: Contact options for collaboration and hiring.
+hero:
+  eyebrow: Contact
+  title: A simple endpoint for conversation
+  description: Open to technical portfolio reviews, ML engineering roles, research collaboration, and data platform work.
+cards:
+  emailLabel: Email
+  externalValueMode: href

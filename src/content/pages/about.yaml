@@ -1,0 +1,12 @@
+pageType: about
+documentTitle: About | Eunseok Lee
+documentDescription: Working philosophy and longer narrative for the portfolio.
+hero:
+  eyebrow: About
+  title: Working style and technical philosophy
+  description: A longer narrative page for how I think about reliable ML systems, documentation, and cross-functional delivery.
+sections:
+  positioningTitle: Positioning
+  philosophyTitle: Working Philosophy
+  systemsTitle: What matters in ML systems
+  systemsBody: Good ML systems are not only accurate. They remain measurable when upstream data changes, understandable when teams need to review them, and maintainable when the original builder is no longer in the room.

@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import DetailLayout from "../../layouts/DetailLayout.astro";
 import ResearchDetailHero from "../../components/research/ResearchDetailHero.astro";
 import AbstractBlock from "../../components/research/AbstractBlock.astro";
+import { getUiEntry } from "../../data/content";
 import { withBase } from "../../data/site";
 import { entrySlug } from "../../data/content";
 
@@ -18,6 +19,8 @@ const { item } = Astro.props;
 const { Content } = await render(item);
 const projects = await getCollection("projects");
 const linkedProjects = projects.filter((project) => item.data.linkedProjects.includes(entrySlug(project)));
+const uiEntry = await getUiEntry("labels");
+const ui = uiEntry.data;
 ---
 
 <DetailLayout
@@ -26,7 +29,7 @@ const linkedProjects = projects.filter((project) => item.data.linkedProjects.inc
   pathname={`/research/${entrySlug(item)}/`}
 >
   <div style="margin-bottom: 1rem;">
-    <a class="button-link-secondary screen-only" href={withBase("/research/")}>Back to Research</a>
+    <a class="button-link-secondary screen-only" href={withBase("/research/")}>{ui.research.backToListLabel}</a>
   </div>
   <ResearchDetailHero item={item} />
   <div style="padding-top: 2rem;">
@@ -36,14 +39,16 @@ const linkedProjects = projects.filter((project) => item.data.linkedProjects.inc
     </article>
     {linkedProjects.length > 0 && (
       <section class="resume-section" style="margin-top: 2rem;">
-        <div class="eyebrow">Related Projects</div>
+        <div class="eyebrow">{ui.research.relatedProjectsEyebrow}</div>
         <div class="document-list" style="margin-top: 1rem;">
           {linkedProjects.map((project) => (
             <div class="resume-item">
               <strong>{project.data.title}</strong>
               <div class="muted">{project.data.type} | {project.data.year}</div>
               <p>{project.data.summary}</p>
-              <a class="button-link-secondary" href={withBase(`projects/${entrySlug(project)}/`)}>Open Related Project</a>
+              <a class="button-link-secondary" href={withBase(`projects/${entrySlug(project)}/`)}>
+                {ui.research.openRelatedProjectLabel}
+              </a>
             </div>
           ))}
         </div>

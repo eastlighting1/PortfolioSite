@@ -1,0 +1,60 @@
+globalType: profile
+name: Eunseok Lee
+headline: Data Specialist building production-grade ML systems from data contracts to monitored deployment.
+intro: I work at the intersection of applied machine learning, data engineering, and research delivery. My focus is on turning noisy operational data into measurable systems that stakeholders can trust.
+summary: Data specialist with hands-on experience in modeling, evaluation, feature pipelines, experimentation, and MLOps operations. I care about readable systems, stable metrics, and documentation surfaces that make technical decisions easy to review.
+philosophy:
+  - Treat data quality as a product surface, not a cleanup phase.
+  - Keep research grounded in deployment constraints and measurement.
+  - Use documentation to reduce ambiguity across data, modeling, and platform teams.
+capabilityGroups:
+  - title: Data
+    description: Data contracts, feature pipelines, observability, and quality monitoring for evolving datasets.
+    skills:
+      - SQL
+      - Python
+      - dbt
+      - Spark
+      - Feature Stores
+  - title: AI
+    description: Supervised learning, retrieval systems, evaluation design, and model iteration tied to business outcomes.
+    skills:
+      - PyTorch
+      - scikit-learn
+      - XGBoost
+      - LLM Evaluation
+      - Experiment Tracking
+  - title: Infra / MLOps
+    description: Operationalizing models with reproducible pipelines, CI checks, and production monitoring.
+    skills:
+      - Airflow
+      - Docker
+      - GitHub Actions
+      - MLflow
+      - Kubernetes
+  - title: Research
+    description: Applied research that turns methods exploration into documented results and implementation guidance.
+    skills:
+      - Ablation Design
+      - Benchmarking
+      - Technical Writing
+      - Statistical Analysis
+pipeline:
+  - title: Raw Data
+    emphasis: Data Specialist
+    description: Instrument sources, define contracts, and profile drift before modeling starts.
+  - title: Data Processing
+    emphasis: Data Engineer
+    description: Build versioned transformation layers that preserve lineage and operational trust.
+  - title: Feature Layer
+    emphasis: Data Specialist
+    description: Design stable feature definitions with offline and online consistency in mind.
+  - title: Modeling
+    emphasis: AI Researcher
+    description: Select methods that fit the signal quality, deployment budget, and evaluation target.
+  - title: Evaluation
+    emphasis: AI Researcher
+    description: Measure uplift using clear offline metrics and reviewable failure slices.
+  - title: Deployment / Monitoring
+    emphasis: MLOps Engineer
+    description: Ship models with observability, rollback paths, and decision-ready dashboards.

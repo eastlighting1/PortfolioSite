@@ -1,4 +1,5 @@
 ---
+import { getUiEntry } from "../../data/content";
 import ExternalLinks from "../common/ExternalLinks.astro";
 import { entrySlug } from "../../data/content";
 import { withBase } from "../../data/site";
@@ -9,18 +10,22 @@ interface Props {
 
 const { project } = Astro.props;
 const modalId = `project-preview-${entrySlug(project)}`;
+const uiEntry = await getUiEntry("labels");
+const ui = uiEntry.data;
 ---
 
 <>
   <button class="button-link-secondary project-preview-trigger" type="button" data-dialog-open={modalId}>
-    Quick Preview
+    {ui.project.quickPreviewLabel}
   </button>
 
   <dialog id={modalId} class="project-preview-dialog">
     <article class="project-preview-card">
       <div class="doc-toolbar" style="margin-bottom: 0.5rem;">
-        <span class="small-label">Project Preview</span>
-        <button type="button" data-dialog-close={modalId} aria-label="Close preview">Close</button>
+        <span class="small-label">{ui.project.previewTitle}</span>
+        <button type="button" data-dialog-close={modalId} aria-label={ui.project.closePreviewLabel}>
+          {ui.project.closePreviewLabel}
+        </button>
       </div>
       <h3>{project.data.title}</h3>
       <p class="muted">{project.data.type} | {project.data.year} | {project.data.role}</p>
@@ -37,14 +42,16 @@ const modalId = `project-preview-${entrySlug(project)}`;
       </div>
       <ExternalLinks
         links={[
-          { label: "GitHub Repo", href: project.data.repoUrl },
-          { label: "Demo", href: project.data.demoUrl },
-          { label: "Paper", href: project.data.paperUrl },
-          { label: "Slides", href: project.data.slidesUrl }
+          { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+          { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+          { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+          { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
         ]}
       />
       <div style="margin-top: 1rem;">
-        <a class="button-link" href={withBase(`projects/${entrySlug(project)}/`)}>Open Full Case Study</a>
+        <a class="button-link" href={withBase(`projects/${entrySlug(project)}/`)}>
+          {ui.project.openFullCaseStudyLabel}
+        </a>
       </div>
     </article>
   </dialog>
