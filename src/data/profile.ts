@@ -1,67 +1,67 @@
 export const profile = {
   name: "Donghyeon Kim",
-  headline: "Data Specialist building production-grade ML systems from data contracts to monitored deployment.",
+  headline: "Applied AI Researcher and AI Engineer focused on deployable conversational and clinical AI systems.",
   intro:
-    "I work at the intersection of applied machine learning, data engineering, and research delivery. My focus is on turning noisy operational data into measurable systems that stakeholders can trust.",
+    "I work on applied AI problems that begin with real-world data and end with models, evaluations, and system surfaces that collaborators can actually use. My recent work spans conversational AI, healthcare AI, and ML system practices that improve reproducibility and delivery.",
   summary:
-    "Data specialist with hands-on experience in modeling, evaluation, feature pipelines, experimentation, and MLOps operations. I care about readable systems, stable metrics, and documentation surfaces that make technical decisions easy to review.",
+    "Graduate researcher with hands-on experience in NLP, healthcare AI, deep learning, and end-to-end AI project implementation. I am especially interested in turning experimental AI work into reliable systems through better evaluation, clearer documentation, and practical MLOps thinking.",
   philosophy: [
-    "Treat data quality as a product surface, not a cleanup phase.",
-    "Keep research grounded in deployment constraints and measurement.",
-    "Use documentation to reduce ambiguity across data, modeling, and platform teams."
+    "Build AI systems that are not only accurate, but also understandable and reusable.",
+    "Treat evaluation as part of the product, not just the research appendix.",
+    "Connect experimentation with delivery so that technical work remains useful beyond the original builder."
   ],
   capabilityGroups: [
     {
-      title: "Data",
-      description: "Data contracts, feature pipelines, observability, and quality monitoring for evolving datasets.",
-      skills: ["SQL", "Python", "dbt", "Spark", "Feature Stores"]
+      title: "Applied AI",
+      description: "Modeling and implementation across NLP, healthcare AI, and mixed structured-unstructured data settings.",
+      skills: ["Python", "PyTorch", "Hugging Face", "XGBoost", "Deep Learning"]
     },
     {
-      title: "AI",
-      description: "Supervised learning, retrieval systems, evaluation design, and model iteration tied to business outcomes.",
-      skills: ["PyTorch", "scikit-learn", "XGBoost", "LLM Evaluation", "Experiment Tracking"]
+      title: "NLP / Research",
+      description: "Conversational AI, empathetic dialogue generation, text analysis, and evaluation-driven experimentation.",
+      skills: ["Conversational AI", "Reinforcement Learning", "Text Analysis", "Experiment Design", "Technical Writing"]
     },
     {
-      title: "Infra / MLOps",
-      description: "Operationalizing models with reproducible pipelines, CI checks, and production monitoring.",
-      skills: ["Airflow", "Docker", "GitHub Actions", "MLflow", "Kubernetes"]
+      title: "ML Systems",
+      description: "Project delivery with attention to reproducibility, deployment context, monitoring, and collaboration surfaces.",
+      skills: ["Docker", "Linux", "Git", "AWS", "Logging"]
     },
     {
-      title: "Research",
-      description: "Applied research that turns methods exploration into documented results and implementation guidance.",
-      skills: ["Ablation Design", "Benchmarking", "Technical Writing", "Statistical Analysis"]
+      title: "Growing Interests",
+      description: "Operational practices that help research become stable and maintainable systems over time.",
+      skills: ["MLOps", "Observability", "Feature Store", "Continuous Training", "uv"]
     }
   ],
   pipeline: [
     {
-      title: "Raw Data",
-      emphasis: "Data Specialist",
-      description: "Instrument sources, define contracts, and profile drift before modeling starts."
+      title: "Problem Framing",
+      emphasis: "Applied AI Researcher",
+      description: "Start from the user, domain, and decision context before choosing a model or benchmark."
     },
     {
-      title: "Data Processing",
-      emphasis: "Data Engineer",
-      description: "Build versioned transformation layers that preserve lineage and operational trust."
-    },
-    {
-      title: "Feature Layer",
-      emphasis: "Data Specialist",
-      description: "Design stable feature definitions with offline and online consistency in mind."
+      title: "Data Preparation",
+      emphasis: "AI Engineer",
+      description: "Clean, structure, and interpret noisy real-world data so later modeling choices remain grounded."
     },
     {
       title: "Modeling",
-      emphasis: "AI Researcher",
-      description: "Select methods that fit the signal quality, deployment budget, and evaluation target."
+      emphasis: "Research Builder",
+      description: "Select methods that match the signal, domain constraints, and target use case."
     },
     {
       title: "Evaluation",
-      emphasis: "AI Researcher",
-      description: "Measure uplift using clear offline metrics and reviewable failure slices."
+      emphasis: "Experimental Rigor",
+      description: "Measure performance with reviewable metrics and failure cases rather than one headline number."
     },
     {
-      title: "Deployment / Monitoring",
-      emphasis: "MLOps Engineer",
-      description: "Ship models with observability, rollback paths, and decision-ready dashboards."
+      title: "Interface / Delivery",
+      emphasis: "Collaborative Implementer",
+      description: "Turn results into reports, demos, dashboards, or code paths that other people can adopt."
+    },
+    {
+      title: "Monitoring Mindset",
+      emphasis: "MLOps Interest",
+      description: "Keep reproducibility, observability, and long-term maintainability in mind from the start."
     }
   ]
 };

@@ -1,11 +1,11 @@
 pageType: research
 documentTitle: Research | Donghyeon Kim
-documentDescription: Research notes, workshop papers, and technical writing connected to production ML systems.
+documentDescription: Papers and technical writing connected to conversational AI, clinical AI, and applied ML systems.
 hero:
   eyebrow: Research
   title: Research and technical writing
-  description: A dedicated reading surface for papers, workshop notes, and engineering documents. Each entry leads to its own long-form page rather than collapsing everything into cards.
+  description: A reading surface for publications and technical notes that reflect my work across empathetic dialogue generation, healthcare AI, and evaluation-oriented implementation.
   className: page-hero--catalog
   meta:
-    - Workshop and engineering notes
+    - Publications and notes
     - Long-form detail pages

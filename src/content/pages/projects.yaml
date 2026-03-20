@@ -1,10 +1,10 @@
 pageType: projects
 documentTitle: Projects | Donghyeon Kim
-documentDescription: Project catalogue covering data systems, applied research, and production ML delivery.
+documentDescription: Project catalogue covering conversational AI, clinical AI, and applied ML implementation.
 hero:
   eyebrow: Projects
-  title: Project catalogue
-  description: A dedicated catalogue of applied ML, data platform, and delivery work. Filtering can be added later, but the information architecture is already split into clear project detail pages.
+  title: Applied AI project catalogue
+  description: A dedicated catalogue of projects spanning clinical decision support, conversational AI, LLM prototyping, and collaborative NLP work. Each entry is written as a case study with problem context, contribution, and outcome.
   meta:
     - Case-study format
-    - External links supported
+    - Real project context

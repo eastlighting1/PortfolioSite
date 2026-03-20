@@ -1,6 +1,6 @@
 pageType: resume
 documentTitle: Resume | Donghyeon Kim
-documentDescription: Print-safe resume for a data specialist working across ML systems, research, and data engineering.
+documentDescription: Print-safe resume for an applied AI researcher and engineer working across conversational AI, clinical AI, and ML systems.
 printToolbarLabel: Optimized for browser print and PDF export.
 layout:
   leftColumn:
@@ -17,19 +17,19 @@ sections:
     title: Summary
   experience:
     enabled: true
-    title: Experience
-    count: 2
+    title: Research, Programs, and Leadership
+    count: 4
   projects:
     enabled: true
     title: Selected Projects
-    count: 2
+    count: 3
   skills:
     enabled: true
     title: Skills
   research:
     enabled: true
-    title: Research
-    count: 1
+    title: Research & Publications
+    count: 2
   education:
     enabled: true
     title: Education

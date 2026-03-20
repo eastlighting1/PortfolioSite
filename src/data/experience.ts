@@ -1,29 +1,50 @@
 export const experience = [
   {
-    role: "Senior Data Specialist",
-    organization: "SignalGrid Analytics",
-    period: "2023 - Present",
+    role: "Graduate Researcher",
+    organization: "Intelligent Data Analytics Lab., Gachon University",
+    period: "Mar 2024 - Present",
     bullets: [
-      "Led a churn prediction platform refresh that improved alert precision by 18% after rebuilding feature quality checks.",
-      "Introduced model and data monitoring dashboards used by product, analytics, and platform teams."
+      "Conduct research on EMR-based clinical decision support and diagnostic classification for nursing surveillance.",
+      "Build modeling pipelines using structured and text data, including KM-BERT ensembles and XGBoost-based approaches.",
+      "Explore conversational AI topics including empathetic dialogue generation with reinforcement learning from AI feedback."
     ]
   },
   {
-    role: "ML Engineer",
-    organization: "North Harbor Health AI",
-    period: "2021 - 2023",
+    role: "Research Project Contributor",
+    organization: "National Research Foundation of Korea (NRF)",
+    period: "Mar 2024 - Present",
     bullets: [
-      "Built training and evaluation pipelines for clinical risk models with reproducible experiment tracking.",
-      "Partnered with research and platform teams to move notebook prototypes into scheduled production jobs."
+      "Lead preprocessing, modeling, and analysis for a deep learning-based nursing surveillance decision support project using EMR data.",
+      "Develop keyword extraction, dependency-based preprocessing, topic modeling, and similarity analysis workflows for clinical text understanding.",
+      "Deliver interpretable outputs and web-based analysis surfaces for collaborating domain researchers."
     ]
   },
   {
-    role: "Data Engineer",
-    organization: "Arcflow Systems",
-    period: "2019 - 2021",
+    role: "Evaluation Implementation Contributor",
+    organization: "Institute of Information & Communications Technology Planning & Evaluation (IITP)",
+    period: "Sep 2025 - Present",
     bullets: [
-      "Maintained streaming and batch pipelines for operational reporting and downstream recommendation models.",
-      "Reduced schema break incidents by adding upstream validation and lineage-aware deployment checks."
+      "Implement evaluation-related code for a multimodal semantic integration project on human-centered AI.",
+      "Translate evaluation requirements into working code and reviewable outputs for research delivery."
+    ]
+  },
+  {
+    role: "Industry-led Intensive Program Trainee",
+    organization: "dktechin",
+    period: "Jan 2024 - Feb 2024",
+    bullets: [
+      "Participated in an enterprise-led intensive program focused on cloud, CI/CD, security, and DevOps practices.",
+      "Contributed as a security and DevOps-oriented engineer in project-based exercises and practical implementation tasks."
+    ]
+  },
+  {
+    role: "Student Leader and Community Builder",
+    organization: "Gachon University / Notion Community Program",
+    period: "2019 - 2025",
+    bullets: [
+      "Served in multiple programming club leadership roles, including chairman of the official programming club in 2022.",
+      "Organized study groups on machine learning, big data, financial machine learning, and graph neural networks.",
+      "Participated in the Notion Campus Leader program to support campus learning communities and resource sharing."
     ]
   }
 ];
