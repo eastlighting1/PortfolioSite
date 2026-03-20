@@ -4,7 +4,7 @@ import { defaultLocale, stripLocaleSuffix, type Locale } from "./i18n";
 export const entrySlug = (entry: { id: string }) => stripLocaleSuffix(entry.id.replace(/\.[^/.]+$/, ""));
 
 const isLocalizedEntry = (entryId: string, id: string, locale: Locale) =>
-  entryId.startsWith(`${id}.${locale}.`);
+  entryId === `${id}.${locale}` || entryId.startsWith(`${id}.${locale}.`);
 
 async function getSingletonEntry(collection: "pages" | "globals" | "ui", id: string, locale: Locale = defaultLocale) {
   const entries = await getCollection(collection);
