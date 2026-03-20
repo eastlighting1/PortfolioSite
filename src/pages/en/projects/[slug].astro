@@ -9,7 +9,7 @@ import { localizePath } from "../../../data/i18n";
 const locale = "en" as const;
 
 export async function getStaticPaths() {
-  const projects = await getLocalizedCollection("projects", locale);
+  const projects = await getLocalizedCollection("projects", "en");
   return projects.map((project) => ({
     params: { slug: entrySlug(project) },
     props: { project }

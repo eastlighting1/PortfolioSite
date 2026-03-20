@@ -10,7 +10,7 @@ import { localizePath } from "../../../data/i18n";
 const locale = "en" as const;
 
 export async function getStaticPaths() {
-  const research = await getLocalizedCollection("research", locale);
+  const research = await getLocalizedCollection("research", "en");
   return research.map((item) => ({
     params: { slug: entrySlug(item) },
     props: { item }
