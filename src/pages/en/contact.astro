@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/common/PageHero.astro";
+import { getGlobalEntry, getPageEntry } from "../../data/content";
+
+const locale = "en" as const;
+const contactPage = await getPageEntry("contact", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
+const siteConfig = siteEntry.data;
+const externalProfiles = linksEntry.data.externalProfiles;
+
+if (contactPage.data.pageType !== "contact") {
+  throw new Error("Missing contact page content configuration.");
+}
+---
+
+<BaseLayout title={contactPage.data.documentTitle} description={contactPage.data.documentDescription} pathname="/en/contact/" locale={locale}>
+  <section class="section">
+    <div class="container">
+      <PageHero eyebrow={contactPage.data.hero.eyebrow} title={contactPage.data.hero.title} description={contactPage.data.hero.description} />
+      <div class="contact-grid three-column section-tight">
+        <article class="contact-card">
+          <span class="small-label">{contactPage.data.cards.emailLabel}</span>
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+        </article>
+        {externalProfiles.map((link) => (
+          <article class="contact-card">
+            <span class="small-label">{link.label}</span>
+            <a href={link.href} target="_blank" rel="noreferrer">
+              {contactPage.data.cards.externalValueMode === "label" ? link.label : link.href}
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,13 +1,15 @@
 ---
 import { getUiEntry } from "../../data/content";
 import ExternalLinks from "../common/ExternalLinks.astro";
+import { type Locale } from "../../data/i18n";
 
 interface Props {
   item: any;
+  locale?: Locale;
 }
 
-const { item } = Astro.props;
-const uiEntry = await getUiEntry("labels");
+const { item, locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 ---
 
@@ -35,6 +37,7 @@ const ui = uiEntry.data;
     ))}
   </div>
   <ExternalLinks
+    locale={locale}
     links={[
       { label: ui.research.linkLabels.pdf, href: item.data.pdfUrl },
       { label: ui.research.linkLabels.repo, href: item.data.repoUrl },

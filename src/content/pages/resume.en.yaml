@@ -1,0 +1,35 @@
+pageType: resume
+documentTitle: Resume | Donghyeon Kim
+documentDescription: Print-safe resume for an applied AI researcher and engineer working across conversational AI, clinical AI, and ML systems.
+printToolbarLabel: Optimized for browser print and PDF export.
+layout:
+  leftColumn:
+    - summary
+    - experience
+    - projects
+  rightColumn:
+    - skills
+    - research
+    - education
+sections:
+  summary:
+    enabled: true
+    title: Summary
+  experience:
+    enabled: true
+    title: Research, Programs, and Leadership
+    count: 4
+  projects:
+    enabled: true
+    title: Selected Projects
+    count: 3
+  skills:
+    enabled: true
+    title: Skills
+  research:
+    enabled: true
+    title: Research & Publications
+    count: 2
+  education:
+    enabled: true
+    title: Education

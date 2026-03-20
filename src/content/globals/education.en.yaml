@@ -1,0 +1,10 @@
+globalType: education
+items:
+  - school: Gachon University
+    degree: M.S. Student in Artificial Intelligence
+    period: Mar 2024 - Feb 2026 (Expected)
+    detail: GPA 4.14/4.5. Intelligent Data Analytics Lab. Advised by Prof. OkRan Jeong. Research interests include conversational AI, reinforcement learning, and applied AI systems.
+  - school: Gachon University
+    degree: B.E. in Software
+    period: Mar 2019 - Feb 2024
+    detail: Built leadership experience through official programming clubs and multiple ML and big data study groups covering basic ML, advanced ML, financial ML, and GNN topics.

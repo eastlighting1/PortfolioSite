@@ -1,14 +1,16 @@
 ---
 import { getGlobalEntry } from "../../data/content";
+import { type Locale } from "../../data/i18n";
 
 interface Props {
   eyebrow: string;
   title: string;
   lead?: string;
+  locale?: Locale;
 }
 
-const { eyebrow, title, lead } = Astro.props;
-const profileEntry = await getGlobalEntry("profile");
+const { eyebrow, title, lead, locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
 const profile = profileEntry.data;
 ---
 

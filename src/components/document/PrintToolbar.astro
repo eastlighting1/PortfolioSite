@@ -1,11 +1,14 @@
 ---
 import { getUiEntry } from "../../data/content";
+import { type Locale } from "../../data/i18n";
 
 interface Props {
   label?: string;
+  locale?: Locale;
 }
 
-const uiEntry = await getUiEntry("labels");
+const { locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 const { label = ui.printToolbar.defaultLabel } = Astro.props;
 ---

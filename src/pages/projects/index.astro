@@ -3,21 +3,24 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/common/PageHero.astro";
 import ProjectGrid from "../../components/projects/ProjectGrid.astro";
-import { getPageEntry } from "../../data/content";
+import { getLocalizedCollection, getPageEntry } from "../../data/content";
 
-const projectsPage = await getPageEntry("projects");
+const locale = "ko" as const;
+
+const projectsPage = await getPageEntry("projects", locale);
 if (projectsPage.data.pageType !== "projects") {
   throw new Error("Missing projects page content configuration.");
 }
 
-const projects = (await getCollection("projects")).sort((a, b) => b.data.year - a.data.year);
-const heroMeta = [`${projects.length} projects`, ...projectsPage.data.hero.meta];
+const projects = (await getLocalizedCollection("projects", locale)).sort((a, b) => b.data.year - a.data.year);
+const heroMeta = [`${projects.length}개 프로젝트`, ...projectsPage.data.hero.meta];
 ---
 
 <BaseLayout
   title={projectsPage.data.documentTitle}
   description={projectsPage.data.documentDescription}
   pathname="/projects/"
+  locale={locale}
 >
   <section class="section">
     <div class="container">
@@ -28,7 +31,7 @@ const heroMeta = [`${projects.length} projects`, ...projectsPage.data.hero.meta]
         meta={heroMeta}
       />
       <div class="section-tight">
-        <ProjectGrid projects={projects} />
+        <ProjectGrid projects={projects} locale={locale} />
       </div>
     </div>
   </section>

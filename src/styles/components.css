@@ -57,6 +57,31 @@
   gap: 1rem;
 }
 
+.locale-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.locale-switch a {
+  min-width: 2.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  text-decoration: none;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.locale-switch a.is-active {
+  background: var(--ink);
+  color: white;
+}
+
 .mobile-nav {
   display: none;
   position: relative;

@@ -1,0 +1,28 @@
+globalType: site
+name: Donghyeon Kim
+shortName: 동현
+title: Donghyeon Kim | 응용 AI 연구자 및 AI 엔지니어
+description: 대화형 AI, 의료 AI, 그리고 신뢰 가능한 ML 시스템 전달에 초점을 둔 응용 AI 연구자 및 엔지니어의 멀티페이지 포트폴리오입니다.
+primaryRole: 응용 AI 연구자
+secondaryRoles:
+  - AI 엔지니어
+  - 대화형 AI
+  - 의료 AI
+location: Incheon / Seongnam, South Korea
+email: eastlighting1@gachon.ac.kr
+siteUrl: https://eastlighting.github.io
+nav:
+  - href: /
+    label: 홈
+  - href: /projects/
+    label: 프로젝트
+  - href: /research/
+    label: 연구
+  - href: /resume/
+    label: 이력서
+  - href: /portfolio/
+    label: 포트폴리오
+  - href: /about/
+    label: 소개
+  - href: /contact/
+    label: 연락처

@@ -1,0 +1,57 @@
+header:
+  resumeButtonLabel: 이력서
+  mobileToggleLabel: 메뉴 열기
+footer:
+  summary: 대화형 AI, 의료 AI, 그리고 실용적인 ML 전달을 다루는 응용 AI 연구자 겸 엔지니어
+documentLayout:
+  mastheadLinks:
+    - href: /projects/
+      label: 프로젝트
+    - href: /research/
+      label: 연구
+    - href: /about/
+      label: 소개
+printToolbar:
+  defaultLabel: 인쇄하거나 PDF로 저장
+  printButtonLabel: 인쇄
+project:
+  detailEyebrow: 프로젝트 상세
+  backToListLabel: 프로젝트 목록으로
+  quickPreviewLabel: 빠른 보기
+  previewTitle: 프로젝트 미리보기
+  closePreviewLabel: 닫기
+  openCaseStudyLabel: 케이스 스터디 열기
+  openFullCaseStudyLabel: 전체 케이스 스터디 열기
+  readFullCaseStudyLabel: 전체 내용 읽기
+  caseStudyLabelPrefix: 케이스 스터디
+  fieldLabels:
+    type: 유형
+    year: 연도
+    primaryRole: 주요 역할
+    roles: 역할
+    problem: 문제
+    approach: 접근
+    outcome: 결과
+  linkLabels:
+    repo: GitHub
+    demo: 데모
+    paper: 논문
+    slides: 발표자료
+research:
+  detailEyebrow: 연구 상세
+  abstractEyebrow: 초록
+  abstractPreviewLabel: 초록 미리보기
+  expandLabel: 펼치기
+  openDetailLabel: 상세 보기
+  backToListLabel: 연구 목록으로
+  relatedProjectsEyebrow: 관련 프로젝트
+  openRelatedProjectLabel: 관련 프로젝트 열기
+  fieldLabels:
+    venue: 학회/저널
+    year: 연도
+    type: 유형
+  linkLabels:
+    pdf: PDF
+    repo: 저장소
+    slides: 발표자료
+externalLinksAriaLabel: 외부 링크

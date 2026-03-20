@@ -2,14 +2,16 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPageEntry } from "../data/content";
 import { withBase } from "../data/site";
+import { localizePath } from "../data/i18n";
 
-const notFoundPage = await getPageEntry("not-found");
+const locale = "ko" as const;
+const notFoundPage = await getPageEntry("not-found", locale);
 if (notFoundPage.data.pageType !== "not-found") {
   throw new Error("Missing not-found page content configuration.");
 }
 ---
 
-<BaseLayout title={notFoundPage.data.documentTitle} description={notFoundPage.data.documentDescription} pathname="/404/">
+<BaseLayout title={notFoundPage.data.documentTitle} description={notFoundPage.data.documentDescription} pathname="/404/" locale={locale}>
   <section class="section">
     <div class="container">
       <div class="page-hero">
@@ -20,7 +22,7 @@ if (notFoundPage.data.pageType !== "not-found") {
           {notFoundPage.data.hero.actions.map((action) => (
             <a
               class={action.variant === "primary" ? "button-link" : "button-link-secondary"}
-              href={withBase(action.href)}
+              href={withBase(localizePath(action.href, locale))}
             >
               {action.label}
             </a>

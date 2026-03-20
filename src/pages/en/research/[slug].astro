@@ -1,0 +1,56 @@
+---
+import { render } from "astro:content";
+import DetailLayout from "../../../layouts/DetailLayout.astro";
+import ResearchDetailHero from "../../../components/research/ResearchDetailHero.astro";
+import AbstractBlock from "../../../components/research/AbstractBlock.astro";
+import { entrySlug, getLocalizedCollection, getUiEntry } from "../../../data/content";
+import { withBase } from "../../../data/site";
+import { localizePath } from "../../../data/i18n";
+
+const locale = "en" as const;
+
+export async function getStaticPaths() {
+  const research = await getLocalizedCollection("research", locale);
+  return research.map((item) => ({
+    params: { slug: entrySlug(item) },
+    props: { item }
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const projects = await getLocalizedCollection("projects", locale);
+const linkedProjects = projects.filter((project) => item.data.linkedProjects.includes(entrySlug(project)));
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+---
+
+<DetailLayout title={`${item.data.title} | Research`} description={item.data.abstract} pathname={`/en/research/${entrySlug(item)}/`} locale={locale}>
+  <div style="margin-bottom: 1rem;">
+    <a class="button-link-secondary screen-only" href={withBase(localizePath("/research/", locale))}>{ui.research.backToListLabel}</a>
+  </div>
+  <ResearchDetailHero item={item} locale={locale} />
+  <div style="padding-top: 2rem;">
+    <AbstractBlock abstract={item.data.abstract} locale={locale} />
+    <article class="prose" style="padding-top: 2rem;">
+      <Content />
+    </article>
+    {linkedProjects.length > 0 && (
+      <section class="resume-section" style="margin-top: 2rem;">
+        <div class="eyebrow">{ui.research.relatedProjectsEyebrow}</div>
+        <div class="document-list" style="margin-top: 1rem;">
+          {linkedProjects.map((project) => (
+            <div class="resume-item">
+              <strong>{project.data.title}</strong>
+              <div class="muted">{project.data.type} | {project.data.year}</div>
+              <p>{project.data.summary}</p>
+              <a class="button-link-secondary" href={withBase(localizePath(`projects/${entrySlug(project)}/`, locale))}>
+                {ui.research.openRelatedProjectLabel}
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</DetailLayout>

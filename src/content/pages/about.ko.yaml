@@ -1,0 +1,12 @@
+pageType: about
+documentTitle: About | Donghyeon Kim
+documentDescription: 응용 AI 연구와 구현을 어떻게 접근하는지에 대한 긴 서사입니다.
+hero:
+  eyebrow: About
+  title: 응용 AI 작업에 접근하는 방식
+  description: 학생 주도 기술 커뮤니티와 NLP 프로젝트에서 시작해 대화형 AI와 의료 AI 대학원 연구로 확장해 온 과정을 정리한 페이지입니다.
+sections:
+  positioningTitle: Positioning
+  philosophyTitle: Working Philosophy
+  systemsTitle: 왜 시스템 관점이 중요한가
+  systemsBody: 저의 작업은 AI 연구와 구현의 중간에 있습니다. 모델을 만드는 일 자체도 즐기지만, 그 결과가 명확하게 평가될 수 있는지, 협업자에게 설명될 수 있는지, 다른 사람이 실제로 이어서 사용할 수 있는지가 그만큼 중요하다고 생각합니다. 그래서 재현성, 관측 가능성, MLOps 인접 영역에 점점 더 관심을 갖게 되었습니다. 저는 자신을 순수 플랫폼 엔지니어로 소개하기보다, 실험 이후에도 신뢰를 유지할 수 있는 AI 시스템을 만들고 싶은 연구자이자 빌더로 이해하고 있습니다.

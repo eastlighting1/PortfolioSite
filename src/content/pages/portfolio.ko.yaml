@@ -1,0 +1,27 @@
+pageType: portfolio
+documentTitle: Portfolio | Donghyeon Kim
+documentDescription: 대화형 AI, 의료 AI, 응용 ML 전달 경험을 담은 인쇄형 케이스 스터디 포트폴리오입니다.
+printToolbarLabel: 인쇄 흐름을 고려한 포트폴리오 문서입니다.
+cover:
+  label: 포트폴리오 문서
+  title: 대표 응용 AI 프로젝트와 연구
+overview:
+  intro:
+    enabled: true
+    title: 프로필 요약
+    paragraphs:
+      - 이 포트폴리오는 먼저 짧은 개요를 보여주고, 이후 프로젝트별 케이스 스터디 시트가 이어지는 읽기 및 인쇄 친화형 구조로 구성되어 있습니다.
+      - 선정한 작업은 모델링, 해석, 전달이 모두 중요했던 응용 AI 문제를 중심으로 정리했습니다.
+  capability:
+    enabled: true
+    title: 역량 요약
+  research:
+    enabled: true
+    title: 연구 하이라이트
+selection:
+  projectCount: 3
+  researchCount: 2
+  selectedProjectSlugs:
+    - emr-nursing-surveillance
+    - frimo-conversational-diary
+    - devridge-feedback-bridge

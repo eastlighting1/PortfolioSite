@@ -3,20 +3,23 @@ import SiteHeader from "../components/common/SiteHeader.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
 import { getGlobalEntry } from "../data/content";
 import { withBase } from "../data/site";
+import { type Locale } from "../data/i18n";
 
 interface Props {
   title: string;
   description?: string;
   pathname?: string;
+  locale?: Locale;
 }
 
-const siteEntry = await getGlobalEntry("site");
+const { title, pathname = "/", locale = "ko" } = Astro.props;
+const siteEntry = await getGlobalEntry("site", locale);
 const siteConfig = siteEntry.data;
-const { title, description = siteConfig.description, pathname = "/" } = Astro.props;
+const description = Astro.props.description ?? siteConfig.description;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,11 +32,11 @@ const { title, description = siteConfig.description, pathname = "/" } = Astro.pr
   </head>
   <body>
     <div class="site-shell">
-      <SiteHeader pathname={pathname} />
+      <SiteHeader pathname={pathname} locale={locale} />
       <main>
         <slot />
       </main>
-      <SiteFooter />
+      <SiteFooter locale={locale} />
     </div>
     <script is:inline>
       const setupScrollReveal = () => {

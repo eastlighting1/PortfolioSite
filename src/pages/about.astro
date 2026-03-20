@@ -3,8 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/common/PageHero.astro";
 import { getGlobalEntry, getPageEntry } from "../data/content";
 
-const aboutPage = await getPageEntry("about");
-const profileEntry = await getGlobalEntry("profile");
+const locale = "ko" as const;
+const aboutPage = await getPageEntry("about", locale);
+const profileEntry = await getGlobalEntry("profile", locale);
 const profile = profileEntry.data;
 
 if (aboutPage.data.pageType !== "about") {
@@ -12,7 +13,7 @@ if (aboutPage.data.pageType !== "about") {
 }
 ---
 
-<BaseLayout title={aboutPage.data.documentTitle} description={aboutPage.data.documentDescription} pathname="/about/">
+<BaseLayout title={aboutPage.data.documentTitle} description={aboutPage.data.documentDescription} pathname="/about/" locale={locale}>
   <section class="section">
     <div class="container">
       <PageHero

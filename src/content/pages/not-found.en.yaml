@@ -1,0 +1,17 @@
+pageType: not-found
+documentTitle: Not Found | Donghyeon Kim
+documentDescription: The requested page could not be found.
+hero:
+  eyebrow: Error
+  title: Page not found
+  description: The page may have moved or is no longer available. Use the links below to get back to the main sections of the site.
+  actions:
+    - label: Go Home
+      href: /
+      variant: primary
+    - label: Browse Projects
+      href: /projects/
+      variant: secondary
+    - label: Read Resume
+      href: /resume/
+      variant: secondary

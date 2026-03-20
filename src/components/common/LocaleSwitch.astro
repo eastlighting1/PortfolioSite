@@ -1,0 +1,18 @@
+---
+import { withBase } from "../../data/site";
+import { switchLocalePath, type Locale } from "../../data/i18n";
+
+interface Props {
+  locale: Locale;
+  pathname?: string;
+}
+
+const { locale, pathname = "/" } = Astro.props;
+const koHref = withBase(switchLocalePath(pathname, "ko"));
+const enHref = withBase(switchLocalePath(pathname, "en"));
+---
+
+<div class="locale-switch" aria-label="Language switcher">
+  <a class={locale === "ko" ? "is-active" : undefined} href={koHref}>KO</a>
+  <a class={locale === "en" ? "is-active" : undefined} href={enHref}>EN</a>
+</div>

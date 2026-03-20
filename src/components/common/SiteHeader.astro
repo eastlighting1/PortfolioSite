@@ -1,15 +1,18 @@
 ---
 import { getGlobalEntry, getUiEntry } from "../../data/content";
 import { withBase } from "../../data/site";
+import { localizePath, type Locale } from "../../data/i18n";
+import LocaleSwitch from "./LocaleSwitch.astro";
 
 interface Props {
   pathname?: string;
+  locale?: Locale;
 }
 
-const { pathname = "/" } = Astro.props;
-const siteEntry = await getGlobalEntry("site");
-const linksEntry = await getGlobalEntry("links");
-const uiEntry = await getUiEntry("labels");
+const { pathname = "/", locale = "ko" } = Astro.props;
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
+const uiEntry = await getUiEntry("labels", locale);
 const siteConfig = siteEntry.data;
 const externalProfiles = linksEntry.data.externalProfiles;
 const ui = uiEntry.data;
@@ -25,24 +28,26 @@ const isActive = (currentPath: string, itemHref: string) => {
 
 <header class="site-header screen-only">
   <div class="container site-header__inner">
-    <a class="site-brand" href={withBase("/")}>{siteConfig.name}</a>
+    <a class="site-brand" href={withBase(localizePath("/", locale))}>{siteConfig.name}</a>
     <nav class="site-nav site-nav--desktop" aria-label="Primary">
       {siteConfig.nav.map((item) => {
-        const active = isActive(pathname, item.href);
+        const targetHref = localizePath(item.href, locale);
+        const active = isActive(pathname, targetHref);
         return (
-          <a href={withBase(item.href)} aria-current={active ? "page" : undefined}>
+          <a href={withBase(targetHref)} aria-current={active ? "page" : undefined}>
             {item.label}
           </a>
         );
       })}
     </nav>
     <div class="header-utility">
+      <LocaleSwitch locale={locale} pathname={pathname} />
       <div class="utility-links">
         {externalProfiles.slice(0, 2).map((link) => (
           <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
         ))}
       </div>
-      <a class="button-link-secondary" href={withBase("/resume/")}>{ui.header.resumeButtonLabel}</a>
+      <a class="button-link-secondary" href={withBase(localizePath("/resume/", locale))}>{ui.header.resumeButtonLabel}</a>
     </div>
     <details class="mobile-nav">
       <summary class="mobile-nav__toggle" aria-label={ui.header.mobileToggleLabel}>
@@ -53,15 +58,17 @@ const isActive = (currentPath: string, itemHref: string) => {
       <div class="mobile-nav__panel">
         <nav class="mobile-nav__links" aria-label="Mobile primary">
           {siteConfig.nav.map((item) => {
-            const active = isActive(pathname, item.href);
+            const targetHref = localizePath(item.href, locale);
+            const active = isActive(pathname, targetHref);
             return (
-              <a href={withBase(item.href)} aria-current={active ? "page" : undefined}>
+              <a href={withBase(targetHref)} aria-current={active ? "page" : undefined}>
                 {item.label}
               </a>
             );
           })}
         </nav>
         <div class="mobile-nav__meta">
+          <LocaleSwitch locale={locale} pathname={pathname} />
           {externalProfiles.slice(0, 2).map((link) => (
             <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
           ))}

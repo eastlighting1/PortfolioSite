@@ -1,6 +1,7 @@
 ---
 import { getGlobalEntry } from "../../data/content";
 import { withBase } from "../../data/site";
+import { localizePath, type Locale } from "../../data/i18n";
 
 interface Props {
   eyebrow: string;
@@ -19,11 +20,12 @@ interface Props {
       value: string;
     }[];
   };
+  locale?: Locale;
 }
 
-const { eyebrow, summary, actions, focusCard } = Astro.props;
-const profileEntry = await getGlobalEntry("profile");
-const siteEntry = await getGlobalEntry("site");
+const { eyebrow, summary, actions, focusCard, locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
 ---
@@ -46,7 +48,7 @@ const siteConfig = siteEntry.data;
           {actions.map((action) => (
             <a
               class={action.variant === "primary" ? "button-link" : "button-link-secondary"}
-              href={withBase(action.href)}
+              href={withBase(localizePath(action.href, locale))}
             >
               {action.label}
             </a>

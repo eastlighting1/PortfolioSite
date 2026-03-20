@@ -1,0 +1,12 @@
+pageType: about
+documentTitle: About | Donghyeon Kim
+documentDescription: Longer narrative about my approach to applied AI research and implementation.
+hero:
+  eyebrow: About
+  title: How I approach applied AI work
+  description: A longer narrative about how I moved from student-led technical communities and NLP projects into graduate research on conversational and clinical AI systems.
+sections:
+  positioningTitle: Positioning
+  philosophyTitle: Working Philosophy
+  systemsTitle: Why systems thinking matters to me
+  systemsBody: My work sits between AI research and implementation. I enjoy building models, but I care just as much about whether results can be evaluated clearly, explained to collaborators, and turned into something other people can actually use. That is why I became increasingly interested in reproducibility, observability, and MLOps-adjacent practices. I do not position myself as a pure platform engineer; rather, I approach these topics as a researcher and builder who wants AI systems to remain trustworthy after the experiment is over.

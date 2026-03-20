@@ -3,14 +3,16 @@ import { getUiEntry } from "../../data/content";
 import ExternalLinks from "../common/ExternalLinks.astro";
 import { entrySlug } from "../../data/content";
 import { withBase } from "../../data/site";
+import { localizePath, type Locale } from "../../data/i18n";
 
 interface Props {
   project: any;
   index: number;
+  locale?: Locale;
 }
 
-const { project, index } = Astro.props;
-const uiEntry = await getUiEntry("labels");
+const { project, index, locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 ---
 
@@ -43,6 +45,7 @@ const ui = uiEntry.data;
     ))}
   </div>
   <ExternalLinks
+    locale={locale}
     links={[
       { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
       { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
@@ -51,7 +54,7 @@ const ui = uiEntry.data;
     ]}
   />
   <div style="margin-top: 1rem;">
-    <a class="button-link-secondary" href={withBase(`projects/${entrySlug(project)}/`)}>
+    <a class="button-link-secondary" href={withBase(localizePath(`projects/${entrySlug(project)}/`, locale))}>
       {ui.project.readFullCaseStudyLabel}
     </a>
   </div>

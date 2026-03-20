@@ -4,26 +4,28 @@ import DocumentLayout from "../layouts/DocumentLayout.astro";
 import PrintToolbar from "../components/document/PrintToolbar.astro";
 import PortfolioCover from "../components/document/PortfolioCover.astro";
 import CaseStudySection from "../components/document/CaseStudySection.astro";
-import { getGlobalEntry, getPageEntry } from "../data/content";
+import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry } from "../data/content";
 
-const portfolioPage = await getPageEntry("portfolio");
-const profileEntry = await getGlobalEntry("profile");
+const locale = "ko" as const;
+
+const portfolioPage = await getPageEntry("portfolio", locale);
+const profileEntry = await getGlobalEntry("profile", locale);
 const profile = profileEntry.data;
 
 if (portfolioPage.data.pageType !== "portfolio") {
   throw new Error("Missing portfolio page content configuration.");
 }
 
-const allProjects = (await getCollection("projects")).sort((a, b) => b.data.year - a.data.year);
+const allProjects = (await getLocalizedCollection("projects", locale)).sort((a, b) => b.data.year - a.data.year);
 const selectedProjectSlugs = portfolioPage.data.selection.selectedProjectSlugs;
 const projects =
   selectedProjectSlugs.length > 0
     ? selectedProjectSlugs
-        .map((slug) => allProjects.find((project) => project.id.replace(/\.[^/.]+$/, "") === slug))
+        .map((slug) => allProjects.find((project) => entrySlug(project) === slug))
         .filter(Boolean)
     : allProjects.slice(0, portfolioPage.data.selection.projectCount);
 
-const research = (await getCollection("research"))
+const research = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, portfolioPage.data.selection.researchCount);
 ---
@@ -32,10 +34,11 @@ const research = (await getCollection("research"))
   title={portfolioPage.data.documentTitle}
   description={portfolioPage.data.documentDescription}
   pathname="/portfolio/"
+  locale={locale}
 >
-  <PrintToolbar label={portfolioPage.data.printToolbarLabel} />
+  <PrintToolbar label={portfolioPage.data.printToolbarLabel} locale={locale} />
   <div class="paper-sheet paper-sheet--portfolio document-shell">
-    <PortfolioCover label={portfolioPage.data.cover.label} title={portfolioPage.data.cover.title} />
+    <PortfolioCover label={portfolioPage.data.cover.label} title={portfolioPage.data.cover.title} locale={locale} />
     <div class="portfolio-overview-grid">
       {portfolioPage.data.overview.intro.enabled && (
         <section class="resume-section portfolio-section portfolio-section--intro">
@@ -77,7 +80,7 @@ const research = (await getCollection("research"))
   </div>
   {projects.map((project, index) => (
     <div class={`paper-sheet paper-sheet--portfolio document-shell ${index >= 0 ? "page-break" : ""}`}>
-      <CaseStudySection project={project} index={index} />
+      <CaseStudySection project={project} index={index} locale={locale} />
     </div>
   ))}
 </DocumentLayout>

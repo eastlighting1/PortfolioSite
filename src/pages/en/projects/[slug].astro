@@ -1,0 +1,33 @@
+---
+import { render } from "astro:content";
+import DetailLayout from "../../../layouts/DetailLayout.astro";
+import ProjectDetailHero from "../../../components/projects/ProjectDetailHero.astro";
+import { entrySlug, getLocalizedCollection, getUiEntry } from "../../../data/content";
+import { withBase } from "../../../data/site";
+import { localizePath } from "../../../data/i18n";
+
+const locale = "en" as const;
+
+export async function getStaticPaths() {
+  const projects = await getLocalizedCollection("projects", locale);
+  return projects.map((project) => ({
+    params: { slug: entrySlug(project) },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+---
+
+<DetailLayout title={`${project.data.title} | Projects`} description={project.data.summary} pathname={`/en/projects/${entrySlug(project)}/`} locale={locale}>
+  <div style="margin-bottom: 1rem;">
+    <a class="button-link-secondary screen-only" href={withBase(localizePath("/projects/", locale))}>{ui.project.backToListLabel}</a>
+  </div>
+  <ProjectDetailHero project={project} locale={locale} />
+  <article class="prose" style="padding-top: 2rem;">
+    <Content />
+  </article>
+</DetailLayout>

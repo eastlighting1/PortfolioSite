@@ -1,16 +1,28 @@
 import { getCollection } from "astro:content";
+import { defaultLocale, stripLocaleSuffix, type Locale } from "./i18n";
 
-export const entrySlug = (entry: { id: string }) => entry.id.replace(/\.[^/.]+$/, "");
+export const entrySlug = (entry: { id: string }) => stripLocaleSuffix(entry.id.replace(/\.[^/.]+$/, ""));
 
-async function getSingletonEntry(collection: "pages" | "globals" | "ui", id: string) {
+const isLocalizedEntry = (entryId: string, id: string, locale: Locale) =>
+  entryId.startsWith(`${id}.${locale}.`);
+
+async function getSingletonEntry(collection: "pages" | "globals" | "ui", id: string, locale: Locale = defaultLocale) {
   const entries = await getCollection(collection);
-  const entry = entries.find((item) => item.id === id);
+  const entry = entries.find((item) => isLocalizedEntry(item.id, id, locale));
   if (!entry) {
-    throw new Error(`Missing ${collection} entry: ${id}`);
+    throw new Error(`Missing ${collection} entry: ${id} (${locale})`);
   }
   return entry;
 }
 
-export const getPageEntry = async (id: string) => getSingletonEntry("pages", id);
-export const getGlobalEntry = async (id: string) => getSingletonEntry("globals", id);
-export const getUiEntry = async (id: string) => getSingletonEntry("ui", id);
+const isLocalizedContentEntry = (entryId: string, locale: Locale) => entryId.includes(`.${locale}.`);
+
+export const getPageEntry = async (id: string, locale: Locale = defaultLocale) =>
+  getSingletonEntry("pages", id, locale);
+export const getGlobalEntry = async (id: string, locale: Locale = defaultLocale) =>
+  getSingletonEntry("globals", id, locale);
+export const getUiEntry = async (id: string, locale: Locale = defaultLocale) =>
+  getSingletonEntry("ui", id, locale);
+
+export const getLocalizedCollection = async (collection: "projects" | "research", locale: Locale = defaultLocale) =>
+  (await getCollection(collection)).filter((entry) => isLocalizedContentEntry(entry.id, locale));

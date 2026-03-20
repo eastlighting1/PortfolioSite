@@ -3,9 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/common/PageHero.astro";
 import { getGlobalEntry, getPageEntry } from "../data/content";
 
-const contactPage = await getPageEntry("contact");
-const siteEntry = await getGlobalEntry("site");
-const linksEntry = await getGlobalEntry("links");
+const locale = "ko" as const;
+const contactPage = await getPageEntry("contact", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
 const siteConfig = siteEntry.data;
 const externalProfiles = linksEntry.data.externalProfiles;
 
@@ -14,7 +15,7 @@ if (contactPage.data.pageType !== "contact") {
 }
 ---
 
-<BaseLayout title={contactPage.data.documentTitle} description={contactPage.data.documentDescription} pathname="/contact/">
+<BaseLayout title={contactPage.data.documentTitle} description={contactPage.data.documentDescription} pathname="/contact/" locale={locale}>
   <section class="section">
     <div class="container">
       <PageHero

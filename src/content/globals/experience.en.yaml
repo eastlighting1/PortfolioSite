@@ -1,0 +1,35 @@
+globalType: experience
+items:
+  - role: Graduate Researcher
+    organization: Intelligent Data Analytics Lab., Gachon University
+    period: Mar 2024 - Present
+    bullets:
+      - Conduct research on EMR-based clinical decision support and diagnostic classification for nursing surveillance.
+      - Build modeling pipelines using structured and text data, including KM-BERT ensembles and XGBoost-based approaches.
+      - Explore conversational AI topics including empathetic dialogue generation with reinforcement learning from AI feedback.
+  - role: Research Project Contributor
+    organization: National Research Foundation of Korea (NRF)
+    period: Mar 2024 - Present
+    bullets:
+      - Lead preprocessing, modeling, and analysis for a deep learning-based nursing surveillance decision support project using EMR data.
+      - Develop keyword extraction, dependency-based preprocessing, topic modeling, and similarity analysis workflows for clinical text understanding.
+      - Deliver interpretable outputs and web-based analysis surfaces for collaborating domain researchers.
+  - role: Evaluation Implementation Contributor
+    organization: Institute of Information & Communications Technology Planning & Evaluation (IITP)
+    period: Sep 2025 - Present
+    bullets:
+      - Implement evaluation-related code for a multimodal semantic integration project on human-centered AI.
+      - Translate evaluation requirements into working code and reviewable outputs for research delivery.
+  - role: Industry-led Intensive Program Trainee
+    organization: dktechin
+    period: Jan 2024 - Feb 2024
+    bullets:
+      - Participated in an enterprise-led intensive program focused on cloud, CI/CD, security, and DevOps practices.
+      - Contributed as a security and DevOps-oriented engineer in project-based exercises and practical implementation tasks.
+  - role: Student Leader and Community Builder
+    organization: Gachon University / Notion Community Program
+    period: 2019 - 2025
+    bullets:
+      - Served in multiple programming club leadership roles, including chairman of the official programming club in 2022.
+      - Organized study groups on machine learning, big data, financial machine learning, and graph neural networks.
+      - Participated in the Notion Campus Leader program to support campus learning communities and resource sharing.

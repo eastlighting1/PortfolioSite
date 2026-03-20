@@ -1,22 +1,26 @@
 ---
 import { getGlobalEntry, getUiEntry } from "../data/content";
 import { withBase } from "../data/site";
+import { localizePath, type Locale } from "../data/i18n";
+import LocaleSwitch from "../components/common/LocaleSwitch.astro";
 
 interface Props {
   title: string;
   description?: string;
   pathname?: string;
+  locale?: Locale;
 }
 
-const siteEntry = await getGlobalEntry("site");
-const uiEntry = await getUiEntry("labels");
+const { title, pathname = "/", locale = "ko" } = Astro.props;
+const siteEntry = await getGlobalEntry("site", locale);
+const uiEntry = await getUiEntry("labels", locale);
 const siteConfig = siteEntry.data;
 const ui = uiEntry.data;
-const { title, description = siteConfig.description } = Astro.props;
+const description = Astro.props.description ?? siteConfig.description;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,12 +34,13 @@ const { title, description = siteConfig.description } = Astro.props;
         <div class="document-container">
           <div class="document-page__frame screen-only">
             <div class="document-page__masthead">
-              <a class="site-brand" href={withBase("/")}>{siteConfig.name}</a>
+              <a class="site-brand" href={withBase(localizePath("/", locale))}>{siteConfig.name}</a>
               <div class="inline-links">
                 {ui.documentLayout.mastheadLinks.map((link) => (
-                  <a href={withBase(link.href)}>{link.label}</a>
+                  <a href={withBase(localizePath(link.href, locale))}>{link.label}</a>
                 ))}
               </div>
+              <LocaleSwitch locale={locale} pathname={pathname} />
             </div>
           </div>
           <slot />

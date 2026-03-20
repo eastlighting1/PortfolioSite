@@ -1,15 +1,17 @@
 ---
 import ResearchCard from "./ResearchCard.astro";
+import { type Locale } from "../../data/i18n";
 
 interface Props {
   research: any[];
+  locale?: Locale;
 }
 
-const { research } = Astro.props;
+const { research, locale = "ko" } = Astro.props;
 ---
 
 <div class="research-list">
   {research.map((item, index) => (
-    <ResearchCard item={item} dataReveal={`${(index % 4) + 1}`} />
+    <ResearchCard item={item} dataReveal={`${(index % 4) + 1}`} locale={locale} />
   ))}
 </div>

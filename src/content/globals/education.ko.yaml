@@ -1,0 +1,10 @@
+globalType: education
+items:
+  - school: Gachon University
+    degree: 인공지능 전공 석사과정
+    period: 2024.03 - 2026.02 (예정)
+    detail: GPA 4.14/4.5. Intelligent Data Analytics Lab. 지도교수 OkRan Jeong. 대화형 AI, 강화학습, 응용 AI 시스템에 관심을 두고 연구 중입니다.
+  - school: Gachon University
+    degree: 소프트웨어학과 학사
+    period: 2019.03 - 2024.02
+    detail: 공식 프로그래밍 동아리 활동과 기본 ML, 심화 ML, 금융 ML, GNN 등 다양한 스터디 그룹 운영을 통해 리더십과 커뮤니티 운영 경험을 쌓았습니다.

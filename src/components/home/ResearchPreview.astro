@@ -1,6 +1,7 @@
 ---
 import { withBase } from "../../data/site";
 import { entrySlug } from "../../data/content";
+import { localizePath, type Locale } from "../../data/i18n";
 
 interface Props {
   research: any[];
@@ -8,9 +9,10 @@ interface Props {
   title: string;
   lead?: string;
   ctaLabel: string;
+  locale?: Locale;
 }
 
-const { research, eyebrow, title, lead, ctaLabel } = Astro.props;
+const { research, eyebrow, title, lead, ctaLabel, locale = "ko" } = Astro.props;
 ---
 
 <section class="section">
@@ -30,7 +32,7 @@ const { research, eyebrow, title, lead, ctaLabel } = Astro.props;
             ))}
           </div>
           <div style="margin-top: 1rem;">
-            <a class="button-link-secondary" href={withBase(`research/${entrySlug(item)}/`)}>
+            <a class="button-link-secondary" href={withBase(localizePath(`research/${entrySlug(item)}/`, locale))}>
               {ctaLabel}
             </a>
           </div>

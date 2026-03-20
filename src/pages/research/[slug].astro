@@ -3,12 +3,15 @@ import { getCollection, render } from "astro:content";
 import DetailLayout from "../../layouts/DetailLayout.astro";
 import ResearchDetailHero from "../../components/research/ResearchDetailHero.astro";
 import AbstractBlock from "../../components/research/AbstractBlock.astro";
-import { getUiEntry } from "../../data/content";
+import { getUiEntry, getLocalizedCollection } from "../../data/content";
 import { withBase } from "../../data/site";
 import { entrySlug } from "../../data/content";
+import { localizePath } from "../../data/i18n";
+
+const locale = "ko" as const;
 
 export async function getStaticPaths() {
-  const research = await getCollection("research");
+  const research = await getLocalizedCollection("research", locale);
   return research.map((item) => ({
     params: { slug: entrySlug(item) },
     props: { item }
@@ -17,23 +20,24 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
-const projects = await getCollection("projects");
+const projects = await getLocalizedCollection("projects", locale);
 const linkedProjects = projects.filter((project) => item.data.linkedProjects.includes(entrySlug(project)));
-const uiEntry = await getUiEntry("labels");
+const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 ---
 
 <DetailLayout
-  title={`${item.data.title} | Research`}
+  title={`${item.data.title} | ${locale === "ko" ? "연구" : "Research"}`}
   description={item.data.abstract}
   pathname={`/research/${entrySlug(item)}/`}
+  locale={locale}
 >
   <div style="margin-bottom: 1rem;">
-    <a class="button-link-secondary screen-only" href={withBase("/research/")}>{ui.research.backToListLabel}</a>
+    <a class="button-link-secondary screen-only" href={withBase(localizePath("/research/", locale))}>{ui.research.backToListLabel}</a>
   </div>
-  <ResearchDetailHero item={item} />
+  <ResearchDetailHero item={item} locale={locale} />
   <div style="padding-top: 2rem;">
-    <AbstractBlock abstract={item.data.abstract} />
+    <AbstractBlock abstract={item.data.abstract} locale={locale} />
     <article class="prose" style="padding-top: 2rem;">
       <Content />
     </article>
@@ -46,7 +50,7 @@ const ui = uiEntry.data;
               <strong>{project.data.title}</strong>
               <div class="muted">{project.data.type} | {project.data.year}</div>
               <p>{project.data.summary}</p>
-              <a class="button-link-secondary" href={withBase(`projects/${entrySlug(project)}/`)}>
+              <a class="button-link-secondary" href={withBase(localizePath(`projects/${entrySlug(project)}/`, locale))}>
                 {ui.research.openRelatedProjectLabel}
               </a>
             </div>

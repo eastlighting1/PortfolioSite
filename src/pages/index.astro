@@ -8,37 +8,40 @@ import ResearchPreview from "../components/home/ResearchPreview.astro";
 import ExperienceSnapshot from "../components/home/ExperienceSnapshot.astro";
 import CapabilityMap from "../components/home/CapabilityMap.astro";
 import DocumentCTA from "../components/home/DocumentCTA.astro";
-import { getGlobalEntry, getPageEntry } from "../data/content";
+import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../data/content";
 
-const homePage = await getPageEntry("home");
-const siteEntry = await getGlobalEntry("site");
+const locale = "ko" as const;
+
+const homePage = await getPageEntry("home", locale);
+const siteEntry = await getGlobalEntry("site", locale);
 const siteConfig = siteEntry.data;
 if (homePage.data.pageType !== "home") {
   throw new Error("Missing home page content configuration.");
 }
 
-const projects = (await getCollection("projects"))
+const projects = (await getLocalizedCollection("projects", locale))
   .sort((a, b) => b.data.year - a.data.year)
   .filter((project) => project.data.featured)
   .slice(0, homePage.data.featuredProjects.count);
 
-const research = (await getCollection("research"))
+const research = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, homePage.data.researchPreview.count);
 ---
 
-<BaseLayout title={siteConfig.title} description={siteConfig.description} pathname="/">
+<BaseLayout title={siteConfig.title} description={siteConfig.description} pathname="/" locale={locale}>
   {homePage.data.sectionOrder.map((sectionId) => {
     if (sectionId === "hero" && homePage.data.hero.enabled) {
-      return <HeroBlock {...homePage.data.hero} />;
+      return <HeroBlock {...homePage.data.hero} locale={locale} />;
     }
     if (sectionId === "pipeline" && homePage.data.pipeline.enabled) {
-      return <AnimatedPipeline {...homePage.data.pipeline} />;
+      return <AnimatedPipeline {...homePage.data.pipeline} locale={locale} />;
     }
     if (sectionId === "featuredProjects" && homePage.data.featuredProjects.enabled) {
       return (
         <FeaturedProjects
           projects={projects}
+          locale={locale}
           eyebrow={homePage.data.featuredProjects.eyebrow}
           title={homePage.data.featuredProjects.title}
           lead={homePage.data.featuredProjects.lead}
@@ -49,6 +52,7 @@ const research = (await getCollection("research"))
       return (
         <ResearchPreview
           research={research}
+          locale={locale}
           eyebrow={homePage.data.researchPreview.eyebrow}
           title={homePage.data.researchPreview.title}
           lead={homePage.data.researchPreview.lead}
@@ -63,6 +67,7 @@ const research = (await getCollection("research"))
           title={homePage.data.experienceSnapshot.title}
           ctaLabel={homePage.data.experienceSnapshot.ctaLabel}
           count={homePage.data.experienceSnapshot.count}
+          locale={locale}
         />
       );
     }
@@ -71,6 +76,7 @@ const research = (await getCollection("research"))
         <CapabilityMap
           eyebrow={homePage.data.capabilityMap.eyebrow}
           title={homePage.data.capabilityMap.title}
+          locale={locale}
         />
       );
     }
@@ -80,6 +86,7 @@ const research = (await getCollection("research"))
           eyebrow={homePage.data.documents.eyebrow}
           title={homePage.data.documents.title}
           cards={homePage.data.documents.cards}
+          locale={locale}
         />
       );
     }

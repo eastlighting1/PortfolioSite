@@ -1,0 +1,11 @@
+pageType: research
+documentTitle: Research | Donghyeon Kim
+documentDescription: 대화형 AI, 의료 AI, 응용 ML 시스템과 연결된 논문 및 기술 문서입니다.
+hero:
+  eyebrow: Research
+  title: 연구 및 기술 문서
+  description: 공감 대화 생성, 의료 AI, 평가 중심 구현 작업을 반영한 논문과 기술 노트를 읽을 수 있는 공간입니다.
+  className: page-hero--catalog
+  meta:
+    - 논문과 노트
+    - 상세 읽기 페이지

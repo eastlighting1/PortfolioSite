@@ -4,12 +4,14 @@ import DocumentLayout from "../layouts/DocumentLayout.astro";
 import PrintToolbar from "../components/document/PrintToolbar.astro";
 import ResumeHeader from "../components/document/ResumeHeader.astro";
 import ResumeSection from "../components/document/ResumeSection.astro";
-import { getGlobalEntry, getPageEntry } from "../data/content";
+import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../data/content";
 
-const resumePage = await getPageEntry("resume");
-const profileEntry = await getGlobalEntry("profile");
-const experienceEntry = await getGlobalEntry("experience");
-const educationEntry = await getGlobalEntry("education");
+const locale = "ko" as const;
+
+const resumePage = await getPageEntry("resume", locale);
+const profileEntry = await getGlobalEntry("profile", locale);
+const experienceEntry = await getGlobalEntry("experience", locale);
+const educationEntry = await getGlobalEntry("education", locale);
 const profile = profileEntry.data;
 const experience = experienceEntry.data.items;
 const education = educationEntry.data.items;
@@ -18,11 +20,11 @@ if (resumePage.data.pageType !== "resume") {
   throw new Error("Missing resume page content configuration.");
 }
 
-const selectedProjects = (await getCollection("projects"))
+const selectedProjects = (await getLocalizedCollection("projects", locale))
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, resumePage.data.sections.projects.count ?? 2);
 
-const selectedResearch = (await getCollection("research"))
+const selectedResearch = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, resumePage.data.sections.research.count ?? 1);
 
@@ -33,10 +35,11 @@ const featuredExperience = experience.slice(0, resumePage.data.sections.experien
   title={resumePage.data.documentTitle}
   description={resumePage.data.documentDescription}
   pathname="/resume/"
+  locale={locale}
 >
-  <PrintToolbar label={resumePage.data.printToolbarLabel} />
+  <PrintToolbar label={resumePage.data.printToolbarLabel} locale={locale} />
   <div class="paper-sheet paper-sheet--resume document-shell">
-    <ResumeHeader />
+    <ResumeHeader locale={locale} />
     <div class="resume-compact-grid">
       <div class="document-list">
         {resumePage.data.layout.leftColumn.map((sectionId) => {

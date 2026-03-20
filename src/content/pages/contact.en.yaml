@@ -1,0 +1,10 @@
+pageType: contact
+documentTitle: Contact | Donghyeon Kim
+documentDescription: Contact options for collaboration, research conversation, and AI engineering opportunities.
+hero:
+  eyebrow: Contact
+  title: Open to research and applied AI conversations
+  description: Available for portfolio reviews, AI engineering opportunities, research collaboration, and conversations around conversational AI, healthcare AI, and ML systems.
+cards:
+  emailLabel: Email
+  externalValueMode: href

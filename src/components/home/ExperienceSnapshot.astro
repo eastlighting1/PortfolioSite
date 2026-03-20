@@ -1,16 +1,18 @@
 ---
 import { getGlobalEntry } from "../../data/content";
 import { withBase } from "../../data/site";
+import { localizePath, type Locale } from "../../data/i18n";
 
 interface Props {
   eyebrow: string;
   title: string;
   ctaLabel: string;
   count: number;
+  locale?: Locale;
 }
 
-const { eyebrow, title, ctaLabel, count } = Astro.props;
-const experienceEntry = await getGlobalEntry("experience");
+const { eyebrow, title, ctaLabel, count, locale = "ko" } = Astro.props;
+const experienceEntry = await getGlobalEntry("experience", locale);
 const experience = experienceEntry.data.items;
 ---
 
@@ -33,7 +35,7 @@ const experience = experienceEntry.data.items;
       ))}
     </div>
     <div style="margin-top: 1.5rem;">
-      <a class="button-link-secondary" href={withBase("/resume/")}>{ctaLabel}</a>
+      <a class="button-link-secondary" href={withBase(localizePath("/resume/", locale))}>{ctaLabel}</a>
     </div>
   </div>
 </section>

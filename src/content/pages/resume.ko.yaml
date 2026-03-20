@@ -1,0 +1,35 @@
+pageType: resume
+documentTitle: Resume | Donghyeon Kim
+documentDescription: 대화형 AI, 의료 AI, ML 시스템 전반을 다루는 응용 AI 연구자 겸 엔지니어의 인쇄 친화형 이력서입니다.
+printToolbarLabel: 브라우저 인쇄 및 PDF 저장에 맞게 최적화되었습니다.
+layout:
+  leftColumn:
+    - summary
+    - experience
+    - projects
+  rightColumn:
+    - skills
+    - research
+    - education
+sections:
+  summary:
+    enabled: true
+    title: 요약
+  experience:
+    enabled: true
+    title: 연구, 프로그램, 리더십
+    count: 4
+  projects:
+    enabled: true
+    title: 대표 프로젝트
+    count: 3
+  skills:
+    enabled: true
+    title: 기술
+  research:
+    enabled: true
+    title: 연구 및 논문
+    count: 2
+  education:
+    enabled: true
+    title: 학력

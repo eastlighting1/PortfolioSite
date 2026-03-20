@@ -1,14 +1,16 @@
 ---
 import ProjectCard from "../projects/ProjectCard.astro";
+import { type Locale } from "../../data/i18n";
 
 interface Props {
   projects: any[];
   eyebrow: string;
   title: string;
   lead?: string;
+  locale?: Locale;
 }
 
-const { projects, eyebrow, title, lead } = Astro.props;
+const { projects, eyebrow, title, lead, locale = "ko" } = Astro.props;
 ---
 
 <section class="section">
@@ -18,7 +20,7 @@ const { projects, eyebrow, title, lead } = Astro.props;
     {lead && <p class="section-lead">{lead}</p>}
     <div class="preview-grid" style="margin-top: 2rem;">
       {projects.map((project, index) => (
-        <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} />
+        <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} locale={locale} />
       ))}
     </div>
   </div>

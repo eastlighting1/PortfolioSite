@@ -1,5 +1,6 @@
 ---
 import { withBase } from "../../data/site";
+import { localizePath, type Locale } from "../../data/i18n";
 
 interface Props {
   eyebrow: string;
@@ -11,9 +12,10 @@ interface Props {
     href: string;
     ctaLabel: string;
   }[];
+  locale?: Locale;
 }
 
-const { eyebrow, title, cards } = Astro.props;
+const { eyebrow, title, cards, locale = "ko" } = Astro.props;
 ---
 
 <section class="section">
@@ -26,9 +28,9 @@ const { eyebrow, title, cards } = Astro.props;
           <span class="small-label">{card.label}</span>
           <h3>{card.title}</h3>
           <p class="muted">{card.body}</p>
-          <a class="button-link-secondary" href={withBase(card.href)}>{card.ctaLabel}</a>
-        </article>
-      ))}
+            <a class="button-link-secondary" href={withBase(localizePath(card.href, locale))}>{card.ctaLabel}</a>
+          </article>
+        ))}
     </div>
   </div>
 </section>

@@ -1,16 +1,22 @@
 ---
 import { getGlobalEntry } from "../../data/content";
+import { type Locale } from "../../data/i18n";
 
-const profileEntry = await getGlobalEntry("profile");
-const siteEntry = await getGlobalEntry("site");
-const linksEntry = await getGlobalEntry("links");
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
 const externalProfiles = linksEntry.data.externalProfiles;
 ---
 
 <header class="document-header">
-  <span class="small-label">Resume</span>
+  <span class="small-label">{locale === "ko" ? "이력서" : "Resume"}</span>
   <h1 class="section-title" style="margin-bottom:0.5rem;">{profile.name}</h1>
   <p class="section-lead">{profile.headline}</p>
   <div class="inline-links inline-links--dense" style="margin-top: 0.75rem;">

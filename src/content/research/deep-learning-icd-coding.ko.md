@@ -1,0 +1,26 @@
+---
+title: "Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abdominal Surgery Patients"
+year: 2025
+venue: "한국컴퓨터정보학회"
+type: "학회 논문"
+abstract: "이 연구는 복부수술 환자의 간호기록, 검사 데이터, 진단 관련 정보 등 핵심 EMR 신호만으로도 임상적으로 의미 있는 진단 분류가 가능함을 보여줍니다."
+tags:
+  - "Clinical AI"
+  - "EMR"
+  - "ICD Coding"
+  - "Healthcare NLP"
+linkedProjects:
+  - "emr-nursing-surveillance"
+---
+
+## 요약
+
+이 논문은 복부수술 환자의 EMR 데이터를 활용해 간호감시를 위한 진단 분류 문제를 다룹니다. 간호기록과 정형 임상 정보를 결합해 실제 의사결정을 보조할 수 있는 형태의 질환 관련 라벨 추론을 목표로 했습니다.
+
+## 의미
+
+실제 임상 환경에서는 데이터가 분절되어 있고, 복잡한 라벨링 절차를 반복하기도 어렵습니다. 핵심 EMR 신호만으로도 높은 수준의 진단 분류가 가능함을 보이는 것은 간호감시 AI의 현실성과 활용 가능성을 높여줍니다.
+
+## 기여
+
+이 연구는 KM-BERT 기반 텍스트 모델링과 XGBoost 기반 정형 예측을 결합해, 보다 넓은 의사 중심 기록에 의존하지 않고도 높은 성능의 진단 분류가 가능함을 보여주었습니다.
