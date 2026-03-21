@@ -9,68 +9,68 @@ sectionOrder:
   - documents
 hero:
   enabled: true
-  eyebrow: Applied AI Portfolio
-  summary: Graduate AI researcher and engineer building conversational, clinical, and deployable ML systems.
+  eyebrow: AI Researcher & MLOps Engineer
+  summary: I am an AI researcher capable of leading work across diverse environments, from research to production. From conversational AI to medical data, I connect research and implementation across a wide range of applied domains.
   actions:
-    - label: Browse Projects
+    - label: Featured Projects
       href: /projects/
       variant: primary
-    - label: Read Research
+    - label: Explore Research
       href: /research/
       variant: secondary
-    - label: Read Resume
+    - label: View Resume
       href: /resume/
       variant: secondary
   focusCard:
     label: Current Focus
-    title: Research that can survive implementation and review.
-    body: This portfolio highlights applied AI work across healthcare, dialogue systems, and ML delivery. The goal is to show not only what I studied, but also how I turned ideas into models, evaluations, and usable outputs.
+    title: At the Intersection of Research and Engineering
+    body: Beyond simply studying high-accuracy models, I also focus on reproducible environments, observable systems, and efficient infrastructure. I build AI that works in real business settings.
     items:
-      - label: Primary Domain
-        value: Conversational AI and Clinical AI
-      - label: Working Style
-        value: Research with implementation ownership
-      - label: System Interest
-        value: Reproducibility, observability, and MLOps-oriented delivery
+      - label: Core Domain
+        value: Medical AI (NLP), MLOps
+      - label: Research Interests
+        value: Conversational AI, Medical AI, AI from a Systems Perspective
+      - label: Key Values
+        value: Code Reproducibility, System Observability, Automation
 pipeline:
   enabled: true
-  eyebrow: Workflow
-  title: From research questions to usable AI systems
-  lead: The site is organized around how problems move from framing and data preparation to modeling, evaluation, and practical delivery.
+  eyebrow: ML Lifecycle
+  title: From Data Engineering to Model Serving
+  lead: I lead the full workflow, from preprocessing complex unstructured data to PyTorch-based model training, as well as evaluation and architecture design with real deployment environments in mind.
 featuredProjects:
   enabled: true
-  eyebrow: Selected Projects
-  title: Projects that connect AI research, implementation, and delivery
-  lead: Featured work focuses on real-world data, clear roles, and outputs that were useful to collaborators, reviewers, or end users.
+  eyebrow: Projects
+  title: Applied AI Systems That Solved Real Data and Business Challenges
+  lead: This section introduces projects I have led across environments ranging from research to production. From conversational AI to medical data, I connect research and implementation across diverse applied domains.
   count: 3
 researchPreview:
   enabled: true
   eyebrow: Publications
-  title: Papers and technical writing grounded in applied AI problems
-  count: 2
-  ctaLabel: Read Research
+  title: Research Contributions in Natural Language Processing and Healthcare
+  count: 3
+  ctaLabel: Learn More
 experienceSnapshot:
   enabled: true
-  eyebrow: Experience Snapshot
-  title: Research, programs, and leadership that shaped my working style
+  eyebrow: Career Snapshot
+  title: Experience and Capabilities Spanning Research and Engineering
   count: 4
-  ctaLabel: Open Full Resume
+  ctaLabel: View Resume
 capabilityMap:
   enabled: true
   eyebrow: Capability Map
-  title: Organized around applied AI work that needs both modeling and delivery
+  title: Capabilities Organized from a Deep Learning Process Perspective
 documents:
   enabled: true
   eyebrow: Documents
-  title: Printable summaries for recruiters, collaborators, and technical reviewers
+  title: Printable Documents for Recruiters, Collaborators, and Technical Reviewers
   cards:
     - label: Resume
-      title: Screen-readable, print-safe CV
-      body: A compact resume covering education, research, selected projects, and the systems practices that support my applied AI work.
+      title: A Resume Designed for Quick Review
+      body: A concise overview of AI research achievements, MLOps-related technical stacks, and key project contributions.
       href: /resume/
-      ctaLabel: Open Resume
+      ctaLabel: Open CV/Resume
     - label: Portfolio
-      title: Case-study portfolio document
-      body: A document-style portfolio with selected projects framed around problem definition, implementation, and outcomes.
+      title: A Problem-Solving Portfolio
+      body: A case-study-based portfolio documenting each project's problem definition, architecture design, and process of overcoming technical limitations in detail.
       href: /portfolio/
       ctaLabel: Open Portfolio
