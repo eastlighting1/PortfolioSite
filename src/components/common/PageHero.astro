@@ -12,8 +12,8 @@ const { eyebrow, title, description, meta = [], className = "" } = Astro.props;
 
 <section class={`page-hero ${className}`.trim()} data-reveal="1">
   {eyebrow && <div class="eyebrow">{eyebrow}</div>}
-  <h1 class="section-title">{title}</h1>
-  <p class="section-lead">{description}</p>
+  <h1 class="section-title" set:html={title} />
+  <p class="section-lead" set:html={description} />
   {meta.length > 0 && (
     <div class="meta-row">
       {meta.map((item) => (

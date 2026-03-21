@@ -16,7 +16,7 @@ const profile = profileEntry.data;
 <section class="section">
   <div class="container">
     <div class="eyebrow">{eyebrow}</div>
-    <h2 class="section-title">{title}</h2>
+    <h2 class="section-title" set:html={title} />
     <div class="catalog-grid" style="margin-top: 2rem;">
       {profile.capabilityGroups.map((group, index) => (
         <article class="capability-card" data-reveal={`${(index % 4) + 1}`}>

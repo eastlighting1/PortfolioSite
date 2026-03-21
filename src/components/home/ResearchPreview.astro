@@ -18,8 +18,8 @@ const { research, eyebrow, title, lead, ctaLabel, locale = "ko" } = Astro.props;
 <section class="section">
   <div class="container">
     <div class="eyebrow">{eyebrow}</div>
-    <h2 class="section-title">{title}</h2>
-    {lead && <p class="section-lead">{lead}</p>}
+    <h2 class="section-title" set:html={title} />
+    {lead && <p class="section-lead" set:html={lead} />}
     <div class="research-list" style="margin-top: 2rem;">
       {research.map((item, index) => (
         <article class="research-card" data-reveal={`${(index % 4) + 1}`}>

@@ -19,7 +19,7 @@ const experience = experienceEntry.data.items;
 <section class="section">
   <div class="container">
     <div class="eyebrow">{eyebrow}</div>
-    <h2 class="section-title">{title}</h2>
+    <h2 class="section-title" set:html={title} />
     <div class="timeline-grid" style="margin-top: 2rem;">
       {experience.slice(0, count).map((item, index) => (
         <article class="snapshot-card" data-reveal={`${(index % 4) + 1}`}>

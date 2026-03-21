@@ -36,8 +36,8 @@ const siteConfig = siteEntry.data;
       <div>
         <div class="eyebrow" data-reveal="1">{eyebrow}</div>
         <h1 class="hero-title" data-reveal="2">{profile.name}</h1>
-        <p class="hero-copy" data-reveal="3">{summary}</p>
-        <p class="hero-copy" data-reveal="4">{profile.intro}</p>
+        <p class="hero-copy" data-reveal="3" set:html={summary} />
+        <p class="hero-copy" data-reveal="4" set:html={profile.intro} />
         <div class="chip-row" data-reveal="4">
           <span class="role-chip">{siteConfig.primaryRole}</span>
           {siteConfig.secondaryRoles.map((role) => (
@@ -57,8 +57,8 @@ const siteConfig = siteEntry.data;
       </div>
       <div class="project-card">
         <span class="small-label">{focusCard.label}</span>
-        <h2 class="section-title" style="font-size:2rem; margin-top:0.6rem;">{focusCard.title}</h2>
-        <p class="muted">{focusCard.body}</p>
+        <h2 class="section-title" style="font-size:2rem; margin-top:0.6rem;" set:html={focusCard.title} />
+        <p class="muted" set:html={focusCard.body} />
         <div class="compact-list">
           {focusCard.items.map((item) => (
             <div>

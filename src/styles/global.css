@@ -107,46 +107,12 @@ main {
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.08;
   margin: 0.8rem 0 1rem;
-  max-width: 18ch;
-  text-wrap: balance;
-  overflow-wrap: normal;
 }
 
 .section-lead {
-  max-width: 68ch;
+  max-width: 62ch;
   color: var(--text-soft);
   margin: 0;
-  text-wrap: pretty;
-  overflow-wrap: break-word;
-}
-
-.section-title--single-line {
-  max-width: none;
-}
-
-html:lang(ko) .section-title,
-html:lang(ko) .section-lead,
-html:lang(ko) .hero-copy,
-html:lang(ko) .muted,
-html:lang(ko) .project-card h3,
-html:lang(ko) .research-card h3,
-html:lang(ko) .document-card h3,
-html:lang(ko) .capability-card h3,
-html:lang(ko) .snapshot-card h3,
-html:lang(ko) .system-stage h3 {
-  word-break: keep-all;
-  line-break: strict;
-}
-
-.hero-copy,
-.muted,
-.project-card h3,
-.research-card h3,
-.document-card h3,
-.capability-card h3,
-.snapshot-card h3,
-.system-stage h3 {
-  text-wrap: pretty;
 }
 
 .grid {
@@ -231,16 +197,5 @@ html:lang(ko) .system-stage h3 {
 
   .section {
     padding: 3.5rem 0;
-  }
-
-  .section-title {
-    max-width: 16ch;
-  }
-}
-
-@media (min-width: 901px) {
-  .section-title--single-line {
-    white-space: nowrap;
-    font-size: clamp(1.8rem, 2.35vw, 2.85rem);
   }
 }
