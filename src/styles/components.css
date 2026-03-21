@@ -378,6 +378,9 @@
   max-width: 100%;
   text-align: center;
   line-height: 1.04;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  text-wrap: balance;
 }
 
 .doc-toolbar {

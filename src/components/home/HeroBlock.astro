@@ -57,7 +57,15 @@ const siteConfig = siteEntry.data;
       </div>
       <div class="project-card">
         <span class="small-label">{focusCard.label}</span>
-        <h2 class="section-title focus-card__title" style="margin-top:0.6rem;" set:html={focusCard.title} />
+        <h2
+          class="section-title focus-card__title"
+          data-focus-title
+          data-fit-min-rem="1.5"
+          data-fit-max-rem="2.2"
+          data-fit-single-line-threshold="0.9"
+          style="margin-top:0.6rem;"
+          set:html={focusCard.title}
+        />
         <p class="muted" set:html={focusCard.body} />
         <div class="compact-list">
           {focusCard.items.map((item) => (
@@ -71,3 +79,112 @@ const siteConfig = siteEntry.data;
     </div>
   </div>
 </section>
+
+<script is:inline>
+  const setupFocusTitleFit = () => {
+    const titles = document.querySelectorAll("[data-focus-title]");
+
+    const rootFontSize = () =>
+      Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+
+    const getLineHeight = (element) => {
+      const computed = getComputedStyle(element);
+      if (computed.lineHeight !== "normal") {
+        return Number.parseFloat(computed.lineHeight);
+      }
+      return Number.parseFloat(computed.fontSize) * 1.08;
+    };
+
+    const binarySearch = (min, max, fits) => {
+      let low = min;
+      let high = max;
+      let best = min;
+
+      while (high - low > 0.25) {
+        const mid = (low + high) / 2;
+        if (fits(mid)) {
+          best = mid;
+          low = mid;
+        } else {
+          high = mid;
+        }
+      }
+
+      return best;
+    };
+
+    const countLines = (element) => {
+      const lineHeight = getLineHeight(element);
+      return Math.max(1, Math.round(element.scrollHeight / lineHeight));
+    };
+
+    const fitTitle = (element) => {
+      const minPx = Number(element.dataset.fitMinRem || "1.5") * rootFontSize();
+      const maxPx = Number(element.dataset.fitMaxRem || "2.2") * rootFontSize();
+      const singleLineThreshold = Number(element.dataset.fitSingleLineThreshold || "0.9");
+
+      const resetBase = () => {
+        element.style.display = "block";
+        element.style.maxWidth = "100%";
+        element.style.overflow = "visible";
+        element.style.whiteSpace = "normal";
+        element.style.webkitLineClamp = "";
+        element.style.webkitBoxOrient = "";
+      };
+
+      const fitsSingleLine = (fontSize) => {
+        resetBase();
+        element.style.fontSize = `${fontSize}px`;
+        element.style.whiteSpace = "nowrap";
+        return element.scrollWidth <= element.clientWidth + 1;
+      };
+
+      const fitsTwoLines = (fontSize) => {
+        resetBase();
+        element.style.fontSize = `${fontSize}px`;
+        return countLines(element) <= 2;
+      };
+
+      const singleLineSize = binarySearch(minPx, maxPx, fitsSingleLine);
+      const twoLineSize = binarySearch(minPx, maxPx, fitsTwoLines);
+
+      resetBase();
+      element.style.fontSize = `${twoLineSize}px`;
+      const twoLineCount = countLines(element);
+
+      const useSingleLine = twoLineCount < 2 || singleLineSize >= twoLineSize * singleLineThreshold;
+
+      resetBase();
+      if (useSingleLine) {
+        element.style.fontSize = `${singleLineSize}px`;
+        element.style.whiteSpace = "nowrap";
+      } else {
+        element.style.fontSize = `${twoLineSize}px`;
+        element.style.display = "-webkit-box";
+        element.style.webkitBoxOrient = "vertical";
+        element.style.webkitLineClamp = "2";
+        element.style.overflow = "hidden";
+      }
+    };
+
+    titles.forEach((title) => fitTitle(title));
+
+    if (window.__focusTitleFitObserver) {
+      window.__focusTitleFitObserver.disconnect();
+    }
+
+    const observer = new ResizeObserver(() => {
+      titles.forEach((title) => fitTitle(title));
+    });
+
+    titles.forEach((title) => {
+      const card = title.closest(".project-card");
+      observer.observe(card || title);
+    });
+
+    window.__focusTitleFitObserver = observer;
+  };
+
+  setupFocusTitleFit();
+  document.addEventListener("astro:page-load", setupFocusTitleFit);
+</script>
