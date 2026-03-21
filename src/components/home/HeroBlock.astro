@@ -147,12 +147,16 @@ const siteConfig = siteEntry.data;
 
       const singleLineSize = binarySearch(minPx, maxPx, fitsSingleLine);
       const twoLineSize = binarySearch(minPx, maxPx, fitsTwoLines);
+      const singleLineActuallyFits = fitsSingleLine(singleLineSize);
+      const twoLinesActuallyFit = fitsTwoLines(twoLineSize);
 
       resetBase();
       element.style.fontSize = `${twoLineSize}px`;
       const twoLineCount = countLines(element);
 
-      const useSingleLine = twoLineCount < 2 || singleLineSize >= twoLineSize * singleLineThreshold;
+      const useSingleLine =
+        singleLineActuallyFits &&
+        (!twoLinesActuallyFit || twoLineCount < 2 || singleLineSize >= twoLineSize * singleLineThreshold);
 
       resetBase();
       if (useSingleLine) {
