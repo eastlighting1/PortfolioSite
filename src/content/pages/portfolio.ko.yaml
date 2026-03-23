@@ -1,16 +1,54 @@
 pageType: portfolio
-documentTitle: Portfolio | Donghyeon Kim
-documentDescription: 대화형 AI, 의료 AI, 응용 ML 전달 경험을 담은 인쇄형 케이스 스터디 포트폴리오입니다.
-printToolbarLabel: 인쇄 흐름을 고려한 포트폴리오 문서입니다.
+documentTitle: 포트폴리오 | 김동현
+documentDescription: 데이터 분석부터 대화형 AI, 의료 AI까지의 다양한 경험을 담은 포트폴리오입니다.
+printToolbarLabel: 데이터 분석부터 대화형 AI, 의료 AI까지의 다양한 경험을 담은 포트폴리오입니다.
+web:
+  pages:
+    - kind: philosophyCore
+      eyebrow: Philosophy
+      title: 일하는 방식
+      coreDomainTitle: 핵심 도메인
+    - kind: experience
+      eyebrow: Experience
+      title: 최근 경험
+    - kind: projects
+      eyebrow: Selected Projects
+      title: 대표 프로젝트
+    - kind: educationStudy
+      eyebrow: Map
+      title: 교육과 학습
+      educationTitle: 학력
+      studyTitle: 스터디
+      studyItems:
+        - title: NEKA
+          emphasis: NLP 스터디
+          description: KoBERT를 활용한 Keyword Extraction 및 NER 모델 구현을 목표로 진행한 스터디
+        - title: 수나로움
+          emphasis: 금융 AI 스터디
+          description: 기업의 재무제표와 금융지표를 기반으로 매수 추천 여부를 평가하는 모델을 목표로 진행한 스터디
+        - title: 이다
+          emphasis: 추천 시스템 스터디
+          description: 지식 그래프 / GNN기반 추천 서비스를 주제로 진행한 스터디
+        - title: MLADS
+          emphasis: 머신러닝 기초 스터디
+          description: 데이터사이언스와 머신러닝의 기본기를 체계적으로 학습하는 스터디
+    - kind: research
+      eyebrow: Research
+      title: 연구
+    - kind: recognition
+      eyebrow: Certificate & Award
+      title: 수료와 수상
+      certificateTitle: 수료증 & 자격증
+      awardTitle: 수상
 cover:
   label: 포트폴리오 문서
-  title: 대표 응용 AI 프로젝트와 연구
+  title: AI 연구자 포트폴리오
 overview:
   intro:
     enabled: true
     title: 프로필 요약
     paragraphs:
-      - 이 포트폴리오는 먼저 짧은 개요를 보여주고, 이후 프로젝트별 케이스 스터디 시트가 이어지는 읽기 및 인쇄 친화형 구조로 구성되어 있습니다.
+      - 이 포트폴리오는 먼저 짧은 개요를 보여주고, 이후 프로젝트별 케이스 스터디 시트가 이어지는 읽기 및 인쇄 친화 구조로 구성되어 있습니다.
       - 선정한 작업은 모델링, 해석, 전달이 모두 중요했던 응용 AI 문제를 중심으로 정리했습니다.
   capability:
     enabled: true
@@ -18,9 +56,46 @@ overview:
   research:
     enabled: true
     title: 연구 하이라이트
+recognition:
+  certificates:
+    - title: 데브옵스 환경의 모니터링과 테스트 실전구현
+      issuer: LLOYDK
+      date: "2023.11"
+      description: Elastic 기반 DevOps 모니터링 및 테스트 실무 교육을 이수했습니다.
+      bullets:
+        - Elastic 사의 DevOps 관련 서비스와 운영 환경을 학습했습니다.
+        - 모니터링과 테스트 관점에서 실무 적용 가능한 DevOps 개념을 익혔습니다.
+    - title: Multi Cloud Orchestration Program
+      issuer: 5Works
+      date: "2023.12"
+      description: HashiCorp 기반 멀티 클라우드 오케스트레이션 및 IaC 교육을 이수했습니다.
+      bullets:
+        - Packer, Terraform 등 HashiCorp의 IaC 도구를 중심으로 학습했습니다.
+        - 멀티 클라우드 환경에서의 인프라 자동화와 오케스트레이션 개념을 익혔습니다.
+    - title: 기업주도 집중프로젝트 교육
+      issuer: 디케이테크인
+      date: "2024.02"
+      description: 보안 및 DevOps 엔지니어링 중심의 기업 연계 실무 교육에 참여했습니다.
+      bullets:
+        - 클라우드, CI/CD, 보안 관련 작업을 수행하며 실무형 프로젝트를 진행했습니다.
+        - 추천 시스템 구축 과정에서 숙련자로서 조언과 구축 보조 역할을 맡았습니다.
+    - title: 소프트웨어 전문인재 Micro Degree
+      issuer: 가천대학교
+      date: "2024.02"
+      description: 소프트웨어 전문인재 양성을 위한 마이크로디그리 과정을 이수했습니다.
+      bullets:
+        - 소프트웨어 및 실무형 디지털 역량 강화를 위한 과정을 수료했습니다.
+        - 학부 기반 교육과 실무형 프로젝트 경험을 연결하는 이수 이력을 갖추었습니다.
+  awards: []
 selection:
-  projectCount: 3
-  researchCount: 2
+  projectCount: 2
+  caseStudyCount: 3
+  researchCount: 3
+  experienceCount: 3
+  educationCount: 2
+  studyCount: 4
+  certificateCount: 4
+  awardCount: 2
   selectedProjectSlugs:
     - emr-nursing-surveillance
     - frimo-conversational-diary

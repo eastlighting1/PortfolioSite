@@ -1,0 +1,58 @@
+---
+import { render } from "astro:content";
+import ReadingLayout from "../../layouts/ReadingLayout.astro";
+import ResearchDetailHero from "./components/ResearchDetailHero.astro";
+import AbstractBlock from "./components/AbstractBlock.astro";
+import { entrySlug, getLocalizedCollection, getUiEntry } from "../../lib/content";
+import { type Locale, localizePath } from "../../lib/i18n";
+import { withBase } from "../../lib/site";
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+  item: any;
+}
+
+const { locale, pathname, item } = Astro.props;
+const { Content } = await render(item);
+const projects = await getLocalizedCollection("projects", locale);
+const linkedProjects = projects.filter((project) => item.data.linkedProjects.includes(entrySlug(project)));
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+const titleSuffix = locale === "ko" ? "Research" : "Research";
+---
+
+<ReadingLayout
+  title={`${item.data.title} | ${titleSuffix}`}
+  description={item.data.abstract}
+  pathname={pathname}
+  locale={locale}
+>
+  <div style="margin-bottom: 1rem;">
+    <a class="button-link-secondary screen-only" href={withBase(localizePath("/research/", locale))}>{ui.research.backToListLabel}</a>
+  </div>
+  <ResearchDetailHero item={item} locale={locale} />
+  <div style="padding-top: 2rem;">
+    <AbstractBlock abstract={item.data.abstract} locale={locale} />
+    <article class="prose" style="padding-top: 2rem;">
+      <Content />
+    </article>
+    {linkedProjects.length > 0 && (
+      <section class="resume-section" style="margin-top: 2rem;">
+        <div class="eyebrow">{ui.research.relatedProjectsEyebrow}</div>
+        <div class="document-list" style="margin-top: 1rem;">
+          {linkedProjects.map((project) => (
+            <div class="resume-item">
+              <strong>{project.data.title}</strong>
+              <div class="muted">{project.data.type} | {project.data.year}</div>
+              <p>{project.data.summary}</p>
+              <a class="button-link-secondary" href={withBase(localizePath(`projects/${entrySlug(project)}/`, locale))}>
+                {ui.research.openRelatedProjectLabel}
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</ReadingLayout>

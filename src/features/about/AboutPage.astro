@@ -1,0 +1,140 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/common/PageHero.astro";
+import { render } from "astro:content";
+import { entrySlug, getLocalizedCollection, getPageEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+
+const { locale, pathname } = Astro.props;
+const aboutPage = await getPageEntry("about", locale);
+const archiveEntries = (await getLocalizedCollection("archive", locale))
+  .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
+const renderedEntries = await Promise.all(
+  archiveEntries.map(async (entry) => ({
+    entry,
+    slug: entrySlug(entry),
+    ...(await render(entry))
+  }))
+);
+
+if (aboutPage.data.pageType !== "about") {
+  throw new Error("Missing about page content configuration.");
+}
+---
+
+<BaseLayout title={aboutPage.data.documentTitle} description={aboutPage.data.documentDescription} pathname={pathname} locale={locale}>
+  <section class="section">
+    <div class="container">
+      <PageHero
+        eyebrow={aboutPage.data.hero.eyebrow}
+        title={aboutPage.data.hero.title}
+        description={aboutPage.data.hero.description}
+      />
+      <div class="section-tight">
+        <div class="about-gallery__intro">
+          <h2>{aboutPage.data.gallery.title}</h2>
+          <p class="section-lead">{aboutPage.data.gallery.lead}</p>
+        </div>
+        <div class="about-gallery">
+          {renderedEntries.map(({ entry, slug, Content }) => (
+            <article class="about-gallery__card" data-entry-type={entry.data.type}>
+              <div class="about-gallery__meta">
+                <span class="small-label">{entry.data.type}</span>
+                <span class="small-label">{entry.data.publishedAt}</span>
+              </div>
+              <h3>{entry.data.title}</h3>
+              {entry.data.context && <p class="about-gallery__context">{entry.data.context}</p>}
+              <p class="muted">{entry.data.summary}</p>
+              {entry.data.tags.length > 0 && (
+                <div class="tag-row about-gallery__tags">
+                  {entry.data.tags.map((tag) => (
+                    <span class="tag-chip">{tag}</span>
+                  ))}
+                </div>
+              )}
+              <div class="about-gallery__actions">
+                <button class="button-link-secondary about-gallery__trigger" type="button" data-dialog-open={`archive-entry-${slug}`}>
+                  {aboutPage.data.gallery.openEntryLabel}
+                </button>
+              </div>
+              <dialog id={`archive-entry-${slug}`} class="project-preview-dialog about-gallery__dialog">
+                <article class="project-preview-card about-gallery__dialog-card">
+                  <div class="doc-toolbar" style="margin-bottom: 0.5rem;">
+                    <span class="small-label">{entry.data.type}</span>
+                    <button type="button" data-dialog-close={`archive-entry-${slug}`} aria-label={aboutPage.data.gallery.closeEntryLabel}>
+                      {aboutPage.data.gallery.closeEntryLabel}
+                    </button>
+                  </div>
+                  <h3>{entry.data.title}</h3>
+                  <p class="muted">{entry.data.publishedAt}{entry.data.context ? ` | ${entry.data.context}` : ""}</p>
+                  <div class="prose about-gallery__prose">
+                    <Content />
+                  </div>
+                  {entry.data.tags.length > 0 && (
+                    <div class="tag-row" style="margin-top: 1rem;">
+                      {entry.data.tags.map((tag) => (
+                        <span class="tag-chip">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              </dialog>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const bindArchiveDialogs = () => {
+    document.querySelectorAll("[data-dialog-open]").forEach((button) => {
+      if (button.dataset.bound === "true") return;
+      button.dataset.bound = "true";
+      button.addEventListener("click", () => {
+        const id = button.getAttribute("data-dialog-open");
+        const dialog = id ? document.getElementById(id) : null;
+        if (dialog instanceof HTMLDialogElement) {
+          dialog.showModal();
+        }
+      });
+    });
+
+    document.querySelectorAll("[data-dialog-close]").forEach((button) => {
+      if (button.dataset.bound === "true") return;
+      button.dataset.bound = "true";
+      button.addEventListener("click", () => {
+        const id = button.getAttribute("data-dialog-close");
+        const dialog = id ? document.getElementById(id) : null;
+        if (dialog instanceof HTMLDialogElement) {
+          dialog.close();
+        }
+      });
+    });
+
+    document.querySelectorAll(".about-gallery__dialog").forEach((dialog) => {
+      if (dialog.dataset.bound === "true") return;
+      dialog.dataset.bound = "true";
+      dialog.addEventListener("click", (event) => {
+        const rect = dialog.getBoundingClientRect();
+        const inside =
+          rect.top <= event.clientY &&
+          event.clientY <= rect.top + rect.height &&
+          rect.left <= event.clientX &&
+          event.clientX <= rect.left + rect.width;
+        if (!inside) {
+          dialog.close();
+        }
+      });
+    });
+  };
+
+  bindArchiveDialogs();
+  document.addEventListener("astro:page-load", bindArchiveDialogs);
+</script>

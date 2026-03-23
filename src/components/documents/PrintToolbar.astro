@@ -1,0 +1,19 @@
+---
+import { getUiEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  label?: string;
+  locale?: Locale;
+}
+
+const { locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+const { label = ui.printToolbar.defaultLabel } = Astro.props;
+---
+
+<div class="doc-toolbar screen-only">
+  <span class="muted">{label}</span>
+  <button type="button" onclick="window.print()">{ui.printToolbar.printButtonLabel}</button>
+</div>

@@ -3,7 +3,7 @@ header:
   mobileToggleLabel: 메뉴 열기
 footer:
   summary: 대화형 AI, 의료 AI, 그리고 실용적인 ML 전달을 다루는 응용 AI 연구자 겸 엔지니어
-documentLayout:
+printLayout:
   mastheadLinks:
     - href: /projects/
       label: 프로젝트
@@ -17,7 +17,7 @@ printToolbar:
 project:
   detailEyebrow: 프로젝트 상세
   backToListLabel: 프로젝트 목록으로
-  quickPreviewLabel: 빠른 보기
+  quickPreviewLabel: 미리 보기
   previewTitle: 프로젝트 미리보기
   closePreviewLabel: 닫기
   openCaseStudyLabel: 케이스 스터디 열기

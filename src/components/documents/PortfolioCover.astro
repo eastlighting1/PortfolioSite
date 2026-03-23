@@ -1,0 +1,93 @@
+---
+import { getGlobalEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  label: string;
+  title: string;
+  locale?: Locale;
+}
+
+const { label, title, locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
+const externalProfiles = linksEntry.data.externalProfiles.slice(0, 2);
+
+const metaItems = [
+  {
+    label: locale === "ko" ? "위치" : "Location",
+    value: siteConfig.location
+  },
+  {
+    label: "Email",
+    value: siteConfig.email,
+    href: `mailto:${siteConfig.email}`
+  },
+  ...externalProfiles.map((link) => {
+    let shortValue = link.label;
+
+    try {
+      const parsed = new URL(link.href);
+      const path = parsed.pathname.replace(/\/$/, "");
+      shortValue = `${parsed.hostname.replace(/^www\./, "")}${decodeURIComponent(path)}`;
+    } catch {
+      try {
+        shortValue = decodeURIComponent(link.href.replace(/^https?:\/\//, ""));
+      } catch {
+        shortValue = link.href.replace(/^https?:\/\//, "");
+      }
+    }
+
+    return {
+      label: link.label,
+      value: shortValue,
+      href: link.href
+    };
+  })
+];
+---
+
+<section class="portfolio-cover">
+  <div class="portfolio-cover__hero">
+    <div class="portfolio-cover__intro">
+      <span class="small-label">{label}</span>
+      <h1 class="section-title" style="margin-top:0.6rem;">{title}</h1>
+      <p class="section-lead">{profile.summary}</p>
+    </div>
+    <div class="portfolio-cover__identity">
+      <div class="portfolio-cover__name-block">
+        <span class="portfolio-cover__name">{profile.name}</span>
+        <span class="portfolio-cover__role">{siteConfig.primaryRole}</span>
+      </div>
+      <dl class="portfolio-cover__meta-grid">
+        {metaItems.map((item) => (
+          <div class="portfolio-cover__meta-item">
+            <dt class="small-label">{item.label}</dt>
+            <dd>
+              {item.href ? (
+                <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                  {item.value}
+                </a>
+              ) : (
+                <strong>{item.value}</strong>
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+
+  <div class="portfolio-cover__focus">
+    {profile.capabilityGroups.slice(0, 4).map((group) => (
+      <div class="portfolio-cover__focus-item">
+        <span class="small-label">{locale === "ko" ? "핵심 분야" : "Focus Area"}</span>
+        <strong>{group.title}</strong>
+        <p>{group.skills.slice(0, 3).join(" · ")}</p>
+      </div>
+    ))}
+  </div>
+</section>

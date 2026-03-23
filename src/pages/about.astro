@@ -1,38 +1,7 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/common/PageHero.astro";
-import { getGlobalEntry, getPageEntry } from "../data/content";
+import AboutPage from "../features/about/AboutPage.astro";
 
 const locale = "ko" as const;
-const aboutPage = await getPageEntry("about", locale);
-const profileEntry = await getGlobalEntry("profile", locale);
-const profile = profileEntry.data;
-
-if (aboutPage.data.pageType !== "about") {
-  throw new Error("Missing about page content configuration.");
-}
 ---
 
-<BaseLayout title={aboutPage.data.documentTitle} description={aboutPage.data.documentDescription} pathname="/about/" locale={locale}>
-  <section class="section">
-    <div class="container">
-      <PageHero
-        eyebrow={aboutPage.data.hero.eyebrow}
-        title={aboutPage.data.hero.title}
-        description={aboutPage.data.hero.description}
-      />
-      <div class="section-tight reading-container prose">
-        <h2>{aboutPage.data.sections.positioningTitle}</h2>
-        <p>{profile.summary}</p>
-        <h2>{aboutPage.data.sections.philosophyTitle}</h2>
-        <ul>
-          {profile.philosophy.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-        <h2>{aboutPage.data.sections.systemsTitle}</h2>
-        <p>{aboutPage.data.sections.systemsBody}</p>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<AboutPage locale={locale} pathname="/about/" />

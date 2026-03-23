@@ -1,0 +1,39 @@
+---
+import ProjectCard from "../../projects/components/ProjectCard.astro";
+import { type Locale } from "../../../lib/i18n";
+
+interface Props {
+  projects: any[];
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  locale?: Locale;
+}
+
+const { projects, eyebrow, title, lead, locale = "ko" } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title" set:html={title} />
+    {lead && <p class="section-lead featured-projects__lead" set:html={lead} />}
+    <div class="preview-grid" style="margin-top: 2rem;">
+      {projects.map((project, index) => (
+        <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} locale={locale} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured-projects__lead {
+    max-width: 92ch;
+  }
+
+  @media (max-width: 900px) {
+    .featured-projects__lead {
+      max-width: 62ch;
+    }
+  }
+</style>

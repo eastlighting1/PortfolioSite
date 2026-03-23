@@ -1,0 +1,194 @@
+---
+import { getGlobalEntry } from "../../../lib/content";
+import { withBase } from "../../../lib/site";
+import { localizePath, type Locale } from "../../../lib/i18n";
+
+interface Props {
+  eyebrow: string;
+  summary: string;
+  actions: {
+    label: string;
+    href: string;
+    variant: "primary" | "secondary";
+  }[];
+  focusCard: {
+    label: string;
+    title: string;
+    body: string;
+    items: {
+      label: string;
+      value: string;
+    }[];
+  };
+  locale?: Locale;
+}
+
+const { eyebrow, summary, actions, focusCard, locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="hero-panel soft-card">
+      <div>
+        <div class="eyebrow" data-reveal="1">{eyebrow}</div>
+        <h1 class="hero-title" data-reveal="2">{profile.name}</h1>
+        <p class="hero-copy" data-reveal="3" set:html={summary} />
+        <p class="hero-copy" data-reveal="4" set:html={profile.intro} />
+        <div class="chip-row" data-reveal="4">
+          <span class="role-chip">{siteConfig.primaryRole}</span>
+          {siteConfig.secondaryRoles.map((role) => (
+            <span class="role-chip">{role}</span>
+          ))}
+        </div>
+        <div class="hero-actions" data-reveal="4">
+          {actions.map((action) => (
+            <a
+              class={action.variant === "primary" ? "button-link" : "button-link-secondary"}
+              href={withBase(localizePath(action.href, locale))}
+            >
+              {action.label}
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="small-label">{focusCard.label}</span>
+        <h2
+          class="section-title focus-card__title"
+          data-focus-title
+          data-fit-min-rem="1.5"
+          data-fit-max-rem="2.2"
+          data-fit-single-line-threshold="0.9"
+          style="margin-top:0.6rem;"
+          set:html={focusCard.title}
+        />
+        <p class="muted" set:html={focusCard.body} />
+        <div class="compact-list">
+          {focusCard.items.map((item) => (
+            <div>
+              <span class="small-label">{item.label}</span>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  const setupFocusTitleFit = () => {
+    const titles = document.querySelectorAll("[data-focus-title]");
+
+    const rootFontSize = () =>
+      Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+
+    const getLineHeight = (element) => {
+      const computed = getComputedStyle(element);
+      if (computed.lineHeight !== "normal") {
+        return Number.parseFloat(computed.lineHeight);
+      }
+      return Number.parseFloat(computed.fontSize) * 1.08;
+    };
+
+    const binarySearch = (min, max, fits) => {
+      let low = min;
+      let high = max;
+      let best = min;
+
+      while (high - low > 0.25) {
+        const mid = (low + high) / 2;
+        if (fits(mid)) {
+          best = mid;
+          low = mid;
+        } else {
+          high = mid;
+        }
+      }
+
+      return best;
+    };
+
+    const countLines = (element) => {
+      const lineHeight = getLineHeight(element);
+      return Math.max(1, Math.round(element.scrollHeight / lineHeight));
+    };
+
+    const fitTitle = (element) => {
+      const minPx = Number(element.dataset.fitMinRem || "1.5") * rootFontSize();
+      const maxPx = Number(element.dataset.fitMaxRem || "2.2") * rootFontSize();
+      const singleLineThreshold = Number(element.dataset.fitSingleLineThreshold || "0.9");
+
+      const resetBase = () => {
+        element.style.display = "block";
+        element.style.maxWidth = "100%";
+        element.style.overflow = "visible";
+        element.style.whiteSpace = "normal";
+        element.style.webkitLineClamp = "";
+        element.style.webkitBoxOrient = "";
+      };
+
+      const fitsSingleLine = (fontSize) => {
+        resetBase();
+        element.style.fontSize = `${fontSize}px`;
+        element.style.whiteSpace = "nowrap";
+        return element.scrollWidth <= element.clientWidth + 1;
+      };
+
+      const fitsTwoLines = (fontSize) => {
+        resetBase();
+        element.style.fontSize = `${fontSize}px`;
+        return countLines(element) <= 2;
+      };
+
+      const singleLineSize = binarySearch(minPx, maxPx, fitsSingleLine);
+      const twoLineSize = binarySearch(minPx, maxPx, fitsTwoLines);
+      const singleLineActuallyFits = fitsSingleLine(singleLineSize);
+      const twoLinesActuallyFit = fitsTwoLines(twoLineSize);
+
+      resetBase();
+      element.style.fontSize = `${twoLineSize}px`;
+      const twoLineCount = countLines(element);
+
+      const useSingleLine =
+        singleLineActuallyFits &&
+        (!twoLinesActuallyFit || twoLineCount < 2 || singleLineSize >= twoLineSize * singleLineThreshold);
+
+      resetBase();
+      if (useSingleLine) {
+        element.style.fontSize = `${singleLineSize}px`;
+        element.style.whiteSpace = "nowrap";
+      } else {
+        element.style.fontSize = `${twoLineSize}px`;
+        element.style.display = "-webkit-box";
+        element.style.webkitBoxOrient = "vertical";
+        element.style.webkitLineClamp = "2";
+        element.style.overflow = "hidden";
+      }
+    };
+
+    titles.forEach((title) => fitTitle(title));
+
+    if (window.__focusTitleFitObserver) {
+      window.__focusTitleFitObserver.disconnect();
+    }
+
+    const observer = new ResizeObserver(() => {
+      titles.forEach((title) => fitTitle(title));
+    });
+
+    titles.forEach((title) => {
+      const card = title.closest(".project-card");
+      observer.observe(card || title);
+    });
+
+    window.__focusTitleFitObserver = observer;
+  };
+
+  setupFocusTitleFit();
+  document.addEventListener("astro:page-load", setupFocusTitleFit);
+</script>

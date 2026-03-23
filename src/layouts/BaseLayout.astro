@@ -1,9 +1,9 @@
 ---
 import SiteHeader from "../components/common/SiteHeader.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
-import { getGlobalEntry } from "../data/content";
-import { withBase } from "../data/site";
-import { type Locale } from "../data/i18n";
+import { getGlobalEntry } from "../lib/content";
+import { withBase } from "../lib/site";
+import { type Locale } from "../lib/i18n";
 
 interface Props {
   title: string;

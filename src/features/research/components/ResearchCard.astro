@@ -1,0 +1,41 @@
+---
+import { getUiEntry } from "../../../lib/content";
+import { withBase } from "../../../lib/site";
+import { entrySlug } from "../../../lib/content";
+import { localizePath, type Locale } from "../../../lib/i18n";
+
+interface Props {
+  item: any;
+  dataReveal?: string;
+  locale?: Locale;
+}
+
+const { item, dataReveal = "1", locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+---
+
+<article class="research-card" data-reveal={dataReveal}>
+  <span class="small-label">{item.data.venue} | {item.data.year}</span>
+  <h3>{item.data.title}</h3>
+  <details class="inline-expander inline-expander--compact research-card__abstract">
+    <summary>
+      <span>{ui.research.abstractPreviewLabel}</span>
+      <span class="inline-expander__hint">{ui.research.expandLabel}</span>
+    </summary>
+    <p class="muted research-card__abstract-copy">{item.data.abstract}</p>
+  </details>
+  <div class="meta-row research-card__meta-row">
+    <span class="tag-chip">{item.data.type}</span>
+  </div>
+  <div class="tag-row research-card__tag-row">
+    {item.data.tags.map((tag: string) => (
+      <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <div class="research-card__footer">
+    <a class="button-link-secondary" href={withBase(localizePath(`research/${entrySlug(item)}/`, locale))}>
+      {ui.research.openDetailLabel}
+    </a>
+  </div>
+</article>

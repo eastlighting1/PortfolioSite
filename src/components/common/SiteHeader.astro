@@ -1,7 +1,7 @@
 ---
-import { getGlobalEntry, getUiEntry } from "../../data/content";
-import { withBase } from "../../data/site";
-import { localizePath, type Locale } from "../../data/i18n";
+import { getGlobalEntry, getUiEntry } from "../../lib/content";
+import { withBase } from "../../lib/site";
+import { localizePath, type Locale } from "../../lib/i18n";
 import LocaleSwitch from "./LocaleSwitch.astro";
 
 interface Props {
@@ -41,13 +41,15 @@ const isActive = (currentPath: string, itemHref: string) => {
       })}
     </nav>
     <div class="header-utility">
-      <LocaleSwitch locale={locale} pathname={pathname} />
       <div class="utility-links">
         {externalProfiles.slice(0, 2).map((link) => (
           <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
         ))}
       </div>
-      <a class="button-link-secondary" href={withBase(localizePath("/resume/", locale))}>{ui.header.resumeButtonLabel}</a>
+      <a href={withBase(localizePath("/resume/", locale))}>{ui.header.resumeButtonLabel}</a>
+      <div class="header-locale">
+        <LocaleSwitch locale={locale} pathname={pathname} />
+      </div>
     </div>
     <details class="mobile-nav">
       <summary class="mobile-nav__toggle" aria-label={ui.header.mobileToggleLabel}>

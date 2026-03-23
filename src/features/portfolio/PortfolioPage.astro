@@ -1,0 +1,869 @@
+﻿---
+import PrintLayout from "../../layouts/PrintLayout.astro";
+import CaseStudySection from "../../components/documents/CaseStudySection.astro";
+import ExternalLinks from "../../components/common/ExternalLinks.astro";
+import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry, getUiEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+
+const { locale, pathname } = Astro.props;
+
+const portfolioPage = await getPageEntry("portfolio", locale);
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
+const experienceEntry = await getGlobalEntry("experience", locale);
+const educationEntry = await getGlobalEntry("education", locale);
+const uiEntry = await getUiEntry("labels", locale);
+
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
+const links = linksEntry.data;
+const experiences = experienceEntry.data.items;
+const education = educationEntry.data.items;
+const ui = uiEntry.data;
+const cover = portfolioPage.data.cover;
+const overview = portfolioPage.data.overview;
+const recognition = portfolioPage.data.recognition;
+const selection = portfolioPage.data.selection;
+
+if (portfolioPage.data.pageType !== "portfolio") {
+  throw new Error("Missing portfolio page content configuration.");
+}
+
+const allProjects = (await getLocalizedCollection("projects", locale)).sort((a, b) => b.data.year - a.data.year);
+const selectedProjectSlugs = selection.selectedProjectSlugs;
+const projects =
+  selectedProjectSlugs.length > 0
+    ? selectedProjectSlugs
+        .map((slug) => allProjects.find((project) => entrySlug(project) === slug))
+        .filter(Boolean)
+    : allProjects.slice(0, selection.projectCount);
+
+const webProjects =
+  selectedProjectSlugs.length > 0
+    ? selectedProjectSlugs
+        .map((slug) => allProjects.find((project) => entrySlug(project) === slug))
+        .filter(Boolean)
+    : allProjects.slice(0, Math.max(selection.projectCount, selection.caseStudyCount));
+
+const research = (await getLocalizedCollection("research", locale))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, selection.researchCount);
+const webPages = portfolioPage.data.web.pages;
+const educationStudyPage = webPages.find((page) => page.kind === "educationStudy");
+
+const initials = profile.name.slice(-2);
+const contactItems = [
+  { label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+  ...links.externalProfiles.slice(0, 2).map((item) => ({
+    label: item.label,
+    value: item.href.replace(/^https?:\/\//, ""),
+    href: item.href
+  }))
+];
+
+const webExperiences = experiences.slice(0, selection.experienceCount);
+const webProjectsSummary = webProjects.slice(0, selection.projectCount);
+const webCaseStudyProjects = webProjects.slice(0, selection.caseStudyCount);
+const webEducation = education.slice(0, selection.educationCount);
+const webStudyItems = educationStudyPage?.kind === "educationStudy" ? educationStudyPage.studyItems.slice(0, selection.studyCount) : [];
+const webCertificates = recognition.certificates.slice(0, selection.certificateCount);
+const webAwards = recognition.awards.slice(0, selection.awardCount);
+const recognitionEntries = [
+  ...webCertificates.map((item) => ({ kind: "certificate" as const, item })),
+  ...webAwards.map((item) => ({ kind: "award" as const, item }))
+];
+const printRecognitionEntries = [
+  ...recognition.certificates.map((item) => ({ kind: "certificate" as const, item })),
+  ...recognition.awards.map((item) => ({ kind: "award" as const, item }))
+];
+const chunk = <T,>(items: T[], size: number): T[][] => {
+  const chunks: T[][] = [];
+
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+
+  return chunks;
+};
+const recognitionPages = chunk(recognitionEntries, 2);
+const printRecognitionPages = chunk(printRecognitionEntries, 4);
+const recognitionPage = webPages.find((page) => page.kind === "recognition");
+
+const topExperiences = experiences.slice(0, 3);
+const topProjects = projects.slice(0, 2);
+const topEducation = education.slice(0, 1);
+const topCapabilities = profile.capabilityGroups.slice(0, 4);
+const topResearch = research.slice(0, 1);
+const certificatePlaceholder =
+  locale === "ko" ? "수료한 프로그램과 자격증은 이 영역에 정리됩니다." : "Certificates and completed programs will appear in this section.";
+const awardPlaceholder =
+  locale === "ko" ? "수상과 인정 이력은 이 영역에 정리됩니다." : "Awards and recognitions will appear in this section.";
+const skillSeparator = " · ";
+const labels = {
+  location: locale === "ko" ? "위치" : "Location",
+  locationWithPeriod: locale === "ko" ? "위치." : "Location.",
+  keywords: locale === "ko" ? "핵심 태그" : "Keywords",
+  links: locale === "ko" ? "관련 링크" : "Links",
+  experience: locale === "ko" ? "경력." : "Experience.",
+  selectedProjects: locale === "ko" ? "주요 프로젝트." : "Selected Projects.",
+  education: locale === "ko" ? "학력." : "Education.",
+  study: locale === "ko" ? "스터디." : "Study.",
+  capability: locale === "ko" ? "핵심 역량." : "Core Domain.",
+  research: locale === "ko" ? "연구." : "Research.",
+  certificate: locale === "ko" ? "수료 및 자격." : "Certificate.",
+  award: locale === "ko" ? "수상." : "Award."
+};
+
+const photoCandidates = [
+  { file: path.resolve(process.cwd(), "src/assets/profile-photo.jpg"), mime: "image/jpeg" },
+  { file: path.resolve(process.cwd(), "src/assets/profile-photo.jpeg"), mime: "image/jpeg" },
+  { file: path.resolve(process.cwd(), "src/assets/profile-photo.png"), mime: "image/png" },
+  { file: path.resolve(process.cwd(), "src/assets/profile-photo.webp"), mime: "image/webp" }
+];
+
+const photoSource = (() => {
+  const found = photoCandidates.find((candidate) => existsSync(candidate.file));
+  if (!found) return null;
+
+  const buffer = readFileSync(found.file);
+  return `data:${found.mime};base64,${buffer.toString("base64")}`;
+})();
+---
+
+<PrintLayout
+  title={portfolioPage.data.documentTitle}
+  description={portfolioPage.data.documentDescription}
+  pathname={pathname}
+  locale={locale}
+>
+  <section class="portfolio-carousel screen-only" data-portfolio-carousel>
+    <p class="portfolio-toolbar__label portfolio-toolbar__label--intro">{portfolioPage.data.printToolbarLabel}</p>
+    <div class="portfolio-carousel__viewport" data-portfolio-viewport>
+      <div class="portfolio-carousel__track" data-portfolio-track>
+      <article class="portfolio-carousel__slide" data-portfolio-slide>
+        <article class="portfolio-web-card portfolio-web-card--hero">
+          <div class="portfolio-web-hero portfolio-web-hero--cover">
+            <div class="portfolio-web-hero__media portfolio-web-hero__media--cover" aria-hidden={photoSource ? undefined : "true"}>
+              {photoSource ? (
+                <img src={photoSource} alt={profile.name} class="portfolio-web-hero__photo" draggable="false" />
+              ) : (
+                initials
+              )}
+            </div>
+            <div class="portfolio-web-hero__body portfolio-web-hero__body--cover">
+              <div class="portfolio-web-card__eyebrow">{cover.label}</div>
+              <h2>{profile.name}</h2>
+              <p class="portfolio-web-hero__headline">{cover.title}</p>
+            </div>
+          </div>
+          <p class="portfolio-web-card__lead portfolio-web-card__lead--hero">
+            {overview.intro.enabled ? overview.intro.paragraphs[0] : profile.intro}
+          </p>
+          <div class="portfolio-web-hero__contacts portfolio-web-hero__contacts--cover">
+            <div class="portfolio-web-hero__contact">
+              <span>{labels.location}</span>
+              <strong>{siteConfig.location}</strong>
+            </div>
+            {contactItems.map((item) => (
+              <div class="portfolio-web-hero__contact">
+                <span>{item.label}</span>
+                <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                  {item.value}
+                </a>
+              </div>
+            ))}
+          </div>
+        </article>
+      </article>
+
+      {webPages.map((page) => {
+        if (page.kind === "philosophyCore") {
+          return (
+            <article class="portfolio-carousel__slide" data-portfolio-slide>
+              <article class="portfolio-web-card portfolio-web-card--sectioned">
+                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                <h2 class="portfolio-web-card__title">{page.title}</h2>
+                <section class="portfolio-web-card__section">
+                  <div class="portfolio-web-card__pillars">
+                    {profile.philosophy.map((item) => (
+                      <article class="portfolio-web-mini portfolio-web-mini--pillar">
+                        <p>{item}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+                <section class="portfolio-web-card__section">
+                  <h3 class="portfolio-web-card__section-title">{page.coreDomainTitle}</h3>
+                  <div class="portfolio-web-stack portfolio-web-stack--two-column">
+                    {topCapabilities.map((group) => (
+                      <article class="portfolio-web-mini portfolio-web-mini--dense">
+                        <strong>{group.title}</strong>
+                        <p>{group.description}</p>
+                        <p>{group.skills.slice(0, 3).join(skillSeparator)}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              </article>
+            </article>
+          );
+        }
+
+        if (page.kind === "experience") {
+          return (
+            <article class="portfolio-carousel__slide" data-portfolio-slide>
+              <article class="portfolio-web-card portfolio-web-card--feature portfolio-web-card--timeline">
+                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                <h2 class="portfolio-web-card__title">{page.title}</h2>
+                <div class="portfolio-web-stack portfolio-web-stack--feature">
+                  {webExperiences.map((item) => (
+                    <article class="portfolio-web-entry portfolio-web-entry--feature">
+                      <div class="portfolio-web-entry__header">
+                        <h3>{item.organization}</h3>
+                        <span>{item.period}</span>
+                      </div>
+                      <p>{item.role}</p>
+                      <ul class="portfolio-web-card__list portfolio-web-card__list--tight">
+                        {item.bullets.slice(0, 2).map((bullet) => (
+                          <li>{bullet}</li>
+                        ))}
+                      </ul>
+                    </article>
+                  ))}
+                </div>
+              </article>
+            </article>
+          );
+        }
+
+        if (page.kind === "projects") {
+          return (
+            <article class="portfolio-carousel__slide" data-portfolio-slide>
+              <article class="portfolio-web-card portfolio-web-card--feature portfolio-web-card--projects">
+                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                <h2 class="portfolio-web-card__title">{page.title}</h2>
+                <div class="portfolio-web-stack portfolio-web-stack--feature">
+                  {webProjectsSummary.map((project) => (
+                    <article class="portfolio-web-entry portfolio-web-entry--feature">
+                      <div class="portfolio-web-entry__header">
+                        <h3>{project.data.title}</h3>
+                        <span>{project.data.year}</span>
+                      </div>
+                      <p>{project.data.type} | {project.data.roles.join(", ")}</p>
+                      <p class="portfolio-web-entry__summary">{project.data.portfolioProblem ?? project.data.summary}</p>
+                      <div class="tag-row portfolio-web-entry__tags">
+                        {project.data.tags.slice(0, 4).map((tag: string) => (
+                          <span class="tag-chip">{tag}</span>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </article>
+            </article>
+          );
+        }
+
+        if (page.kind === "educationStudy") {
+          return (
+            <article class="portfolio-carousel__slide" data-portfolio-slide>
+              <article class="portfolio-web-card portfolio-web-card--sectioned portfolio-web-card--map">
+                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                <h2 class="portfolio-web-card__title">{page.title}</h2>
+                <section class="portfolio-web-card__section">
+                  <h3 class="portfolio-web-card__section-title">{page.educationTitle}</h3>
+                  <div class="portfolio-web-stack portfolio-web-stack--two-column">
+                    {webEducation.map((item) => (
+                      <article class="portfolio-web-mini portfolio-web-mini--education-card">
+                        <strong>{item.school}</strong>
+                        <p>{item.degree}</p>
+                        <p>{item.period}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+                <section class="portfolio-web-card__section">
+                  <h3 class="portfolio-web-card__section-title">{page.studyTitle}</h3>
+                  <div class="portfolio-web-stack portfolio-web-stack--two-column portfolio-web-stack--study-cards">
+                    {webStudyItems.map((item) => (
+                      <article class:list={["portfolio-web-mini", "portfolio-web-mini--study-card"]}>
+                        <strong>{item.title}</strong>
+                        <p class="portfolio-web-mini__kicker">{item.emphasis}</p>
+                        <p>{item.description}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              </article>
+            </article>
+          );
+        }
+
+        if (page.kind === "research") {
+          return (
+            <article class="portfolio-carousel__slide" data-portfolio-slide>
+              <article class="portfolio-web-card portfolio-web-card--research-only">
+                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                <h2 class="portfolio-web-card__title">{page.title}</h2>
+                <div class="portfolio-web-stack">
+                  {research.slice(0, 3).map((item) => (
+                    <article class="portfolio-web-entry portfolio-web-entry--feature">
+                      <div class="portfolio-web-entry__header">
+                        <h3>{item.data.title}</h3>
+                        <span>{item.data.year}</span>
+                      </div>
+                      <p>{item.data.venue}</p>
+                      <p class="portfolio-web-entry__summary">{item.data.abstract}</p>
+                      <div class="tag-row portfolio-web-entry__tags">
+                        {item.data.tags.slice(0, 3).map((tag) => (
+                          <span class="tag-chip">{tag}</span>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </article>
+            </article>
+          );
+        }
+
+        return recognitionPages.length > 0
+          ? recognitionPages.map((entries) => {
+              return (
+                <article class="portfolio-carousel__slide" data-portfolio-slide>
+                  <article class="portfolio-web-card portfolio-web-card--sectioned portfolio-web-card--recognition">
+                    <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                    <h2 class="portfolio-web-card__title">{page.title}</h2>
+                    <div class="portfolio-web-stack portfolio-web-stack--feature">
+                      {entries.map((entry, entryIndex) => {
+                        const isCertificate = entry.kind === "certificate";
+                        const previousEntry = entryIndex > 0 ? entries[entryIndex - 1] : null;
+                        const shouldShowSectionTitle = !previousEntry || previousEntry.kind !== entry.kind;
+
+                        return (
+                          <>
+                            {shouldShowSectionTitle && (
+                              <div class="portfolio-web-flow-heading">
+                                <h3 class="portfolio-web-card__section-title">{isCertificate ? page.certificateTitle : page.awardTitle}</h3>
+                              </div>
+                            )}
+                            <article class="portfolio-web-entry portfolio-web-entry--feature">
+                              <div class="portfolio-web-entry__header">
+                                <h3>{entry.item.title}</h3>
+                                <span>{entry.item.date}</span>
+                              </div>
+                              <p>
+                                {entry.item.issuer}
+                                {entry.item.credentialUrl && (
+                                  <>
+                                    {" | "}
+                                    <a href={entry.item.credentialUrl} target="_blank" rel="noreferrer">
+                                      {entry.item.credentialLabel ??
+                                        (isCertificate
+                                          ? locale === "ko" ? "자격증 보기" : "View credential"
+                                          : locale === "ko" ? "증빙 보기" : "View details")}
+                                    </a>
+                                  </>
+                                )}
+                              </p>
+                              {entry.item.description && <p class="portfolio-web-entry__summary">{entry.item.description}</p>}
+                              {entry.item.bullets.length > 0 && (
+                                <ul class="portfolio-web-card__list portfolio-web-card__list--tight">
+                                  {entry.item.bullets.map((bullet) => (
+                                    <li>{bullet}</li>
+                                  ))}
+                                </ul>
+                              )}
+                            </article>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </article>
+                </article>
+              );
+            })
+          : (
+            <article class="portfolio-carousel__slide" data-portfolio-slide>
+              <article class="portfolio-web-card portfolio-web-card--sectioned portfolio-web-card--recognition">
+                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
+                <h2 class="portfolio-web-card__title">{page.title}</h2>
+                <section class="portfolio-web-card__section">
+                  <h3 class="portfolio-web-card__section-title">{page.certificateTitle}</h3>
+                  <article class="portfolio-web-entry portfolio-web-entry--feature">
+                    <p>{certificatePlaceholder}</p>
+                  </article>
+                </section>
+                <section class="portfolio-web-card__section">
+                  <h3 class="portfolio-web-card__section-title">{page.awardTitle}</h3>
+                  <article class="portfolio-web-entry portfolio-web-entry--feature">
+                    <p>{awardPlaceholder}</p>
+                  </article>
+                </section>
+              </article>
+            </article>
+          );
+      })}
+
+      {webCaseStudyProjects.map((project, index) => {
+        const projectLinks = [
+          { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+          { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+          { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+          { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
+        ].filter((link) => link.href);
+
+        return (
+          <article class="portfolio-carousel__slide" data-portfolio-slide>
+            <article class="portfolio-web-card portfolio-web-card--case">
+              <div class="portfolio-web-card__eyebrow">{ui.project.caseStudyLabelPrefix} {index + 1}</div>
+              <div class="portfolio-web-entry__header">
+                <h2 class="portfolio-web-card__title">{project.data.title}</h2>
+                <span class="portfolio-web-card__year">{project.data.year}</span>
+              </div>
+              <p class="portfolio-web-card__lead">{project.data.summary}</p>
+              <div class="portfolio-web-case-grid">
+                <section class="portfolio-web-case-section">
+                  <h3>{ui.project.fieldLabels.problem}</h3>
+                  <p>{project.data.portfolioProblem ?? project.data.summary}</p>
+                </section>
+                <section class="portfolio-web-case-section">
+                  <h3>{ui.project.fieldLabels.approach}</h3>
+                  <p>{project.data.portfolioApproach ?? project.data.summary}</p>
+                </section>
+                <section class="portfolio-web-case-section portfolio-web-case-section--accent">
+                  <h3>{ui.project.fieldLabels.outcome}</h3>
+                  <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
+                  {project.data.metrics.length > 0 && (
+                    <div class="tag-row portfolio-web-case-metrics">
+                      {project.data.metrics.map((metric: string) => (
+                        <span class="metric-badge">{metric}</span>
+                      ))}
+                    </div>
+                  )}
+                </section>
+              </div>
+              <div class="portfolio-web-card__meta">
+                <div>
+                  <span class="small-label case-study__group-label">{labels.keywords}</span>
+                  <div class="tag-row case-study__tags">
+                    {project.data.tags.map((tag: string) => (
+                      <span class="tag-chip">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+                {projectLinks.length > 0 && (
+                  <div>
+                    <span class="small-label case-study__group-label">{labels.links}</span>
+                    <ExternalLinks locale={locale} links={projectLinks} />
+                  </div>
+                )}
+              </div>
+            </article>
+          </article>
+        );
+      })}
+      </div>
+    </div>
+
+    <div class="portfolio-carousel__controls">
+      <button type="button" class="portfolio-sheet__print-button portfolio-carousel__print" onclick="window.print()">
+        {ui.printToolbar.printButtonLabel}
+      </button>
+      <button type="button" class="portfolio-carousel__button" data-portfolio-prev aria-label="Previous">
+        &#8249;
+      </button>
+      <button type="button" class="portfolio-carousel__button" data-portfolio-next aria-label="Next">
+        &#8250;
+      </button>
+    </div>
+  </section>
+
+    <div class="print-only">
+      <div class="portfolio-doc">
+        <div class="portfolio-doc__toolbar screen-only">
+          <button type="button" class="portfolio-sheet__print-button" onclick="window.print()">
+            {ui.printToolbar.printButtonLabel}
+          </button>
+        </div>
+
+      <article class="paper-sheet paper-sheet--portfolio paper-sheet--portfolio-profile document-shell">
+        <section class="portfolio-print-profile">
+          <div class="portfolio-print-profile__media" aria-hidden={photoSource ? undefined : "true"}>
+            {photoSource ? (
+              <img src={photoSource} alt={profile.name} class="portfolio-print-profile__photo" />
+            ) : (
+              initials
+            )}
+          </div>
+          <div class="portfolio-print-profile__header">
+            <div>
+              <p class="portfolio-print-profile__role">{siteConfig.primaryRole}</p>
+              <h1>{profile.name}</h1>
+            </div>
+            <div class="portfolio-print-profile__contacts">
+              <div class="portfolio-print-profile__contact">
+                <strong>{labels.locationWithPeriod}</strong>
+                <span>{siteConfig.location}</span>
+              </div>
+              {contactItems.map((item) => (
+                <div class="portfolio-print-profile__contact">
+                  <strong>{item.label}.</strong>
+                  <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                    {item.value}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <p class="portfolio-print-profile__headline">{profile.headline}</p>
+        <p class="portfolio-print-profile__summary">{profile.intro}</p>
+
+        <ul class="portfolio-print-profile__principles">
+          {profile.philosophy.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+
+        <section class="portfolio-print-section">
+          <h2>{labels.experience}</h2>
+          {topExperiences.map((item) => (
+            <article class="portfolio-print-entry">
+              <div class="portfolio-print-entry__header">
+                <h3>{item.organization}</h3>
+                <span>{item.period}</span>
+              </div>
+              <p class="portfolio-print-entry__meta">{item.role}</p>
+              <ul>
+                {item.bullets.slice(0, 1).map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </section>
+
+        <section class="portfolio-print-section">
+          <h2>{labels.selectedProjects}</h2>
+          {topProjects.map((project) => (
+            <article class="portfolio-print-entry">
+              <div class="portfolio-print-entry__header">
+                <h3>{project.data.title}</h3>
+                <span>{project.data.year}</span>
+              </div>
+              <p class="portfolio-print-entry__meta">{project.data.type} | {project.data.roles.join(", ")}</p>
+              <ul>
+                <li>{project.data.portfolioProblem ?? project.data.summary}</li>
+              </ul>
+            </article>
+          ))}
+        </section>
+      </article>
+
+      <article class="paper-sheet paper-sheet--portfolio paper-sheet--portfolio-summary document-shell page-break">
+        {overview.intro.enabled && (
+          <section class="portfolio-print-section">
+            <h2>{overview.intro.title}</h2>
+            {overview.intro.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </section>
+        )}
+
+        <div class="portfolio-print-columns">
+          <section class="portfolio-print-section portfolio-print-section--compact">
+            <h2>{labels.education}</h2>
+            {topEducation.map((item) => (
+              <article class="portfolio-print-entry portfolio-print-entry--compact">
+                <h3>{item.school}</h3>
+                <p class="portfolio-print-entry__meta">{item.degree}</p>
+                <ul>
+                  <li>{item.period}</li>
+                  <li>{item.detail}</li>
+                </ul>
+              </article>
+            ))}
+          </section>
+
+          <section class="portfolio-print-section portfolio-print-section--compact">
+            <h2>{labels.study}</h2>
+            {(educationStudyPage?.kind === "educationStudy" ? educationStudyPage.studyItems : []).map((item) => (
+              <article class="portfolio-print-entry portfolio-print-entry--compact">
+                <h3>{item.title}</h3>
+                <p class="portfolio-print-entry__meta">{item.emphasis}</p>
+                <ul>
+                  <li>{item.description}</li>
+                </ul>
+              </article>
+            ))}
+          </section>
+
+          <section class="portfolio-print-section portfolio-print-section--compact">
+            <h2>{overview.capability.enabled ? overview.capability.title : labels.capability}</h2>
+            {topCapabilities.map((group) => (
+              <article class="portfolio-print-entry portfolio-print-entry--compact">
+                <h3>{group.title}</h3>
+                <ul>
+                  <li>{group.skills.slice(0, 3).join(skillSeparator)}</li>
+                  <li>{group.description}</li>
+                </ul>
+              </article>
+            ))}
+          </section>
+        </div>
+
+        <section class="portfolio-print-section portfolio-print-summary__row">
+          <h2>{overview.research.enabled ? overview.research.title : labels.research}</h2>
+          {topResearch.map((item) => (
+            <article class="portfolio-print-entry">
+              <div class="portfolio-print-entry__header">
+                <h3>{item.data.title}</h3>
+                <span>{item.data.year}</span>
+              </div>
+              <p class="portfolio-print-entry__meta">{item.data.venue}</p>
+              <ul>
+                <li>{item.data.abstract}</li>
+                {item.data.tags.slice(0, 2).map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </section>
+      </article>
+      {printRecognitionPages.length > 0 && printRecognitionPages.map((entries) => (
+        <article class="paper-sheet paper-sheet--portfolio paper-sheet--portfolio-recognition document-shell page-break">
+          <div class="portfolio-print-recognition-page">
+            <div>
+              <div class="portfolio-web-card__eyebrow">{recognitionPage?.eyebrow ?? "Certificate & Award"}</div>
+              <h1 class="portfolio-print-recognition-page__title">{recognitionPage?.title ?? (locale === "ko" ? "수료와 수상" : "Certificates & Awards")}</h1>
+            </div>
+
+            {entries.map((entry, entryIndex) => {
+              const previousEntry = entryIndex > 0 ? entries[entryIndex - 1] : null;
+              const showSectionTitle = !previousEntry || previousEntry.kind !== entry.kind;
+
+              return (
+                <section class:list={["portfolio-print-section", "portfolio-print-recognition-page__section", { "portfolio-print-recognition-page__section--first": entryIndex === 0 }]}>
+                  {showSectionTitle && (
+                    <h2>{entry.kind === "certificate" ? (recognitionPage?.kind === "recognition" ? recognitionPage.certificateTitle : labels.certificate) : (recognitionPage?.kind === "recognition" ? recognitionPage.awardTitle : labels.award)}</h2>
+                  )}
+                  <article class="portfolio-print-entry portfolio-print-entry--compact portfolio-print-entry--recognition">
+                    <div class="portfolio-print-entry__header">
+                      <h3>{entry.item.title}</h3>
+                      <span>{entry.item.date}</span>
+                    </div>
+                    <p class="portfolio-print-entry__meta">{entry.item.issuer}</p>
+                    <ul>
+                      {entry.item.description && <li>{entry.item.description}</li>}
+                      {entry.item.bullets.map((bullet) => (
+                        <li>{bullet}</li>
+                      ))}
+                    </ul>
+                  </article>
+                </section>
+              );
+            })}
+          </div>
+        </article>
+      ))}
+      {projects.map((project, index) => (
+        <article class="paper-sheet paper-sheet--portfolio paper-sheet--case-study document-shell page-break">
+          <CaseStudySection project={project} index={index} locale={locale} />
+        </article>
+      ))}
+    </div>
+  </div>
+</PrintLayout>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-portfolio-carousel]");
+    if (!root) return;
+
+    const viewport = root.querySelector("[data-portfolio-viewport]");
+    const track = root.querySelector("[data-portfolio-track]");
+    const slides = Array.from(root.querySelectorAll("[data-portfolio-slide]"));
+    const prev = root.querySelector("[data-portfolio-prev]");
+    const next = root.querySelector("[data-portfolio-next]");
+
+    if (!viewport || !track || slides.length === 0) return;
+
+    let activeIndex = 0;
+    let animationFrame = 0;
+    let slideWidth = 0;
+    let viewportWidth = 0;
+    let currentOffset = 0;
+
+    const getTargetOffset = (index) => {
+      const safeIndex = Math.max(0, Math.min(index, slides.length - 1));
+      const slide = slides[safeIndex];
+      if (!slide) return 0;
+
+      return viewportWidth / 2 - (slide.offsetLeft + slide.offsetWidth / 2);
+    };
+
+    const updateActive = (index = activeIndex) => {
+      activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("is-active", index === activeIndex);
+        slide.classList.toggle("is-near", Math.abs(index - activeIndex) === 1);
+      });
+    };
+
+    const applyOffset = (offset, animate = false) => {
+      currentOffset = offset;
+      track.style.transition = animate ? "transform 520ms cubic-bezier(0.22, 0.8, 0.2, 1)" : "none";
+      track.style.transform = `translate3d(${offset}px, 0, 0)`;
+    };
+
+    const animateToIndex = (index) => {
+      updateActive(index);
+      applyOffset(getTargetOffset(activeIndex), true);
+    };
+
+    const measure = () => {
+      const firstSlide = slides[0];
+      if (!firstSlide) return;
+
+      slideWidth = firstSlide.getBoundingClientRect().width;
+      viewportWidth = viewport.clientWidth;
+      track.style.setProperty("--carousel-edge-space", `${Math.max(0, (viewportWidth - slideWidth) / 2)}px`);
+      applyOffset(getTargetOffset(activeIndex), false);
+      updateActive(activeIndex);
+    };
+
+    const getClosestIndexFromOffset = (offset) => {
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      slides.forEach((_, index) => {
+        const distance = Math.abs(getTargetOffset(index) - offset);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      return closestIndex;
+    };
+
+    const animateOffsetTo = (targetOffset, duration = 520) => {
+      const startOffset = currentOffset;
+      const distance = targetOffset - startOffset;
+
+      if (Math.abs(distance) < 1) return;
+
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+
+      const startTime = performance.now();
+      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+      const step = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(progress);
+        applyOffset(startOffset + distance * eased, false);
+
+        if (progress < 1) {
+          animationFrame = window.requestAnimationFrame(step);
+          return;
+        }
+
+        animationFrame = 0;
+        applyOffset(targetOffset, false);
+      };
+
+      animationFrame = window.requestAnimationFrame(step);
+    };
+
+    const scrollToIndex = (index) => {
+      const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
+      updateActive(nextIndex);
+      animateOffsetTo(getTargetOffset(nextIndex));
+    };
+
+    prev?.addEventListener("click", () => {
+      scrollToIndex(activeIndex - 1);
+    });
+
+    next?.addEventListener("click", () => {
+      scrollToIndex(activeIndex + 1);
+    });
+
+    let pointerActive = false;
+    let startX = 0;
+    let startOffset = 0;
+    let dragged = false;
+
+    viewport.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      pointerActive = true;
+      dragged = false;
+      startX = event.clientX;
+      startOffset = currentOffset;
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+      viewport.classList.add("is-dragging");
+      viewport.setPointerCapture?.(event.pointerId);
+    });
+
+    const releasePointer = (event) => {
+      if (!pointerActive) return;
+      pointerActive = false;
+      viewport.classList.remove("is-dragging");
+      if (event?.pointerId !== undefined) {
+        viewport.releasePointerCapture?.(event.pointerId);
+      }
+      if (!dragged) return;
+      window.requestAnimationFrame(() => {
+        const nextIndex = getClosestIndexFromOffset(currentOffset);
+        updateActive(nextIndex);
+        animateOffsetTo(getTargetOffset(nextIndex));
+      });
+    };
+
+    viewport.addEventListener("pointermove", (event) => {
+      if (!pointerActive) return;
+      event.preventDefault();
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 6) {
+        dragged = true;
+      }
+      applyOffset(startOffset + delta, false);
+    });
+
+    viewport.addEventListener("pointerup", releasePointer);
+    viewport.addEventListener("pointercancel", releasePointer);
+
+    slides.forEach((slide, index) => {
+      slide.addEventListener("click", () => {
+        if (dragged) return;
+        scrollToIndex(index);
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      measure();
+    });
+
+    measure();
+  })();
+</script>
+

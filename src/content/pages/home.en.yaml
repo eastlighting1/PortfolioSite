@@ -24,7 +24,7 @@ hero:
   focusCard:
     label: Current Focus
     title: At the Intersection of Research and Engineering
-    body: Beyond simply studying high-accuracy models, I also focus on reproducible environments, observable systems, and efficient infrastructure. I build AI that works in real business settings.
+    body: Beyond simply studying high-accuracy models,<br />I also focus on reproducible environments, observable systems, and efficient infrastructure.<br />I build AI that works in real business settings.
     items:
       - label: Core Domain
         value: Medical AI (NLP), MLOps

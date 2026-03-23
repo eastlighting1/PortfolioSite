@@ -1,61 +1,56 @@
 globalType: profile
 name: Donghyeon Kim
-headline: Applied AI Researcher and AI Engineer focused on deployable conversational and clinical AI systems.
-intro: I work on applied AI problems that begin with real-world data and end with models, evaluations, and system surfaces that collaborators can actually use. My recent work spans conversational AI, healthcare AI, and ML system practices that improve reproducibility and delivery.
-summary: Graduate researcher with hands-on experience in NLP, healthcare AI, deep learning, and end-to-end AI project implementation. I am especially interested in turning experimental AI work into reliable systems through better evaluation, clearer documentation, and practical MLOps thinking.
+headline: Applied AI researcher and AI engineer focused on deployable conversational AI and medical AI systems
+intro: I am interested in applied AI problems grounded in real-world data, and in connecting them to models, evaluation, and deliverables that collaborators can actually use. Recently, I have been working across conversational AI, medical AI, and ML systems with a focus on improving reproducibility and practical delivery.
+summary: I am a graduate researcher with experience in NLP, medical AI, deep learning, and end-to-end AI project implementation. I am particularly interested in turning experimental AI work into trustworthy systems through stronger evaluation, clear documentation, and a practical MLOps perspective.
 philosophy:
-  - Build AI systems that are not only accurate, but also understandable and reusable.
-  - Treat evaluation as part of the product, not just the research appendix.
-  - Connect experimentation with delivery so that technical work remains useful beyond the original builder.
+  - I build AI systems that are not only accurate, but also understandable and reusable.
+  - I treat evaluation not as an appendix to a paper, but as part of the deliverable itself.
+  - I connect experimentation and delivery so that technical work remains useful beyond the person who created it.
+
 capabilityGroups:
-  - title: Applied AI
-    description: Modeling and implementation across NLP, healthcare AI, and mixed structured-unstructured data settings.
+  - title: Data Science
+    description: The ability to refine the quality and structure of real-world data and build a solid foundation for modeling through analysis and preprocessing
     skills:
-      - Python
-      - PyTorch
-      - Hugging Face
-      - XGBoost
-      - Deep Learning
-  - title: NLP / Research
-    description: Conversational AI, empathetic dialogue generation, text analysis, and evaluation-driven experimentation.
+      - Data Preparation
+      - Feature Engineering
+      - Data Wrangling
+      - Data Manipulation
+  - title: Applied AI
+    description: The ability to turn domain-specific NLP problems into concrete tasks and connect them to reviewable outcomes through experimentation and implementation
     skills:
       - Conversational AI
-      - Reinforcement Learning
-      - Text Analysis
-      - Experiment Design
-      - Technical Writing
-  - title: ML Systems
-    description: Project delivery with attention to reproducibility, deployment context, monitoring, and collaboration surfaces.
+      - Medical AI
+      - Knowledge Graph
+      - Logic-based AI
+  - title: MLOps
+    description: The ability to organize development into repeatable, collaborative workflows and scale it into systems with deployment and automation in mind
     skills:
+      - Cloud
       - Docker
-      - Linux
-      - Git
-      - AWS
-      - Logging
-  - title: Growing Interests
-    description: Operational practices that help research become stable and maintainable systems over time.
-    skills:
-      - MLOps
-      - Observability
-      - Feature Store
       - Continuous Training
-      - uv
+      - Feature Store
+  - title: Observability in AI
+    description: An operational perspective centered on recording and tracing model behavior to improve reproducibility, debuggability, and maintainability
+    skills:
+      - Logging
+      - Monitoring
+      - Artifacts
+      - Provenance
+
 pipeline:
-  - title: Problem Framing
-    emphasis: Applied AI Researcher
-    description: Start from the user, domain, and decision context before choosing a model or benchmark.
-  - title: Data Preparation
-    emphasis: AI Engineer
-    description: Clean, structure, and interpret noisy real-world data so later modeling choices remain grounded.
-  - title: Modeling
-    emphasis: Research Builder
-    description: Select methods that match the signal, domain constraints, and target use case.
-  - title: Evaluation
-    emphasis: Experimental Rigor
-    description: Measure performance with reviewable metrics and failure cases rather than one headline number.
-  - title: Interface / Delivery
-    emphasis: Collaborative Implementer
-    description: Turn results into reports, demos, dashboards, or code paths that other people can adopt.
-  - title: Monitoring Mindset
-    emphasis: MLOps Interest
-    description: Keep reproducibility, observability, and long-term maintainability in mind from the start.
+  - title: Feature Engineering
+    emphasis: Data structure and management
+    description: I preprocess complex data in ways that fit the task and design pipelines that preserve data quality and consistency.
+  - title: Reproducible Experiments
+    emphasis: Automating training
+    description: I train models under carefully controlled code and environment settings, and track them systematically to build experiments that can be reproduced at any time.
+  - title: Robust Evaluation
+    emphasis: Validation and assessment
+    description: Going beyond simple accuracy, I examine robustness, error cases, and the demands of medical and conversational domains from multiple angles to establish reliability before production use.
+  - title: DevOps
+    emphasis: Infrastructure and deployment
+    description: I deploy models in AWS or Docker environments and support reliable operation in real-world settings through continuous integration and automation.
+  - title: System Observability
+    emphasis: Monitoring and feedback loops
+    description: I collect and visualize logs, resource signals, and prediction outputs from deployed AI systems in real time so that the internal state of the pipeline can be observed transparently.

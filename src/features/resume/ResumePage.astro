@@ -1,0 +1,389 @@
+---
+import PrintLayout from "../../layouts/PrintLayout.astro";
+import PrintToolbar from "../../components/documents/PrintToolbar.astro";
+import ResumeHeader from "../../components/documents/ResumeHeader.astro";
+import ResumeSection from "../../components/documents/ResumeSection.astro";
+import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+
+const { locale, pathname } = Astro.props;
+
+const resumePage = await getPageEntry("resume", locale);
+const portfolioPage = await getPageEntry("portfolio", locale);
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
+const experienceEntry = await getGlobalEntry("experience", locale);
+const educationEntry = await getGlobalEntry("education", locale);
+
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
+const links = linksEntry.data.externalProfiles;
+const experience = experienceEntry.data.items;
+const education = educationEntry.data.items;
+
+if (resumePage.data.pageType !== "resume" || portfolioPage.data.pageType !== "portfolio") {
+  throw new Error("Missing resume content configuration.");
+}
+
+const selectedProjects = (await getLocalizedCollection("projects", locale))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, resumePage.data.sections.projects.count ?? 2);
+
+const selectedResearch = (await getLocalizedCollection("research", locale))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, resumePage.data.sections.research.count ?? 1);
+
+const allResearch = (await getLocalizedCollection("research", locale))
+  .sort((a, b) => b.data.year - a.data.year);
+
+const featuredExperience = experience.slice(0, resumePage.data.sections.experience.count ?? 2);
+const certificates = portfolioPage.data.recognition.certificates;
+const awards = portfolioPage.data.recognition.awards;
+const recognition = [...certificates, ...awards];
+
+function normalizeWhitespace(text: string) {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function firstSentence(text: string) {
+  const normalized = normalizeWhitespace(text);
+  const match = normalized.match(/^.*?[.!?](?=\s|$)/);
+  return match?.[0]?.trim() ?? normalized;
+}
+
+function compactText(text: string, maxLength = 180) {
+  const sentence = firstSentence(text);
+  if (sentence.length <= maxLength) {
+    return sentence;
+  }
+
+  return `${sentence.slice(0, maxLength).trimEnd()}...`;
+}
+
+function formatResearchCitation(title: string, venue: string, year: number, type: string) {
+  return {
+    title: `"${title}."`,
+    meta: `${venue}, ${year}. ${type}.`
+  };
+}
+
+const sectionLabels =
+  locale === "ko"
+    ? {
+        interests: "연구 관심사",
+        keywords: "키워드",
+        objective: "요약",
+        education: "학력",
+        experience: "연구 및 실무 경험",
+        projects: "선별 프로젝트",
+        publications: "연구 및 발표",
+        certifications: "수료 및 자격",
+        additional: "추가 정보",
+        links: "링크",
+        focusAreas: "관심 축"
+      }
+    : {
+        interests: "Research Interests",
+        keywords: "Keywords",
+        objective: "Objective",
+        education: "Education",
+        experience: "Research Experience",
+        projects: "Selected Projects",
+        publications: "Publications",
+        certifications: "Certifications",
+        additional: "Additional Information",
+        links: "Links",
+        focusAreas: "Focus Areas"
+      };
+
+const localizedKeywordFallback =
+  locale === "ko"
+    ? ["의료 AI", "대화형 AI", "임상 NLP", "평가", "MLOps", "응용 AI 시스템"]
+    : ["Medical AI", "Conversational AI", "Clinical NLP", "Evaluation", "MLOps", "Applied AI Systems"];
+
+const researchKeywords =
+  resumePage.data.printCv.keywords.length > 0
+    ? resumePage.data.printCv.keywords
+    : localizedKeywordFallback;
+
+const cvAdditionalItems =
+  resumePage.data.printCv.additionalItems.length > 0
+    ? resumePage.data.printCv.additionalItems
+    : [
+        {
+          label: sectionLabels.links,
+          value: links.map((link) => link.label).join(" · ")
+        },
+        {
+          label: sectionLabels.focusAreas,
+          value: profile.capabilityGroups.slice(0, 4).map((group) => group.title).join(" · ")
+        },
+        {
+          label: locale === "ko" ? "위치" : "Location",
+          value: siteConfig.location
+        }
+      ];
+---
+
+<PrintLayout
+  title={resumePage.data.documentTitle}
+  description={resumePage.data.documentDescription}
+  pathname={pathname}
+  locale={locale}
+>
+  <PrintToolbar label={resumePage.data.printToolbarLabel} locale={locale} />
+
+  <div class="paper-sheet paper-sheet--resume document-shell screen-only">
+    <ResumeHeader locale={locale} />
+    <div class="resume-compact-grid">
+      <div class="document-list">
+        {resumePage.data.layout.leftColumn.map((sectionId) => {
+          if (sectionId === "summary" && resumePage.data.sections.summary.enabled) {
+            return (
+              <ResumeSection title={resumePage.data.sections.summary.title} className="resume-section--summary">
+                <p class="resume-summary">{compactText(profile.summary, 210)}</p>
+                <ul class="compact-bullets compact-bullets--summary">
+                  {profile.philosophy.slice(0, 2).map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              </ResumeSection>
+            );
+          }
+          if (sectionId === "experience" && resumePage.data.sections.experience.enabled) {
+            return (
+              <ResumeSection title={resumePage.data.sections.experience.title} className="resume-section--experience">
+                {featuredExperience.map((item) => (
+                  <div class="resume-item resume-item--tight">
+                    <strong>{item.role}</strong>
+                    <div class="muted">{item.organization} | {item.period}</div>
+                    <ul class="compact-bullets">
+                      {item.bullets.slice(0, 2).map((bullet) => (
+                        <li>{bullet}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </ResumeSection>
+            );
+          }
+          if (sectionId === "projects" && resumePage.data.sections.projects.enabled) {
+            return (
+              <ResumeSection title={resumePage.data.sections.projects.title} className="resume-section--projects">
+                {selectedProjects.map((project) => (
+                  <div class="resume-item resume-item--tight">
+                    <strong>{project.data.title}</strong>
+                    <div class="muted">{project.data.type} | {project.data.year}</div>
+                    <p>{compactText(project.data.summary, 165)}</p>
+                    <ul class="compact-bullets">
+                      {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 2).map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </ResumeSection>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <div class="document-list">
+        {resumePage.data.layout.rightColumn.map((sectionId) => {
+          if (sectionId === "skills" && resumePage.data.sections.skills.enabled) {
+            return (
+              <ResumeSection title={resumePage.data.sections.skills.title} className="resume-section--skills">
+                <div class="compact-skill-grid">
+                  {profile.capabilityGroups.map((group) => (
+                    <div class="resume-item resume-item--tight resume-skill-group">
+                      <strong>{group.title}</strong>
+                      <p>{compactText(group.description, 120)}</p>
+                      <p class="muted resume-skill-group__skills">{group.skills.slice(0, 4).join(" · ")}</p>
+                    </div>
+                  ))}
+                </div>
+              </ResumeSection>
+            );
+          }
+          if (sectionId === "research" && resumePage.data.sections.research.enabled) {
+            return (
+              <ResumeSection title={resumePage.data.sections.research.title} className="resume-section--research">
+                {selectedResearch.map((item) => (
+                  <div class="resume-item resume-item--tight">
+                    <strong>{item.data.title}</strong>
+                    <div class="muted">{item.data.venue} | {item.data.year} | {item.data.type}</div>
+                    <p>{compactText(item.data.abstract, 155)}</p>
+                    <p class="muted resume-inline-note">{item.data.tags.slice(0, 3).join(" · ")}</p>
+                  </div>
+                ))}
+              </ResumeSection>
+            );
+          }
+          if (sectionId === "education" && resumePage.data.sections.education.enabled) {
+            return (
+              <ResumeSection title={resumePage.data.sections.education.title} className="resume-section--education">
+                {education.map((item) => (
+                  <div class="resume-item resume-item--tight">
+                    <strong>{item.degree}</strong>
+                    <div class="muted">{item.school} | {item.period}</div>
+                    <p>{compactText(item.detail, 145)}</p>
+                  </div>
+                ))}
+              </ResumeSection>
+            );
+          }
+          return null;
+        })}
+      </div>
+    </div>
+  </div>
+
+  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only">
+    <header class="cv-print-header">
+      <h1>{profile.name}</h1>
+      <div class="cv-print-header__contacts">
+        <span>{siteConfig.location}</span>
+        <span> / </span>
+        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+        {links.map((link) => (
+          <>
+            <span> / </span>
+            <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+          </>
+        ))}
+      </div>
+    </header>
+
+    <section class="cv-print-section">
+      <h2>{sectionLabels.interests}</h2>
+      <div class="cv-print-copy">
+        <p><strong>{sectionLabels.keywords}:</strong> {researchKeywords.join(", ")}</p>
+        <p><strong>{sectionLabels.objective}:</strong> {compactText(resumePage.data.printCv.objective ?? profile.summary, 320)}</p>
+      </div>
+    </section>
+
+    <section class="cv-print-section">
+      <h2>{sectionLabels.education}</h2>
+      <div class="cv-print-stack">
+        {education.map((item) => (
+          <article class="cv-print-entry cv-print-entry--academic">
+            <div class="cv-print-entry__row">
+              <div>
+                <h3>{item.school}</h3>
+                <p class="cv-print-entry__subline cv-print-entry__subline--italic">{item.degree}</p>
+              </div>
+              <div class="cv-print-entry__meta">
+                <span>{item.period}</span>
+              </div>
+            </div>
+            <p class="cv-print-entry__detail">{compactText(item.detail, 220)}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="cv-print-section">
+      <h2>{sectionLabels.experience}</h2>
+      <div class="cv-print-stack">
+        {experience.map((item) => (
+          <article class="cv-print-entry">
+            <div class="cv-print-entry__row">
+              <div>
+                <h3>{item.organization}</h3>
+                <p class="cv-print-entry__subline cv-print-entry__subline--italic">{item.role}</p>
+              </div>
+              <div class="cv-print-entry__meta">
+                <span>{item.period}</span>
+              </div>
+            </div>
+            <ul class="cv-print-bullets">
+              {item.bullets.slice(0, 3).map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+  </article>
+
+  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only page-break">
+    {resumePage.data.printCv.includeProjects && selectedProjects.length > 0 && (
+      <section class="cv-print-section">
+        <h2>{sectionLabels.projects}</h2>
+        <div class="cv-print-stack">
+          {selectedProjects.map((project) => (
+            <article class="cv-print-entry">
+              <div class="cv-print-entry__row">
+                <div>
+                  <h3>{project.data.title}</h3>
+                  <p class="cv-print-entry__subline cv-print-entry__subline--italic">{project.data.type}</p>
+                </div>
+                <div class="cv-print-entry__meta">
+                  <span>{project.data.year}</span>
+                </div>
+              </div>
+              <p class="cv-print-entry__detail">{compactText(project.data.summary, 240)}</p>
+              <p class="cv-print-entry__detail cv-print-entry__detail--muted">
+                {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 3).join(" · ")}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="cv-print-section">
+      <h2>{sectionLabels.publications}</h2>
+      <ol class="cv-print-publications">
+        {allResearch.map((item) => {
+          const citation = formatResearchCitation(item.data.title, item.data.venue, item.data.year, item.data.type);
+
+          return (
+            <li>
+              <span class="cv-print-publications__title">{citation.title}</span>{" "}
+              <span class="cv-print-publications__meta">{citation.meta}</span>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    {recognition.length > 0 && (
+      <section class="cv-print-section">
+        <h2>{sectionLabels.certifications}</h2>
+        <div class="cv-print-stack cv-print-stack--compact">
+          {recognition.map((item) => (
+            <article class="cv-print-entry cv-print-entry--compact">
+              <div class="cv-print-entry__row">
+                <div>
+                  <h3>{item.title}</h3>
+                  <p class="cv-print-entry__subline">{item.issuer}</p>
+                </div>
+                <div class="cv-print-entry__meta">
+                  <span>{item.date}</span>
+                </div>
+              </div>
+              {item.description && <p class="cv-print-entry__detail">{compactText(item.description, 180)}</p>}
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="cv-print-section">
+      <h2>{sectionLabels.additional}</h2>
+      <div class="cv-print-copy">
+        {cvAdditionalItems.map((item) => (
+          <p><strong>{item.label}:</strong> {item.value}</p>
+        ))}
+      </div>
+    </section>
+  </article>
+</PrintLayout>

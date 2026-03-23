@@ -1,26 +1,101 @@
 pageType: portfolio
 documentTitle: Portfolio | Donghyeon Kim
-documentDescription: Printable case-study portfolio spanning conversational AI, clinical AI, and applied ML delivery.
-printToolbarLabel: Portfolio document with print-aware case study page flow.
+documentDescription: This portfolio contains diverse experiences ranging from data analysis to conversational AI and medical AI.
+printToolbarLabel: This portfolio contains diverse experiences ranging from data analysis to conversational AI and medical AI.
+web:
+  pages:
+    - kind: philosophyCore
+      eyebrow: Philosophy
+      title: Way of Working
+      coreDomainTitle: Core Domain
+    - kind: experience
+      eyebrow: Experience
+      title: Recent Experience
+    - kind: projects
+      eyebrow: Selected Projects
+      title: Featured Projects
+    - kind: educationStudy
+      eyebrow: Map
+      title: Education and Study
+      educationTitle: Education
+      studyTitle: Study
+      studyItems:
+        - title: NEKA
+          emphasis: NLP Study
+          description: A study conducted with the goal of implementing Keyword Extraction and NER models using KoBERT
+        - title: Sunaro-um
+          emphasis: Financial AI Study
+          description: A study conducted with the goal of building a model that evaluates whether to recommend buying based on corporate financial statements and financial indicators
+        - title: Ida
+          emphasis: Recommender Systems Study
+          description: A study conducted on the topic of recommendation services based on knowledge graphs / GNN
+        - title: MLADS
+          emphasis: Basic Machine Learning Study
+          description: A study for systematically learning the fundamentals of data science and machine learning
+    - kind: research
+      eyebrow: Research
+      title: Research
+    - kind: recognition
+      eyebrow: Certificate & Award
+      title: Completion and Awards
+      certificateTitle: Certificates & Qualifications
+      awardTitle: Awards
 cover:
   label: Portfolio Document
-  title: Selected Applied AI Projects and Research
+  title: AI Researcher Portfolio
 overview:
   intro:
     enabled: true
     title: Profile Summary
     paragraphs:
-      - This portfolio is structured for reading and print review, with a short overview followed by focused case-study sheets.
-      - The selected work emphasizes applied AI problems where modeling, interpretation, and delivery all mattered.
+      - This portfolio is structured in a reading- and print-friendly format that first presents a short overview, followed by case study sheets for each project.
+      - The selected work is organized around applied AI problems in which modeling, interpretation, and delivery were all important.
   capability:
     enabled: true
     title: Capability Summary
   research:
     enabled: true
     title: Research Highlights
+recognition:
+  certificates:
+    - title: Practical Implementation of Monitoring and Testing in DevOps Environments
+      issuer: LLOYDK
+      date: "2023.11"
+      description: Completed practical training in Elastic-based DevOps monitoring and testing.
+      bullets:
+        - Studied DevOps-related services and operational environments provided by Elastic.
+        - Learned DevOps concepts applicable to practical work from monitoring and testing perspectives.
+    - title: Multi Cloud Orchestration Program
+      issuer: 5Works
+      date: "2023.12"
+      description: Completed HashiCorp-based multi-cloud orchestration and IaC training.
+      bullets:
+        - Studied mainly HashiCorp IaC tools such as Packer and Terraform.
+        - Learned the concepts of infrastructure automation and orchestration in multi-cloud environments.
+    - title: Company-Led Intensive Project Training
+      issuer: DK Techin
+      date: "2024.02"
+      description: Participated in industry-linked practical training focused on security and DevOps engineering.
+      bullets:
+        - Conducted practical projects while working on cloud, CI/CD, and security-related tasks.
+        - Took on the role of advisor and build assistant as an experienced member during the recommender system development process.
+    - title: Micro Degree in Software Specialist Training
+      issuer: Gachon University
+      date: "2024.02"
+      description: Completed a micro-degree program for training software specialists.
+      bullets:
+        - Completed a program aimed at strengthening software and practice-oriented digital capabilities.
+        - Built a record of completion that connects undergraduate-based education with practice-oriented project experience.
+  awards: []
 selection:
-  projectCount: 3
-  researchCount: 2
+  projectCount: 2
+  caseStudyCount: 3
+  researchCount: 3
+  experienceCount: 3
+  educationCount: 2
+  studyCount: 4
+  certificateCount: 4
+  awardCount: 2
   selectedProjectSlugs:
     - emr-nursing-surveillance
     - frimo-conversational-diary

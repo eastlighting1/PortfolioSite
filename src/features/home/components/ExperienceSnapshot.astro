@@ -1,0 +1,41 @@
+---
+import { getGlobalEntry } from "../../../lib/content";
+import { withBase } from "../../../lib/site";
+import { localizePath, type Locale } from "../../../lib/i18n";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  ctaLabel: string;
+  count: number;
+  locale?: Locale;
+}
+
+const { eyebrow, title, ctaLabel, count, locale = "ko" } = Astro.props;
+const experienceEntry = await getGlobalEntry("experience", locale);
+const experience = experienceEntry.data.items;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title" set:html={title} />
+    <div class="timeline-grid" style="margin-top: 2rem;">
+      {experience.slice(0, count).map((item, index) => (
+        <article class="snapshot-card" data-reveal={`${(index % 4) + 1}`}>
+          <span class="small-label">{item.period}</span>
+          <h3>{item.role}</h3>
+          <p class="muted" style="margin-top:0;">{item.organization}</p>
+          <ul>
+            {item.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+    <div style="margin-top: 1.5rem;">
+      <a class="button-link-secondary" href={withBase(localizePath("/resume/", locale))}>{ctaLabel}</a>
+    </div>
+  </div>
+</section>

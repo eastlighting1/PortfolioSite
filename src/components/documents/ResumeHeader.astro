@@ -1,0 +1,50 @@
+---
+import { getGlobalEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
+const siteEntry = await getGlobalEntry("site", locale);
+const linksEntry = await getGlobalEntry("links", locale);
+const profile = profileEntry.data;
+const siteConfig = siteEntry.data;
+const externalProfiles = linksEntry.data.externalProfiles;
+---
+
+<header class="document-header">
+  <div class="resume-header">
+    <div class="resume-header__identity">
+      <span class="small-label">{locale === "ko" ? "Resume" : "Resume"}</span>
+      <h1 class="section-title" style="margin-bottom:0.45rem;">{profile.name}</h1>
+      <p class="section-lead">{profile.headline}</p>
+      <div class="resume-header__roles">
+        <span class="resume-header__role">{siteConfig.primaryRole}</span>
+        {siteConfig.secondaryRoles.map((role) => (
+          <span class="resume-header__role resume-header__role--muted">{role}</span>
+        ))}
+      </div>
+    </div>
+    <div class="resume-header__meta">
+      <div class="resume-header__meta-group">
+        <span class="resume-header__meta-label">{locale === "ko" ? "위치" : "Location"}</span>
+        <span>{siteConfig.location}</span>
+      </div>
+      <div class="resume-header__meta-group">
+        <span class="resume-header__meta-label">Email</span>
+        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+      </div>
+      <div class="resume-header__meta-group">
+        <span class="resume-header__meta-label">{locale === "ko" ? "링크" : "Links"}</span>
+        <div class="inline-links inline-links--dense resume-header__links">
+          {externalProfiles.map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

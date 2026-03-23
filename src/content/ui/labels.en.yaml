@@ -3,7 +3,7 @@ header:
   mobileToggleLabel: Open navigation
 footer:
   summary: Applied AI researcher and engineer working across conversational AI, clinical AI, and practical ML delivery.
-documentLayout:
+printLayout:
   mastheadLinks:
     - href: /projects/
       label: Projects

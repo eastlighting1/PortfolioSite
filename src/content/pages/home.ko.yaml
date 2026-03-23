@@ -36,7 +36,7 @@ pipeline:
   enabled: true
   eyebrow: ML Lifecycle
   title: 데이터 엔지니어링부터 모델 서빙까지
-  lead: 복잡한 비정형 데이터의 전처리부터 PyTorch 기반의 모델 학습, 그리고 평가와 실제 배포 환경을 고려한 아키텍처 설계까지 전체 흐름을 주도합니다.
+  lead: 복잡한 비정형 데이터의 전처리부터 PyTorch 기반의 모델 학습, 그리고 평가와 <br />실제 배포 환경을 고려한 아키텍처 설계까지 전체 흐름을 주도합니다.
 featuredProjects:
   enabled: true
   eyebrow: Projects

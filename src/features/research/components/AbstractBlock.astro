@@ -1,0 +1,18 @@
+---
+import { getUiEntry } from "../../../lib/content";
+import { type Locale } from "../../../lib/i18n";
+
+interface Props {
+  abstract: string;
+  locale?: Locale;
+}
+
+const { abstract, locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+---
+
+<section class="resume-section" data-reveal="2">
+  <div class="eyebrow">{ui.research.abstractEyebrow}</div>
+  <p style="margin-bottom:0;">{abstract}</p>
+</section>

@@ -1,14 +1,14 @@
 globalType: site
-name: Donghyeon Kim
+name: 김동현
 shortName: 동현
-title: Donghyeon Kim | 응용 AI 연구자 및 AI 엔지니어
-description: 대화형 AI, 의료 AI, 그리고 신뢰 가능한 ML 시스템 전달에 초점을 둔 응용 AI 연구자 및 엔지니어의 멀티페이지 포트폴리오입니다.
-primaryRole: 응용 AI 연구자
+title: 김동현 | AI 연구자 및 AI 엔지니어
+description: 대화형 AI, 의료 AI, 그리고 신뢰 가능한 ML 시스템 전달에 초점을 둔 응용 AI 연구자 및 엔지니어의 포트폴리오입니다.
+primaryRole: AI 연구자
 secondaryRoles:
-  - AI 엔지니어
-  - 대화형 AI
-  - 의료 AI
-location: Incheon / Seongnam, South Korea
+  - MLOps 엔지니어
+  - 의료 AI 개발자
+  - 대화형 AI 개발자
+location: 인천, 대한민국
 email: eastlighting1@gachon.ac.kr
 siteUrl: https://eastlighting.github.io
 nav:

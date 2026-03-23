@@ -1,3 +1,75 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #f4f1ea;
   --surface: #fffdf8;
@@ -17,7 +89,7 @@
   --radius: 18px;
   --radius-sm: 10px;
   --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
-  --font-display: "Fraunces", "Georgia", serif;
+  --font-display: "Pretendard", "Fraunces", "Georgia", serif;
   --font-mono: "IBM Plex Mono", "Consolas", monospace;
 }
 
@@ -41,10 +113,18 @@ body {
   line-height: 1.65;
 }
 
+html:lang(ko) {
+  word-break: keep-all;
+  line-break: strict;
+  --font-body: "Pretendard", "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-display: "Pretendard", "Fraunces", "Georgia", serif;
+}
+
 a {
   color: inherit;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.15em;
+  overflow-wrap: anywhere;
 }
 
 img {
@@ -104,15 +184,20 @@ main {
 
 .section-title {
   font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.08;
   margin: 0.8rem 0 1rem;
+  text-wrap: balance;
+  overflow-wrap: normal;
 }
 
 .section-lead {
   max-width: 62ch;
   color: var(--text-soft);
   margin: 0;
+  text-wrap: pretty;
 }
 
 .grid {
@@ -149,9 +234,12 @@ main {
 .prose h2,
 .prose h3 {
   font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
   line-height: 1.15;
   margin-top: 2.4rem;
   margin-bottom: 0.8rem;
+  text-wrap: balance;
 }
 
 .prose h2 {
@@ -166,6 +254,7 @@ main {
 .prose ul,
 .prose ol {
   color: var(--text);
+  text-wrap: pretty;
 }
 
 .prose ul,
@@ -179,6 +268,40 @@ main {
 
 .muted {
   color: var(--text-soft);
+  text-wrap: pretty;
+}
+
+p,
+li,
+blockquote,
+figcaption {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+html:lang(ko) h1,
+html:lang(ko) h2,
+html:lang(ko) h3,
+html:lang(ko) h4,
+html:lang(ko) h5,
+html:lang(ko) h6,
+html:lang(ko) p,
+html:lang(ko) li,
+html:lang(ko) blockquote,
+html:lang(ko) figcaption,
+html:lang(ko) .section-title,
+html:lang(ko) .section-lead,
+html:lang(ko) .hero-copy,
+html:lang(ko) .muted {
+  word-break: keep-all;
 }
 
 .screen-only {

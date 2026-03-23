@@ -1,14 +1,14 @@
 globalType: site
 name: Donghyeon Kim
 shortName: Donghyeon
-title: Donghyeon Kim | Applied AI Researcher and AI Engineer
-description: Multipage portfolio for an applied AI researcher and engineer focused on conversational AI, clinical AI, and reliable ML system delivery.
+title: Donghyeon Kim | AI Researcher and MLOps Engineer
+description: Portfolio for an applied AI researcher and engineer focused on conversational AI, clinical AI, and reliable ML system delivery.
 primaryRole: Applied AI Researcher
 secondaryRoles:
   - AI Engineer
   - Conversational AI
   - Clinical AI
-location: Incheon / Seongnam, South Korea
+location: Incheon, South Korea
 email: eastlighting1@gachon.ac.kr
 siteUrl: https://eastlighting.github.io
 nav:

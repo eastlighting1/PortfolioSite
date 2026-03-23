@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPageEntry } from "../../lib/content";
+import { withBase } from "../../lib/site";
+import { localizePath } from "../../lib/i18n";
+
+const locale = "en" as const;
+const notFoundPage = await getPageEntry("not-found", locale);
+if (notFoundPage.data.pageType !== "not-found") {
+  throw new Error("Missing not-found page content configuration.");
+}
+---
+
+<BaseLayout title={notFoundPage.data.documentTitle} description={notFoundPage.data.documentDescription} pathname="/en/404/" locale={locale}>
+  <section class="section">
+    <div class="container">
+      <div class="page-hero">
+        <div class="eyebrow">{notFoundPage.data.hero.eyebrow}</div>
+        <h1 class="section-title">{notFoundPage.data.hero.title}</h1>
+        <p class="section-lead not-found__lead" set:html={notFoundPage.data.hero.description} />
+        <div class="hero-actions" style="margin-top: 1rem;">
+          {notFoundPage.data.hero.actions.map((action) => (
+            <a
+              class={action.variant === "primary" ? "button-link" : "button-link-secondary"}
+              href={withBase(localizePath(action.href, locale))}
+            >
+              {action.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found__lead {
+    max-width: 52ch;
+  }
+
+  @media (max-width: 640px) {
+    .not-found__lead {
+      max-width: 30ch;
+    }
+  }
+</style>

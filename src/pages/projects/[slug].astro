@@ -1,39 +1,15 @@
 ---
-import { getCollection, render } from "astro:content";
-import DetailLayout from "../../layouts/DetailLayout.astro";
-import ProjectDetailHero from "../../components/projects/ProjectDetailHero.astro";
-import { getUiEntry, getLocalizedCollection } from "../../data/content";
-import { withBase } from "../../data/site";
-import { entrySlug } from "../../data/content";
-import { localizePath } from "../../data/i18n";
+import ProjectDetailPage from "../../features/projects/ProjectDetailPage.astro";
+import { entrySlug } from "../../lib/content";
+import { getProjectStaticPaths } from "../../features/projects/paths";
 
 const locale = "ko" as const;
 
 export async function getStaticPaths() {
-  const projects = await getLocalizedCollection("projects", "ko");
-  return projects.map((project) => ({
-    params: { slug: entrySlug(project) },
-    props: { project }
-  }));
+  return getProjectStaticPaths("ko");
 }
 
 const { project } = Astro.props;
-const { Content } = await render(project);
-const uiEntry = await getUiEntry("labels", locale);
-const ui = uiEntry.data;
 ---
 
-<DetailLayout
-  title={`${project.data.title} | ${locale === "ko" ? "프로젝트" : "Projects"}`}
-  description={project.data.summary}
-  pathname={`/projects/${entrySlug(project)}/`}
-  locale={locale}
->
-  <div style="margin-bottom: 1rem;">
-    <a class="button-link-secondary screen-only" href={withBase(localizePath("/projects/", locale))}>{ui.project.backToListLabel}</a>
-  </div>
-  <ProjectDetailHero project={project} locale={locale} />
-  <article class="prose" style="padding-top: 2rem;">
-    <Content />
-  </article>
-</DetailLayout>
+<ProjectDetailPage locale={locale} pathname={`/projects/${entrySlug(project)}/`} project={project} />

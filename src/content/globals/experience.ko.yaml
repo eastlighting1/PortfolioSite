@@ -1,22 +1,22 @@
 globalType: experience
 items:
-  - role: 대학원 연구원
+  - role: 대학원생 연구원
     organization: Intelligent Data Analytics Lab., Gachon University
-    period: 2024.03 - 현재
+    period: 2024.03 - 2026.02
     bullets:
-      - EMR 기반 간호감시 의사결정 지원과 진단 분류를 주제로 연구를 수행하고 있습니다.
+      - EMR 기반 간호감시 의사결정 지원과 진단 분류를 주제로 연구를 수행하였습니다.
       - 정형 데이터와 텍스트 데이터를 함께 활용해 KM-BERT 앙상블과 XGBoost 기반 모델링 파이프라인을 구축했습니다.
-      - AI 기반 피드백을 활용한 강화학습 기반 공감 대화 생성 등 대화형 AI 주제도 함께 탐구하고 있습니다.
+      - AI 기반 피드백을 활용한 강화학습 기반 공감 대화 생성 등 대화형 AI 주제도 함께 탐구하였습니다.
   - role: 연구과제 참여 연구원
-    organization: National Research Foundation of Korea (NRF)
-    period: 2024.03 - 현재
+    organization: 한국연구재단 (NRF)
+    period: 2024.03 - 2025.12
     bullets:
       - EMR 데이터를 활용한 딥러닝 기반 간호감시 의사결정 지원 과제에서 전처리, 모델링, 분석을 주도했습니다.
       - 임상 텍스트 이해를 위해 키워드 추출, 의존구문 기반 전처리, 토픽 모델링, 유사도 분석 워크플로를 구현했습니다.
       - 협력 연구진이 활용할 수 있도록 해석 가능한 결과물과 웹 기반 분석 화면을 제공했습니다.
-  - role: 평가 구현 기여자
-    organization: Institute of Information & Communications Technology Planning & Evaluation (IITP)
-    period: 2025.09 - 현재
+  - role: 연구과제 참여 연구원
+    organization: 정보통신기획평가원 (IITP)
+    period: 2025.09 - 2025.12
     bullets:
       - 인간지향적 멀티모달 AI 프로젝트에서 평가 관련 코드를 구현했습니다.
       - 평가 요구사항을 실제 코드와 검토 가능한 산출물로 연결하는 작업을 수행했습니다.
@@ -28,8 +28,8 @@ items:
       - 프로젝트 기반 실습에서 보안 및 DevOps 지향 역할로 구현 작업에 참여했습니다.
   - role: 학생 리더 및 커뮤니티 운영자
     organization: Gachon University / Notion Community Program
-    period: 2019 - 2025
+    period: 2019.03 - 2025.02
     bullets:
       - 교내 공식 프로그래밍 동아리에서 여러 리더십 역할을 맡았고, 2022년에는 회장을 역임했습니다.
       - 머신러닝, 빅데이터, 금융 ML, GNN 관련 스터디 그룹을 직접 기획하고 운영했습니다.
-      - Notion Campus Leader 프로그램에 참여해 학내 학습 커뮤니티와 리소스 공유를 지원했습니다.
+      - Notion Campus Leader 프로그램에 참여해 학내 학습 커뮤니티와 리소스 공유를 지원했습니다. (24-2 ~ 25-1)

@@ -1,0 +1,51 @@
+---
+import { getUiEntry } from "../../../lib/content";
+import ExternalLinks from "../../../components/common/ExternalLinks.astro";
+import { withBase } from "../../../lib/site";
+import { entrySlug } from "../../../lib/content";
+import ProjectQuickPreview from "./ProjectQuickPreview.astro";
+import { localizePath, type Locale } from "../../../lib/i18n";
+
+interface Props {
+  project: any;
+  dataReveal?: string;
+  locale?: Locale;
+}
+
+const { project, dataReveal = "1", locale = "ko" } = Astro.props;
+const href = withBase(localizePath(`projects/${entrySlug(project)}/`, locale));
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+---
+
+<article class="project-card" data-reveal={dataReveal}>
+  <span class="small-label">{project.data.type} | {project.data.year}</span>
+  <h3>{project.data.title}</h3>
+  <p class="muted">{project.data.summary}</p>
+  <div class="meta-row project-card__meta-row">
+    <span class="tag-chip">{project.data.role}</span>
+    {project.data.metrics.map((metric: string) => (
+      <span class="metric-badge">{metric}</span>
+    ))}
+  </div>
+  <div class="tag-row project-card__tag-row">
+    {project.data.tags.map((tag: string) => (
+      <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <div class="project-card__footer">
+    <ExternalLinks
+      locale={locale}
+      links={[
+        { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+        { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+        { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+        { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
+      ]}
+    />
+    <div class="hero-actions project-card__actions">
+      <ProjectQuickPreview project={project} locale={locale} />
+      <a class="button-link-secondary" href={href}>{ui.project.openCaseStudyLabel}</a>
+    </div>
+  </div>
+</article>

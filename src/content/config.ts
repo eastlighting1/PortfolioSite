@@ -38,6 +38,18 @@ const research = defineCollection({
   })
 });
 
+const archive = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    publishedAt: z.string(),
+    type: z.enum(["event", "thought", "note"]),
+    summary: z.string(),
+    context: z.string().optional(),
+    tags: z.array(z.string()).default([])
+  })
+});
+
 const actionSchema = z.object({
   label: z.string(),
   href: z.string(),
@@ -146,7 +158,7 @@ const ui = defineCollection({
     footer: z.object({
       summary: z.string()
     }),
-    documentLayout: z.object({
+    printLayout: z.object({
       mastheadLinks: z.array(
         z.object({
           href: z.string(),
@@ -281,6 +293,17 @@ const pages = defineCollection({
       documentTitle: z.string(),
       documentDescription: z.string(),
       printToolbarLabel: z.string(),
+      printCv: z.object({
+        includeProjects: z.boolean().default(false),
+        keywords: z.array(z.string()).default([]),
+        objective: z.string().optional(),
+        additionalItems: z.array(
+          z.object({
+            label: z.string(),
+            value: z.string()
+          })
+        ).default([])
+      }).default({}),
       layout: z.object({
         leftColumn: z.array(z.enum(["summary", "experience", "projects"])),
         rightColumn: z.array(z.enum(["skills", "research", "education"]))
@@ -320,6 +343,54 @@ const pages = defineCollection({
       documentTitle: z.string(),
       documentDescription: z.string(),
       printToolbarLabel: z.string(),
+      web: z.object({
+        pages: z.array(
+          z.discriminatedUnion("kind", [
+            z.object({
+              kind: z.literal("philosophyCore"),
+              eyebrow: z.string(),
+              title: z.string(),
+              coreDomainTitle: z.string()
+            }),
+            z.object({
+              kind: z.literal("experience"),
+              eyebrow: z.string(),
+              title: z.string()
+            }),
+            z.object({
+              kind: z.literal("projects"),
+              eyebrow: z.string(),
+              title: z.string()
+            }),
+              z.object({
+                kind: z.literal("educationStudy"),
+                eyebrow: z.string(),
+                title: z.string(),
+                educationTitle: z.string(),
+                studyTitle: z.string(),
+                studyItems: z.array(
+                  z.object({
+                    title: z.string(),
+                    emphasis: z.string(),
+                    description: z.string()
+                  })
+                ).default([])
+              }),
+            z.object({
+              kind: z.literal("research"),
+              eyebrow: z.string(),
+              title: z.string()
+            }),
+            z.object({
+              kind: z.literal("recognition"),
+              eyebrow: z.string(),
+              title: z.string(),
+              certificateTitle: z.string(),
+              awardTitle: z.string()
+            })
+          ])
+        ).default([])
+      }),
       cover: z.object({
         label: z.string(),
         title: z.string()
@@ -339,9 +410,39 @@ const pages = defineCollection({
           title: z.string()
         })
       }),
+      recognition: z.object({
+        certificates: z.array(
+          z.object({
+            title: z.string(),
+            issuer: z.string(),
+            date: z.union([z.string(), z.number()]).transform((value) => String(value)),
+            description: z.string().optional(),
+            bullets: z.array(z.string()).default([]),
+            credentialLabel: z.string().optional(),
+            credentialUrl: z.string().url().optional()
+          })
+        ).default([]),
+        awards: z.array(
+          z.object({
+            title: z.string(),
+            issuer: z.string(),
+            date: z.union([z.string(), z.number()]).transform((value) => String(value)),
+            description: z.string().optional(),
+            bullets: z.array(z.string()).default([]),
+            credentialLabel: z.string().optional(),
+            credentialUrl: z.string().url().optional()
+          })
+        ).default([])
+      }),
       selection: z.object({
-        projectCount: z.number().int().positive().default(3),
-        researchCount: z.number().int().positive().default(2),
+        projectCount: z.number().int().nonnegative().default(2),
+        caseStudyCount: z.number().int().nonnegative().default(3),
+        researchCount: z.number().int().nonnegative().default(2),
+        experienceCount: z.number().int().nonnegative().default(3),
+        educationCount: z.number().int().nonnegative().default(1),
+        studyCount: z.number().int().nonnegative().default(4),
+        certificateCount: z.number().int().nonnegative().default(4),
+        awardCount: z.number().int().nonnegative().default(2),
         selectedProjectSlugs: z.array(z.string()).default([])
       })
     }),
@@ -362,11 +463,11 @@ const pages = defineCollection({
       documentTitle: z.string(),
       documentDescription: z.string(),
       hero: pageHeroSchema.omit({ meta: true, className: true }),
-      sections: z.object({
-        positioningTitle: z.string(),
-        philosophyTitle: z.string(),
-        systemsTitle: z.string(),
-        systemsBody: z.string()
+      gallery: z.object({
+        title: z.string(),
+        lead: z.string(),
+        openEntryLabel: z.string().default("Open entry"),
+        closeEntryLabel: z.string().default("Close")
       })
     }),
     z.object({
@@ -393,4 +494,4 @@ const pages = defineCollection({
   ])
 });
 
-export const collections = { projects, research, pages, globals, ui };
+export const collections = { projects, research, archive, pages, globals, ui };

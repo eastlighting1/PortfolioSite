@@ -1,9 +1,13 @@
 @page {
   size: A4;
-  margin: 10mm;
+  margin: 16mm 18mm;
 }
 
 @media print {
+  .portfolio-doc {
+    display: block !important;
+  }
+
   :root {
     --bg: white;
     --surface: white;
@@ -58,9 +62,11 @@
   .paper-sheet {
     width: 100%;
     max-width: none;
+    height: auto !important;
     min-height: auto;
     margin: 0;
-    padding: 0;
+    padding: 0 6mm;
+    overflow: visible !important;
     border: none !important;
     border-radius: 0;
     box-shadow: none !important;
@@ -73,6 +79,111 @@
     font-size: 8.8pt;
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  .paper-sheet--resume-cv {
+    height: auto;
+    min-height: auto;
+    padding: 0 6mm;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    color: #111 !important;
+    font-family: "Times New Roman", Georgia, serif;
+    font-size: 10.4pt;
+    line-height: 1.26;
+  }
+
+  .paper-sheet--resume-cv.document-shell {
+    padding-top: 6mm;
+    padding-bottom: 6mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-header {
+    margin-bottom: 5.5mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-header h1 {
+    font-size: 22pt;
+    line-height: 1.05;
+  }
+
+  .paper-sheet--resume-cv .cv-print-header__contacts {
+    margin-top: 1.2mm;
+    font-size: 10.2pt;
+  }
+
+  .paper-sheet--resume-cv .cv-print-section + .cv-print-section {
+    margin-top: 5mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-section h2 {
+    margin: 0 0 1.8mm;
+    padding-bottom: 0.7mm;
+    border-bottom: 0.6pt solid #111;
+    font-size: 12pt;
+    line-height: 1.05;
+  }
+
+  .paper-sheet--resume-cv .cv-print-copy p,
+  .paper-sheet--resume-cv .cv-print-entry__detail,
+  .paper-sheet--resume-cv .cv-print-bullets,
+  .paper-sheet--resume-cv .cv-print-publications,
+  .paper-sheet--resume-cv .cv-print-entry__subline,
+  .paper-sheet--resume-cv .cv-print-entry__meta {
+    font-size: 10.2pt;
+    line-height: 1.24;
+  }
+
+  .paper-sheet--resume-cv .cv-print-stack {
+    gap: 3.2mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-stack--compact {
+    gap: 2.2mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-entry,
+  .paper-sheet--resume-cv .cv-print-section,
+  .paper-sheet--resume-cv .cv-print-publications li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .paper-sheet--resume-cv .cv-print-entry__row {
+    gap: 4mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-entry h3 {
+    font-size: 11.2pt;
+    line-height: 1.1;
+  }
+
+  .paper-sheet--resume-cv .cv-print-entry__subline {
+    margin-top: 0.2mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-entry__detail {
+    margin-top: 0.8mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-bullets {
+    margin-top: 0.9mm;
+    padding-left: 4.2mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-bullets li + li,
+  .paper-sheet--resume-cv .cv-print-publications li + li,
+  .paper-sheet--resume-cv .cv-print-copy p + p {
+    margin-top: 0.8mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-publications {
+    padding-left: 5.5mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-publications li {
+    padding-left: 0.6mm;
   }
 
   .paper-sheet--resume .section-title {
@@ -105,12 +216,42 @@
     padding-bottom: 0.7rem;
   }
 
-  .paper-sheet--resume .resume-compact-grid {
-    display: grid !important;
-    grid-template-columns: 1.45fr 0.95fr !important;
-    gap: 6mm !important;
-    align-items: start;
+  .paper-sheet--resume .resume-header {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4mm 6mm;
   }
+
+  .paper-sheet--resume .resume-header__meta {
+    gap: 2.2mm;
+    padding-top: 0;
+  }
+
+  .paper-sheet--resume .resume-header__meta-group {
+    gap: 0.5mm;
+  }
+
+  .paper-sheet--resume .resume-header__meta-label {
+    font-size: 6.3pt;
+  }
+
+  .paper-sheet--resume .resume-header__roles {
+    gap: 1.2mm;
+    margin-top: 2mm;
+  }
+
+  .paper-sheet--resume .resume-header__role {
+    min-height: 0;
+    padding: 0.85mm 2.2mm;
+    font-size: 7pt;
+    border-width: 0.5pt;
+  }
+
+  .paper-sheet--resume .resume-compact-grid {
+      display: grid !important;
+      grid-template-columns: 1.18fr 0.92fr !important;
+      gap: 6mm !important;
+      align-items: start;
+    }
 
   .paper-sheet--resume .document-list {
     gap: 0 !important;
@@ -167,39 +308,93 @@
     margin-top: 0;
   }
 
-  .paper-sheet--resume .resume-section--projects .resume-item:nth-child(n+2),
-  .paper-sheet--resume .resume-section--education .resume-item:nth-child(n+2) {
-    display: none;
-  }
-
   .paper-sheet--resume .resume-section--summary p,
   .paper-sheet--resume .resume-section--research p {
     margin: 0;
   }
 
-  .paper-sheet--portfolio {
-    min-height: 277mm;
-    font-size: 9.1pt;
+  .paper-sheet--resume .resume-item p {
+    margin-top: 0.9mm;
   }
 
-  .paper-sheet--portfolio .portfolio-overview-grid {
+  .paper-sheet--resume .compact-bullets--summary {
+    margin-top: 1mm;
+  }
+
+  .paper-sheet--resume .resume-skill-group__skills,
+  .paper-sheet--resume .resume-inline-note {
+    margin-top: 0.7mm;
+  }
+
+  .paper-sheet--portfolio {
+    min-height: auto;
+    font-size: 9pt;
+  }
+
+  .paper-sheet--portfolio-recognition.document-shell {
+    padding-top: 4.2mm;
+  }
+
+  .paper-sheet--portfolio-cover .portfolio-overview-page {
     display: grid !important;
-    grid-template-columns: 1.05fr 0.95fr !important;
-    gap: 7mm !important;
+    grid-template-columns: 1.08fr 0.92fr !important;
+    gap: 2.6mm !important;
     align-items: start;
+    margin-top: 1.6mm;
   }
 
   .paper-sheet--portfolio .portfolio-cover {
-    padding: 0 0 4mm 0;
-    margin-bottom: 4mm;
+    padding: 0 0 2.8mm 0;
+    margin-bottom: 2.8mm;
     border: none !important;
     border-bottom: 0.5pt solid #cbd5e1 !important;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__hero {
+    grid-template-columns: 1.1fr 0.9fr !important;
+    gap: 3mm !important;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__intro .section-lead {
+    margin-top: 1.4mm;
+    max-width: 40ch;
+    line-height: 1.22;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__name-block {
+    padding: 1.4mm 2mm;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__meta-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2mm !important;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__meta-item {
+    grid-template-columns: 14mm minmax(0, 1fr) !important;
+    gap: 1.2mm !important;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__meta-item dd {
+    margin-top: 0;
+    line-height: 1.18;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__focus {
+    gap: 1.2mm 2mm !important;
+    margin-top: 1.4mm;
+    padding-top: 1.4mm;
+  }
+
+  .paper-sheet--portfolio .portfolio-cover__focus-item p {
+    margin-top: 0.5mm;
+    line-height: 1.15;
   }
 
   .paper-sheet--portfolio .resume-section,
   .paper-sheet--portfolio .portfolio-section {
     padding: 0 !important;
-    margin: 0 0 4mm 0;
+    margin: 0 !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -207,18 +402,18 @@
   }
 
   .paper-sheet--portfolio .resume-section h2 {
-    margin: 0 0 1.8mm;
-    padding-bottom: 1.2mm;
+    margin: 0 0 1.4mm;
+    padding-bottom: 0.9mm;
     border-bottom: 0.4pt solid #cbd5e1;
-    font-size: 10pt;
+    font-size: 9.2pt;
     line-height: 1.2;
   }
 
   .paper-sheet--portfolio p,
   .paper-sheet--portfolio li,
   .paper-sheet--portfolio .muted {
-    font-size: 8.4pt;
-    line-height: 1.28;
+    font-size: 7.9pt;
+    line-height: 1.14;
   }
 
   .paper-sheet--portfolio .resume-item,
@@ -231,24 +426,228 @@
 
   .paper-sheet--portfolio .resume-item + .resume-item,
   .paper-sheet--portfolio .document-item + .document-item {
-    margin-top: 2.2mm;
-    padding-top: 2.2mm;
+    margin-top: 0.9mm;
+    padding-top: 0.9mm;
     border-top: 0.4pt solid #e2e8f0 !important;
   }
 
   .paper-sheet--portfolio .case-study {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .paper-sheet--portfolio-cover .portfolio-overview-page__stack {
+    display: grid;
+    gap: 1.8mm;
+  }
+
+  .paper-sheet--portfolio .case-study--sheet h3 {
+    font-size: 16pt;
+    line-height: 1.04;
+  }
+
+  .paper-sheet--portfolio .case-study__header {
+    padding-bottom: 2.6mm;
+  }
+
+  .paper-sheet--portfolio .case-study__year-badge {
+    min-height: 7.5mm;
+    padding: 1mm 3mm;
+    font-size: 10pt;
+  }
+
+  .paper-sheet--portfolio .case-study__dek {
+    margin-top: 3.2mm;
+    font-size: 10pt;
+    line-height: 1.35;
+  }
+
+  .paper-sheet--portfolio .case-study__meta {
+    margin-top: 2.6mm;
+  }
+
+  .paper-sheet--portfolio .small-label {
+    margin-bottom: 1.8mm;
+  }
+
+  .paper-sheet--portfolio .case-study__body {
+    grid-template-columns: minmax(0, 1.5fr) minmax(44mm, 0.9fr);
+    gap: 6mm;
+    margin-top: 4mm;
+  }
+
+  .paper-sheet--portfolio .case-study__section h4 {
+    margin: 0 0 1.4mm;
+    font-size: 10.5pt;
+  }
+
+  .paper-sheet--portfolio .case-study__section p {
+    line-height: 1.3;
+  }
+
+  .paper-sheet--portfolio .case-study__section + .case-study__section {
+    margin-top: 3.6mm;
+  }
+
+  .paper-sheet--portfolio .case-study__section--accent {
+    padding: 3mm 3.2mm;
+  }
+
+  .paper-sheet--portfolio .case-study__metrics {
+    margin-top: 3.4mm;
+  }
+
+  .paper-sheet--portfolio .case-study__footer {
+    margin-top: 4.6mm;
+    padding-top: 2.4mm;
+  }
+
+  .paper-sheet--portfolio .case-study__group-label {
+    margin-bottom: 3.6mm;
+    color: #325fdd;
+    font-weight: 700;
+  }
+
+  .paper-sheet--portfolio-profile,
+  .paper-sheet--portfolio-summary,
+  .paper-sheet--portfolio-recognition {
+    font-size: 8.8pt;
+  }
+
+  .paper-sheet--case-study.document-shell {
+    padding-top: 10.5mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__media {
+    font-size: 16pt;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__header h1 {
+    font-size: 26pt;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__contacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3mm 10mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__contact {
+    display: block !important;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__contact strong,
+  .paper-sheet--portfolio-profile .portfolio-print-profile__contact a,
+  .paper-sheet--portfolio-profile .portfolio-print-profile__contact span {
+    display: block !important;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__headline {
+    margin-top: 8.5mm;
+    font-size: 12.8pt;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__summary {
+    margin-top: 3.4mm;
+    line-height: 1.4;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-profile__principles {
+    margin-top: 4.2mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-section,
+  .paper-sheet--portfolio-summary .portfolio-print-section,
+  .paper-sheet--portfolio-recognition .portfolio-print-section {
+    margin-top: 4.8mm;
+    padding-top: 2.8mm;
+  }
+
+  .paper-sheet--portfolio-summary .portfolio-print-summary__row {
+    margin-top: 6.2mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-section + .portfolio-print-section {
+    margin-top: 6mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-entry + .portfolio-print-entry,
+  .paper-sheet--portfolio-summary .portfolio-print-entry + .portfolio-print-entry,
+  .paper-sheet--portfolio-recognition .portfolio-print-entry + .portfolio-print-entry {
+    margin-top: 3.2mm;
+  }
+
+  .paper-sheet--portfolio-profile .portfolio-print-entry,
+  .paper-sheet--portfolio-summary .portfolio-print-entry,
+  .paper-sheet--portfolio-recognition .portfolio-print-entry,
+  .paper-sheet--portfolio-profile .portfolio-print-entry ul,
+  .paper-sheet--portfolio-summary .portfolio-print-entry ul,
+  .paper-sheet--portfolio-recognition .portfolio-print-entry ul {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
-  .paper-sheet--portfolio .case-study--sheet h3 {
-    margin: 0 0 1.8mm;
-    font-size: 16pt;
-    line-height: 1.1;
+  .paper-sheet--portfolio-profile .portfolio-print-entry__header h3,
+  .paper-sheet--portfolio-summary .portfolio-print-entry__header h3,
+  .paper-sheet--portfolio-recognition .portfolio-print-entry__header h3 {
+    font-size: 11pt;
   }
 
-  .paper-sheet--portfolio .case-study-grid {
-    gap: 3.2mm;
+  .paper-sheet--portfolio-recognition .portfolio-print-recognition-page {
+    gap: 3.6mm;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-recognition-page__title {
+    margin-top: 1.6mm;
+    font-size: 19pt;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-recognition-page__section {
+    margin-top: 0;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-recognition-page__section + .portfolio-print-recognition-page__section {
+    margin-top: 0;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-entry--recognition + .portfolio-print-entry--recognition {
+    margin-top: 2.6mm;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-entry--recognition .portfolio-print-entry__header h3 {
+    font-size: 10pt;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-entry--recognition .portfolio-print-entry__meta {
+    margin-top: 1mm;
+  }
+
+  .paper-sheet--portfolio-recognition .portfolio-print-entry--recognition ul {
+    margin-top: 1.2mm;
+  }
+
+  .paper-sheet--portfolio-summary .portfolio-print-columns {
+      gap: 7mm;
+    }
+
+    .paper-sheet--portfolio-summary .portfolio-print-entry--compact + .portfolio-print-entry--compact {
+      margin-top: 3.8mm;
+    }
+
+    .paper-sheet--portfolio-summary .portfolio-print-entry--compact ul {
+      margin-top: 1.8mm;
+    }
+
+  .paper-sheet--portfolio .case-study__footer .external-links {
+    margin-top: 0;
+  }
+
+  .paper-sheet--portfolio .case-study__group + .case-study__group {
+    margin-top: 4.2mm;
   }
 
   .paper-sheet--portfolio .metric-badge,
@@ -267,9 +666,31 @@
     gap: 1.6mm;
   }
 
+  .paper-sheet--portfolio .button-link-secondary,
+  .paper-sheet--portfolio .metric-badge,
+  .paper-sheet--portfolio .tag-chip,
+  .paper-sheet--portfolio .external-link {
+    padding-top: 1.4mm;
+    padding-bottom: 1.4mm;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  .paper-sheet--portfolio .resume-section,
+  .paper-sheet--portfolio .portfolio-cover,
+  .paper-sheet--portfolio .document-item,
+  .paper-sheet--portfolio .resume-item {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .paper-sheet--portfolio .case-study__footer,
+  .paper-sheet--portfolio .case-study__metrics {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .resume-section,

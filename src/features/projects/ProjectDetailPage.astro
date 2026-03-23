@@ -1,0 +1,35 @@
+---
+import { render } from "astro:content";
+import ReadingLayout from "../../layouts/ReadingLayout.astro";
+import ProjectDetailHero from "./components/ProjectDetailHero.astro";
+import { entrySlug, getUiEntry } from "../../lib/content";
+import { type Locale, localizePath } from "../../lib/i18n";
+import { withBase } from "../../lib/site";
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+  project: any;
+}
+
+const { locale, pathname, project } = Astro.props;
+const { Content } = await render(project);
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+const titleSuffix = locale === "ko" ? "Projects" : "Projects";
+---
+
+<ReadingLayout
+  title={`${project.data.title} | ${titleSuffix}`}
+  description={project.data.summary}
+  pathname={pathname}
+  locale={locale}
+>
+  <div style="margin-bottom: 1rem;">
+    <a class="button-link-secondary screen-only" href={withBase(localizePath("/projects/", locale))}>{ui.project.backToListLabel}</a>
+  </div>
+  <ProjectDetailHero project={project} locale={locale} />
+  <article class="prose" style="padding-top: 2rem;">
+    <Content />
+  </article>
+</ReadingLayout>

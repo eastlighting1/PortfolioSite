@@ -4,7 +4,7 @@ documentDescription: The requested page could not be found.
 hero:
   eyebrow: Error
   title: Page not found
-  description: The page may have moved or is no longer available. Use the links below to get back to the main sections of the site.
+  description: The page may have moved or is no longer available.<br />Use the links below to get back to the main sections of the site.
   actions:
     - label: Go Home
       href: /

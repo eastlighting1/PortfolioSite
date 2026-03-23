@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/common/PageHero.astro";
+import ResearchList from "./components/ResearchList.astro";
+import { getLocalizedCollection, getPageEntry } from "../../lib/content";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+
+const { locale, pathname } = Astro.props;
+
+const researchPage = await getPageEntry("research", locale);
+if (researchPage.data.pageType !== "research") {
+  throw new Error("Missing research page content configuration.");
+}
+
+const research = (await getLocalizedCollection("research", locale)).sort((a, b) => b.data.year - a.data.year);
+const entryCountLabel = locale === "ko" ? `${research.length} entries` : `${research.length} entries`;
+const heroMeta = [entryCountLabel, ...researchPage.data.hero.meta];
+---
+
+<BaseLayout
+  title={researchPage.data.documentTitle}
+  description={researchPage.data.documentDescription}
+  pathname={pathname}
+  locale={locale}
+>
+  <section class="section">
+    <div class="container">
+      <PageHero
+        className={researchPage.data.hero.className}
+        eyebrow={researchPage.data.hero.eyebrow}
+        title={researchPage.data.hero.title}
+        description={researchPage.data.hero.description}
+        meta={heroMeta}
+      />
+      <div class="section-tight">
+        <ResearchList research={research} locale={locale} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

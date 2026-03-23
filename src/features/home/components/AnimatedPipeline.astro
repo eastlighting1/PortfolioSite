@@ -1,0 +1,45 @@
+---
+import { getGlobalEntry } from "../../../lib/content";
+import { type Locale } from "../../../lib/i18n";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  locale?: Locale;
+}
+
+const { eyebrow, title, lead, locale = "ko" } = Astro.props;
+const profileEntry = await getGlobalEntry("profile", locale);
+const profile = profileEntry.data;
+const pipelineStages = profile.pipeline.slice(0, 6);
+---
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="section-title" set:html={title} />
+    {lead && <p class="section-lead pipeline__lead" set:html={lead} />}
+    <div class="system-grid" style={`margin-top: 2rem; --system-grid-columns: ${pipelineStages.length};`}>
+      {pipelineStages.map((stage, index) => (
+        <article class="system-stage" data-reveal={`${(index % 4) + 1}`}>
+          <span class="small-label">{stage.emphasis}</span>
+          <h3>{stage.title}</h3>
+          <p class="muted">{stage.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pipeline__lead {
+    max-width: 82ch;
+  }
+
+  @media (max-width: 900px) {
+    .pipeline__lead {
+      max-width: 62ch;
+    }
+  }
+</style>

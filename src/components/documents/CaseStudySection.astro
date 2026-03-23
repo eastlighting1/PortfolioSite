@@ -1,0 +1,82 @@
+---
+import { getUiEntry } from "../../lib/content";
+import ExternalLinks from "../common/ExternalLinks.astro";
+import { type Locale } from "../../lib/i18n";
+
+interface Props {
+  project: any;
+  index: number;
+  locale?: Locale;
+}
+
+const { project, index, locale = "ko" } = Astro.props;
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
+
+const visibleLinks = [
+  { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+  { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+  { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+  { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
+].filter((link) => link.href);
+---
+
+<section class="case-study case-study--sheet">
+  <span class="small-label">{ui.project.caseStudyLabelPrefix} {index + 1}</span>
+
+  <div class="case-study__header">
+    <div class="case-study__header-main">
+      <h3>{project.data.title}</h3>
+      <p class="case-study__dek">{project.data.summary}</p>
+      <p class="muted case-study__meta">{project.data.type} | {project.data.roles.join(", ")}</p>
+    </div>
+    <span class="case-study__year-badge">{project.data.year}</span>
+  </div>
+
+  <div class="case-study__body">
+    <div class="case-study__body-main">
+      <section class="case-study__section">
+        <h4>{ui.project.fieldLabels.problem}</h4>
+        <p>{project.data.portfolioProblem ?? project.data.summary}</p>
+      </section>
+      <section class="case-study__section">
+        <h4>{ui.project.fieldLabels.approach}</h4>
+        <p>{project.data.portfolioApproach ?? project.data.summary}</p>
+      </section>
+    </div>
+
+    <aside class="case-study__aside">
+      <section class="case-study__section case-study__section--accent">
+        <h4>{ui.project.fieldLabels.outcome}</h4>
+        <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
+        {project.data.metrics.length > 0 && (
+          <div class="meta-row case-study__metrics">
+            {project.data.metrics.map((metric: string) => (
+              <span class="metric-badge">{metric}</span>
+            ))}
+          </div>
+        )}
+      </section>
+    </aside>
+  </div>
+
+  <div class="case-study__footer">
+    {project.data.tags.length > 0 && (
+      <div class="case-study__group">
+        <span class="small-label case-study__group-label">{locale === "ko" ? "핵심 태그" : "Keywords"}</span>
+        <div class="tag-row case-study__tags">
+          {project.data.tags.map((tag: string) => (
+            <span class="tag-chip">{tag}</span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {visibleLinks.length > 0 && (
+      <div class="case-study__group">
+        <span class="small-label case-study__group-label">{locale === "ko" ? "관련 링크" : "Links"}</span>
+        <ExternalLinks locale={locale} links={visibleLinks} />
+      </div>
+    )}
+  </div>
+</section>

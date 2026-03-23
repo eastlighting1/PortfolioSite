@@ -2,6 +2,23 @@ pageType: resume
 documentTitle: Resume | Donghyeon Kim
 documentDescription: Print-safe resume for an applied AI researcher and engineer working across conversational AI, clinical AI, and ML systems.
 printToolbarLabel: Optimized for browser print and PDF export.
+printCv:
+  includeProjects: false
+  keywords:
+    - Medical AI
+    - Conversational AI
+    - Clinical NLP
+    - Evaluation
+    - MLOps
+    - Applied AI Systems
+  objective: Applied AI researcher focused on turning conversational AI and clinical AI experiments into reliable systems through modeling, evaluation, and practical delivery.
+  additionalItems:
+    - label: Links
+      value: GitHub · LinkedIn · Google Scholar
+    - label: Focus Areas
+      value: Medical AI · Conversational AI · Evaluation · MLOps
+    - label: Location
+      value: Incheon, South Korea
 layout:
   leftColumn:
     - summary

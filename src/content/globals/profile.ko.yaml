@@ -1,61 +1,56 @@
 globalType: profile
-name: Donghyeon Kim
+name: 김동현
 headline: 배포 가능한 대화형 AI와 의료 AI 시스템에 집중하는 응용 AI 연구자이자 AI 엔지니어
 intro: 저는 실제 데이터를 다루는 응용 AI 문제를 모델, 평가, 그리고 협업자가 실제로 활용할 수 있는 결과물로 연결하는 작업에 관심이 있습니다. 최근에는 대화형 AI, 의료 AI, 그리고 재현성과 전달력을 높이는 ML 시스템 관점의 작업을 함께 수행하고 있습니다.
 summary: NLP, 의료 AI, 딥러닝, 그리고 엔드투엔드 AI 프로젝트 구현 경험을 가진 대학원 연구자입니다. 실험 단계의 AI 작업을 더 나은 평가, 명확한 문서화, 실용적인 MLOps 관점을 통해 신뢰 가능한 시스템으로 연결하는 데 특히 관심이 있습니다.
 philosophy:
-  - 정확도뿐 아니라 이해 가능하고 다시 활용할 수 있는 AI 시스템을 만든다.
-  - 평가는 논문의 부록이 아니라 결과물의 일부로 다룬다.
-  - 실험과 전달을 연결해 기술 작업이 만든 사람을 넘어 계속 유효하게 남도록 한다.
+  - 재현 가능하고 설명 가능한 AI 시스템을 만드는 일을 중요하게 생각합니다.
+  - 결과를 신뢰하게 만들 수 있는 평가를 위해 노력합니다.
+  - 실제로 활용할 수 있는 형태의 연구 혹은 구현을 하고자 합니다.
+
 capabilityGroups:
-  - title: Applied AI
-    description: NLP, 의료 AI, 그리고 정형·비정형 데이터가 함께 있는 환경에서의 모델링과 구현
+  - title: Data Science
+    description: 실제 데이터의 품질과 구조를 다듬고, 분석과 전처리를 통해 모델링 가능한 기반을 만드는 역량
     skills:
-      - Python
-      - PyTorch
-      - Hugging Face
-      - XGBoost
-      - Deep Learning
-  - title: NLP / Research
-    description: 대화형 AI, 공감 대화 생성, 텍스트 분석, 그리고 평가 중심 실험 설계
+      - Data Preparation
+      - Feature Engineering
+      - Data Wrangling
+      - Data Manipulation
+  - title: Applied AI
+    description: 도메인 NLP 문제를 여러 태스크로 구체화하고, 실험과 구현을 통해 검토 가능한 결과로 연결하는 역량
     skills:
       - Conversational AI
-      - Reinforcement Learning
-      - Text Analysis
-      - Experiment Design
-      - Technical Writing
-  - title: ML Systems
-    description: 재현성, 배포 맥락, 모니터링, 협업 전달물을 고려한 프로젝트 구현
+      - Medical AI
+      - Knowledge Graph
+      - Logic-based AI
+  - title: MLOps
+    description: 개발 과정을 반복 가능하고 협업 가능한 워크플로로 정리하고, 배포와 자동화를 고려해 시스템으로 확장하는 역량
     skills:
+      - Cloud
       - Docker
-      - Linux
-      - Git
-      - AWS
-      - Logging
-  - title: Growing Interests
-    description: 연구 결과를 시간이 지나도 유지 가능한 시스템으로 만들기 위한 운영 관점의 관심사
-    skills:
-      - MLOps
-      - Observability
-      - Feature Store
       - Continuous Training
-      - uv
+      - Feature Store
+  - title: Observability in AI
+    description: 모델의 동작을 기록하고 추적하여 재현성, 디버깅 가능성, 유지보수성을 높이는 운영 관점의 역량
+    skills:
+      - Logging
+      - Monitoring
+      - Artifacts
+      - Provenance
+
 pipeline:
-  - title: Problem Framing
-    emphasis: Applied AI Researcher
-    description: 모델이나 벤치마크보다 먼저 사용자, 도메인, 의사결정 맥락에서 문제를 정의합니다.
-  - title: Data Preparation
-    emphasis: AI Engineer
-    description: 이후의 모델링 선택이 흔들리지 않도록 실제 데이터를 정리하고 구조화하며 해석합니다.
-  - title: Modeling
-    emphasis: Research Builder
-    description: 데이터 신호, 도메인 제약, 활용 목적에 맞는 방법을 선택합니다.
-  - title: Evaluation
-    emphasis: Experimental Rigor
-    description: 하나의 대표 점수보다 검토 가능한 지표와 실패 사례를 함께 봅니다.
-  - title: Interface / Delivery
-    emphasis: Collaborative Implementer
-    description: 결과를 보고서, 데모, 대시보드, 코드 형태로 정리해 다른 사람이 이어받을 수 있게 만듭니다.
-  - title: Monitoring Mindset
-    emphasis: MLOps Interest
-    description: 처음부터 재현성, 관측 가능성, 유지보수성을 염두에 둡니다.
+  - title: 피처 엔지니어링
+    emphasis: 데이터의 구성과 관리 
+    description: 복잡한 데이터를 목적에 맞게 전처리하고, 데이터의 품질과 일관성을 유지하기 위한 파이프라인을 설계합니다.
+  - title: 재현 가능한 실험
+    emphasis: 훈련 자동화하기
+    description: 코드와 환경을 철저히 통제하여 모델을 학습시키고, 체계적으로 추적하여 언제든 재현 가능한 실험 환경을 구축합니다.
+  - title: 강건한 평가
+    emphasis: 검증하고 평가하기
+    description: 단순한 정확도를 넘어 모델의 강건성, 오류 사례, 그리고 의료 및 대화 도메인의 요구사항을 다각도로 검증하여 프로덕션 도입 전 신뢰성을 확보합니다.
+  - title: 데브옵스
+    emphasis: 인프라와 배포
+    description: AWS 혹은 Docker 환경에서 모델을 배포하고, 지속적인 통합과 자동화를 통해 모델이 실제 환경에서 안정적으로 운영될 수 있도록 합니다.
+  - title: 시스템 관측 가능성
+    emphasis: 모니터링과 피드백 루프
+    description: 배포된 AI 시스템의 로그, 리소스, 예측 결과를 실시간으로 수집하고 시각화하여 파이프라인 내부 상태를 투명하게 관측합니다.
