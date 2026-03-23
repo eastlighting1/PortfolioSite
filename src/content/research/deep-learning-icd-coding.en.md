@@ -3,7 +3,7 @@ title: "Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abd
 year: 2025
 venue: "The Korean Society of Computer and Information"
 type: "Journal Paper"
-abstract: "This study shows that clinically useful diagnostic classification is possible using core EMR signals, including nursing records, examination data, and diagnosis-related information from abdominal surgery patients."
+abstract: "This study shows that useful diagnostic classification is possible using core EMR signals from abdominal surgery patients."
 tags:
   - "Clinical AI"
   - "EMR"

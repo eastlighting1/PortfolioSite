@@ -4,34 +4,34 @@ headline: Applied AI researcher and AI engineer focused on deployable conversati
 intro: I am interested in applied AI problems grounded in real-world data, and in connecting them to models, evaluation, and deliverables that collaborators can actually use. Recently, I have been working across conversational AI, medical AI, and ML systems with a focus on improving reproducibility and practical delivery.
 summary: I am a graduate researcher with experience in NLP, medical AI, deep learning, and end-to-end AI project implementation. I am particularly interested in turning experimental AI work into trustworthy systems through stronger evaluation, clear documentation, and a practical MLOps perspective.
 philosophy:
-  - I build AI systems that are not only accurate, but also understandable and reusable.
-  - I treat evaluation not as an appendix to a paper, but as part of the deliverable itself.
-  - I connect experimentation and delivery so that technical work remains useful beyond the person who created it.
+  - I build AI that is accurate, understandable, and reusable.
+  - I treat evaluation as part of the deliverable, not an appendix.
+  - I connect experimentation and delivery beyond individual ownership.
 
 capabilityGroups:
   - title: Data Science
-    description: The ability to refine the quality and structure of real-world data and build a solid foundation for modeling through analysis and preprocessing
+    description: The ability to refine real-world data for reliable modeling through analysis and preprocessing
     skills:
       - Data Preparation
       - Feature Engineering
       - Data Wrangling
       - Data Manipulation
   - title: Applied AI
-    description: The ability to turn domain-specific NLP problems into concrete tasks and connect them to reviewable outcomes through experimentation and implementation
+    description: The ability to turn domain-specific NLP into concrete tasks through experimentation and implementation
     skills:
       - Conversational AI
       - Medical AI
       - Knowledge Graph
       - Logic-based AI
   - title: MLOps
-    description: The ability to organize development into repeatable, collaborative workflows and scale it into systems with deployment and automation in mind
+    description: The ability to build repeatable workflows and scale them through deployment and automation
     skills:
       - Cloud
       - Docker
       - Continuous Training
       - Feature Store
   - title: Observability in AI
-    description: An operational perspective centered on recording and tracing model behavior to improve reproducibility, debuggability, and maintainability
+    description: An operational perspective for tracing model behavior to improve reproducibility and maintenance
     skills:
       - Logging
       - Monitoring

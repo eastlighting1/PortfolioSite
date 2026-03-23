@@ -1,5 +1,5 @@
 ---
-title: "Empathetic Dialogue Generation Model Using Reinforcement Learning with AI-Based Feedback"
+title: "AI 피드백 기반 강화학습을 이용한 공감 대화 생성 모델"
 year: 2025
 venue: "한국정보과학회"
 type: "학회 논문"

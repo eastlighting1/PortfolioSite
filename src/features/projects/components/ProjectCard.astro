@@ -1,6 +1,5 @@
 ---
 import { getUiEntry } from "../../../lib/content";
-import ExternalLinks from "../../../components/common/ExternalLinks.astro";
 import { withBase } from "../../../lib/site";
 import { entrySlug } from "../../../lib/content";
 import ProjectQuickPreview from "./ProjectQuickPreview.astro";
@@ -16,36 +15,65 @@ const { project, dataReveal = "1", locale = "ko" } = Astro.props;
 const href = withBase(localizePath(`projects/${entrySlug(project)}/`, locale));
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
+const metrics = project.data.metrics ?? [];
+const tags = project.data.tags ?? [];
+const primaryMetric = metrics[0];
+const secondaryMetrics = metrics.slice(1, 3);
+const visibleTags = tags.slice(0, 3);
+const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
+const resourceLinks = [
+  { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+  { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+  { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+  { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
+].filter((link) => link.href);
 ---
 
 <article class="project-card" data-reveal={dataReveal}>
-  <span class="small-label">{project.data.type} | {project.data.year}</span>
+  <div class="project-card__topline">
+    <span class="small-label project-card__type">{project.data.type}</span>
+    <span class="project-card__year">{project.data.year}</span>
+  </div>
   <h3>{project.data.title}</h3>
+  <p class="project-card__role">{project.data.role}</p>
   <p class="muted">{project.data.summary}</p>
-  <div class="meta-row project-card__meta-row">
-    <span class="tag-chip">{project.data.role}</span>
-    {project.data.metrics.map((metric: string) => (
-      <span class="metric-badge">{metric}</span>
-    ))}
-  </div>
-  <div class="tag-row project-card__tag-row">
-    {project.data.tags.map((tag: string) => (
-      <span class="tag-chip">{tag}</span>
-    ))}
-  </div>
+  {primaryMetric && (
+    <div class="project-card__highlight">
+      <span class="small-label">Key Outcome</span>
+      <strong>{primaryMetric}</strong>
+    </div>
+  )}
+  {secondaryMetrics.length > 0 && (
+    <div class="project-card__facts">
+      {secondaryMetrics.map((metric: string) => (
+        <p>{metric}</p>
+      ))}
+    </div>
+  )}
+  {visibleTags.length > 0 && (
+    <div class="project-card__stack">
+      <span class="small-label">Selected Stack</span>
+      <div class="tag-row project-card__tag-row">
+        {visibleTags.map((tag: string) => (
+          <span class="tag-chip">{tag}</span>
+        ))}
+        {hiddenTagCount > 0 && <span class="tag-chip tag-chip--muted">+{hiddenTagCount}</span>}
+      </div>
+    </div>
+  )}
+  {resourceLinks.length > 0 && (
+    <div class="project-card__resources" aria-label={ui.externalLinksAriaLabel}>
+      {resourceLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noreferrer">
+          {link.label}
+        </a>
+      ))}
+    </div>
+  )}
   <div class="project-card__footer">
-    <ExternalLinks
-      locale={locale}
-      links={[
-        { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
-        { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
-        { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
-        { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
-      ]}
-    />
     <div class="hero-actions project-card__actions">
+      <a class="button-link" href={href}>{ui.project.openCaseStudyLabel}</a>
       <ProjectQuickPreview project={project} locale={locale} />
-      <a class="button-link-secondary" href={href}>{ui.project.openCaseStudyLabel}</a>
     </div>
   </div>
 </article>

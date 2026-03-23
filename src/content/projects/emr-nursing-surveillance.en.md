@@ -7,10 +7,10 @@ roles:
   - "AI Engineer"
   - "Data Scientist"
 type: "Clinical AI Research"
-summary: "Built an EMR-based clinical AI workflow for nursing surveillance by combining nursing records, diagnostic data, interpretable analysis, and diagnostic prediction modeling."
-portfolioProblem: "Clinical nursing surveillance requires fast and reliable understanding of patient conditions, but relevant signals are split across structured records and unstructured nursing notes."
-portfolioApproach: "I combined text preprocessing, keyword extraction, dependency analysis, topic modeling, similarity analysis, and predictive modeling with KM-BERT ensembles and XGBoost so the project could support both interpretation and diagnosis prediction."
-portfolioOutcome: "The project produced interpretable outputs for domain collaborators and achieved over 92 percent accuracy in an extreme multi-class diagnostic classification task."
+summary: "Built an EMR-based AI workflow for nursing surveillance and diagnostic prediction."
+portfolioProblem: "Key nursing surveillance signals were split across structured records and nursing notes."
+portfolioApproach: "I combined clinical text analysis with KM-BERT ensembles and XGBoost to support both interpretation and prediction."
+portfolioOutcome: "Delivered interpretable clinical analysis with over 92 percent diagnostic accuracy."
 featured: true
 tags:
   - "Clinical AI"
@@ -19,9 +19,9 @@ tags:
   - "XGBoost"
   - "Interpretability"
 metrics:
-  - "92%+ diagnostic classification accuracy"
-  - "Web-based analysis delivery"
-  - "Clinical text interpretation workflow"
+  - "92%+"
+  - "Web"
+  - "Interpretability"
 paperUrl: "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12124468"
 ---
 

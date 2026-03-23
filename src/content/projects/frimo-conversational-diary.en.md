@@ -6,10 +6,10 @@ roles:
   - "AI Engineer"
   - "NLP Research Builder"
 type: "Conversational AI Project"
-summary: "Designed and implemented AI modules for a service that chats with users, analyzes emotion, and turns conversations into diary-like summaries."
-portfolioProblem: "Modern users often want light emotional support and simple self-recording, but journaling consistently is difficult and chat services rarely preserve daily context in a reflective way."
-portfolioApproach: "I designed the AI pipeline, collected and prepared training data, fine-tuned models for response generation, emotion analysis, and summarization, and connected them into a service-ready prototype flow."
-portfolioOutcome: "The project delivered an MVP-level prototype on schedule and demonstrated how multiple Korean-language AI models could work together in one conversational product experience."
+summary: "Built AI modules for chat, emotion analysis, and diary-style summarization."
+portfolioProblem: "Users want emotional support and lightweight journaling, but reflective daily recording is hard to sustain."
+portfolioApproach: "I designed the pipeline, prepared data, and connected generation, emotion analysis, and summarization models."
+portfolioOutcome: "Delivered an on-time MVP that unified Korean AI models in one product flow."
 featured: true
 tags:
   - "Conversational AI"
@@ -19,9 +19,9 @@ tags:
   - "KoBERT"
   - "KoBART"
 metrics:
-  - "1.5-year project cycle"
-  - "MVP delivered on time"
-  - "End-to-end AI module design"
+  - "1.5 Years"
+  - "On-Time"
+  - "End-to-End"
 ---
 
 ## Context

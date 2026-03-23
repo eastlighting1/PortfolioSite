@@ -4,15 +4,15 @@ items:
     organization: Intelligent Data Analytics Lab., Gachon University  
     period: 2024.03 - 2026.02  
     bullets:  
-      - Conducting research on EMR-based nursing surveillance decision support and diagnostic classification.  
-      - Built a modeling pipeline based on KM-BERT ensemble and XGBoost using both structured and text data.  
-      - Explored conversational AI topics, including reinforcement learning-based empathetic dialogue generation using AI-based feedback.  
+      - Led graduate research on EMR-based nursing surveillance decision support and diagnostic classification.  
+      - Built end-to-end modeling pipelines using KM-BERT ensembles, XGBoost, and both structured and text data.  
+      - Explored conversational AI topics, including empathetic dialogue generation with AI-based feedback.  
 
   - role: Research Project Participant  
     organization: National Research Foundation of Korea (NRF)  
     period: 2024.03 - 2025.12  
     bullets:  
-      - Led preprocessing, modeling, and analysis in a deep learning-based nursing surveillance decision support project using EMR data.  
+      - Contributed to an NRF-funded clinical AI project centered on nursing surveillance decision support using EMR data.  
       - Implemented workflows for clinical text understanding, including keyword extraction, dependency parsing-based preprocessing, topic modeling, and similarity analysis.  
       - Provided interpretable results and web-based analysis interfaces for collaborative researchers.  
 

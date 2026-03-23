@@ -1,5 +1,4 @@
 ---
-import { getUiEntry } from "../../../lib/content";
 import { withBase } from "../../../lib/site";
 import { entrySlug } from "../../../lib/content";
 import { localizePath, type Locale } from "../../../lib/i18n";
@@ -11,31 +10,51 @@ interface Props {
 }
 
 const { item, dataReveal = "1", locale = "ko" } = Astro.props;
-const uiEntry = await getUiEntry("labels", locale);
-const ui = uiEntry.data;
+const slug = entrySlug(item);
+const href = withBase(localizePath(`research/${slug}/`, locale));
+const tags = item.data.tags ?? [];
+const visibleTags = tags.slice(0, 3);
+const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
+const normalizedType = String(item.data.type ?? "").toLowerCase();
+const isTechnicalNote =
+  slug === "multimodal-evaluation-note" || normalizedType.includes("technical note");
+const ctaLabel = isTechnicalNote
+  ? locale === "ko"
+    ? "노트 보기"
+    : "Open Note"
+  : locale === "ko"
+    ? "출판물 보기"
+    : "View Publication";
 ---
 
-<article class="research-card" data-reveal={dataReveal}>
-  <span class="small-label">{item.data.venue} | {item.data.year}</span>
-  <h3>{item.data.title}</h3>
-  <details class="inline-expander inline-expander--compact research-card__abstract">
-    <summary>
-      <span>{ui.research.abstractPreviewLabel}</span>
-      <span class="inline-expander__hint">{ui.research.expandLabel}</span>
-    </summary>
-    <p class="muted research-card__abstract-copy">{item.data.abstract}</p>
-  </details>
-  <div class="meta-row research-card__meta-row">
-    <span class="tag-chip">{item.data.type}</span>
+<article
+  class:list={[
+    "research-card",
+    isTechnicalNote && "research-card--note"
+  ]}
+  data-reveal={dataReveal}
+>
+  <div class="research-card__topline">
+    <span class="research-card__type-badge">{item.data.type}</span>
+    <span class="research-card__year">{item.data.year}</span>
   </div>
-  <div class="tag-row research-card__tag-row">
-    {item.data.tags.map((tag: string) => (
-      <span class="tag-chip">{tag}</span>
-    ))}
+  <div class="research-card__header">
+    <p class="research-card__venue">{item.data.venue}</p>
+    <h3>{item.data.title}</h3>
   </div>
+  <p class="muted research-card__summary">{item.data.abstract}</p>
+  {visibleTags.length > 0 && (
+    <div class="research-card__keywords">
+      <span class="small-label">Keywords</span>
+      <div class="tag-row research-card__tag-row">
+        {visibleTags.map((tag: string) => (
+          <span class="tag-chip">{tag}</span>
+        ))}
+        {hiddenTagCount > 0 && <span class="tag-chip tag-chip--muted">+{hiddenTagCount}</span>}
+      </div>
+    </div>
+  )}
   <div class="research-card__footer">
-    <a class="button-link-secondary" href={withBase(localizePath(`research/${entrySlug(item)}/`, locale))}>
-      {ui.research.openDetailLabel}
-    </a>
+    <a class="button-link-secondary" href={href}>{ctaLabel}</a>
   </div>
 </article>

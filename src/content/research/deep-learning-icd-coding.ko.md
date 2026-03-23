@@ -1,5 +1,5 @@
 ---
-title: "Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abdominal Surgery Patients"
+title: "복부수술 환자의 간호감시를 위한 딥러닝 기반 진단명 분류 모델"
 year: 2025
 venue: "한국컴퓨터정보학회"
 type: "학회 논문"

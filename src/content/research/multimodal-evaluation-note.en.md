@@ -3,7 +3,7 @@ title: "Evaluation Implementation Note for Human-Centered Multimodal AI"
 year: 2026
 venue: "Technical Note"
 type: "Technical Note"
-abstract: "A practical note on translating evaluation requirements into implementation for a multimodal semantic integration project in human-centered AI."
+abstract: "A practical note on translating evaluation requirements into implementation for a human-centered multimodal AI project."
 tags:
   - "Evaluation"
   - "Human-Centered AI"

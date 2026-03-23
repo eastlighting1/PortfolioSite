@@ -420,6 +420,8 @@ const photoSource = (() => {
           { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
           { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
         ].filter((link) => link.href);
+        const caseStudyTags = project.data.tags.slice(0, 2);
+        const hiddenCaseStudyTagCount = Math.max(project.data.tags.length - caseStudyTags.length, 0);
 
         return (
           <article class="portfolio-carousel__slide" data-portfolio-slide>
@@ -452,20 +454,32 @@ const photoSource = (() => {
                 </section>
               </div>
               <div class="portfolio-web-card__meta">
-                <div>
+                <div class="case-study__meta-group case-study__meta-group--keywords">
                   <span class="small-label case-study__group-label">{labels.keywords}</span>
                   <div class="tag-row case-study__tags">
-                    {project.data.tags.map((tag: string) => (
-                      <span class="tag-chip">{tag}</span>
+                    {caseStudyTags.map((tag: string) => (
+                      <span class="tag-chip"><span class="tag-chip__text">{tag}</span></span>
                     ))}
+                    {hiddenCaseStudyTagCount > 0 && (
+                      <span class="tag-chip tag-chip--summary"><span class="tag-chip__text">+{hiddenCaseStudyTagCount}</span></span>
+                    )}
                   </div>
                 </div>
-                {projectLinks.length > 0 && (
-                  <div>
+                <div
+                  class:list={[
+                    "case-study__meta-group",
+                    "case-study__meta-group--links",
+                    projectLinks.length === 0 && "case-study__meta-group--empty"
+                  ]}
+                  aria-hidden={projectLinks.length === 0 ? "true" : undefined}
+                >
+                  {projectLinks.length > 0 && (
+                    <>
                     <span class="small-label case-study__group-label">{labels.links}</span>
                     <ExternalLinks locale={locale} links={projectLinks} />
-                  </div>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
             </article>
           </article>

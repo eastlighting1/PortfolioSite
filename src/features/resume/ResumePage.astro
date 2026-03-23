@@ -43,6 +43,8 @@ const allResearch = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year);
 
 const featuredExperience = experience.slice(0, resumePage.data.sections.experience.count ?? 2);
+const printExperience = experience.slice(0, 3);
+const printProjects = selectedProjects.slice(0, 2);
 const certificates = portfolioPage.data.recognition.certificates;
 const awards = portfolioPage.data.recognition.awards;
 const recognition = [...certificates, ...awards];
@@ -67,9 +69,15 @@ function compactText(text: string, maxLength = 180) {
 }
 
 function formatResearchCitation(title: string, venue: string, year: number, type: string) {
+  const normalizedVenue = normalizeWhitespace(venue);
+  const normalizedType = normalizeWhitespace(type);
+
   return {
     title: `"${title}."`,
-    meta: `${venue}, ${year}. ${type}.`
+    meta:
+      normalizedVenue.toLowerCase() === normalizedType.toLowerCase()
+        ? `${year}. ${type}.`
+        : `${venue}, ${year}. ${type}.`
   };
 }
 
@@ -83,7 +91,7 @@ const sectionLabels =
         experience: "연구 및 실무 경험",
         projects: "선별 프로젝트",
         publications: "연구 및 발표",
-        certifications: "수료 및 자격",
+        certifications: "수료 및 교육",
         additional: "추가 정보",
         links: "링크",
         focusAreas: "관심 축"
@@ -96,7 +104,7 @@ const sectionLabels =
         experience: "Research Experience",
         projects: "Selected Projects",
         publications: "Publications",
-        certifications: "Certifications",
+        certifications: "Training & Certifications",
         additional: "Additional Information",
         links: "Links",
         focusAreas: "Focus Areas"
@@ -268,6 +276,58 @@ const cvAdditionalItems =
       </div>
     </section>
 
+    {resumePage.data.printCv.includeProjects && printProjects.length > 0 && (
+      <section class="cv-print-section">
+        <h2>{sectionLabels.projects}</h2>
+        <div class="cv-print-stack">
+          {printProjects.map((project) => (
+            <article class="cv-print-entry">
+              <div class="cv-print-entry__row">
+                <div>
+                  <h3>{project.data.title}</h3>
+                  <p class="cv-print-entry__subline cv-print-entry__subline--italic">{project.data.type}</p>
+                </div>
+                <div class="cv-print-entry__meta">
+                  <span>{project.data.year}</span>
+                </div>
+              </div>
+              <p class="cv-print-entry__detail">{compactText(project.data.summary, 220)}</p>
+              <p class="cv-print-entry__detail cv-print-entry__detail--muted">
+                {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 2).join(" · ")}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="cv-print-section">
+      <h2>{sectionLabels.experience}</h2>
+      <div class="cv-print-stack">
+        {printExperience.map((item) => (
+          <article class="cv-print-entry">
+            <div class="cv-print-entry__row">
+              <div>
+                <h3>{item.organization}</h3>
+                <p class="cv-print-entry__subline cv-print-entry__subline--italic">{item.role}</p>
+              </div>
+              <div class="cv-print-entry__meta">
+                <span>{item.period}</span>
+              </div>
+            </div>
+            <ul class="cv-print-bullets">
+              {item.bullets.slice(0, 2).map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+  </article>
+
+  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only page-break">
     <section class="cv-print-section">
       <h2>{sectionLabels.education}</h2>
       <div class="cv-print-stack">
@@ -287,57 +347,6 @@ const cvAdditionalItems =
         ))}
       </div>
     </section>
-
-    <section class="cv-print-section">
-      <h2>{sectionLabels.experience}</h2>
-      <div class="cv-print-stack">
-        {experience.map((item) => (
-          <article class="cv-print-entry">
-            <div class="cv-print-entry__row">
-              <div>
-                <h3>{item.organization}</h3>
-                <p class="cv-print-entry__subline cv-print-entry__subline--italic">{item.role}</p>
-              </div>
-              <div class="cv-print-entry__meta">
-                <span>{item.period}</span>
-              </div>
-            </div>
-            <ul class="cv-print-bullets">
-              {item.bullets.slice(0, 3).map((bullet) => (
-                <li>{bullet}</li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
-    </section>
-  </article>
-
-  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only page-break">
-    {resumePage.data.printCv.includeProjects && selectedProjects.length > 0 && (
-      <section class="cv-print-section">
-        <h2>{sectionLabels.projects}</h2>
-        <div class="cv-print-stack">
-          {selectedProjects.map((project) => (
-            <article class="cv-print-entry">
-              <div class="cv-print-entry__row">
-                <div>
-                  <h3>{project.data.title}</h3>
-                  <p class="cv-print-entry__subline cv-print-entry__subline--italic">{project.data.type}</p>
-                </div>
-                <div class="cv-print-entry__meta">
-                  <span>{project.data.year}</span>
-                </div>
-              </div>
-              <p class="cv-print-entry__detail">{compactText(project.data.summary, 240)}</p>
-              <p class="cv-print-entry__detail cv-print-entry__detail--muted">
-                {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 3).join(" · ")}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-    )}
 
     <section class="cv-print-section">
       <h2>{sectionLabels.publications}</h2>

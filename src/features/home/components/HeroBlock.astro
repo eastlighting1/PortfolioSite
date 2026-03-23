@@ -83,6 +83,7 @@ const siteConfig = siteEntry.data;
 <script is:inline>
   const setupFocusTitleFit = () => {
     const titles = document.querySelectorAll("[data-focus-title]");
+    if (!titles.length) return;
 
     const rootFontSize = () =>
       Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
@@ -128,6 +129,8 @@ const siteConfig = siteEntry.data;
         element.style.maxWidth = "100%";
         element.style.overflow = "visible";
         element.style.whiteSpace = "normal";
+        element.style.wordBreak = "keep-all";
+        element.style.overflowWrap = "anywhere";
         element.style.webkitLineClamp = "";
         element.style.webkitBoxOrient = "";
       };
@@ -177,6 +180,10 @@ const siteConfig = siteEntry.data;
       window.__focusTitleFitObserver.disconnect();
     }
 
+    if (window.__focusTitleFitAnimationFrame) {
+      cancelAnimationFrame(window.__focusTitleFitAnimationFrame);
+    }
+
     const observer = new ResizeObserver(() => {
       titles.forEach((title) => fitTitle(title));
     });
@@ -187,6 +194,16 @@ const siteConfig = siteEntry.data;
     });
 
     window.__focusTitleFitObserver = observer;
+
+    const rerun = () => {
+      titles.forEach((title) => fitTitle(title));
+    };
+
+    window.__focusTitleFitAnimationFrame = requestAnimationFrame(rerun);
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(rerun);
+    }
   };
 
   setupFocusTitleFit();

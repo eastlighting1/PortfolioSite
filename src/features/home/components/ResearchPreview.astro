@@ -1,18 +1,16 @@
 ---
-import { withBase } from "../../../lib/site";
-import { entrySlug } from "../../../lib/content";
-import { localizePath, type Locale } from "../../../lib/i18n";
+import ResearchCard from "../../research/components/ResearchCard.astro";
+import { type Locale } from "../../../lib/i18n";
 
 interface Props {
   research: any[];
   eyebrow: string;
   title: string;
   lead?: string;
-  ctaLabel: string;
   locale?: Locale;
 }
 
-const { research, eyebrow, title, lead, ctaLabel, locale = "ko" } = Astro.props;
+const { research, eyebrow, title, lead, locale = "ko" } = Astro.props;
 ---
 
 <section class="section">
@@ -22,21 +20,7 @@ const { research, eyebrow, title, lead, ctaLabel, locale = "ko" } = Astro.props;
     {lead && <p class="section-lead" set:html={lead} />}
     <div class="research-list" style="margin-top: 2rem;">
       {research.map((item, index) => (
-        <article class="research-card" data-reveal={`${(index % 4) + 1}`}>
-          <span class="small-label">{item.data.venue} | {item.data.year}</span>
-          <h3>{item.data.title}</h3>
-          <p class="muted">{item.data.abstract}</p>
-          <div class="tag-row">
-            {item.data.tags.slice(0, 4).map((tag: string) => (
-              <span class="tag-chip">{tag}</span>
-            ))}
-          </div>
-          <div style="margin-top: 1rem;">
-            <a class="button-link-secondary" href={withBase(localizePath(`research/${entrySlug(item)}/`, locale))}>
-              {ctaLabel}
-            </a>
-          </div>
-        </article>
+        <ResearchCard item={item} dataReveal={`${(index % 4) + 1}`} locale={locale} />
       ))}
     </div>
   </div>

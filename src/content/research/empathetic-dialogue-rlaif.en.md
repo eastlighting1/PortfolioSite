@@ -3,7 +3,7 @@ title: "Empathetic Dialogue Generation Model Using Reinforcement Learning with A
 year: 2025
 venue: "Korean Institute of Information Scientists and Engineers"
 type: "Conference Paper"
-abstract: "This work explores how AI-based feedback can reduce dependence on human feedback in reinforcement learning pipelines for empathetic dialogue generation, improving response diversity and emotional depth."
+abstract: "This work explores how AI-based feedback can reduce reliance on human feedback in empathetic dialogue generation."
 tags:
   - "Conversational AI"
   - "RLAIF"

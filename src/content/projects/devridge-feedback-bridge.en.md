@@ -6,10 +6,10 @@ roles:
   - "LLM Product Builder"
   - "Prototype Engineer"
 type: "LLM Application Prototype"
-summary: "Built an LLM-based service concept that helps developers receive contextualized feedback from professionals in different roles."
-portfolioProblem: "Developers often need advice from people with different perspectives such as UI, performance, or code quality, but gathering that feedback in a timely and contextual way is difficult."
-portfolioApproach: "I framed the problem as a role-aware feedback bridge, where users submit project context and preferred language so the service can generate more relevant guidance for their current situation."
-portfolioOutcome: "The project turned a broad collaboration problem into a concrete LLM prototype and showcased product thinking around contextual AI assistance."
+summary: "Built an LLM concept for contextual feedback from different professional roles."
+portfolioProblem: "Developers need UI, performance, and code quality input, but context-aware feedback is hard to gather."
+portfolioApproach: "I reframed it as a role-aware bridge using project context and language preference to guide feedback."
+portfolioOutcome: "Built a lightweight prototype for role-based feedback with context-aware LLM guidance."
 featured: true
 tags:
   - "LLM"
@@ -17,9 +17,9 @@ tags:
   - "Prompted Feedback"
   - "Prototype"
 metrics:
-  - "Hackathon-style prototype"
-  - "Role-aware feedback concept"
-  - "Context-driven user input design"
+  - "Prototype"
+  - "Role-Aware"
+  - "Contextual"
 ---
 
 ## Context

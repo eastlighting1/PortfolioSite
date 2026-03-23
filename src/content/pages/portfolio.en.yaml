@@ -22,16 +22,16 @@ web:
       studyItems:
         - title: NEKA
           emphasis: NLP Study
-          description: A study conducted with the goal of implementing Keyword Extraction and NER models using KoBERT
-        - title: Sunaro-um
+          description: A study on implementing Keyword Extraction and NER with KoBERT
+        - title: SUNAROUM
           emphasis: Financial AI Study
-          description: A study conducted with the goal of building a model that evaluates whether to recommend buying based on corporate financial statements and financial indicators
-        - title: Ida
+          description: A study on building buy recommendation models from financial statements and indicators
+        - title: I-DA
           emphasis: Recommender Systems Study
-          description: A study conducted on the topic of recommendation services based on knowledge graphs / GNN
+          description: A study on recommendation systems using knowledge graphs and GNNs
         - title: MLADS
           emphasis: Basic Machine Learning Study
-          description: A study for systematically learning the fundamentals of data science and machine learning
+          description: A study on the fundamentals of data science and machine learning
     - kind: research
       eyebrow: Research
       title: Research

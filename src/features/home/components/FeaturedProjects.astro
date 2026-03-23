@@ -18,7 +18,7 @@ const { projects, eyebrow, title, lead, locale = "ko" } = Astro.props;
     <div class="eyebrow">{eyebrow}</div>
     <h2 class="section-title" set:html={title} />
     {lead && <p class="section-lead featured-projects__lead" set:html={lead} />}
-    <div class="preview-grid" style="margin-top: 2rem;">
+    <div class="preview-grid featured-projects__grid" style="margin-top: 2rem;">
       {projects.map((project, index) => (
         <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} locale={locale} />
       ))}
@@ -31,9 +31,19 @@ const { projects, eyebrow, title, lead, locale = "ko" } = Astro.props;
     max-width: 92ch;
   }
 
+  .featured-projects__grid {
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    align-items: stretch;
+    gap: 1.4rem;
+  }
+
   @media (max-width: 900px) {
     .featured-projects__lead {
       max-width: 62ch;
+    }
+
+    .featured-projects__grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
