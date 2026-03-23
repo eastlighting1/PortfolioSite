@@ -2334,6 +2334,12 @@ html:lang(ko) .system-stage .muted {
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
+.portfolio-carousel__button-icon {
+  display: block;
+  line-height: 1;
+  transform: translateY(-0.08em);
+}
+
 .portfolio-carousel__button:hover {
   transform: translateY(-2px);
   border-color: rgba(50, 95, 221, 0.32);
