@@ -156,6 +156,18 @@
   border-top: 1px solid var(--surface-muted);
 }
 
+.mobile-nav__locale {
+  justify-self: start;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.mobile-nav__locale .locale-switch {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .site-footer {
   border-top: 1px solid var(--border);
   margin-top: 4rem;

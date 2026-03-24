@@ -70,7 +70,9 @@ const isActive = (currentPath: string, itemHref: string) => {
           })}
         </nav>
         <div class="mobile-nav__meta">
-          <LocaleSwitch locale={locale} pathname={pathname} />
+          <div class="mobile-nav__locale">
+            <LocaleSwitch locale={locale} pathname={pathname} />
+          </div>
           {externalProfiles.slice(0, 2).map((link) => (
             <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
           ))}

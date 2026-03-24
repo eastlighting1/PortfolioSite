@@ -1,8 +1,8 @@
 pageType: projects
-documentTitle: Projects | Donghyeon Kim
+documentTitle: 프로젝트 | 김동현
 documentDescription: 대화형 AI, 의료 AI, 응용 ML 구현 경험을 다루는 프로젝트 카탈로그입니다.
 hero:
-  eyebrow: Projects
+  eyebrow: 프로젝트
   title: 응용 AI 프로젝트 카탈로그
   description: 임상 의사결정 지원, 대화형 AI, LLM 프로토타이핑, 협업형 NLP 작업을 포함한 프로젝트들을 모아둔 페이지입니다. 각 항목은 문제 맥락, 역할, 결과를 중심으로 케이스 스터디 형식으로 정리했습니다.
   meta:

@@ -1,12 +1,12 @@
 pageType: about
-documentTitle: About | 김동현
+documentTitle: 소개 | 김동현
 documentDescription: 행사 후기, 작업 메모, 그리고 AI 시스템에 대한 생각을 카드 형태로 정리하는 갤러리형 아카이브입니다.
 hero:
-  eyebrow: About
+  eyebrow: 소개
   title: 기록과 생각을 쌓아두는 갤러리
   description: 행사 후기, 연구 메모, 시스템 관점에 대한 생각을 카드 단위로 정리해 두는 개인 아카이브입니다. 소개문보다 더 가볍고, 프로젝트보다 더 사적인 기록을 남기는 공간으로 사용합니다.
 gallery:
-  title: Archive Gallery
+  title: 아카이브 갤러리
   lead: 세미나 후기, 커뮤니티 활동, 연구 중 떠오른 생각, AI 시스템 운영에 대한 메모를 이곳에 축적합니다. 나중에는 카드만 추가해서 흐름이 이어지도록 설계했습니다.
   openEntryLabel: 글 보기
   closeEntryLabel: 닫기

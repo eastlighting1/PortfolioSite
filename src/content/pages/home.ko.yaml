@@ -9,7 +9,7 @@ sectionOrder:
   - documents
 hero:
   enabled: true
-  eyebrow: AI Researcher & MLOps Engineer
+  eyebrow: AI 연구자 · MLOps 엔지니어
   summary: 연구에서 프로덕션까지 다양한 환경을 이끌 수 있는 AI 연구자입니다. 대화형 AI부터 의료 데이터에 이르기까지 다양한 응용 분야에서 연구와 구현을 연결합니다.
   actions:
     - label: 핵심 프로젝트
@@ -22,55 +22,55 @@ hero:
       href: /resume/
       variant: secondary
   focusCard:
-    label: Current Focus
+    label: 현재 집중 영역
     title: 연구와 엔지니어링의 교차점
     body: 단순히 정확도 높은 모델을 연구하는 것을 넘어 재현 가능한 환경, 관측 가능한 시스템, 그리고 효율적인 인프라를 함께 고민합니다. 실제 비즈니스에서 '작동하는 AI'를 만듭니다.
     items:
-      - label: Core Domain
+      - label: 핵심 도메인
         value: Medical AI (NLP), MLOps
-      - label: Research Interests
+      - label: 연구 관심사
         value: 대화형 AI, 의료 AI, 시스템 관점의 AI
-      - label: Key Values
+      - label: 핵심 가치
         value: 코드 재현성, 시스템 관측 가능성, 자동화
 pipeline:
   enabled: true
-  eyebrow: ML Lifecycle
+  eyebrow: ML 라이프사이클
   title: 데이터 엔지니어링부터 모델 서빙까지
   lead: 복잡한 비정형 데이터의 전처리부터 PyTorch 기반의 모델 학습, 그리고 평가와 <br />실제 배포 환경을 고려한 아키텍처 설계까지 전체 흐름을 주도합니다.
 featuredProjects:
   enabled: true
-  eyebrow: Projects
+  eyebrow: 프로젝트
   title: 실제 데이터와 요구사항을 해결한 응용 AI 시스템
   lead: 연구에서 프로덕션까지 다양한 환경에서 이끌었던 프로젝트를 소개합니다. 대화형 AI부터 의료 데이터에 이르기까지 다양한 응용 분야에서 연구와 구현을 연결합니다.
   count: 3
 researchPreview:
   enabled: true
-  eyebrow: Publications
+  eyebrow: 연구 성과
   title: 자연어처리와 의료 분야에서 진행한 연구 성과
   count: 3
   ctaLabel: 자세히 보기
 experienceSnapshot:
   enabled: true
-  eyebrow: Career Snapshot
+  eyebrow: 경력 요약
   title: 연구와 엔지니어링을 아우르는 경력과 역량
   count: 4
   ctaLabel: 이력서 보기
 capabilityMap:
   enabled: true
-  eyebrow: Capability Map
+  eyebrow: 역량 맵
   title:  딥러닝 프로세스 관점에서 정리한 역량
 documents:
   enabled: true
-  eyebrow: Documents
+  eyebrow: 문서
   title: 채용 담당자, 협업자, 기술 검토자를 위한 인쇄형 문서
   cards:
-    - label: Resume
+    - label: 이력서
       title: 한눈에 들어오는 이력서
       body: AI 연구 성과, MLOps 관련 기술 스택, 그리고 핵심 프로젝트의 기여도를 압축적으로 담았습니다.
       href: /resume/
       ctaLabel: CV/Resume 열기
-    - label: Portfolio
+    - label: 포트폴리오
       title: 문제 해결 중심의 포트폴리오
       body: 각 프로젝트의 문제 정의, 아키텍처 설계, 기술적 한계 극복 과정을 상세히 기록한 케이스 스터디입니다.
       href: /portfolio/
-      ctaLabel: Portfolio 열기
+      ctaLabel: 포트폴리오 열기
