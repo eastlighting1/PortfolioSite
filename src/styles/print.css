@@ -89,7 +89,7 @@
     box-shadow: none !important;
     background: white !important;
     color: #111 !important;
-    font-family: "Times New Roman", Georgia, serif;
+    font-family: Palatino, "Palatino Linotype", "Book Antiqua", Garamond, "Times New Roman", Georgia, serif;
     font-size: 10.4pt;
     line-height: 1.26;
   }
@@ -114,7 +114,7 @@
   }
 
   .paper-sheet--resume-cv .cv-print-section + .cv-print-section {
-    margin-top: 5mm;
+    margin-top: 6.5mm;
   }
 
   .paper-sheet--resume-cv .cv-print-section h2 {
@@ -169,7 +169,7 @@
 
   .paper-sheet--resume-cv .cv-print-bullets {
     margin-top: 0.9mm;
-    padding-left: 4.2mm;
+    padding-left: 6.5mm;
   }
 
   .paper-sheet--resume-cv .cv-print-bullets li + li,

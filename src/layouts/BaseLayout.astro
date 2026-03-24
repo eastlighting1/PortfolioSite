@@ -4,6 +4,7 @@ import SiteFooter from "../components/common/SiteFooter.astro";
 import { getGlobalEntry } from "../lib/content";
 import { withBase } from "../lib/site";
 import { type Locale } from "../lib/i18n";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -23,9 +24,13 @@ const description = Astro.props.description ?? siteConfig.description;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ViewTransitions />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2" crossorigin />
     <script is:inline>
       document.documentElement.classList.add("js");
     </script>
@@ -39,19 +44,25 @@ const description = Astro.props.description ?? siteConfig.description;
       <SiteFooter locale={locale} />
     </div>
     <script is:inline>
+      let scrollObserver = null;
       const setupScrollReveal = () => {
+        if (scrollObserver) {
+          scrollObserver.disconnect();
+          scrollObserver = null;
+        }
+
         const items = document.querySelectorAll("[data-reveal]");
         if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           items.forEach((item) => item.classList.add("is-visible"));
           return;
         }
 
-        const observer = new IntersectionObserver(
+        scrollObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
                 entry.target.classList.add("is-visible");
-                observer.unobserve(entry.target);
+                scrollObserver.unobserve(entry.target);
               }
             });
           },
@@ -60,12 +71,14 @@ const description = Astro.props.description ?? siteConfig.description;
 
         items.forEach((item) => {
           item.classList.remove("is-visible");
-          observer.observe(item);
+          scrollObserver.observe(item);
         });
       };
 
-      setupScrollReveal();
       document.addEventListener("astro:page-load", setupScrollReveal);
+      document.addEventListener("astro:before-swap", () => {
+        if (scrollObserver) scrollObserver.disconnect();
+      });
     </script>
   </body>
 </html>

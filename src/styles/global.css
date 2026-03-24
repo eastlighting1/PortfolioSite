@@ -71,6 +71,9 @@
 }
 
 :root {
+  --z-header: 20;
+  --z-dropdown: 30;
+  --z-modal: 50;
   /* Primitive Tokens (Color Palette) */
   --paper-100: #fffdf8;
   --paper-200: #f4f1ea;
@@ -279,9 +282,7 @@ main {
   background: currentColor;
 }
 
-.section {
-  padding: 4.5rem 0;
-}
+.section { padding: 3.5rem 0; }
 
 .section-tight {
   padding: 2.5rem 0;
@@ -310,13 +311,9 @@ main {
   gap: 1.5rem;
 }
 
-.two-column {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
+.two-column { grid-template-columns: 1fr; }
 
-.three-column {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
+.three-column { grid-template-columns: 1fr; }
 
 .card {
   background: var(--surface);
@@ -417,13 +414,15 @@ html:lang(ko) .muted {
   display: none;
 }
 
-@media (max-width: 900px) {
-  .two-column,
-  .three-column {
-    grid-template-columns: 1fr;
+@media (min-width: 901px) {
+  .two-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
+  .three-column {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
   .section {
-    padding: 3.5rem 0;
+    padding: 4.5rem 0;
   }
 }
+

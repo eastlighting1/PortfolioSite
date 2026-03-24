@@ -15,6 +15,7 @@ items:
       - Contributed to an NRF-funded clinical AI project centered on nursing surveillance decision support using EMR data.  
       - Implemented workflows for clinical text understanding, including keyword extraction, dependency parsing-based preprocessing, topic modeling, and similarity analysis.  
       - Provided interpretable results and web-based analysis interfaces for collaborative researchers.  
+      - Achieved 92%+ diagnostic prediction accuracy in a multi-label task by ensembling text and structured data models (KM-BERT, XGBoost).
 
   - role: Research Project Participant  
     organization: Institute of Information & Communications Technology Planning & Evaluation (IITP)  

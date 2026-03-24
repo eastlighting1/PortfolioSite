@@ -32,6 +32,7 @@ if (resumePage.data.pageType !== "resume" || portfolioPage.data.pageType !== "po
 }
 
 const selectedProjects = (await getLocalizedCollection("projects", locale))
+  .filter((p) => !p.id.includes("emr-nursing-surveillance"))
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, resumePage.data.sections.projects.count ?? 2);
 
@@ -276,6 +277,26 @@ const cvAdditionalItems =
       </div>
     </section>
 
+    <section class="cv-print-section">
+      <h2>{sectionLabels.education}</h2>
+      <div class="cv-print-stack">
+        {education.map((item) => (
+          <article class="cv-print-entry cv-print-entry--academic">
+            <div class="cv-print-entry__row">
+              <div>
+                <h3>{item.school}</h3>
+                <p class="cv-print-entry__subline cv-print-entry__subline--italic">{item.degree}</p>
+              </div>
+              <div class="cv-print-entry__meta">
+                <span>{item.period}</span>
+              </div>
+            </div>
+            <p class="cv-print-entry__detail">{compactText(item.detail, 220)}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
     {resumePage.data.printCv.includeProjects && printProjects.length > 0 && (
       <section class="cv-print-section">
         <h2>{sectionLabels.projects}</h2>
@@ -291,8 +312,16 @@ const cvAdditionalItems =
                   <span>{project.data.year}</span>
                 </div>
               </div>
-              <p class="cv-print-entry__detail">{compactText(project.data.summary, 220)}</p>
-              <p class="cv-print-entry__detail cv-print-entry__detail--muted">
+              {project.data.portfolioProblem ? (
+                <ul class="cv-print-bullets cv-print-bullets--project">
+                  <li>{project.data.portfolioProblem}</li>
+                  <li>{project.data.portfolioApproach}</li>
+                  <li>{project.data.portfolioOutcome}</li>
+                </ul>
+              ) : (
+                <p class="cv-print-entry__detail">{compactText(project.data.summary, 220)}</p>
+              )}
+              <p class="cv-print-entry__detail cv-print-entry__detail--muted" style="margin-top: 1.2mm;">
                 {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 2).join(" · ")}
               </p>
             </article>
@@ -301,6 +330,9 @@ const cvAdditionalItems =
       </section>
     )}
 
+  </article>
+
+  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only page-break">
     <section class="cv-print-section">
       <h2>{sectionLabels.experience}</h2>
       <div class="cv-print-stack">
@@ -325,29 +357,6 @@ const cvAdditionalItems =
       </div>
     </section>
 
-  </article>
-
-  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only page-break">
-    <section class="cv-print-section">
-      <h2>{sectionLabels.education}</h2>
-      <div class="cv-print-stack">
-        {education.map((item) => (
-          <article class="cv-print-entry cv-print-entry--academic">
-            <div class="cv-print-entry__row">
-              <div>
-                <h3>{item.school}</h3>
-                <p class="cv-print-entry__subline cv-print-entry__subline--italic">{item.degree}</p>
-              </div>
-              <div class="cv-print-entry__meta">
-                <span>{item.period}</span>
-              </div>
-            </div>
-            <p class="cv-print-entry__detail">{compactText(item.detail, 220)}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-
     <section class="cv-print-section">
       <h2>{sectionLabels.publications}</h2>
       <ol class="cv-print-publications">
@@ -356,6 +365,7 @@ const cvAdditionalItems =
 
           return (
             <li>
+              <strong>{profile.name}</strong>,{" "}
               <span class="cv-print-publications__title">{citation.title}</span>{" "}
               <span class="cv-print-publications__meta">{citation.meta}</span>
             </li>
