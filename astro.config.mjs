@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import astroPwa from "@vite-pwa/astro";
 
 const site = "https://eastlighting.github.io";
 const repo = process.env.GITHUB_REPOSITORY?.split("/")[1];
@@ -8,5 +9,22 @@ const base = isUserSite ? "/" : repo ? `/${repo}/` : "/";
 export default defineConfig({
   site,
   base,
-  output: "static"
+  output: "static",
+  integrations: [
+    astroPwa({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Portfolio',
+        short_name: 'Portfolio',
+        theme_color: '#f4f1ea',
+        icons: [
+          {
+            src: 'favicon.svg',
+            sizes: '192x192',
+            type: 'image/svg+xml'
+          }
+        ]
+      }
+    })
+  ]
 });
