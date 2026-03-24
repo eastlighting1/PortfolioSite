@@ -38,6 +38,8 @@ if (portfolioPage.data.pageType !== "portfolio") {
 }
 
 const allProjects = (await getLocalizedCollection("projects", locale)).sort((a, b) => b.data.year - a.data.year);
+const allResearch = (await getLocalizedCollection("research", locale))
+  .sort((a, b) => b.data.year - a.data.year);
 const selectedProjectSlugs = selection.selectedProjectSlugs;
 const projects =
   selectedProjectSlugs.length > 0
@@ -53,9 +55,7 @@ const webProjects =
         .filter(Boolean)
     : allProjects.slice(0, Math.max(selection.projectCount, selection.caseStudyCount));
 
-const research = (await getLocalizedCollection("research", locale))
-  .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, selection.researchCount);
+const research = allResearch.slice(0, selection.researchCount);
 const webPages = portfolioPage.data.web.pages;
 const educationStudyPage = webPages.find((page) => page.kind === "educationStudy");
 
@@ -98,10 +98,10 @@ const printRecognitionPages = chunk(printRecognitionEntries, 4);
 const recognitionPage = webPages.find((page) => page.kind === "recognition");
 
 const topExperiences = experiences.slice(0, 3);
-const topProjects = projects.slice(0, 2);
+const topProjects = allProjects;
 const topEducation = education.slice(0, 1);
 const topCapabilities = profile.capabilityGroups.slice(0, 4);
-const topResearch = research.slice(0, 1);
+const topResearch = allResearch;
 const certificatePlaceholder =
   locale === "ko" ? "수료한 프로그램과 자격증은 이 영역에 정리됩니다." : "Certificates and completed programs will appear in this section.";
 const awardPlaceholder =
@@ -691,7 +691,7 @@ const photoSource = (() => {
           </div>
         </article>
       ))}
-      {projects.map((project, index) => (
+      {allProjects.map((project, index) => (
         <article class="paper-sheet paper-sheet--portfolio paper-sheet--case-study document-shell page-break">
           <CaseStudySection project={project} index={index} locale={locale} />
         </article>

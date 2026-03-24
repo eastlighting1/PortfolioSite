@@ -3,6 +3,7 @@ import PrintLayout from "../../layouts/PrintLayout.astro";
 import PrintToolbar from "../../components/documents/PrintToolbar.astro";
 import ResumeHeader from "../../components/documents/ResumeHeader.astro";
 import ResumeSection from "../../components/documents/ResumeSection.astro";
+import { formatPublicationCitation, getPublicationCitationFromBibtex } from "../../lib/bibtex";
 import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
 
@@ -31,7 +32,10 @@ if (resumePage.data.pageType !== "resume" || portfolioPage.data.pageType !== "po
   throw new Error("Missing resume content configuration.");
 }
 
-const selectedProjects = (await getLocalizedCollection("projects", locale))
+const allProjects = (await getLocalizedCollection("projects", locale))
+  .sort((a, b) => b.data.year - a.data.year);
+
+const selectedProjects = allProjects
   .filter((p) => !p.id.includes("emr-nursing-surveillance"))
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, resumePage.data.sections.projects.count ?? 2);
@@ -45,7 +49,7 @@ const allResearch = (await getLocalizedCollection("research", locale))
 
 const featuredExperience = experience.slice(0, resumePage.data.sections.experience.count ?? 2);
 const printExperience = experience.slice(0, 3);
-const printProjects = selectedProjects.slice(0, 2);
+const printProjects = allProjects;
 const certificates = portfolioPage.data.recognition.certificates;
 const awards = portfolioPage.data.recognition.awards;
 const recognition = [...certificates, ...awards];
@@ -79,6 +83,18 @@ function formatResearchCitation(title: string, venue: string, year: number, type
       normalizedVenue.toLowerCase() === normalizedType.toLowerCase()
         ? `${year}. ${type}.`
         : `${venue}, ${year}. ${type}.`
+  };
+}
+
+function getResumeResearchMeta(item: any) {
+  const bibtexCitation = getPublicationCitationFromBibtex(item.data.bibtex);
+  if (bibtexCitation) {
+    return formatPublicationCitation(bibtexCitation);
+  }
+
+  return {
+    authors: profile.name,
+    ...formatResearchCitation(item.data.title, item.data.venue, item.data.year, item.data.type)
   };
 }
 
@@ -361,13 +377,14 @@ const cvAdditionalItems =
       <h2>{sectionLabels.publications}</h2>
       <ol class="cv-print-publications">
         {allResearch.map((item) => {
-          const citation = formatResearchCitation(item.data.title, item.data.venue, item.data.year, item.data.type);
+          const citation = getResumeResearchMeta(item);
 
           return (
             <li>
-              <strong>{profile.name}</strong>,{" "}
+              {citation.authors && <strong>{citation.authors}</strong>}
+              {citation.authors && <span>, </span>}
               <span class="cv-print-publications__title">{citation.title}</span>{" "}
-              <span class="cv-print-publications__meta">{citation.meta}</span>
+              <span class="cv-print-publications__meta">{citation.detail ?? citation.meta}</span>
             </li>
           );
         })}

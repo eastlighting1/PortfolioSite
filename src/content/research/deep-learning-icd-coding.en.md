@@ -1,26 +1,42 @@
 ---
 title: "Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abdominal Surgery Patients"
 year: 2025
-venue: "The Korean Society of Computer and Information"
+venue: "Journal of The Korea Society of Computer and Information"
 type: "Journal Paper"
-abstract: "This study shows that useful diagnostic classification is possible using core EMR signals from abdominal surgery patients."
+bibtex: |
+  @article{kim2025deep,
+    title={Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abdominal Surgery Patients},
+    author={Donghyeon Kim, Daeho Kim, Seyoung Kim, Okran Jeong},
+    journal={Journal of The Korea Society of Computer and Information},
+    volume={30},
+    number={5},
+    pages={21--30},
+    year={2025},
+    publisher={The Korean Society Of Computer And Information}
+  }
+abstract: "This study proposes an automatic ICD coding model for nursing surveillance of abdominal surgery patients by integrating EMR-based test data, patient information, and nursing notes. A stacking architecture combining dual KM-BERT, XGBoost, and PCA outperformed both a single KM-BERT model and simpler ensemble variants."
 tags:
-  - "Clinical AI"
+  - "Medical AI"
+  - "Nursing Surveillance"
   - "EMR"
-  - "ICD Coding"
-  - "Healthcare NLP"
+  - "Automatic ICD Coding"
+  - "Deep Learning"
+  - "KM-BERT"
+  - "XGBoost"
+  - "Ensemble"
+  - "Abdominal Surgery"
 linkedProjects:
   - "emr-nursing-surveillance"
 ---
 
 ## Summary
 
-This paper addresses diagnostic classification for nursing surveillance using EMR data from abdominal surgery patients. The modeling approach combines nursing records with structured clinical information to infer disease-related labels in a form that can support practical decision making.
+This study addresses automatic diagnosis-code classification for nursing surveillance in abdominal surgery patients. It focuses on predicting ICD codes using core EMR data that are directly available during nursing practice, rather than relying on physician narratives or discharge summaries created later in the care process.
 
 ## Why It Matters
 
-Clinical settings often have fragmented data and limited room for cumbersome labeling workflows. Showing that strong diagnostic classification can emerge from core EMR signals helps make nursing surveillance AI more realistic and usable.
+Nursing surveillance is important for patient safety and clinical outcomes, but the volume and complexity of EMR data make timely diagnosis-related classification difficult. Since many previous ICD coding approaches depended on physician-centered documents or additional records, this work is meaningful because it demonstrates clinically useful performance using only the EMR signals that nurses can access within routine workflows.
 
 ## Contribution
 
-The study integrates KM-BERT-based text modeling and XGBoost-style structured prediction to demonstrate that high-performing diagnostic classification is possible without relying on broader physician-centered records.
+The study integrated test results, IO, BST, vital signs, patient information, nursing notes, and PACU records, then built a stacking framework that averages the outputs of two KM-BERT models, applies PCA for dimensionality reduction, and uses XGBoost as a meta-classifier for final ICD prediction. The proposed Double KM-BERT + XGBoost + PCA model achieved the best results with 0.9245 accuracy, 0.9107 weighted precision, and 0.9157 weighted F1-score, while also showing strong recall on rare classes.

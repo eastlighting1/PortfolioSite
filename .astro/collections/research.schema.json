@@ -16,6 +16,9 @@
         "type": {
           "type": "string"
         },
+        "bibtex": {
+          "type": "string"
+        },
         "abstract": {
           "type": "string"
         },

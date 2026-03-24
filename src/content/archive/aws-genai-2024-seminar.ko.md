@@ -1,9 +1,9 @@
 ---
 title: "AWS GenAI 2024 세미나 후기"
-publishedAt: "2026.03"
+publishedAt: "2024.04"
 type: event
 summary: "AWS의 Generative AI와 Responsible AI 흐름을 현업 리더의 시선으로 들으며, 기술 자체보다 문제를 설명하고 책임 있게 전달하는 방식에 더 주목하게 된 세미나였습니다."
-context: "대학원 세미나"
+context: "수업"
 tags:
   - AWS
   - GenAI

@@ -13,7 +13,7 @@ printCv:
     - 응용 AI 시스템
   objective: 대화형 AI와 의료 AI 과제를 모델링, 평가, 구현까지 연결해 실제로 작동하는 결과물로 만드는 응용 AI 연구자이자 엔지니어입니다.
   additionalItems:
-    - label: 핵심 기술 (Tech Stack)
+    - label: 핵심 기술
       value: Python · PyTorch · HuggingFace · Docker · MLflow · SQL · AWS
     - label: 관심 축
       value: 의료 AI · 대화형 AI · 평가 · MLOps

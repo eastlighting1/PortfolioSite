@@ -1,26 +1,36 @@
 ---
 title: "Empathetic Dialogue Generation Model Using Reinforcement Learning with AI-Based Feedback"
 year: 2025
-venue: "Korean Institute of Information Scientists and Engineers"
+venue: "Korea Computer Congress (KCC)"
 type: "Conference Paper"
-abstract: "This work explores how AI-based feedback can reduce reliance on human feedback in empathetic dialogue generation."
+bibtex: |
+  @inproceedings{joo2025empathetic,
+    title={Empathetic Dialogue Generation Model Using Reinforcement Learning with AI-Based Feedback},
+    author={Yongwan Joo, Donghyun Lim, Donghyeon Kim, Seungyeon Sun, Okran Jeong},
+    booktitle={Proceedings of the Korea Computer Congress 2025},
+    pages={2410--2412},
+    year={2025}
+  }
+abstract: "This study proposes an empathetic dialogue generation model using reinforcement learning with AI-based feedback (RLAIF) to address limited diversity and reliance on human feedback. By leveraging an LLM as a reward evaluator and integrating it into EmpRL, the model generates more diverse empathetic responses."
 tags:
-  - "Conversational AI"
-  - "RLAIF"
   - "Empathetic Dialogue"
   - "Reinforcement Learning"
-linkedProjects:
-  - "frimo-conversational-diary"
+  - "RLAIF"
+  - "RLHF Alternative"
+  - "LLM"
+  - "Dialogue Generation"
+  - "NLP"
+  - "AI Feedback"
 ---
 
 ## Summary
 
-Empathetic dialogue models need to balance fluency, contextual relevance, and emotional depth. This paper studies how reinforcement learning from AI feedback can be used to guide dialogue generation without relying entirely on manually annotated human empathy labels.
+Empathetic dialogue generation is a key task in emotion-aware conversational AI. Traditional approaches rely on MLE or RLHF, both of which have limitations in scalability and cost. EmpRL improves empathy alignment but still depends on human feedback. This study explores a transition toward AI-based feedback using RLAIF.
 
 ## Why It Matters
 
-If AI-based feedback can support empathy-aware reward design, dialogue systems may become easier to improve at scale while also producing responses that feel more diverse and emotionally grounded.
+While existing models achieve fluency and contextual relevance, they fail to match user-expected empathy levels and lack expressive diversity. EmpRL introduces empathy alignment but still relies on predefined human feedback and classification schemes, leading to scalability issues and constrained response diversity.
 
 ## Contribution
 
-The paper proposes a dialogue generation approach that applies AI-based feedback in a reinforcement learning setup and reports stronger diversity and deeper empathetic expression than a baseline EmpRL-style approach.
+The proposed pipeline integrates RLAIF into the EmpRL framework. A T5 model fine-tuned on EmpatheticDialogues generates initial responses, and a Llama 3.2-1B model serves as an evaluator that assigns empathy-based reward scores. These rewards are used to optimize the policy via PPO, with penalty terms helping preserve fluency and relevance. The resulting model improved response diversity with Distinct-1 of 5.8% and Distinct-2 of 30.2%, demonstrating that AI-based feedback can replace human feedback while enabling more diverse empathy-aware dialogue generation.

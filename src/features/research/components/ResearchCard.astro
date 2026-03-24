@@ -16,8 +16,15 @@ const tags = item.data.tags ?? [];
 const visibleTags = tags.slice(0, 3);
 const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
 const normalizedType = String(item.data.type ?? "").toLowerCase();
+const researchVariant = normalizedType.includes("journal") || normalizedType.includes("저널")
+  ? "journal"
+  : normalizedType.includes("conference") || normalizedType.includes("학회")
+    ? "conference"
+    : normalizedType.includes("technical") || normalizedType.includes("기술")
+      ? "technical"
+      : "other";
 const isTechnicalNote =
-  slug === "multimodal-evaluation-note" || normalizedType.includes("technical note");
+  slug === "multimodal-evaluation-note" || researchVariant === "technical";
 const ctaLabel = isTechnicalNote
   ? locale === "ko"
     ? "노트 보기"
@@ -30,7 +37,8 @@ const ctaLabel = isTechnicalNote
 <article
   class:list={[
     "research-card",
-    isTechnicalNote && "research-card--note"
+    isTechnicalNote && "research-card--note",
+    `research-card--${researchVariant}`
   ]}
   data-reveal={dataReveal}
 >

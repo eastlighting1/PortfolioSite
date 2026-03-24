@@ -29,6 +29,7 @@ const research = defineCollection({
     year: z.number(),
     venue: z.string(),
     type: z.string(),
+    bibtex: z.string().optional(),
     abstract: z.string(),
     tags: z.array(z.string()),
     pdfUrl: z.string().url().optional(),

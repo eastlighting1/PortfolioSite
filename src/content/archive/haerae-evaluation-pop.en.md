@@ -1,9 +1,9 @@
 ---
 title: "Notes from the MODUPOP talk on evaluating Korean language models"
-publishedAt: "2026.02"
+publishedAt: "2024.04"
 type: event
 summary: "An event note on Korean LLM evaluation, benchmark design, CoT, regional variance, and the practical question of how to motivate open-source team members."
-context: "MODULabs"
+context: "Event"
 tags:
   - Evaluation
   - Korean LLM

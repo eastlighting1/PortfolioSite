@@ -1,9 +1,9 @@
 ---
 title: "모두POP '한국어 언어모델 잘 평가하기' 후기"
-publishedAt: "2026.02"
+publishedAt: "2024.04"
 type: event
 summary: "한국어 LLM 평가 벤치마크와 CoT, regional variance, 그리고 팀 운영에 대한 이야기를 한 자리에서 들으며 평가의 깊이와 오픈소스 팀 리더십을 함께 생각하게 된 행사였습니다."
-context: "모두의연구소"
+context: "행사"
 tags:
   - Evaluation
   - Korean LLM

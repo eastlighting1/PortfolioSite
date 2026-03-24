@@ -1,9 +1,9 @@
 ---
 title: "Notes from the AWS GenAI 2024 seminar"
-publishedAt: "2026.03"
+publishedAt: "2024.04"
 type: event
 summary: "A seminar note on AWS, Generative AI, and Responsible AI that left me thinking less about features and more about how technical leaders frame problems, communicate tradeoffs, and speak about responsibility."
-context: "Graduate seminar"
+context: "Class"
 tags:
   - AWS
   - GenAI
