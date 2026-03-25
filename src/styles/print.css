@@ -136,16 +136,30 @@
   }
 
   .paper-sheet--resume-cv .cv-print-stack {
-    gap: 3.2mm;
+    display: block;
   }
 
-  .paper-sheet--resume-cv .cv-print-stack--compact {
-    gap: 2.2mm;
+  .paper-sheet--resume-cv .cv-print-stack > * + * {
+    margin-top: 3.2mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-stack--compact > * + * {
+    margin-top: 2.2mm;
+  }
+
+  .paper-sheet--resume-cv .cv-print-section {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .paper-sheet--resume-cv .cv-print-section h2 {
+    break-after: avoid-page;
+    page-break-after: avoid;
   }
 
   .paper-sheet--resume-cv .cv-print-entry,
-  .paper-sheet--resume-cv .cv-print-section,
-  .paper-sheet--resume-cv .cv-print-publications li {
+  .paper-sheet--resume-cv .cv-print-publications li,
+  .paper-sheet--resume-cv .cv-print-copy p {
     break-inside: avoid;
     page-break-inside: avoid;
   }
@@ -597,6 +611,21 @@
     font-size: 11pt;
   }
 
+  .paper-sheet--case-study .portfolio-print-project-page__header h2 {
+    font-size: 18pt;
+    line-height: 1.05;
+  }
+
+  .paper-sheet--case-study .portfolio-print-project-page__eyebrow {
+    margin-bottom: 2mm;
+    font-size: 8.5pt;
+  }
+
+  .paper-sheet--case-study .portfolio-print-project-page__list,
+  .paper-sheet--case-study .external-links {
+    margin-top: 1.8mm;
+  }
+
   .paper-sheet--portfolio-recognition .portfolio-print-recognition-page {
     gap: 3.6mm;
   }
@@ -630,15 +659,21 @@
     margin-top: 1.2mm;
   }
 
-  .paper-sheet--portfolio-summary .portfolio-print-columns {
-      gap: 7mm;
-    }
+  .paper-sheet--portfolio-summary .portfolio-print-section {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
 
-    .paper-sheet--portfolio-summary .portfolio-print-entry--compact + .portfolio-print-entry--compact {
-      margin-top: 3.8mm;
-    }
+  .paper-sheet--portfolio-summary .portfolio-print-section h2 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
 
-    .paper-sheet--portfolio-summary .portfolio-print-entry--compact ul {
+  .paper-sheet--portfolio-summary .portfolio-print-entry--compact + .portfolio-print-entry--compact {
+    margin-top: 3.8mm;
+  }
+
+  .paper-sheet--portfolio-summary .portfolio-print-entry--compact ul {
       margin-top: 1.8mm;
     }
 
@@ -703,8 +738,821 @@
     page-break-inside: avoid;
   }
 
-  .page-break {
+  .portfolio-doc > .paper-sheet {
+    display: block !important;
+    break-before: auto;
+    page-break-before: auto;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .portfolio-doc > .paper-sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .portfolio-print-dump {
+    display: block;
+    width: 100%;
+    padding: 0;
+    color: #111827;
+    font-size: 10.2pt;
+    line-height: 1.5;
+  }
+
+  .portfolio-print-dump__hero,
+  .portfolio-print-dump__section,
+  .portfolio-print-dump__entry,
+  .portfolio-print-dump__item,
+  .portfolio-print-dump__project,
+  .portfolio-print-dump__recognition-card,
+  .portfolio-print-dump__research-card,
+  .portfolio-print-dump__study-card,
+  .portfolio-print-dump__capability-card,
+  .portfolio-print-dump__principle-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .portfolio-print-dump__hero {
+    display: grid;
+    grid-template-columns: 34mm minmax(0, 1.35fr) minmax(38mm, 0.9fr);
+    gap: 8mm;
+    padding: 4.4mm 4.8mm 6.8mm;
+    border: 0.6pt solid #d8e3f0;
+    border-radius: 4.5mm;
+    background:
+      linear-gradient(180deg, rgba(239, 246, 255, 0.95) 0%, rgba(255, 255, 255, 0) 38%),
+      #fff;
+    align-items: stretch;
+    box-shadow: inset 0 0 0 0.4pt rgba(255, 255, 255, 0.7);
+  }
+
+  .portfolio-print-dump__hero-main,
+  .portfolio-print-dump__hero-side,
+  .portfolio-print-dump__formation,
+  .portfolio-print-dump__list,
+  .portfolio-print-dump__project-list {
+    display: grid;
+    gap: 4mm;
+  }
+
+  .portfolio-print-dump__hero-side {
+    grid-template-rows: repeat(4, 1fr);
+    align-content: stretch;
+    gap: 0;
+    min-height: 100%;
+  }
+
+  .portfolio-print-dump__hero-photo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .portfolio-print-dump__hero-photo-image {
+    display: block;
+    width: 100%;
+    border: 0.5pt solid #cbd5e1;
+    border-radius: 3.2mm;
+    box-shadow: 0 0 0 1.4mm rgba(255, 255, 255, 0.88);
+  }
+
+  .portfolio-print-dump__eyebrow {
+    color: #2563eb;
+    font-size: 8.2pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .portfolio-print-dump__headline {
+    max-width: 92mm;
+    font-size: 16.8pt;
+    font-weight: 700;
+    line-height: 1.16;
+  }
+
+  .portfolio-print-dump__intro {
+    display: grid;
+    gap: 2mm;
+    max-width: 88mm;
+  }
+
+  .portfolio-print-dump__keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4mm;
+    grid-column: 2 / 4;
+    margin-top: 2.2mm;
+  }
+
+  .portfolio-print-dump__keywords span,
+  .portfolio-print-dump__tag-row {
+    color: #334155;
+    font-size: 8.9pt;
+  }
+
+  .portfolio-print-dump__keywords span {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.7mm 1.8mm;
+    border: 0.4pt solid #cbd5e1;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .portfolio-print-dump__meta {
+    display: grid;
+    gap: 0.8mm;
+    padding: 1.2mm 0 2.2mm;
+    border-bottom: 0.4pt solid #e2e8f0;
+    align-content: start;
+    min-height: 100%;
+  }
+
+  .portfolio-print-dump__meta strong {
+    color: #0f172a;
+    font-size: 8.7pt;
+  }
+
+  .portfolio-print-dump__meta span,
+  .portfolio-print-dump__meta a {
+    color: #334155;
+    font-size: 9pt;
+    line-height: 1.38;
+  }
+
+  .portfolio-print-dump__section {
+    display: block;
+    margin: 0;
+    padding: 0;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .portfolio-print-dump__section + .portfolio-print-dump__section {
+    margin-top: 8mm;
+  }
+
+  .portfolio-print-dump__hero + .portfolio-print-dump__section {
+    margin-top: 8mm;
+  }
+
+  .portfolio-print-dump__section--page-start {
     break-before: page;
     page-break-before: always;
+  }
+
+  .portfolio-print-dump__section--capability {
+    margin-top: 5.5mm !important;
+  }
+
+  .portfolio-print-dump__hero h1,
+  .portfolio-print-dump__section h2,
+  .portfolio-print-dump__section h3,
+  .portfolio-print-dump__section h4,
+  .portfolio-print-dump__hero p,
+  .portfolio-print-dump__section p,
+  .portfolio-print-dump__section ul {
+    margin: 0;
+  }
+
+  .portfolio-print-dump__hero h1 {
+    font-size: 23pt;
+    line-height: 1.1;
+  }
+
+  .portfolio-print-dump__section h2 {
+    margin-bottom: 3mm;
+    padding-bottom: 1.5mm;
+    border-bottom: 0.4pt solid #dbe4f0;
+    color: #2563eb;
+    font-size: 14.5pt;
+    line-height: 1.2;
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  .portfolio-print-dump__section h3 {
+    font-size: 11.5pt;
+    line-height: 1.25;
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  .portfolio-print-dump__section h4 {
+    margin-top: 2mm;
+    font-size: 10pt;
+    line-height: 1.2;
+  }
+
+  .portfolio-print-dump__section-copy {
+    max-width: 150mm;
+  }
+
+  .portfolio-print-dump__section p + p,
+  .portfolio-print-dump__section p + ul,
+  .portfolio-print-dump__section ul + p,
+  .portfolio-print-dump__section h2 + p,
+  .portfolio-print-dump__section h3 + p,
+  .portfolio-print-dump__section h4 + ul {
+    margin-top: 1.6mm;
+  }
+
+  .portfolio-print-dump__section ul {
+    padding-left: 4.5mm;
+  }
+
+  .portfolio-print-dump__item {
+    display: block;
+  }
+
+  .portfolio-print-dump__item + .portfolio-print-dump__item {
+    margin-top: 4.5mm;
+  }
+
+  .portfolio-print-dump__principles,
+  .portfolio-print-dump__capability-grid,
+  .portfolio-print-dump__recognition-grid,
+  .portfolio-print-dump__study-grid {
+    display: grid;
+    gap: 3.6mm;
+  }
+
+  .portfolio-print-dump__principles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .portfolio-print-dump__principle-card,
+  .portfolio-print-dump__capability-card,
+  .portfolio-print-dump__study-card,
+  .portfolio-print-dump__recognition-card,
+  .portfolio-print-dump__research-card,
+  .portfolio-print-dump__project {
+    padding: 3.6mm 4mm;
+    border: 0.5pt solid #dbe4f0;
+    border-radius: 3mm;
+    background: #fff;
+  }
+
+  .portfolio-print-dump__principle-card p,
+  .portfolio-print-dump__capability-card p,
+  .portfolio-print-dump__study-card p,
+  .portfolio-print-dump__recognition-card p,
+  .portfolio-print-dump__research-card p,
+  .portfolio-print-dump__project p {
+    color: #334155;
+  }
+
+  .portfolio-print-dump__principle-card h3 + p,
+  .portfolio-print-dump__recognition-card h3 + p,
+  .portfolio-print-dump__study-card h4 + p,
+  .portfolio-print-dump__capability-card h3 + p,
+  .portfolio-print-dump__research-card h3 + p,
+  .portfolio-print-dump__project-head h3 + p {
+    margin-top: 1.4mm;
+  }
+
+  .portfolio-print-dump__formation {
+    gap: 7mm;
+  }
+
+  .portfolio-print-dump__formation-block {
+    display: grid;
+    gap: 3mm;
+  }
+
+  .portfolio-print-dump__section h2 + .portfolio-print-dump__formation,
+  .portfolio-print-dump__formation-block h3 + .portfolio-print-dump__item,
+  .portfolio-print-dump__formation-block h3 + .portfolio-print-dump__study-grid {
+    break-before: avoid-page;
+    page-break-before: avoid;
+  }
+
+  .portfolio-print-dump__formation-block + .portfolio-print-dump__formation-block {
+    margin-top: 2mm;
+  }
+
+  .portfolio-print-dump__study-grid,
+  .portfolio-print-dump__recognition-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-print-dump__capability-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.6mm;
+  }
+
+  .portfolio-print-dump__study-card {
+    border-color: #e2e8f0;
+    background:
+      linear-gradient(180deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
+    box-shadow: none;
+  }
+
+  .portfolio-print-dump__study-card h4 {
+    font-size: 11.2pt;
+  }
+
+  .portfolio-print-dump__study-card .portfolio-print-dump__entry-meta {
+    color: #64748b;
+  }
+
+  .portfolio-print-dump__capability-card {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 1mm;
+    border-color: #cfd9e6;
+    background:
+      linear-gradient(180deg, rgba(239, 246, 255, 0.55) 0%, rgba(255, 255, 255, 1) 70%);
+    box-shadow: inset 0 0 0 0.35pt rgba(191, 219, 254, 0.55);
+    padding: 2.8mm 3.2mm;
+  }
+
+  .portfolio-print-dump__capability-card h3 {
+    font-size: 11.2pt;
+  }
+
+  .portfolio-print-dump__capability-card > p:first-of-type {
+    font-size: 9.1pt;
+    line-height: 1.38;
+  }
+
+  .portfolio-print-dump__capability-card .portfolio-print-dump__tag-row {
+    align-self: end;
+    min-height: 2.45em;
+    font-size: 8.1pt;
+    line-height: 1.28;
+    padding-top: 1.1mm;
+    border-top: 0.4pt solid #dbe4f0;
+  }
+
+  .portfolio-print-dump__entry,
+  .portfolio-print-dump__research-card {
+    padding-bottom: 4mm;
+    border-bottom: 0.4pt solid #e2e8f0;
+  }
+
+  .portfolio-print-dump__entry + .portfolio-print-dump__entry,
+  .portfolio-print-dump__research-card + .portfolio-print-dump__research-card {
+    padding-top: 1.5mm;
+  }
+
+  .portfolio-print-dump__entry {
+    position: relative;
+    padding-left: 3.2mm;
+  }
+
+  .portfolio-print-dump__entry::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.8mm;
+    width: 1.1mm;
+    height: calc(100% - 1.2mm);
+    border-radius: 999px;
+    background: linear-gradient(180deg, #2563eb 0%, #93c5fd 100%);
+    opacity: 0.9;
+  }
+
+  .portfolio-print-dump__entry-head,
+  .portfolio-print-dump__project-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2mm 4mm;
+    align-items: start;
+  }
+
+  .portfolio-print-dump__project-head > :nth-child(1),
+  .portfolio-print-dump__project-head > :nth-child(2),
+  .portfolio-print-dump__project-head > :nth-child(3),
+  .portfolio-print-dump__project-head > :nth-child(4) {
+    grid-column: 1 / -1;
+  }
+
+  .portfolio-print-dump__entry-meta {
+    color: #475569;
+    font-size: 9.1pt;
+  }
+
+  .portfolio-print-dump__entry-period,
+  .portfolio-print-dump__recognition-kind {
+    color: #64748b;
+    font-size: 8.9pt;
+    font-weight: 700;
+  }
+
+  .portfolio-print-dump__project-list {
+    gap: 4.5mm;
+  }
+
+  .portfolio-print-dump__project-archive-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.6mm;
+  }
+
+  .portfolio-print-dump__project-archive-card {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    gap: 1.3mm;
+    padding: 2.6mm 3mm;
+    border: 0.5pt solid #dbe4f0;
+    border-radius: 3mm;
+    background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .portfolio-print-dump__project-archive-card h3 {
+    font-size: 10.4pt;
+    line-height: 1.2;
+  }
+
+  .portfolio-print-dump__project-archive-card p {
+    color: #334155;
+  }
+
+  .portfolio-print-dump__project-archive-card > p:nth-of-type(2) {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    font-size: 9.1pt;
+    line-height: 1.38;
+  }
+
+  .portfolio-print-dump__project-archive-card .portfolio-print-dump__tag-row {
+    display: -webkit-box;
+    overflow: hidden;
+    min-height: 2.4em;
+    font-size: 8.5pt;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .portfolio-print-dump__project {
+    padding: 3.8mm 4.2mm;
+    border-top: 0.8pt solid #94a3b8;
+  }
+
+  .portfolio-print-dump__project-body {
+    display: grid;
+    gap: 2.4mm;
+    margin-top: 2.8mm;
+  }
+
+  .portfolio-print-dump__project-block,
+  .portfolio-print-dump__project-meta {
+    display: grid;
+    gap: 1.1mm;
+  }
+
+  .portfolio-print-dump__project-meta {
+    margin-top: 2.4mm;
+  }
+
+  .portfolio-print-dump__project-head h3 {
+    font-size: 13.8pt;
+    line-height: 1.15;
+  }
+
+  .portfolio-print-dump__project-head > p {
+    margin-top: 1.4mm;
+  }
+
+  .portfolio-print-dump__project-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2mm;
+    margin-top: 1.8mm;
+    color: #475569;
+    font-size: 8.4pt;
+  }
+
+  .portfolio-print-dump__project-meta-row span {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.55mm 1.45mm;
+    border: 0.4pt solid #d8e0ea;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .portfolio-print-dump__case-study-page {
+    display: block;
+  }
+
+  .portfolio-print-dump__case-study-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #64748b;
+    font-size: 8.6pt;
+    font-weight: 700;
+    margin-bottom: 2.2mm;
+  }
+
+  .portfolio-print-dump__project--case {
+    min-height: 238mm;
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(34mm, 0.9fr);
+    grid-template-rows: auto auto 1fr;
+    align-content: start;
+    padding: 3.4mm 4mm;
+    border: 0;
+    border-radius: 0;
+    background:
+      radial-gradient(circle at top right, rgba(59, 130, 246, 0.28) 0, rgba(59, 130, 246, 0.28) 10mm, transparent 10mm),
+      linear-gradient(180deg, rgba(219, 234, 254, 0.95) 0%, rgba(239, 246, 255, 0.38) 26%, rgba(255, 255, 255, 0) 42%),
+      linear-gradient(90deg, rgba(30, 64, 175, 0.13) 0, rgba(30, 64, 175, 0.13) 10mm, transparent 10mm),
+      #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portfolio-print-dump__project-titleblock {
+    display: grid;
+    gap: 1.4mm;
+  }
+
+  .portfolio-print-dump__project--case::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 0.75pt solid #cfd9e6;
+    pointer-events: none;
+  }
+
+  .portfolio-print-dump__project--case::after {
+    content: "";
+    position: absolute;
+    right: -14mm;
+    top: -14mm;
+    width: 46mm;
+    height: 46mm;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30, 64, 175, 0.2) 0%, rgba(96, 165, 250, 0.08) 46%, rgba(30, 64, 175, 0) 72%);
+    pointer-events: none;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-head {
+    gap: 1.5mm 3mm;
+    grid-column: 1 / -1;
+    padding: 7mm 6mm 4.4mm 14mm;
+    border-bottom: 0.5pt solid #dbe4f0;
+    background:
+      linear-gradient(90deg, rgba(37, 99, 235, 0.16) 0, rgba(37, 99, 235, 0.16) 10mm, transparent 10mm),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.74) 0%, rgba(255, 255, 255, 0.24) 100%);
+    position: relative;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-head::after {
+    content: "";
+    position: absolute;
+    left: 14mm;
+    bottom: -0.5pt;
+    width: 24mm;
+    height: 1.2pt;
+    background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-head h3 {
+    font-size: 14.6pt;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #0f172a;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-body {
+    gap: 1.8mm;
+    margin-top: 2mm;
+    grid-column: 1;
+    padding: 5mm 5mm 0 14mm;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-block {
+    gap: 0.7mm;
+    padding: 2.4mm 2.2mm 2.8mm 0;
+    border-bottom: 0.35pt solid #e5e7eb;
+    position: relative;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-block::before {
+    content: "";
+    position: absolute;
+    left: -5.2mm;
+    top: 2.6mm;
+    width: 2.4mm;
+    height: 2.4mm;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #1d4ed8 0%, #93c5fd 100%);
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-block:nth-child(1) {
+    background: linear-gradient(90deg, rgba(239, 246, 255, 0.68) 0%, rgba(239, 246, 255, 0) 65%);
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-block:nth-child(2) {
+    background: linear-gradient(90deg, rgba(248, 250, 252, 0.96) 0%, rgba(248, 250, 252, 0) 68%);
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-block:nth-child(3) {
+    background: linear-gradient(90deg, rgba(239, 246, 255, 0.52) 0%, rgba(239, 246, 255, 0) 62%);
+  }
+
+  .portfolio-print-dump__project-aside {
+    grid-column: 2;
+    grid-row: 3;
+    display: grid;
+    align-content: start;
+    gap: 2.2mm;
+    padding: 5mm 0 0 4.2mm;
+    border-left: 0.5pt solid #dbe4f0;
+    margin-top: 2mm;
+    position: relative;
+  }
+
+  .portfolio-print-dump__project-aside::before {
+    content: "";
+    position: absolute;
+    left: -0.5pt;
+    top: 5mm;
+    width: 1.4pt;
+    height: 28mm;
+    background: linear-gradient(180deg, #2563eb 0%, #93c5fd 62%, rgba(37, 99, 235, 0) 100%);
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-meta {
+    gap: 0.7mm;
+    margin-top: 0;
+    padding: 2.8mm 2.8mm;
+    border: 0.45pt solid #dbe4f0;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(241, 245, 249, 0.92) 100%);
+    box-shadow:
+      inset 0 0 0 0.35pt rgba(255, 255, 255, 0.8),
+      0 1.1mm 2.4mm rgba(148, 163, 184, 0.12);
+    position: relative;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-meta::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 1.2mm;
+    background: linear-gradient(90deg, #2563eb 0%, #60a5fa 55%, rgba(96, 165, 250, 0.18) 100%);
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-head > p {
+    margin-top: 0.8mm;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-meta-row {
+    margin-top: 1mm;
+    gap: 0.9mm;
+    font-size: 7.9pt;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__project-meta-row span {
+    padding: 0.4mm 1.1mm;
+  }
+
+  .portfolio-print-dump__project--case h4 {
+    margin-top: 1.4mm;
+    font-size: 9.4pt;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #0f172a;
+  }
+
+  .portfolio-print-dump__project--case p,
+  .portfolio-print-dump__project--case li {
+    font-size: 9.1pt;
+    line-height: 1.36;
+  }
+
+  .portfolio-print-dump__project--case ul {
+    padding-left: 4mm;
+  }
+
+  .portfolio-print-dump__project--case .portfolio-print-dump__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.9mm 2.1mm;
+    border: 0.45pt solid rgba(37, 99, 235, 0.22);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(239, 246, 255, 1) 0%, rgba(219, 234, 254, 0.94) 100%);
+    box-shadow: inset 0 0 0 0.35pt rgba(255, 255, 255, 0.88);
+  }
+
+  .portfolio-print-dump__metric-grid {
+    display: grid;
+    gap: 1.4mm;
+  }
+
+  .portfolio-print-dump__metric-card {
+    display: grid;
+    place-items: center start;
+    min-height: 10mm;
+    padding: 1.8mm 2.2mm;
+    border: 0.45pt solid #bfdbfe;
+    background:
+      linear-gradient(180deg, rgba(239, 246, 255, 1) 0%, rgba(219, 234, 254, 0.78) 100%);
+  }
+
+  .portfolio-print-dump__metric-card span {
+    color: #0f172a;
+    font-size: 8.8pt;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .portfolio-print-dump__chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1mm;
+  }
+
+  .portfolio-print-dump__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65mm 1.5mm;
+    border: 0.4pt solid #c7d2fe;
+    border-radius: 999px;
+    background: rgba(238, 242, 255, 0.92);
+    color: #1e3a8a;
+    font-size: 8.1pt;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .portfolio-print-dump__link-stack {
+    display: grid;
+    gap: 1.4mm;
+  }
+
+  .portfolio-print-dump__link-card {
+    display: grid;
+    gap: 0.7mm;
+    padding: 1.8mm 2.2mm;
+    border: 0.45pt solid #dbe4f0;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 0.92) 100%);
+    color: #0f172a !important;
+    text-decoration: none;
+  }
+
+  .portfolio-print-dump__link-card strong {
+    color: #1d4ed8;
+    font-size: 8.4pt;
+  }
+
+  .portfolio-print-dump__link-card span {
+    color: #334155;
+    font-size: 7.8pt;
+    line-height: 1.3;
+    word-break: break-all;
+  }
+
+  .portfolio-print-dump__project-meta ul,
+  .portfolio-print-dump__recognition-card ul,
+  .portfolio-print-dump__entry ul {
+    margin-top: 1.4mm;
+  }
+
+  .portfolio-print-dump__recognition-grid {
+    gap: 2.8mm;
+  }
+
+  .portfolio-print-dump__recognition-card {
+    padding: 3mm 3.4mm;
+  }
+
+  .portfolio-print-dump__recognition-card h3 {
+    font-size: 11pt;
+    line-height: 1.2;
+  }
+
+  .portfolio-print-dump__recognition-card p,
+  .portfolio-print-dump__recognition-card li {
+    font-size: 9.2pt;
+    line-height: 1.4;
+  }
+
+  .portfolio-print-dump__recognition-card ul {
+    padding-left: 4mm;
   }
 }

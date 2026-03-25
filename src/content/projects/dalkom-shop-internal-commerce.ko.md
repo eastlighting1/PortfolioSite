@@ -6,7 +6,7 @@ roles:
   - "DevSecOps Engineer"
   - "Infra Engineer"
   - "Platform Engineer"
-type: "사내 커머스 플랫폼 프로젝트"
+type: "사내 커머스 플랫폼"
 summary: "임직원 전용 마일리지 쇼핑몰 프로젝트에서 DevSecOps 및 인프라/플랫폼 파트를 맡아, 배포·운영·보안·관측 가능성을 포함한 서비스 실행 기반을 구축했습니다."
 portfolioProblem: "사내 전용 커머스 플랫폼은 프론트엔드와 백엔드 기능 구현만으로 충분하지 않았고, 검색·알림·관리자 기능을 안정적으로 뒷받침할 수 있는 클라우드 인프라와 운영 체계가 함께 필요했습니다."
 portfolioApproach: "React·Spring 기반 서비스가 실사용 가능한 형태로 동작하도록 CI/CD, 클라우드 인프라, 운영 구성, 배포 흐름, 보안 및 관측 가능성 관점의 기반을 설계하고 정리했습니다."

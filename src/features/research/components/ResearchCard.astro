@@ -52,7 +52,7 @@ const ctaLabel = isTechnicalNote
   </div>
   <p class="muted research-card__summary">{item.data.abstract}</p>
   {visibleTags.length > 0 && (
-    <div class="research-card__keywords">
+    <div class="research-card__keywords" style="margin-top: auto;">
       <span class="small-label">Keywords</span>
       <div class="tag-row research-card__tag-row">
         {visibleTags.map((tag: string) => (

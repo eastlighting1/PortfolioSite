@@ -9,7 +9,7 @@ type: "Collaborative NLP Project"
 summary: "Contributed to the AI side of a React + Spring blog project, focusing on polarity recognition and style transfer for Korean text."
 portfolioProblem: "The product needed ML components that could classify emotional polarity and generate stylistic variations of text to support richer blog content workflows."
 portfolioApproach: "I focused on the machine learning side by implementing a KoBERT-based polarity recognition model and a KoBART-based style transfer pipeline, along with dataset handling and repeated model experiments."
-portfolioOutcome: "The project gave the team practical AI modules for blog-oriented text processing and strengthened my experience in integrating Korean classification and generation models into a web product context."
+portfolioOutcome: "The project gave the team practical AIs for blog-oriented text processing and strengthened my experience in integrating classification and generation models into a web product context."
 featured: false
 tags:
   - "Polarity Recognition"

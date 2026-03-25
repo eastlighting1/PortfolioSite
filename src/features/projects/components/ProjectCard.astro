@@ -37,12 +37,16 @@ const resourceLinks = [
   <h3 class="project-card__title">{project.data.title}</h3>
   <p class="project-card__role">{project.data.role}</p>
   <p class="muted">{project.data.summary}</p>
+  <div class="subgrid-highlight">
   {primaryMetric && (
     <div class="project-card__highlight">
       <span class="small-label">Key Outcome</span>
       <strong>{primaryMetric}</strong>
     </div>
   )}
+  </div>
+
+  <div class="subgrid-facts">
   {secondaryMetrics.length > 0 && (
     <div class="project-card__facts">
       {secondaryMetrics.map((metric: string) => (
@@ -50,6 +54,9 @@ const resourceLinks = [
       ))}
     </div>
   )}
+  </div>
+
+  <div class="subgrid-stack">
   {visibleTags.length > 0 && (
     <div class="project-card__stack">
       <span class="small-label">Selected Stack</span>
@@ -61,15 +68,8 @@ const resourceLinks = [
       </div>
     </div>
   )}
-  {resourceLinks.length > 0 && (
-    <div class="project-card__resources" aria-label={ui.externalLinksAriaLabel}>
-      {resourceLinks.map((link) => (
-        <a href={link.href} target="_blank" rel="noreferrer">
-          {link.label}
-        </a>
-      ))}
-    </div>
-  )}
+  </div>
+
   <div class="project-card__footer">
     <div class="hero-actions project-card__actions">
       <a class="button-link" href={href}>{ui.project.openCaseStudyLabel}</a>

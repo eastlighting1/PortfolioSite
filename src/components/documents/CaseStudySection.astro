@@ -22,61 +22,80 @@ const visibleLinks = [
 ---
 
 <section class="case-study case-study--sheet">
-  <span class="small-label">{ui.project.caseStudyLabelPrefix} {index + 1}</span>
-
-  <div class="case-study__header">
-    <div class="case-study__header-main">
-      <h3>{project.data.title}</h3>
-      <p class="case-study__dek">{project.data.summary}</p>
-      <p class="muted case-study__meta">{project.data.type} | {project.data.roles.join(", ")}</p>
-    </div>
+  <div class="case-study__eyebrow-row">
+    <span class="small-label case-study__label">{ui.project.caseStudyLabelPrefix} {index + 1}</span>
     <span class="case-study__year-badge">{project.data.year}</span>
   </div>
 
-  <div class="case-study__body">
-    <div class="case-study__body-main">
-      <section class="case-study__section">
-        <h4>{ui.project.fieldLabels.problem}</h4>
-        <p>{project.data.portfolioProblem ?? project.data.summary}</p>
-      </section>
-      <section class="case-study__section">
-        <h4>{ui.project.fieldLabels.approach}</h4>
-        <p>{project.data.portfolioApproach ?? project.data.summary}</p>
-      </section>
+  <div class="case-study__header">
+    <div class="case-study__header-main">
+      <h3 class="case-study__title">{project.data.title}</h3>
+      <p class="case-study__dek">{project.data.summary}</p>
+      <div class="case-study__meta-row">
+        <span class="muted">{project.data.type}</span>
+        <span class="separator">·</span>
+        <span class="muted">{project.data.roles.join(", ")}</span>
+      </div>
     </div>
+  </div>
 
-    <aside class="case-study__aside">
-      <section class="case-study__section case-study__section--accent">
-        <h4>{ui.project.fieldLabels.outcome}</h4>
-        <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
-        {project.data.metrics.length > 0 && (
-          <div class="meta-row case-study__metrics">
-            {project.data.metrics.map((metric: string) => (
-              <span class="metric-badge">{metric}</span>
+  <div class="case-study__body">
+    <div class="case-study__main-content">
+      <div class="case-study__grid">
+        <section class="case-study__section case-study__section--problem">
+          <h4>{ui.project.fieldLabels.problem}</h4>
+          <div class="case-study__section-content">
+            <p>{project.data.portfolioProblem ?? project.data.summary}</p>
+          </div>
+        </section>
+
+        <section class="case-study__section case-study__section--approach">
+          <h4>{ui.project.fieldLabels.approach}</h4>
+          <div class="case-study__section-content">
+            <p>{project.data.portfolioApproach ?? project.data.summary}</p>
+          </div>
+        </section>
+
+        <section class="case-study__section case-study__section--outcome case-study__section--accent">
+          <h4>{ui.project.fieldLabels.outcome}</h4>
+          <div class="case-study__section-content">
+            <div class="case-study__result-text">
+              <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
+            </div>
+            {project.data.metrics.length > 0 && (
+              <div class="metric-row case-study__metrics-highlights">
+                {project.data.metrics.map((metric: string) => (
+                  <div class="metric-item">
+                    <span class="metric-badge">{metric}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <footer class="case-study__footer">
+    <div class="case-study__footer-grid">
+      {project.data.tags.length > 0 && (
+        <div class="case-study__metadata-group">
+          <span class="small-label">{locale === "ko" ? "기술 및 태그" : "Tech & Tags"}</span>
+          <div class="tag-row">
+            {project.data.tags.map((tag: string) => (
+              <span class="tag-chip">{tag}</span>
             ))}
           </div>
-        )}
-      </section>
-    </aside>
-  </div>
-
-  <div class="case-study__footer">
-    {project.data.tags.length > 0 && (
-      <div class="case-study__group">
-        <span class="small-label case-study__group-label">{locale === "ko" ? "핵심 태그" : "Keywords"}</span>
-        <div class="tag-row case-study__tags">
-          {project.data.tags.map((tag: string) => (
-            <span class="tag-chip">{tag}</span>
-          ))}
         </div>
-      </div>
-    )}
+      )}
 
-    {visibleLinks.length > 0 && (
-      <div class="case-study__group">
-        <span class="small-label case-study__group-label">{locale === "ko" ? "관련 링크" : "Links"}</span>
-        <ExternalLinks locale={locale} links={visibleLinks} />
-      </div>
-    )}
-  </div>
+      {visibleLinks.length > 0 && (
+        <div class="case-study__metadata-group">
+          <span class="small-label">{locale === "ko" ? "증거 및 링크" : "Evidence & Links"}</span>
+          <ExternalLinks locale={locale} links={visibleLinks} />
+        </div>
+      )}
+    </div>
+  </footer>
 </section>

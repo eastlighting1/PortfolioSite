@@ -48,7 +48,7 @@ const allResearch = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year);
 
 const featuredExperience = experience.slice(0, resumePage.data.sections.experience.count ?? 2);
-const printExperience = experience.slice(0, 3);
+const printExperience = experience;
 const printProjects = allProjects;
 const certificates = portfolioPage.data.recognition.certificates;
 const awards = portfolioPage.data.recognition.awards;
@@ -289,7 +289,7 @@ const cvAdditionalItems =
       <h2>{sectionLabels.interests}</h2>
       <div class="cv-print-copy">
         <p><strong>{sectionLabels.keywords}:</strong> {researchKeywords.join(", ")}</p>
-        <p><strong>{sectionLabels.objective}:</strong> {compactText(resumePage.data.printCv.objective ?? profile.summary, 320)}</p>
+        <p><strong>{sectionLabels.objective}:</strong> {resumePage.data.printCv.objective ?? profile.summary}</p>
       </div>
     </section>
 
@@ -307,48 +307,12 @@ const cvAdditionalItems =
                 <span>{item.period}</span>
               </div>
             </div>
-            <p class="cv-print-entry__detail">{compactText(item.detail, 220)}</p>
+            <p class="cv-print-entry__detail">{item.detail}</p>
           </article>
         ))}
       </div>
     </section>
 
-    {resumePage.data.printCv.includeProjects && printProjects.length > 0 && (
-      <section class="cv-print-section">
-        <h2>{sectionLabels.projects}</h2>
-        <div class="cv-print-stack">
-          {printProjects.map((project) => (
-            <article class="cv-print-entry">
-              <div class="cv-print-entry__row">
-                <div>
-                  <h3>{project.data.title}</h3>
-                  <p class="cv-print-entry__subline cv-print-entry__subline--italic">{project.data.type}</p>
-                </div>
-                <div class="cv-print-entry__meta">
-                  <span>{project.data.year}</span>
-                </div>
-              </div>
-              {project.data.portfolioProblem ? (
-                <ul class="cv-print-bullets cv-print-bullets--project">
-                  <li>{project.data.portfolioProblem}</li>
-                  <li>{project.data.portfolioApproach}</li>
-                  <li>{project.data.portfolioOutcome}</li>
-                </ul>
-              ) : (
-                <p class="cv-print-entry__detail">{compactText(project.data.summary, 220)}</p>
-              )}
-              <p class="cv-print-entry__detail cv-print-entry__detail--muted" style="margin-top: 1.2mm;">
-                {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 2).join(" · ")}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-    )}
-
-  </article>
-
-  <article class="paper-sheet paper-sheet--resume-cv document-shell print-only page-break">
     <section class="cv-print-section">
       <h2>{sectionLabels.experience}</h2>
       <div class="cv-print-stack">
@@ -364,7 +328,7 @@ const cvAdditionalItems =
               </div>
             </div>
             <ul class="cv-print-bullets">
-              {item.bullets.slice(0, 2).map((bullet) => (
+              {item.bullets.map((bullet) => (
                 <li>{bullet}</li>
               ))}
             </ul>
@@ -391,6 +355,39 @@ const cvAdditionalItems =
       </ol>
     </section>
 
+    {resumePage.data.printCv.includeProjects && printProjects.length > 0 && (
+      <section class="cv-print-section">
+        <h2>{sectionLabels.projects}</h2>
+        <div class="cv-print-stack">
+          {printProjects.map((project) => (
+            <article class="cv-print-entry">
+              <div class="cv-print-entry__row">
+                <div>
+                  <h3>{project.data.title}</h3>
+                  <p class="cv-print-entry__subline cv-print-entry__subline--italic">{project.data.type}</p>
+                </div>
+                <div class="cv-print-entry__meta">
+                  <span>{project.data.year}</span>
+                </div>
+              </div>
+              {project.data.portfolioProblem ? (
+                <ul class="cv-print-bullets cv-print-bullets--project">
+                  <li>{project.data.portfolioProblem}</li>
+                  <li>{project.data.portfolioApproach}</li>
+                  <li>{project.data.portfolioOutcome}</li>
+                </ul>
+              ) : (
+                <p class="cv-print-entry__detail">{project.data.summary}</p>
+              )}
+              <p class="cv-print-entry__detail cv-print-entry__detail--muted" style="margin-top: 1.25mm;">
+                {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 3).join(" · ")}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
     {recognition.length > 0 && (
       <section class="cv-print-section">
         <h2>{sectionLabels.certifications}</h2>
@@ -406,7 +403,7 @@ const cvAdditionalItems =
                   <span>{item.date}</span>
                 </div>
               </div>
-              {item.description && <p class="cv-print-entry__detail">{compactText(item.description, 180)}</p>}
+              {item.description && <p class="cv-print-entry__detail">{item.description}</p>}
             </article>
           ))}
         </div>

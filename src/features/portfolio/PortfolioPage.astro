@@ -1,6 +1,5 @@
 ﻿---
 import PrintLayout from "../../layouts/PrintLayout.astro";
-import CaseStudySection from "../../components/documents/CaseStudySection.astro";
 import ExternalLinks from "../../components/common/ExternalLinks.astro";
 import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry, getUiEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
@@ -96,12 +95,16 @@ const chunk = <T,>(items: T[], size: number): T[][] => {
 const recognitionPages = chunk(recognitionEntries, 2);
 const printRecognitionPages = chunk(printRecognitionEntries, 4);
 const recognitionPage = webPages.find((page) => page.kind === "recognition");
-
-const topExperiences = experiences.slice(0, 3);
+const topExperiences = experiences;
 const topProjects = allProjects;
-const topEducation = education.slice(0, 1);
-const topCapabilities = profile.capabilityGroups.slice(0, 4);
+const topEducation = education;
+const topStudyItems = educationStudyPage?.kind === "educationStudy" ? educationStudyPage.studyItems : [];
+const topCapabilities = profile.capabilityGroups;
 const topResearch = allResearch;
+const printKeywords = [
+  siteConfig.primaryRole,
+  ...topCapabilities.map((group) => group.title)
+].slice(0, 5);
 const certificatePlaceholder =
   locale === "ko" ? "수료한 프로그램과 자격증은 이 영역에 정리됩니다." : "Certificates and completed programs will appear in this section.";
 const awardPlaceholder =
@@ -113,7 +116,7 @@ const labels = {
   keywords: locale === "ko" ? "핵심 태그" : "Keywords",
   links: locale === "ko" ? "관련 링크" : "Links",
   experience: locale === "ko" ? "경력." : "Experience.",
-  selectedProjects: locale === "ko" ? "주요 프로젝트." : "Selected Projects.",
+  selectedProjects: locale === "ko" ? "프로젝트." : "Projects.",
   education: locale === "ko" ? "학력." : "Education.",
   study: locale === "ko" ? "스터디." : "Study.",
   capability: locale === "ko" ? "핵심 역량." : "Core Domain.",
@@ -502,202 +505,298 @@ const photoSource = (() => {
   </section>
 
     <div class="print-only">
-      <div class="portfolio-doc">
-        <div class="portfolio-doc__toolbar screen-only">
-          <button type="button" class="portfolio-sheet__print-button" onclick="window.print()">
-            {ui.printToolbar.printButtonLabel}
-          </button>
-        </div>
-
-      <article class="paper-sheet paper-sheet--portfolio paper-sheet--portfolio-profile document-shell">
-        <section class="portfolio-print-profile">
-          <div class="portfolio-print-profile__media" aria-hidden={photoSource ? undefined : "true"}>
+      <article class="portfolio-print-dump">
+        <header class="portfolio-print-dump__hero">
+          <div class="portfolio-print-dump__hero-photo" aria-hidden={photoSource ? undefined : "true"}>
             {photoSource ? (
-              <img src={photoSource} alt={profile.name} class="portfolio-print-profile__photo" />
+              <img src={photoSource} alt={profile.name} class="portfolio-print-dump__hero-photo-image" />
             ) : (
               initials
             )}
           </div>
-          <div class="portfolio-print-profile__header">
-            <div>
-              <p class="portfolio-print-profile__role">{siteConfig.primaryRole}</p>
-              <h1>{profile.name}</h1>
-            </div>
-            <div class="portfolio-print-profile__contacts">
-              <div class="portfolio-print-profile__contact">
-                <strong>{labels.locationWithPeriod}</strong>
-                <span>{siteConfig.location}</span>
-              </div>
-              {contactItems.map((item) => (
-                <div class="portfolio-print-profile__contact">
-                  <strong>{item.label}.</strong>
-                  <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                    {item.value}
-                  </a>
-                </div>
-              ))}
+          <div class="portfolio-print-dump__hero-main">
+            <p class="portfolio-print-dump__eyebrow">{siteConfig.primaryRole}</p>
+            <h1>{profile.name}</h1>
+            <p class="portfolio-print-dump__headline">{profile.headline}</p>
+            <div class="portfolio-print-dump__intro">
+              <p>{profile.intro}</p>
+              <p>{profile.summary}</p>
             </div>
           </div>
-        </section>
-
-        <p class="portfolio-print-profile__headline">{profile.headline}</p>
-        <p class="portfolio-print-profile__summary">{profile.intro}</p>
-
-        <ul class="portfolio-print-profile__principles">
-          {profile.philosophy.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-
-        <section class="portfolio-print-section">
-          <h2>{labels.experience}</h2>
-          {topExperiences.map((item) => (
-            <article class="portfolio-print-entry">
-              <div class="portfolio-print-entry__header">
-                <h3>{item.organization}</h3>
-                <span>{item.period}</span>
+          <aside class="portfolio-print-dump__hero-side">
+            <div class="portfolio-print-dump__meta">
+              <strong>{labels.locationWithPeriod}</strong>
+              <span>{siteConfig.location}</span>
+            </div>
+            {contactItems.map((item) => (
+              <div class="portfolio-print-dump__meta">
+                <strong>{item.label}.</strong>
+                <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                  {item.value}
+                </a>
               </div>
-              <p class="portfolio-print-entry__meta">{item.role}</p>
-              <ul>
-                {item.bullets.slice(0, 1).map((bullet) => (
-                  <li>{bullet}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </section>
-
-        <section class="portfolio-print-section">
-          <h2>{labels.selectedProjects}</h2>
-          {topProjects.map((project) => (
-            <article class="portfolio-print-entry">
-              <div class="portfolio-print-entry__header">
-                <h3>{project.data.title}</h3>
-                <span>{project.data.year}</span>
-              </div>
-              <p class="portfolio-print-entry__meta">{project.data.type} | {project.data.roles.join(", ")}</p>
-              <ul>
-                <li>{project.data.portfolioProblem ?? project.data.summary}</li>
-              </ul>
-            </article>
-          ))}
-        </section>
-      </article>
-
-      <article class="paper-sheet paper-sheet--portfolio paper-sheet--portfolio-summary document-shell page-break">
-        {overview.intro.enabled && (
-          <section class="portfolio-print-section">
-            <h2>{overview.intro.title}</h2>
-            {overview.intro.paragraphs.map((paragraph) => (
-              <p>{paragraph}</p>
             ))}
+          </aside>
+          <div class="portfolio-print-dump__keywords">
+            {printKeywords.map((keyword) => (
+              <span>{keyword}</span>
+            ))}
+          </div>
+        </header>
+
+        {profile.philosophy.length > 0 && (
+          <section class="portfolio-print-dump__section">
+            <h2>{locale === "ko" ? "작업 원칙" : "Working Principles"}</h2>
+            <div class="portfolio-print-dump__principles">
+              {profile.philosophy.map((item) => (
+                <article class="portfolio-print-dump__principle-card">
+                  <h3>{item}</h3>
+                  <p>{locale === "ko" ? "연구와 구현을 연결하는 기준으로 일관되게 유지하는 작업 원칙입니다." : "A working principle that guides how research becomes implementation."}</p>
+                </article>
+              ))}
+            </div>
           </section>
         )}
 
-        <div class="portfolio-print-columns">
-          <section class="portfolio-print-section portfolio-print-section--compact">
-            <h2>{labels.education}</h2>
-            {topEducation.map((item) => (
-              <article class="portfolio-print-entry portfolio-print-entry--compact">
-                <h3>{item.school}</h3>
-                <p class="portfolio-print-entry__meta">{item.degree}</p>
-                <ul>
-                  <li>{item.period}</li>
-                  <li>{item.detail}</li>
-                </ul>
-              </article>
-            ))}
-          </section>
-
-          <section class="portfolio-print-section portfolio-print-section--compact">
-            <h2>{labels.study}</h2>
-            {(educationStudyPage?.kind === "educationStudy" ? educationStudyPage.studyItems : []).map((item) => (
-              <article class="portfolio-print-entry portfolio-print-entry--compact">
-                <h3>{item.title}</h3>
-                <p class="portfolio-print-entry__meta">{item.emphasis}</p>
-                <ul>
-                  <li>{item.description}</li>
-                </ul>
-              </article>
-            ))}
-          </section>
-
-          <section class="portfolio-print-section portfolio-print-section--compact">
-            <h2>{overview.capability.enabled ? overview.capability.title : labels.capability}</h2>
-            {topCapabilities.map((group) => (
-              <article class="portfolio-print-entry portfolio-print-entry--compact">
-                <h3>{group.title}</h3>
-                <ul>
-                  <li>{group.skills.slice(0, 3).join(skillSeparator)}</li>
-                  <li>{group.description}</li>
-                </ul>
-              </article>
-            ))}
-          </section>
-        </div>
-
-        <section class="portfolio-print-section portfolio-print-summary__row">
-          <h2>{overview.research.enabled ? overview.research.title : labels.research}</h2>
-          {topResearch.map((item) => (
-            <article class="portfolio-print-entry">
-              <div class="portfolio-print-entry__header">
-                <h3>{item.data.title}</h3>
-                <span>{item.data.year}</span>
-              </div>
-              <p class="portfolio-print-entry__meta">{item.data.venue}</p>
-              <ul>
-                <li>{item.data.abstract}</li>
-                {item.data.tags.slice(0, 2).map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-            </article>
+        <section class="portfolio-print-dump__section">
+          <h2>{locale === "ko" ? "이력 및 기반" : "Background & Foundations"}</h2>
+          {overview.intro.enabled && overview.intro.paragraphs.map((paragraph) => (
+            <p class="portfolio-print-dump__section-copy">{paragraph}</p>
           ))}
         </section>
-      </article>
-      {printRecognitionPages.length > 0 && printRecognitionPages.map((entries) => (
-        <article class="paper-sheet paper-sheet--portfolio paper-sheet--portfolio-recognition document-shell page-break">
-          <div class="portfolio-print-recognition-page">
-            <div>
-              <div class="portfolio-web-card__eyebrow">{recognitionPage?.eyebrow ?? "Certificate & Award"}</div>
-              <h1 class="portfolio-print-recognition-page__title">{recognitionPage?.title ?? (locale === "ko" ? "수료와 수상" : "Certificates & Awards")}</h1>
+
+        <section class="portfolio-print-dump__section portfolio-print-dump__section--page-start">
+          <h2>{labels.experience}</h2>
+          <div class="portfolio-print-dump__list">
+            {topExperiences.map((item) => (
+              <article class="portfolio-print-dump__entry">
+                <div class="portfolio-print-dump__entry-head">
+                  <div>
+                    <h3>{item.organization}</h3>
+                    <p class="portfolio-print-dump__entry-meta">{item.role}</p>
+                  </div>
+                  <p class="portfolio-print-dump__entry-period">{item.period}</p>
+                </div>
+                <ul>
+                  {item.bullets.map((bullet) => (
+                    <li>{bullet}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="portfolio-print-dump__section">
+          <h2>{locale === "ko" ? "학업 및 성장 기반" : "Education & Learning Foundation"}</h2>
+          <div class="portfolio-print-dump__formation">
+            <div class="portfolio-print-dump__formation-block">
+              <h3>{labels.education}</h3>
+              {topEducation.map((item) => (
+                <article class="portfolio-print-dump__item">
+                  <div class="portfolio-print-dump__entry-head">
+                    <div>
+                      <h4>{item.school}</h4>
+                      <p class="portfolio-print-dump__entry-meta">{item.degree}</p>
+                    </div>
+                    <p class="portfolio-print-dump__entry-period">{item.period}</p>
+                  </div>
+                  <p>{item.detail}</p>
+                </article>
+              ))}
             </div>
 
-            {entries.map((entry, entryIndex) => {
-              const previousEntry = entryIndex > 0 ? entries[entryIndex - 1] : null;
-              const showSectionTitle = !previousEntry || previousEntry.kind !== entry.kind;
+            {topStudyItems.length > 0 && (
+              <div class="portfolio-print-dump__formation-block">
+                <h3>{labels.study}</h3>
+                <div class="portfolio-print-dump__study-grid">
+                  {topStudyItems.map((item) => (
+                    <article class="portfolio-print-dump__study-card">
+                      <h4>{item.title}</h4>
+                      <p class="portfolio-print-dump__entry-meta">{item.emphasis}</p>
+                      <p>{item.description}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
 
-              return (
-                <section class:list={["portfolio-print-section", "portfolio-print-recognition-page__section", { "portfolio-print-recognition-page__section--first": entryIndex === 0 }]}>
-                  {showSectionTitle && (
-                    <h2>{entry.kind === "certificate" ? (recognitionPage?.kind === "recognition" ? recognitionPage.certificateTitle : labels.certificate) : (recognitionPage?.kind === "recognition" ? recognitionPage.awardTitle : labels.award)}</h2>
+        {topCapabilities.length > 0 && (
+          <section class="portfolio-print-dump__section portfolio-print-dump__section--capability">
+            <h2>{overview.capability.enabled ? overview.capability.title : labels.capability}</h2>
+            <div class="portfolio-print-dump__capability-grid">
+              {topCapabilities.map((group) => (
+                <article class="portfolio-print-dump__capability-card">
+                  <h3>{group.title}</h3>
+                  <p>{group.description}</p>
+                  <p class="portfolio-print-dump__tag-row">{group.skills.join(skillSeparator)}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {topResearch.length > 0 && (
+          <section class="portfolio-print-dump__section portfolio-print-dump__section--page-start">
+            <h2>{locale === "ko" ? "연구" : "Research"}</h2>
+            <div class="portfolio-print-dump__list">
+              {topResearch.map((item) => (
+                <article class="portfolio-print-dump__research-card">
+                  <div class="portfolio-print-dump__entry-head">
+                    <h3>{item.data.title}</h3>
+                    <p class="portfolio-print-dump__entry-period">{item.data.year}</p>
+                  </div>
+                  <p class="portfolio-print-dump__entry-meta">{item.data.venue}</p>
+                  <p>{item.data.abstract}</p>
+                  {item.data.tags.length > 0 && (
+                    <p class="portfolio-print-dump__tag-row">{item.data.tags.join(skillSeparator)}</p>
                   )}
-                  <article class="portfolio-print-entry portfolio-print-entry--compact portfolio-print-entry--recognition">
-                    <div class="portfolio-print-entry__header">
-                      <h3>{entry.item.title}</h3>
-                      <span>{entry.item.date}</span>
-                    </div>
-                    <p class="portfolio-print-entry__meta">{entry.item.issuer}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {printRecognitionEntries.length > 0 && (
+          <section class="portfolio-print-dump__section">
+            <h2>{recognitionPage?.title ?? (locale === "ko" ? "수료와 수상" : "Certificates & Awards")}</h2>
+            <div class="portfolio-print-dump__recognition-grid">
+              {printRecognitionEntries.map((entry) => (
+                <article class="portfolio-print-dump__recognition-card">
+                  <p class="portfolio-print-dump__recognition-kind">
+                    {entry.kind === "certificate"
+                      ? recognitionPage?.kind === "recognition"
+                        ? recognitionPage.certificateTitle
+                        : labels.certificate
+                      : recognitionPage?.kind === "recognition"
+                        ? recognitionPage.awardTitle
+                        : labels.award}
+                  </p>
+                  <h3>{entry.item.title}</h3>
+                  <p class="portfolio-print-dump__entry-meta">{entry.item.issuer}</p>
+                  <p class="portfolio-print-dump__entry-period">{entry.item.date}</p>
+                  {entry.item.description && <p>{entry.item.description}</p>}
+                  {entry.item.bullets.length > 0 && (
                     <ul>
-                      {entry.item.description && <li>{entry.item.description}</li>}
                       {entry.item.bullets.map((bullet) => (
                         <li>{bullet}</li>
                       ))}
                     </ul>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {topProjects.length > 0 && (
+          <section class="portfolio-print-dump__section">
+            <h2>{locale === "ko" ? "프로젝트 아카이브" : "Project Archive"}</h2>
+            <div class="portfolio-print-dump__project-archive-grid">
+              {topProjects.map((project, index) => {
+                return (
+                  <article class="portfolio-print-dump__project-archive-card">
+                    <p class="portfolio-print-dump__eyebrow">{ui.project.caseStudyLabelPrefix} {index + 1}</p>
+                    <h3>{project.data.title}</h3>
+                    <p>{project.data.summary}</p>
+                    <div class="portfolio-print-dump__project-meta-row">
+                      <span>{project.data.year}</span>
+                      <span>{project.data.type}</span>
+                    </div>
+                    <p class="portfolio-print-dump__tag-row">{project.data.roles.join(skillSeparator)}</p>
                   </article>
-                </section>
-              );
-            })}
-          </div>
-        </article>
-      ))}
-      {allProjects.map((project, index) => (
-        <article class="paper-sheet paper-sheet--portfolio paper-sheet--case-study document-shell page-break">
-          <CaseStudySection project={project} index={index} locale={locale} />
-        </article>
-      ))}
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {topProjects.length > 0 && topProjects.map((project, index) => {
+          const projectLinks = [
+            { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+            { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+            { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+            { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
+          ].filter((link) => link.href);
+
+          return (
+            <section class="portfolio-print-dump__case-study-page portfolio-print-dump__section--page-start">
+                <article class="portfolio-print-dump__project portfolio-print-dump__project--case">
+                  <div class="portfolio-print-dump__case-study-topline">
+                    <p class="portfolio-print-dump__eyebrow">{locale === "ko" ? "케이스 스터디" : "Case Study"} {index + 1}</p>
+                    <span>{project.data.year}</span>
+                  </div>
+                  <div class="portfolio-print-dump__project-head">
+                    <div class="portfolio-print-dump__project-titleblock">
+                      <h3>{project.data.title}</h3>
+                      <p>{project.data.summary}</p>
+                    </div>
+                    <div class="portfolio-print-dump__project-meta-row">
+                      <span>{project.data.type}</span>
+                      <span>{project.data.roles.join(", ")}</span>
+                    </div>
+                  </div>
+                  <div class="portfolio-print-dump__project-body">
+                    <article class="portfolio-print-dump__project-block">
+                      <h4>{ui.project.fieldLabels.problem}</h4>
+                      <p>{project.data.portfolioProblem ?? project.data.summary}</p>
+                    </article>
+                    <article class="portfolio-print-dump__project-block">
+                      <h4>{ui.project.fieldLabels.approach}</h4>
+                      <p>{project.data.portfolioApproach ?? project.data.summary}</p>
+                    </article>
+                    <article class="portfolio-print-dump__project-block">
+                      <h4>{ui.project.fieldLabels.outcome}</h4>
+                      <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
+                    </article>
+                  </div>
+                  {(project.data.metrics.length > 0 || project.data.tags.length > 0 || projectLinks.length > 0) && (
+                    <aside class="portfolio-print-dump__project-aside">
+                      {project.data.metrics.length > 0 && (
+                        <div class="portfolio-print-dump__project-meta">
+                          <h4>{locale === "ko" ? "지표" : "Metrics"}</h4>
+                          <div class="portfolio-print-dump__metric-grid">
+                            {project.data.metrics.map((metric: string) => (
+                              <article class="portfolio-print-dump__metric-card">
+                                <span>{metric}</span>
+                              </article>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {project.data.tags.length > 0 && (
+                        <div class="portfolio-print-dump__project-meta">
+                          <h4>{locale === "ko" ? "기술 및 태그" : "Tech & Tags"}</h4>
+                          <div class="portfolio-print-dump__chip-row">
+                            {project.data.tags.map((tag: string) => (
+                              <span class="portfolio-print-dump__chip">{tag}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {projectLinks.length > 0 && (
+                        <div class="portfolio-print-dump__project-meta">
+                          <h4>{locale === "ko" ? "링크" : "Links"}</h4>
+                          <div class="portfolio-print-dump__link-stack">
+                            {projectLinks.map((link) => (
+                              <a class="portfolio-print-dump__link-card" href={link.href} target="_blank" rel="noreferrer">
+                                <strong>{link.label}</strong>
+                                <span>{link.href}</span>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </aside>
+                  )}
+                </article>
+            </section>
+          );
+        })}
+      </article>
     </div>
-  </div>
 </PrintLayout>
 
 <script is:inline>

@@ -8,17 +8,16 @@ printCv:
     - Medical AI
     - Conversational AI
     - Clinical NLP
-    - Evaluation
     - MLOps
     - Applied AI Systems
   objective: Applied AI researcher and engineer focused on turning conversational AI and clinical AI work into reliable systems through modeling, evaluation, and practical delivery.
   additionalItems:
     - label: Tech Stack
-      value: Python · PyTorch · HuggingFace · Docker · MLflow · SQL · AWS
+      value: Python · PyTorch · HuggingFace · Docker · AWS
     - label: Focus Areas
-      value: Medical AI · Conversational AI · Evaluation · MLOps
+      value: Medical AI · Conversational AI · MLOps
     - label: Technical Strengths
-      value: NLP Modeling · EMR/Clinical Text Workflows · Experiment Evaluation · Delivery-Oriented Prototyping
+      value: NLP Modeling · EMR Text Workflows · Code Reproducibility · System Observability · Automation
 layout:
   leftColumn:
     - summary

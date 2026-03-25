@@ -8,7 +8,7 @@ roles:
 type: "Conversational AI Project"
 summary: "Contributed to the machine learning pipeline for a conversational diary app, with a primary focus on emotion recognition and Korean language model integration."
 portfolioProblem: "The product needed ML components that could recognize user emotion and support a diary-generation workflow from daily conversation logs."
-portfolioApproach: "I focused on the ML side by implementing and refining the emotion recognition pipeline with KoBERT and by helping connect chatbot and summarization models into the overall AI workflow."
+portfolioApproach: "I focused on the ML side by implementing and refining the emotion recognition and by helping connect chatbot and summarization models into the overall AI workflow."
 portfolioOutcome: "The project delivered an MVP-level conversational diary experience and gave me hands-on experience in integrating Korean NLP models for emotion-aware user interaction."
 featured: true
 tags:

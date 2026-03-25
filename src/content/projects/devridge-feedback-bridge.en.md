@@ -8,7 +8,7 @@ roles:
 type: "LLM Application Prototype"
 summary: "Built an LLM prototype that helps solo developers receive contextualized feedback from different professional roles."
 portfolioProblem: "Developers working alone often need UI, performance, or code quality feedback, but they rarely have an easy way to gather role-specific input at the right time."
-portfolioApproach: "I framed the service as a role-aware feedback bridge and focused on prompt engineering, role constraints, and contextual input design so the generated responses would stay relevant and scoped."
+portfolioApproach: "I framed the service as a role-aware feedback bridge and focused on role constraints, and contextual input design so the generated responses would stay relevant and scoped."
 portfolioOutcome: "The prototype demonstrated how structured prompting and role-specific constraints could turn LLM output into more useful, contextualized project feedback."
 featured: true
 tags:

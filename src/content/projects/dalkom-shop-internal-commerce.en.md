@@ -6,7 +6,7 @@ roles:
   - "DevSecOps Engineer"
   - "Infra Engineer"
   - "Platform Engineer"
-type: "Internal Commerce Platform Project"
+type: "Internal Commerce Platform"
 summary: "Served as the DevSecOps lead for an internal employee-only commerce platform, building the delivery, operations, security, and observability foundation behind the service."
 portfolioProblem: "The project needed more than frontend and backend implementation; it required cloud infrastructure and platform foundations that could reliably support search, notifications, admin workflows, and ongoing operations."
 portfolioApproach: "I focused on the DevSecOps and infrastructure/platform layer, organizing CI/CD, cloud deployment flow, operational setup, and security-aware service foundations for a React + Spring commerce system."
