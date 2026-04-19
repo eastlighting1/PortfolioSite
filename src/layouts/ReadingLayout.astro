@@ -6,6 +6,8 @@ interface Props {
   description?: string;
   pathname?: string;
   locale?: "ko" | "en";
+  noindex?: boolean;
+  openGraphType?: "website" | "article" | "profile";
 }
 
 const props = Astro.props;

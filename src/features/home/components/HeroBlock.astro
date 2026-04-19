@@ -32,7 +32,7 @@ const siteConfig = siteEntry.data;
 
 <section class="section">
   <div class="container">
-    <div class="hero-panel soft-card">
+    <div class="hero-panel card-paper card-paper--hero">
       <div>
         <div class="eyebrow" data-reveal="1">{eyebrow}</div>
         <h1 class="hero-title" data-reveal="2">{profile.name}</h1>
@@ -55,157 +55,19 @@ const siteConfig = siteEntry.data;
           ))}
         </div>
       </div>
-      <div class="project-card">
-        <span class="small-label">{focusCard.label}</span>
-        <h2
-          class="section-title focus-card__title"
-          data-focus-title
-          data-fit-min-rem="1.5"
-          data-fit-max-rem="2.2"
-          data-fit-single-line-threshold="0.9"
-          style="margin-top:0.6rem;"
-          set:html={focusCard.title}
-        />
-        <p class="muted" set:html={focusCard.body} />
-        <div class="compact-list">
+      <aside class="hero-focus" data-reveal="4">
+        <span class="hero-focus__label">{focusCard.label}</span>
+        <h2 class="hero-focus__title" set:html={focusCard.title} />
+        <p class="hero-focus__body" set:html={focusCard.body} />
+        <dl class="hero-focus__list">
           {focusCard.items.map((item) => (
-            <div>
-              <span class="small-label">{item.label}</span>
-              <strong>{item.value}</strong>
+            <div class="hero-focus__item">
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
             </div>
           ))}
-        </div>
-      </div>
+        </dl>
+      </aside>
     </div>
   </div>
 </section>
-
-<script is:inline>
-  const setupFocusTitleFit = () => {
-    const titles = document.querySelectorAll("[data-focus-title]");
-    if (!titles.length) return;
-
-    const rootFontSize = () =>
-      Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-
-    const getLineHeight = (element) => {
-      const computed = getComputedStyle(element);
-      if (computed.lineHeight !== "normal") {
-        return Number.parseFloat(computed.lineHeight);
-      }
-      return Number.parseFloat(computed.fontSize) * 1.08;
-    };
-
-    const binarySearch = (min, max, fits) => {
-      let low = min;
-      let high = max;
-      let best = min;
-
-      while (high - low > 0.25) {
-        const mid = (low + high) / 2;
-        if (fits(mid)) {
-          best = mid;
-          low = mid;
-        } else {
-          high = mid;
-        }
-      }
-
-      return best;
-    };
-
-    const countLines = (element) => {
-      const lineHeight = getLineHeight(element);
-      return Math.max(1, Math.round(element.scrollHeight / lineHeight));
-    };
-
-    const fitTitle = (element) => {
-      const minPx = Number(element.dataset.fitMinRem || "1.5") * rootFontSize();
-      const maxPx = Number(element.dataset.fitMaxRem || "2.2") * rootFontSize();
-      const singleLineThreshold = Number(element.dataset.fitSingleLineThreshold || "0.9");
-
-      const resetBase = () => {
-        element.style.display = "block";
-        element.style.maxWidth = "100%";
-        element.style.overflow = "visible";
-        element.style.whiteSpace = "normal";
-        element.style.wordBreak = "keep-all";
-        element.style.overflowWrap = "anywhere";
-        element.style.webkitLineClamp = "";
-        element.style.webkitBoxOrient = "";
-      };
-
-      const fitsSingleLine = (fontSize) => {
-        resetBase();
-        element.style.fontSize = `${fontSize}px`;
-        element.style.whiteSpace = "nowrap";
-        return element.scrollWidth <= element.clientWidth + 1;
-      };
-
-      const fitsTwoLines = (fontSize) => {
-        resetBase();
-        element.style.fontSize = `${fontSize}px`;
-        return countLines(element) <= 2;
-      };
-
-      const singleLineSize = binarySearch(minPx, maxPx, fitsSingleLine);
-      const twoLineSize = binarySearch(minPx, maxPx, fitsTwoLines);
-      const singleLineActuallyFits = fitsSingleLine(singleLineSize);
-      const twoLinesActuallyFit = fitsTwoLines(twoLineSize);
-
-      resetBase();
-      element.style.fontSize = `${twoLineSize}px`;
-      const twoLineCount = countLines(element);
-
-      const useSingleLine =
-        singleLineActuallyFits &&
-        (!twoLinesActuallyFit || twoLineCount < 2 || singleLineSize >= twoLineSize * singleLineThreshold);
-
-      resetBase();
-      if (useSingleLine) {
-        element.style.fontSize = `${singleLineSize}px`;
-        element.style.whiteSpace = "nowrap";
-      } else {
-        element.style.fontSize = `${twoLineSize}px`;
-        element.style.display = "-webkit-box";
-        element.style.webkitBoxOrient = "vertical";
-        element.style.webkitLineClamp = "2";
-        element.style.overflow = "hidden";
-      }
-    };
-
-    titles.forEach((title) => fitTitle(title));
-
-    if (window.__focusTitleFitObserver) {
-      window.__focusTitleFitObserver.disconnect();
-    }
-
-    if (window.__focusTitleFitAnimationFrame) {
-      cancelAnimationFrame(window.__focusTitleFitAnimationFrame);
-    }
-
-    const observer = new ResizeObserver(() => {
-      titles.forEach((title) => fitTitle(title));
-    });
-
-    titles.forEach((title) => {
-      const card = title.closest(".project-card");
-      observer.observe(card || title);
-    });
-
-    window.__focusTitleFitObserver = observer;
-
-    const rerun = () => {
-      titles.forEach((title) => fitTitle(title));
-    };
-
-    window.__focusTitleFitAnimationFrame = requestAnimationFrame(rerun);
-
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(rerun);
-    }
-  };
-
-  setupFocusTitleFit();
-  document.addEventListener("astro:page-load", setupFocusTitleFit);
-</script>

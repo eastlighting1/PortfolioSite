@@ -1,0 +1,342 @@
+- main [ref=e2]:
+  - generic [ref=e4]:
+    - generic [ref=e6]:
+      - link "김동현" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e8]:
+        - link "프로젝트" [ref=e9] [cursor=pointer]:
+          - /url: /projects/
+        - link "연구" [ref=e10] [cursor=pointer]:
+          - /url: /research/
+        - link "소개" [ref=e11] [cursor=pointer]:
+          - /url: /about/
+      - generic "Language switcher" [ref=e12]:
+        - link "KO" [ref=e13] [cursor=pointer]:
+          - /url: /portfolio/
+        - link "EN" [ref=e14] [cursor=pointer]:
+          - /url: /en/portfolio/
+    - generic [ref=e15]:
+      - paragraph [ref=e16]: 데이터 분석부터 대화형 AI, 의료 AI까지의 다양한 경험을 담은 포트폴리오입니다.
+      - generic [ref=e18]:
+        - article [ref=e19]:
+          - article [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]:
+                - img "김동현"
+              - generic [ref=e23]:
+                - generic [ref=e24]: 포트폴리오 문서
+                - heading "김동현" [level=2] [ref=e25]
+                - paragraph [ref=e26]: AI 연구자 포트폴리오
+            - paragraph [ref=e27]: 이 포트폴리오는 먼저 짧은 개요를 보여주고, 이후 프로젝트별 케이스 스터디 시트가 이어지는 읽기 및 인쇄 친화 구조로 구성되어 있습니다.
+            - generic [ref=e28]:
+              - generic [ref=e29]:
+                - generic [ref=e30]: 위치
+                - strong [ref=e31]: 인천, 대한민국
+              - generic [ref=e32]:
+                - generic [ref=e33]: Email
+                - link "eastlighting1@gachon.ac.kr" [ref=e34] [cursor=pointer]:
+                  - /url: mailto:eastlighting1@gachon.ac.kr
+              - generic [ref=e35]:
+                - generic [ref=e36]: 깃허브
+                - link "github.com/eastlighting1" [ref=e37] [cursor=pointer]:
+                  - /url: https://github.com/eastlighting1
+              - generic [ref=e38]:
+                - generic [ref=e39]: 링크드인
+                - link "www.linkedin.com/in/동현-김-350b4b29b" [ref=e40] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/동현-김-350b4b29b
+        - article [ref=e41]:
+          - article [ref=e42]:
+            - generic [ref=e43]: Philosophy
+            - heading "일하는 방식" [level=2] [ref=e44]
+            - generic [ref=e46]:
+              - article [ref=e47]:
+                - paragraph [ref=e48]: 재현 가능하고 설명 가능한 AI 시스템을 만드는 일을 중요하게 생각합니다.
+              - article [ref=e49]:
+                - paragraph [ref=e50]: 결과를 신뢰하게 만들 수 있는 평가를 위해 노력합니다.
+              - article [ref=e51]:
+                - paragraph [ref=e52]: 실제로 활용할 수 있는 형태의 연구 혹은 구현을 하고자 합니다.
+            - generic [ref=e53]:
+              - heading "핵심 도메인" [level=3] [ref=e54]
+              - generic [ref=e55]:
+                - article [ref=e56]:
+                  - strong [ref=e57]: Data Science
+                  - paragraph [ref=e58]: 실제 데이터의 품질과 구조를 다듬고, 분석과 전처리를 통해 모델링 가능한 기반을 만드는 역량
+                  - paragraph [ref=e59]: Data Preparation · Feature Engineering · Data Wrangling
+                - article [ref=e60]:
+                  - strong [ref=e61]: Applied AI
+                  - paragraph [ref=e62]: 도메인 NLP 문제를 여러 태스크로 구체화하고, 실험과 구현을 통해 검토 가능한 결과로 연결하는 역량
+                  - paragraph [ref=e63]: Conversational AI · Medical AI · Knowledge Graph
+                - article [ref=e64]:
+                  - strong [ref=e65]: MLOps
+                  - paragraph [ref=e66]: 개발 과정을 반복 가능하고 협업 가능한 워크플로로 정리하고, 배포와 자동화를 고려해 시스템으로 확장하는 역량
+                  - paragraph [ref=e67]: Cloud · Docker · Continuous Training
+                - article [ref=e68]:
+                  - strong [ref=e69]: Observability in AI
+                  - paragraph [ref=e70]: 모델의 동작을 기록하고 추적하여 재현성, 디버깅 가능성, 유지보수성을 높이는 운영 관점의 역량
+                  - paragraph [ref=e71]: Logging · Monitoring · Artifacts
+        - article [ref=e72]:
+          - article [ref=e73]:
+            - generic [ref=e74]: Experience
+            - heading "최근 경험" [level=2] [ref=e75]
+            - generic [ref=e76]:
+              - article [ref=e77]:
+                - generic [ref=e78]:
+                  - heading "Intelligent Data Analytics Lab., Gachon University" [level=3] [ref=e79]
+                  - generic [ref=e80]: 2024.03 - 2026.02
+                - paragraph [ref=e81]: 대학원생 연구원
+                - list [ref=e82]:
+                  - listitem [ref=e83]: EMR 기반 간호감시 의사결정 지원과 진단 분류를 주제로 대학원 연구를 수행했습니다.
+                  - listitem [ref=e84]: 정형 데이터와 텍스트 데이터를 함께 활용해 KM-BERT 앙상블과 XGBoost 기반 엔드투엔드 모델링 파이프라인을 구축했습니다.
+              - article [ref=e85]:
+                - generic [ref=e86]:
+                  - heading "한국연구재단 (NRF)" [level=3] [ref=e87]
+                  - generic [ref=e88]: 2024.03 - 2025.12
+                - paragraph [ref=e89]: 연구과제 참여 연구원
+                - list [ref=e90]:
+                  - listitem [ref=e91]: EMR 데이터를 활용한 간호감시 의사결정 지원 연구과제에서 임상 AI 워크플로 구현에 참여했습니다.
+                  - listitem [ref=e92]: 임상 텍스트 이해를 위해 키워드 추출, 의존구문 기반 전처리, 토픽 모델링, 유사도 분석 워크플로를 구현했습니다.
+              - article [ref=e93]:
+                - generic [ref=e94]:
+                  - heading "정보통신기획평가원 (IITP)" [level=3] [ref=e95]
+                  - generic [ref=e96]: 2025.09 - 2025.12
+                - paragraph [ref=e97]: 연구과제 참여 연구원
+                - list [ref=e98]:
+                  - listitem [ref=e99]: 인간지향적 멀티모달 AI 프로젝트에서 평가 관련 코드를 구현했습니다.
+                  - listitem [ref=e100]: 평가 요구사항을 실제 코드와 검토 가능한 산출물로 연결하는 작업을 수행했습니다.
+        - article [ref=e101]:
+          - article [ref=e102]:
+            - generic [ref=e103]: Selected Projects
+            - heading "대표 프로젝트" [level=2] [ref=e104]
+            - generic [ref=e105]:
+              - article [ref=e106]:
+                - generic [ref=e107]:
+                  - heading "EMR 기반 간호감시 자동 ICD 코딩 시스템" [level=3] [ref=e108]
+                  - generic [ref=e109]: "2025"
+                - paragraph [ref=e110]: 의료 AI 연구 | 대학원 연구원, AI 엔지니어, 데이터 사이언티스트
+                - paragraph [ref=e111]: 간호감시에 필요한 진단 관련 신호가 검사 데이터, 환자정보, 간호기록 등 이질적인 EMR 소스에 분산되어 있었다.
+                - generic [ref=e112]:
+                  - generic [ref=e113]: 의료 AI
+                  - generic [ref=e114]: 간호감시
+                  - generic [ref=e115]: EMR
+                  - generic [ref=e116]: 자동 ICD 코딩
+              - article [ref=e117]:
+                - generic [ref=e118]:
+                  - 'heading "FRIMO: 정서적 지원과 일기 생성을 위한 대화형 AI" [level=3] [ref=e119]'
+                  - generic [ref=e120]: "2023"
+                - paragraph [ref=e121]: 대화형 AI 프로젝트 | AI 엔지니어, NLP 엔지니어
+                - paragraph [ref=e122]: 서비스는 사용자 대화에서 감정을 인식하고, 이를 일기 생성 흐름과 연결할 수 있는 머신러닝 구성 요소가 필요했습니다.
+                - generic [ref=e123]:
+                  - generic [ref=e124]: 대화형 AI
+                  - generic [ref=e125]: 감정 인식
+                  - generic [ref=e126]: KoBERT
+                  - generic [ref=e127]: KoGPT2
+        - article [ref=e128]:
+          - article [ref=e129]:
+            - generic [ref=e130]: Map
+            - heading "교육과 학습" [level=2] [ref=e131]
+            - generic [ref=e132]:
+              - heading "학력" [level=3] [ref=e133]
+              - generic [ref=e134]:
+                - article [ref=e135]:
+                  - strong [ref=e136]: Gachon University
+                  - paragraph [ref=e137]: 인공지능 전공 석사
+                  - paragraph [ref=e138]: 2024.03 - 2026.02
+                - article [ref=e139]:
+                  - strong [ref=e140]: Gachon University
+                  - paragraph [ref=e141]: 소프트웨어학과 학사
+                  - paragraph [ref=e142]: 2019.03 - 2024.02
+            - generic [ref=e143]:
+              - heading "스터디" [level=3] [ref=e144]
+              - generic [ref=e145]:
+                - article [ref=e146]:
+                  - strong [ref=e147]: NEKA
+                  - paragraph [ref=e148]: NLP 스터디
+                  - paragraph [ref=e149]: KoBERT를 활용한 Keyword Extraction 및 NER 모델 구현을 목표로 진행한 스터디
+                - article [ref=e150]:
+                  - strong [ref=e151]: 수나로움
+                  - paragraph [ref=e152]: 금융 AI 스터디
+                  - paragraph [ref=e153]: 기업의 재무제표와 금융지표를 기반으로 매수 추천 여부를 평가하는 모델을 목표로 진행한 스터디
+                - article [ref=e154]:
+                  - strong [ref=e155]: 이다
+                  - paragraph [ref=e156]: 추천 시스템 스터디
+                  - paragraph [ref=e157]: 지식 그래프 / GNN기반 추천 서비스를 주제로 진행한 스터디
+                - article [ref=e158]:
+                  - strong [ref=e159]: MLADS
+                  - paragraph [ref=e160]: 머신러닝 기초 스터디
+                  - paragraph [ref=e161]: 데이터사이언스와 머신러닝의 기본기를 체계적으로 학습하는 스터디
+        - article [ref=e162]:
+          - article [ref=e163]:
+            - generic [ref=e164]: Research
+            - heading "연구" [level=2] [ref=e165]
+            - generic [ref=e166]:
+              - article [ref=e167]:
+                - generic [ref=e168]:
+                  - heading "고도화된 임상 의사결정을 위한 문맥 적응형 게이트 임베딩 프레임워크" [level=3] [ref=e169]
+                  - generic [ref=e170]: "2026"
+                - paragraph [ref=e171]: Mathematics (투고 중)
+                - paragraph [ref=e172]: ICU 임상 의사결정 지원을 위해, 부분 라벨 기반 자동 ICD 코딩으로 추정한 진단 문맥을 불규칙 시계열과 결합하고, 문맥 적응형 게이팅을 통해 기계환기 전이 사건을 예측하는 계층형 프레임워크를 제안한 연구이다. 진단 문맥을 하위 시계열 해석에 재주입함으로써 희귀 전이 이벤트 탐지 성능을 크게 높였다.
+                - generic [ref=e173]:
+                  - generic [ref=e174]: 임상 의사결정지원시스템
+                  - generic [ref=e175]: 자동 ICD 코딩
+                  - generic [ref=e176]: ICU 시계열
+              - article [ref=e177]:
+                - generic [ref=e178]:
+                  - heading "AI 피드백 기반 강화학습을 이용한 공감 대화 생성 모델" [level=3] [ref=e179]
+                  - generic [ref=e180]: "2025"
+                - paragraph [ref=e181]: 한국컴퓨터종합학술대회
+                - paragraph [ref=e182]: 기존 공감 대화 생성 모델의 낮은 다양성과 인간 피드백 의존 문제를 해결하기 위해, AI 기반 피드백(RLAIF)을 활용한 강화학습 공감 대화 생성 모델을 제안한 연구이다. LLM을 평가자로 활용하여 보상을 구성하고, EmpRL 구조에 통합함으로써 더 다양한 공감 응답 생성을 달성했다.
+                - generic [ref=e183]:
+                  - generic [ref=e184]: 공감 대화
+                  - generic [ref=e185]: 강화학습
+                  - generic [ref=e186]: RLAIF
+              - article [ref=e187]:
+                - generic [ref=e188]:
+                  - heading "복부수술 환자의 간호감시를 위한 딥러닝 기반 진단명 분류 모델" [level=3] [ref=e189]
+                  - generic [ref=e190]: "2025"
+                - paragraph [ref=e191]: 한국컴퓨터정보학회논문지
+                - paragraph [ref=e192]: 복부수술 환자의 EMR에서 검사 데이터, 환자정보, 간호기록을 통합하여 간호감시를 지원하기 위한 자동 ICD 코딩 모델을 제안한 연구이다. KM-BERT 이중 앙상블과 XGBoost, PCA를 결합한 스태킹 구조를 통해 기존 단일 모델 및 단순 앙상블보다 더 높은 진단명 분류 성능을 보였다.
+                - generic [ref=e193]:
+                  - generic [ref=e194]: 의료 AI
+                  - generic [ref=e195]: 간호감시
+                  - generic [ref=e196]: EMR
+        - article [ref=e197]:
+          - article [ref=e198]:
+            - generic [ref=e199]: Certificate & Award
+            - heading "수료와 수상" [level=2] [ref=e200]
+            - generic [ref=e201]:
+              - heading "수료증 & 자격증" [level=3] [ref=e203]
+              - article [ref=e204]:
+                - generic [ref=e205]:
+                  - heading "데브옵스 환경의 모니터링과 테스트 실전구현" [level=3] [ref=e206]
+                  - generic [ref=e207]: "2023.11"
+                - paragraph [ref=e208]: LLOYDK
+                - paragraph [ref=e209]: Elastic 기반 DevOps 모니터링 및 테스트 실무 교육을 이수했습니다.
+                - list [ref=e210]:
+                  - listitem [ref=e211]: Elastic 사의 DevOps 관련 서비스와 운영 환경을 학습했습니다.
+                  - listitem [ref=e212]: 모니터링과 테스트 관점에서 실무 적용 가능한 DevOps 개념을 익혔습니다.
+              - article [ref=e213]:
+                - generic [ref=e214]:
+                  - heading "Multi Cloud Orchestration Program" [level=3] [ref=e215]
+                  - generic [ref=e216]: "2023.12"
+                - paragraph [ref=e217]: 5Works
+                - paragraph [ref=e218]: HashiCorp 기반 멀티 클라우드 오케스트레이션 및 IaC 교육을 이수했습니다.
+                - list [ref=e219]:
+                  - listitem [ref=e220]: Packer, Terraform 등 HashiCorp의 IaC 도구를 중심으로 학습했습니다.
+                  - listitem [ref=e221]: 멀티 클라우드 환경에서의 인프라 자동화와 오케스트레이션 개념을 익혔습니다.
+        - article [ref=e222]:
+          - article [ref=e223]:
+            - generic [ref=e224]: Certificate & Award
+            - heading "수료와 수상" [level=2] [ref=e225]
+            - generic [ref=e226]:
+              - heading "수료증 & 자격증" [level=3] [ref=e228]
+              - article [ref=e229]:
+                - generic [ref=e230]:
+                  - heading "기업주도 집중프로젝트 교육" [level=3] [ref=e231]
+                  - generic [ref=e232]: "2024.02"
+                - paragraph [ref=e233]: 디케이테크인
+                - paragraph [ref=e234]: 보안 및 DevOps 엔지니어링 중심의 기업 연계 실무 교육에 참여했습니다.
+                - list [ref=e235]:
+                  - listitem [ref=e236]: 클라우드, CI/CD, 보안 관련 작업을 수행하며 실무형 프로젝트를 진행했습니다.
+                  - listitem [ref=e237]: 추천 시스템 구축 과정에서 숙련자로서 조언과 구축 보조 역할을 맡았습니다.
+              - article [ref=e238]:
+                - generic [ref=e239]:
+                  - heading "소프트웨어 전문인재 Micro Degree" [level=3] [ref=e240]
+                  - generic [ref=e241]: "2024.02"
+                - paragraph [ref=e242]: 가천대학교
+                - paragraph [ref=e243]: 소프트웨어 전문인재 양성을 위한 마이크로디그리 과정을 이수했습니다.
+                - list [ref=e244]:
+                  - listitem [ref=e245]: 소프트웨어 및 실무형 디지털 역량 강화를 위한 과정을 수료했습니다.
+                  - listitem [ref=e246]: 학부 기반 교육과 실무형 프로젝트 경험을 연결하는 이수 이력을 갖추었습니다.
+        - article [ref=e247]:
+          - article [ref=e248]:
+            - generic [ref=e249]: 케이스 스터디 1
+            - generic [ref=e250]:
+              - heading "EMR 기반 간호감시 자동 ICD 코딩 시스템" [level=2] [ref=e251]
+              - generic [ref=e252]: "2025"
+            - paragraph [ref=e253]: 복부수술 환자의 간호감시를 지원하기 위해 핵심 EMR 데이터만으로 자동 ICD 코딩 모델을 구축했다.
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - heading "문제" [level=3] [ref=e256]
+                - paragraph [ref=e257]: 간호감시에 필요한 진단 관련 신호가 검사 데이터, 환자정보, 간호기록 등 이질적인 EMR 소스에 분산되어 있었다.
+              - generic [ref=e258]:
+                - heading "접근" [level=3] [ref=e259]
+                - paragraph [ref=e260]: 구조화 데이터와 간호 텍스트를 통합하고, 이중 KM-BERT와 PCA, XGBoost를 결합한 스태킹 구조로 ICD 예측을 설계했다.
+              - generic [ref=e261]:
+                - heading "결과" [level=3] [ref=e262]
+                - paragraph [ref=e263]: 최종 모델은 정확도 0.9245와 높은 희소 클래스 재현율을 기록하며 사후 문서 없이도 실용적인 분류 성능을 보였다.
+                - generic [ref=e264]:
+                  - generic [ref=e265]: 정확도 0.9245
+                  - generic [ref=e266]: 가중 F1-score 0.9157
+                  - generic [ref=e267]: 희소 클래스 높은 재현율
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - generic [ref=e270]: 핵심 태그
+                - generic [ref=e271]:
+                  - generic [ref=e273]: 의료 AI
+                  - generic [ref=e275]: 간호감시
+                  - generic [ref=e277]: "+5"
+              - generic [ref=e278]:
+                - generic [ref=e279]: 관련 링크
+                - generic "외부 링크" [ref=e280]:
+                  - link "논문" [ref=e281] [cursor=pointer]:
+                    - /url: https://doi.org/10.9708/jksci.2025.30.05.021
+        - article [ref=e282]:
+          - article [ref=e283]:
+            - generic [ref=e284]: 케이스 스터디 2
+            - generic [ref=e285]:
+              - 'heading "FRIMO: 정서적 지원과 일기 생성을 위한 대화형 AI" [level=2] [ref=e286]'
+              - generic [ref=e287]: "2023"
+            - paragraph [ref=e288]: 대화형 일기 애플리케이션의 머신러닝 파트에 참여했으며, 특히 감정 인식 모델 구현과 한국어 NLP 모델 연동에 집중했습니다.
+            - generic [ref=e289]:
+              - generic [ref=e290]:
+                - heading "문제" [level=3] [ref=e291]
+                - paragraph [ref=e292]: 서비스는 사용자 대화에서 감정을 인식하고, 이를 일기 생성 흐름과 연결할 수 있는 머신러닝 구성 요소가 필요했습니다.
+              - generic [ref=e293]:
+                - heading "접근" [level=3] [ref=e294]
+                - paragraph [ref=e295]: KoBERT 기반 감정 인식 파이프라인 구현과 반복 실험에 집중했고, 챗봇 및 요약 모델이 전체 AI 흐름 안에서 동작할 수 있도록 머신러닝 관점에서 연동을 지원했습니다.
+              - generic [ref=e296]:
+                - heading "결과" [level=3] [ref=e297]
+                - paragraph [ref=e298]: 감정 인식 중심의 ML 파이프라인을 포함한 MVP 수준의 대화형 일기 경험을 구현했고, 한국어 NLP 모델을 실제 서비스 흐름에 연결하는 경험을 쌓았습니다.
+                - generic [ref=e299]:
+                  - generic [ref=e300]: 감정 인식 모델 구현
+                  - generic [ref=e301]: 한국어 NLP 파이프라인
+                  - generic [ref=e302]: MVP 기여
+            - generic [ref=e304]:
+              - generic [ref=e305]: 핵심 태그
+              - generic [ref=e306]:
+                - generic [ref=e308]: 대화형 AI
+                - generic [ref=e310]: 감정 인식
+                - generic [ref=e312]: "+4"
+        - article [ref=e313]:
+          - article [ref=e314]:
+            - generic [ref=e315]: 케이스 스터디 3
+            - generic [ref=e316]:
+              - 'heading "Devridge: 개발자를 위한 LLM 기반 피드백 브리지" [level=2] [ref=e317]'
+              - generic [ref=e318]: "2024"
+            - paragraph [ref=e319]: 혼자 프로젝트를 진행하는 개발자가 다양한 역할의 관점에서 맥락화된 피드백을 받을 수 있도록 돕는 LLM 프로토타입을 만들었습니다.
+            - generic [ref=e320]:
+              - generic [ref=e321]:
+                - heading "문제" [level=3] [ref=e322]
+                - paragraph [ref=e323]: 솔로 개발자는 UI, 성능, 코드 품질 등 여러 관점의 피드백이 필요하지만, 적절한 시점에 역할별 의견을 얻기 어렵습니다.
+              - generic [ref=e324]:
+                - heading "접근" [level=3] [ref=e325]
+                - paragraph [ref=e326]: 서비스를 역할 기반 피드백 브리지로 정의하고, 생성 결과가 맥락에 맞게 유지되도록 프롬프트 엔지니어링과 역할별 제약 설계, 사용자 입력 구조화에 집중했습니다.
+              - generic [ref=e327]:
+                - heading "결과" [level=3] [ref=e328]
+                - paragraph [ref=e329]: 구조화된 프롬프트와 역할 제약을 통해 LLM 응답을 더 실용적인 프로젝트 피드백으로 바꿀 수 있음을 보여주는 프로토타입을 구현했습니다.
+                - generic [ref=e330]:
+                  - generic [ref=e331]: 해커톤 프로토타입
+                  - generic [ref=e332]: 역할 제약 프롬프트
+                  - generic [ref=e333]: 맥락화된 피드백
+            - generic [ref=e335]:
+              - generic [ref=e336]: 핵심 태그
+              - generic [ref=e337]:
+                - generic [ref=e339]: LLM
+                - generic [ref=e341]: 프롬프트 엔지니어링
+                - generic [ref=e343]: "+4"
+      - generic [ref=e344]:
+        - button "인쇄" [ref=e345] [cursor=pointer]
+        - button "Previous" [ref=e346] [cursor=pointer]:
+          - generic [ref=e347]: ‹
+        - button "Next" [ref=e348] [cursor=pointer]:
+          - generic [ref=e349]: ›

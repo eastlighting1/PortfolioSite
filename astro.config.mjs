@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
 import astroPwa from "@vite-pwa/astro";
 
 const site = "https://eastlighting.github.io";
@@ -11,6 +12,7 @@ export default defineConfig({
   base,
   output: "static",
   integrations: [
+    sitemap(),
     astroPwa({
       registerType: 'autoUpdate',
       manifest: {

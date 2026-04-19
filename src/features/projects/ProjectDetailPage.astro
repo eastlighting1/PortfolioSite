@@ -16,7 +16,7 @@ const { locale, pathname, project } = Astro.props;
 const { Content } = await render(project);
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
-const titleSuffix = locale === "ko" ? "Projects" : "Projects";
+const titleSuffix = locale === "ko" ? "프로젝트" : "Projects";
 ---
 
 <ReadingLayout
@@ -24,6 +24,7 @@ const titleSuffix = locale === "ko" ? "Projects" : "Projects";
   description={project.data.summary}
   pathname={pathname}
   locale={locale}
+  openGraphType="article"
 >
   <div style="margin-bottom: 1rem;">
     <a class="button-link-secondary screen-only" href={withBase(localizePath("/projects/", locale))}>{ui.project.backToListLabel}</a>

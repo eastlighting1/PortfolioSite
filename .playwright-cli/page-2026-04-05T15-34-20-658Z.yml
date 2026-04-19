@@ -1,0 +1,66 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "김동현" [ref=e5] [cursor=pointer]:
+        - /url: /
+      - group [ref=e6]:
+        - generic "메뉴 열기" [ref=e7] [cursor=pointer]
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - link "프로젝트 목록으로" [ref=e15] [cursor=pointer]:
+        - /url: /projects/
+      - generic [ref=e16]:
+        - generic [ref=e17]: 프로젝트 상세
+        - heading "EMR 기반 간호감시 자동 ICD 코딩 시스템" [level=1] [ref=e18]
+        - paragraph [ref=e19]: 복부수술 환자의 간호감시를 지원하기 위해 핵심 EMR 데이터만으로 자동 ICD 코딩 모델을 구축했다.
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]: 유형
+            - generic [ref=e23]: 의료 AI 연구
+          - generic [ref=e24]:
+            - generic [ref=e25]: 연도
+            - generic [ref=e26]: "2025"
+          - generic [ref=e27]:
+            - generic [ref=e28]: 주요 역할
+            - generic [ref=e29]: 대학원 연구원
+          - generic [ref=e30]:
+            - generic [ref=e31]: 역할
+            - generic [ref=e32]: 대학원 연구원, AI 엔지니어, 데이터 사이언티스트
+        - generic [ref=e33]:
+          - generic [ref=e34]: 의료 AI
+          - generic [ref=e35]: 간호감시
+          - generic [ref=e36]: EMR
+          - generic [ref=e37]: 자동 ICD 코딩
+          - generic [ref=e38]: KM-BERT
+          - generic [ref=e39]: XGBoost
+          - generic [ref=e40]: 앙상블
+        - generic [ref=e41]:
+          - generic [ref=e42]: 정확도 0.9245
+          - generic [ref=e43]: 가중 F1-score 0.9157
+          - generic [ref=e44]: 희소 클래스 높은 재현율
+        - generic "외부 링크" [ref=e45]:
+          - link "논문" [ref=e46] [cursor=pointer]:
+            - /url: https://doi.org/10.9708/jksci.2025.30.05.021
+      - article [ref=e47]:
+        - heading "배경" [level=2] [ref=e48]
+        - paragraph [ref=e49]: 이 프로젝트는 복부수술 환자의 간호감시를 지원하기 위한 자동 ICD 코딩 문제를 다뤘다. 의사 판독문이나 퇴원기록처럼 나중에 작성되는 문서가 아니라, 간호 실무 중 바로 접근 가능한 핵심 EMR 데이터만으로 환자 상태를 분류할 수 있는지를 확인하는 것이 핵심 목표였다.
+        - heading "문제" [level=2] [ref=e50]
+        - paragraph [ref=e51]: 간호사는 환자를 지속적으로 관찰하며 위험을 식별해야 하지만, 실제 현장에서는 검사결과, IO, BST, 활력징후, 환자정보, 간호기록, 회복실 기록이 서로 다른 형식으로 흩어져 있어 이를 실시간으로 종합해 판단하기 어렵다. 기존 자동 ICD 코딩 연구도 의사 중심 텍스트나 추가 자원에 의존하는 경우가 많아, 간호감시 지원에 바로 연결되기에는 한계가 있었다.
+        - heading "구현" [level=2] [ref=e52]
+        - paragraph [ref=e53]: 복부수술 환자 8,587명의 EMR을 환자 ID 기준으로 통합하고, 수치형 데이터는 표준화 또는 Min-Max scaling으로 정리했으며 텍스트 데이터는 KM-BERT 입력으로 구성했다. 이후 두 개의 KM-BERT를 독립적으로 학습해 얻은 raw logits를 평균하여 앙상블 효과를 만들고, PCA로 차원을 축소한 뒤 XGBoost를 메타 분류기로 사용하는 스태킹 구조를 적용했다. 또한 stratified split과 WeightedRandomSampler를 사용해 클래스 불균형 문제도 함께 다뤘다.
+        - heading "결과" [level=2] [ref=e54]
+        - paragraph [ref=e55]: 최종 제안 모델인 Double KM-BERT + XGBoost + PCA는 정확도 0.9245, 가중 정밀도 0.9107, 가중 F1-score 0.9157로 가장 높은 성능을 기록했다. 희소 클래스에서도 높은 재현율을 보여, 간호 현장에서 바로 활용 가능한 EMR 핵심 데이터만으로도 안정적인 자동 진단명 분류가 가능함을 확인했다.
+  - contentinfo [ref=e56]:
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]: 김동현
+        - paragraph [ref=e60]: 대화형 AI, 의료 AI, 그리고 실용적인 ML 전달을 다루는 응용 AI 연구자 겸 엔지니어
+      - generic [ref=e61]:
+        - link "깃허브" [ref=e62] [cursor=pointer]:
+          - /url: https://github.com/eastlighting1
+        - link "링크드인" [ref=e63] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/동현-김-350b4b29b
+        - link "Google Scholar" [ref=e64] [cursor=pointer]:
+          - /url: https://scholar.google.com/citations?user=3BpqnYYAAAAJ
+        - link "eastlighting1@gachon.ac.kr" [ref=e65] [cursor=pointer]:
+          - /url: mailto:eastlighting1@gachon.ac.kr

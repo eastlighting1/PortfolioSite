@@ -15,16 +15,18 @@ const profile = profileEntry.data;
 
 <section class="section">
   <div class="container">
-    <div class="eyebrow">{eyebrow}</div>
-    <h2 class="section-title" set:html={title} />
-    <div class="catalog-grid" style="margin-top: 2rem;">
+    <div class="section-head">
+      <div class="eyebrow">{eyebrow}</div>
+      <h2 class="section-title" set:html={title} />
+    </div>
+    <div class="capability-grid">
       {profile.capabilityGroups.map((group, index) => (
-        <article class="capability-card" data-reveal={`${(index % 4) + 1}`}>
+        <article class="capability-card card-paper" data-reveal={`${(index % 4) + 1}`}>
           <div class="capability-card__content">
-            <h3>{group.title}</h3>
-            <p class="muted">{group.description}</p>
+            <h3 class="capability-card__title">{group.title}</h3>
+            <p class="capability-card__desc">{group.description}</p>
           </div>
-          <div class="tag-row">
+          <div class="capability-card__tags">
             {group.skills.map((skill) => (
               <span class="tag-chip">{skill}</span>
             ))}

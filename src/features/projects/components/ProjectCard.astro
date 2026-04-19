@@ -2,7 +2,6 @@
 import { getUiEntry } from "../../../lib/content";
 import { withBase } from "../../../lib/site";
 import { entrySlug } from "../../../lib/content";
-import ProjectQuickPreview from "./ProjectQuickPreview.astro";
 import { localizePath, type Locale } from "../../../lib/i18n";
 
 interface Props {
@@ -18,49 +17,31 @@ const ui = uiEntry.data;
 const metrics = project.data.metrics ?? [];
 const tags = project.data.tags ?? [];
 const primaryMetric = metrics[0];
-const secondaryMetrics = metrics.slice(1, 3);
 const visibleTags = tags.slice(0, 3);
 const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
-const resourceLinks = [
-  { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
-  { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
-  { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
-  { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
-].filter((link) => link.href);
+const outcomeLabel = locale === "ko" ? "핵심 결과" : "Key Outcome";
+const tagLabel = locale === "ko" ? "대표 태그" : "Selected Tags";
+const summary = project.data.portfolioProblem ?? project.data.summary;
 ---
 
 <article class="project-card" data-reveal={dataReveal}>
   <div class="project-card__topline">
-    <span class="small-label project-card__type">{project.data.type}</span>
+    <span class="project-card__type">{project.data.type}</span>
     <span class="project-card__year">{project.data.year}</span>
   </div>
   <h3 class="project-card__title">{project.data.title}</h3>
   <p class="project-card__role">{project.data.role}</p>
-  <p class="muted">{project.data.summary}</p>
-  <div class="subgrid-highlight">
+  <p class="project-card__summary">{summary}</p>
   {primaryMetric && (
     <div class="project-card__highlight">
-      <span class="small-label">Key Outcome</span>
+      <span class="project-card__highlight-label">{outcomeLabel}</span>
       <strong>{primaryMetric}</strong>
     </div>
   )}
-  </div>
-
-  <div class="subgrid-facts">
-  {secondaryMetrics.length > 0 && (
-    <div class="project-card__facts">
-      {secondaryMetrics.map((metric: string) => (
-        <p>{metric}</p>
-      ))}
-    </div>
-  )}
-  </div>
-
-  <div class="subgrid-stack">
   {visibleTags.length > 0 && (
     <div class="project-card__stack">
-      <span class="small-label">Selected Stack</span>
-      <div class="tag-row project-card__tag-row">
+      <span class="project-card__stack-label">{tagLabel}</span>
+      <div class="project-card__tag-row">
         {visibleTags.map((tag: string) => (
           <span class="tag-chip">{tag}</span>
         ))}
@@ -68,12 +49,10 @@ const resourceLinks = [
       </div>
     </div>
   )}
-  </div>
 
   <div class="project-card__footer">
-    <div class="hero-actions project-card__actions">
+    <div class="project-card__actions">
       <a class="button-link" href={href}>{ui.project.openCaseStudyLabel}</a>
-      <ProjectQuickPreview project={project} locale={locale} />
     </div>
   </div>
 </article>

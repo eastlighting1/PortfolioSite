@@ -1,0 +1,175 @@
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-portfolio-carousel]");
+    if (!root) return;
+
+    const viewport = root.querySelector("[data-portfolio-viewport]");
+    const track = root.querySelector("[data-portfolio-track]");
+    const slides = Array.from(root.querySelectorAll("[data-portfolio-slide]"));
+    const prev = root.querySelector("[data-portfolio-prev]");
+    const next = root.querySelector("[data-portfolio-next]");
+
+    if (!viewport || !track || slides.length === 0) return;
+
+    let activeIndex = 0;
+    let animationFrame = 0;
+    let slideWidth = 0;
+    let viewportWidth = 0;
+    let currentOffset = 0;
+
+    const getTargetOffset = (index) => {
+      const safeIndex = Math.max(0, Math.min(index, slides.length - 1));
+      const slide = slides[safeIndex];
+      if (!slide) return 0;
+
+      return viewportWidth / 2 - (slide.offsetLeft + slide.offsetWidth / 2);
+    };
+
+    const updateActive = (index = activeIndex) => {
+      activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("is-active", index === activeIndex);
+        slide.classList.toggle("is-near", Math.abs(index - activeIndex) === 1);
+      });
+    };
+
+    const applyOffset = (offset, animate = false) => {
+      currentOffset = offset;
+      track.style.transition = animate ? "transform 520ms cubic-bezier(0.22, 0.8, 0.2, 1)" : "none";
+      track.style.transform = `translate3d(${offset}px, 0, 0)`;
+    };
+
+    const measure = () => {
+      const firstSlide = slides[0];
+      if (!firstSlide) return;
+
+      slideWidth = firstSlide.getBoundingClientRect().width;
+      viewportWidth = viewport.clientWidth;
+      track.style.setProperty("--carousel-edge-space", `${Math.max(0, (viewportWidth - slideWidth) / 2)}px`);
+      applyOffset(getTargetOffset(activeIndex), false);
+      updateActive(activeIndex);
+    };
+
+    const getClosestIndexFromOffset = (offset) => {
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      slides.forEach((_, index) => {
+        const distance = Math.abs(getTargetOffset(index) - offset);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      return closestIndex;
+    };
+
+    const animateOffsetTo = (targetOffset, duration = 520) => {
+      const startOffset = currentOffset;
+      const distance = targetOffset - startOffset;
+
+      if (Math.abs(distance) < 1) return;
+
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+
+      const startTime = performance.now();
+      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+      const step = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(progress);
+        applyOffset(startOffset + distance * eased, false);
+
+        if (progress < 1) {
+          animationFrame = window.requestAnimationFrame(step);
+          return;
+        }
+
+        animationFrame = 0;
+        applyOffset(targetOffset, false);
+      };
+
+      animationFrame = window.requestAnimationFrame(step);
+    };
+
+    const scrollToIndex = (index) => {
+      const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
+      updateActive(nextIndex);
+      animateOffsetTo(getTargetOffset(nextIndex));
+    };
+
+    prev?.addEventListener("click", () => {
+      scrollToIndex(activeIndex - 1);
+    });
+
+    next?.addEventListener("click", () => {
+      scrollToIndex(activeIndex + 1);
+    });
+
+    let pointerActive = false;
+    let startX = 0;
+    let startOffset = 0;
+    let dragged = false;
+
+    viewport.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      pointerActive = true;
+      dragged = false;
+      startX = event.clientX;
+      startOffset = currentOffset;
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+      viewport.classList.add("is-dragging");
+      viewport.setPointerCapture?.(event.pointerId);
+    });
+
+    const releasePointer = (event) => {
+      if (!pointerActive) return;
+      pointerActive = false;
+      viewport.classList.remove("is-dragging");
+      if (event?.pointerId !== undefined) {
+        viewport.releasePointerCapture?.(event.pointerId);
+      }
+      if (!dragged) return;
+      window.requestAnimationFrame(() => {
+        const nextIndex = getClosestIndexFromOffset(currentOffset);
+        updateActive(nextIndex);
+        animateOffsetTo(getTargetOffset(nextIndex));
+      });
+    };
+
+    viewport.addEventListener("pointermove", (event) => {
+      if (!pointerActive) return;
+      event.preventDefault();
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 6) {
+        dragged = true;
+      }
+      applyOffset(startOffset + delta, false);
+    });
+
+    viewport.addEventListener("pointerup", releasePointer);
+    viewport.addEventListener("pointercancel", releasePointer);
+
+    slides.forEach((slide, index) => {
+      slide.addEventListener("click", () => {
+        if (dragged) return;
+        scrollToIndex(index);
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      measure();
+    });
+
+    measure();
+  })();
+</script>

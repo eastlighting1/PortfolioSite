@@ -18,7 +18,7 @@ if (projectsPage.data.pageType !== "projects") {
 }
 
 const projects = (await getLocalizedCollection("projects", locale)).sort((a, b) => b.data.year - a.data.year);
-const projectCountLabel = locale === "ko" ? `${projects.length} projects` : `${projects.length} projects`;
+const projectCountLabel = locale === "ko" ? `프로젝트 ${projects.length}건` : `${projects.length} projects`;
 const heroMeta = [projectCountLabel, ...projectsPage.data.hero.meta];
 ---
 

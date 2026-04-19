@@ -3,8 +3,8 @@ import PrintLayout from "../../layouts/PrintLayout.astro";
 import ExternalLinks from "../../components/common/ExternalLinks.astro";
 import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry, getUiEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import PortfolioCarouselScript from "./components/PortfolioCarouselScript.astro";
+import { buildPortfolioViewModel } from "./portfolio-data";
 
 interface Props {
   locale: Locale;
@@ -27,118 +27,59 @@ const links = linksEntry.data;
 const experiences = experienceEntry.data.items;
 const education = educationEntry.data.items;
 const ui = uiEntry.data;
-const cover = portfolioPage.data.cover;
-const overview = portfolioPage.data.overview;
-const recognition = portfolioPage.data.recognition;
-const selection = portfolioPage.data.selection;
 
 if (portfolioPage.data.pageType !== "portfolio") {
   throw new Error("Missing portfolio page content configuration.");
 }
 
-const allProjects = (await getLocalizedCollection("projects", locale)).sort((a, b) => b.data.year - a.data.year);
+const allProjects = (await getLocalizedCollection("projects", locale))
+  .sort((a, b) => b.data.year - a.data.year)
+  .map((project) => ({ ...project, slug: entrySlug(project) }));
 const allResearch = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year);
-const selectedProjectSlugs = selection.selectedProjectSlugs;
-const projects =
-  selectedProjectSlugs.length > 0
-    ? selectedProjectSlugs
-        .map((slug) => allProjects.find((project) => entrySlug(project) === slug))
-        .filter(Boolean)
-    : allProjects.slice(0, selection.projectCount);
-
-const webProjects =
-  selectedProjectSlugs.length > 0
-    ? selectedProjectSlugs
-        .map((slug) => allProjects.find((project) => entrySlug(project) === slug))
-        .filter(Boolean)
-    : allProjects.slice(0, Math.max(selection.projectCount, selection.caseStudyCount));
-
-const research = allResearch.slice(0, selection.researchCount);
-const webPages = portfolioPage.data.web.pages;
-const educationStudyPage = webPages.find((page) => page.kind === "educationStudy");
-
-const initials = profile.name.slice(-2);
-const contactItems = [
-  { label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
-  ...links.externalProfiles.slice(0, 2).map((item) => ({
-    label: item.label,
-    value: item.href.replace(/^https?:\/\//, ""),
-    href: item.href
-  }))
-];
-
-const webExperiences = experiences.slice(0, selection.experienceCount);
-const webProjectsSummary = webProjects.slice(0, selection.projectCount);
-const webCaseStudyProjects = webProjects.slice(0, selection.caseStudyCount);
-const webEducation = education.slice(0, selection.educationCount);
-const webStudyItems = educationStudyPage?.kind === "educationStudy" ? educationStudyPage.studyItems.slice(0, selection.studyCount) : [];
-const webCertificates = recognition.certificates.slice(0, selection.certificateCount);
-const webAwards = recognition.awards.slice(0, selection.awardCount);
-const recognitionEntries = [
-  ...webCertificates.map((item) => ({ kind: "certificate" as const, item })),
-  ...webAwards.map((item) => ({ kind: "award" as const, item }))
-];
-const printRecognitionEntries = [
-  ...recognition.certificates.map((item) => ({ kind: "certificate" as const, item })),
-  ...recognition.awards.map((item) => ({ kind: "award" as const, item }))
-];
-const chunk = <T,>(items: T[], size: number): T[][] => {
-  const chunks: T[][] = [];
-
-  for (let index = 0; index < items.length; index += size) {
-    chunks.push(items.slice(index, index + size));
-  }
-
-  return chunks;
-};
-const recognitionPages = chunk(recognitionEntries, 2);
-const printRecognitionPages = chunk(printRecognitionEntries, 4);
-const recognitionPage = webPages.find((page) => page.kind === "recognition");
-const topExperiences = experiences;
-const topProjects = allProjects;
-const topEducation = education;
-const topStudyItems = educationStudyPage?.kind === "educationStudy" ? educationStudyPage.studyItems : [];
-const topCapabilities = profile.capabilityGroups;
-const topResearch = allResearch;
-const printKeywords = [
-  siteConfig.primaryRole,
-  ...topCapabilities.map((group) => group.title)
-].slice(0, 5);
-const certificatePlaceholder =
-  locale === "ko" ? "수료한 프로그램과 자격증은 이 영역에 정리됩니다." : "Certificates and completed programs will appear in this section.";
-const awardPlaceholder =
-  locale === "ko" ? "수상과 인정 이력은 이 영역에 정리됩니다." : "Awards and recognitions will appear in this section.";
-const skillSeparator = " · ";
-const labels = {
-  location: locale === "ko" ? "위치" : "Location",
-  locationWithPeriod: locale === "ko" ? "위치." : "Location.",
-  keywords: locale === "ko" ? "핵심 태그" : "Keywords",
-  links: locale === "ko" ? "관련 링크" : "Links",
-  experience: locale === "ko" ? "경력." : "Experience.",
-  selectedProjects: locale === "ko" ? "프로젝트." : "Projects.",
-  education: locale === "ko" ? "학력." : "Education.",
-  study: locale === "ko" ? "스터디." : "Study.",
-  capability: locale === "ko" ? "핵심 역량." : "Core Domain.",
-  research: locale === "ko" ? "연구." : "Research.",
-  certificate: locale === "ko" ? "수료 및 자격." : "Certificate.",
-  award: locale === "ko" ? "수상." : "Award."
-};
-
-const photoCandidates = [
-  { file: path.resolve(process.cwd(), "src/assets/profile-photo.jpg"), mime: "image/jpeg" },
-  { file: path.resolve(process.cwd(), "src/assets/profile-photo.jpeg"), mime: "image/jpeg" },
-  { file: path.resolve(process.cwd(), "src/assets/profile-photo.png"), mime: "image/png" },
-  { file: path.resolve(process.cwd(), "src/assets/profile-photo.webp"), mime: "image/webp" }
-];
-
-const photoSource = (() => {
-  const found = photoCandidates.find((candidate) => existsSync(candidate.file));
-  if (!found) return null;
-
-  const buffer = readFileSync(found.file);
-  return `data:${found.mime};base64,${buffer.toString("base64")}`;
-})();
+const {
+  cover,
+  overview,
+  recognition,
+  selection,
+  webPages,
+  recognitionPage,
+  projects,
+  research,
+  initials,
+  contactItems,
+  webExperiences,
+  webProjectsSummary,
+  webCaseStudyProjects,
+  webEducation,
+  webStudyItems,
+  recognitionEntries,
+  printRecognitionEntries,
+  recognitionPages,
+  printRecognitionPages,
+  topExperiences,
+  topProjects,
+  topEducation,
+  topStudyItems,
+  topCapabilities,
+  topResearch,
+  printKeywords,
+  certificatePlaceholder,
+  awardPlaceholder,
+  skillSeparator,
+  labels,
+  photoSource
+} = buildPortfolioViewModel({
+  locale,
+  profile,
+  siteConfig,
+  links,
+  experiences,
+  education,
+  portfolioPage,
+  allProjects,
+  allResearch
+});
 ---
 
 <PrintLayout
@@ -153,36 +94,37 @@ const photoSource = (() => {
       <div class="portfolio-carousel__track" data-portfolio-track>
       <article class="portfolio-carousel__slide" data-portfolio-slide>
         <article class="portfolio-web-card portfolio-web-card--hero">
-          <div class="portfolio-web-hero portfolio-web-hero--cover">
-            <div class="portfolio-web-hero__media portfolio-web-hero__media--cover" aria-hidden={photoSource ? undefined : "true"}>
-              {photoSource ? (
-                <img src={photoSource} alt={profile.name} class="portfolio-web-hero__photo" draggable="false" />
-              ) : (
-                initials
-              )}
-            </div>
-            <div class="portfolio-web-hero__body portfolio-web-hero__body--cover">
-              <div class="portfolio-web-card__eyebrow">{cover.label}</div>
+          <div class="portfolio-web-cover">
+            <div class="portfolio-web-cover__rule"></div>
+            <div class="portfolio-web-cover__colophon">{cover.label}</div>
+            <div class="portfolio-web-cover__identity">
+              <p class="portfolio-web-card__eyebrow portfolio-web-card__eyebrow--cover">{siteConfig.primaryRole}</p>
               <h2>{profile.name}</h2>
-              <p class="portfolio-web-hero__headline">{cover.title}</p>
+              <p class="portfolio-web-cover__subhead">{cover.title}</p>
             </div>
-          </div>
-          <p class="portfolio-web-card__lead portfolio-web-card__lead--hero">
-            {overview.intro.enabled ? overview.intro.paragraphs[0] : profile.intro}
-          </p>
-          <div class="portfolio-web-hero__contacts portfolio-web-hero__contacts--cover">
-            <div class="portfolio-web-hero__contact">
-              <span>{labels.location}</span>
-              <strong>{siteConfig.location}</strong>
+            <div class="portfolio-web-cover__edition">Portfolio / 2026</div>
+            <div class="portfolio-web-cover__pull">
+              {profile.philosophy[0] ?? (overview.intro.enabled ? overview.intro.paragraphs[0] : profile.intro)}
             </div>
-            {contactItems.map((item) => (
-              <div class="portfolio-web-hero__contact">
-                <span>{item.label}</span>
-                <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                  {item.value}
-                </a>
+            <div class="portfolio-web-cover__meta">
+              <div class="portfolio-web-cover__meta-item">
+                <span>{labels.location}</span>
+                <strong>{siteConfig.location}</strong>
               </div>
-            ))}
+              {contactItems.map((item) => (
+                <div class="portfolio-web-cover__meta-item">
+                  <span>{item.label}</span>
+                  <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                    {item.value}
+                  </a>
+                </div>
+              ))}
+            </div>
+            {photoSource && (
+              <div class="portfolio-web-cover__photo" aria-hidden="true">
+                <img src={photoSource} alt={profile.name} class="portfolio-web-hero__photo" draggable="false" />
+              </div>
+            )}
           </div>
         </article>
       </article>
@@ -799,184 +741,5 @@ const photoSource = (() => {
     </div>
 </PrintLayout>
 
-<script is:inline>
-  (() => {
-    const root = document.querySelector("[data-portfolio-carousel]");
-    if (!root) return;
-
-    const viewport = root.querySelector("[data-portfolio-viewport]");
-    const track = root.querySelector("[data-portfolio-track]");
-    const slides = Array.from(root.querySelectorAll("[data-portfolio-slide]"));
-    const prev = root.querySelector("[data-portfolio-prev]");
-    const next = root.querySelector("[data-portfolio-next]");
-
-    if (!viewport || !track || slides.length === 0) return;
-
-    let activeIndex = 0;
-    let animationFrame = 0;
-    let slideWidth = 0;
-    let viewportWidth = 0;
-    let currentOffset = 0;
-
-    const getTargetOffset = (index) => {
-      const safeIndex = Math.max(0, Math.min(index, slides.length - 1));
-      const slide = slides[safeIndex];
-      if (!slide) return 0;
-
-      return viewportWidth / 2 - (slide.offsetLeft + slide.offsetWidth / 2);
-    };
-
-    const updateActive = (index = activeIndex) => {
-      activeIndex = Math.max(0, Math.min(index, slides.length - 1));
-
-      slides.forEach((slide, index) => {
-        slide.classList.toggle("is-active", index === activeIndex);
-        slide.classList.toggle("is-near", Math.abs(index - activeIndex) === 1);
-      });
-    };
-
-    const applyOffset = (offset, animate = false) => {
-      currentOffset = offset;
-      track.style.transition = animate ? "transform 520ms cubic-bezier(0.22, 0.8, 0.2, 1)" : "none";
-      track.style.transform = `translate3d(${offset}px, 0, 0)`;
-    };
-
-    const animateToIndex = (index) => {
-      updateActive(index);
-      applyOffset(getTargetOffset(activeIndex), true);
-    };
-
-    const measure = () => {
-      const firstSlide = slides[0];
-      if (!firstSlide) return;
-
-      slideWidth = firstSlide.getBoundingClientRect().width;
-      viewportWidth = viewport.clientWidth;
-      track.style.setProperty("--carousel-edge-space", `${Math.max(0, (viewportWidth - slideWidth) / 2)}px`);
-      applyOffset(getTargetOffset(activeIndex), false);
-      updateActive(activeIndex);
-    };
-
-    const getClosestIndexFromOffset = (offset) => {
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      slides.forEach((_, index) => {
-        const distance = Math.abs(getTargetOffset(index) - offset);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      return closestIndex;
-    };
-
-    const animateOffsetTo = (targetOffset, duration = 520) => {
-      const startOffset = currentOffset;
-      const distance = targetOffset - startOffset;
-
-      if (Math.abs(distance) < 1) return;
-
-      if (animationFrame) {
-        window.cancelAnimationFrame(animationFrame);
-      }
-
-      const startTime = performance.now();
-      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-
-      const step = (now) => {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = easeOutCubic(progress);
-        applyOffset(startOffset + distance * eased, false);
-
-        if (progress < 1) {
-          animationFrame = window.requestAnimationFrame(step);
-          return;
-        }
-
-        animationFrame = 0;
-        applyOffset(targetOffset, false);
-      };
-
-      animationFrame = window.requestAnimationFrame(step);
-    };
-
-    const scrollToIndex = (index) => {
-      const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
-      updateActive(nextIndex);
-      animateOffsetTo(getTargetOffset(nextIndex));
-    };
-
-    prev?.addEventListener("click", () => {
-      scrollToIndex(activeIndex - 1);
-    });
-
-    next?.addEventListener("click", () => {
-      scrollToIndex(activeIndex + 1);
-    });
-
-    let pointerActive = false;
-    let startX = 0;
-    let startOffset = 0;
-    let dragged = false;
-
-    viewport.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0) return;
-      pointerActive = true;
-      dragged = false;
-      startX = event.clientX;
-      startOffset = currentOffset;
-      if (animationFrame) {
-        window.cancelAnimationFrame(animationFrame);
-        animationFrame = 0;
-      }
-      viewport.classList.add("is-dragging");
-      viewport.setPointerCapture?.(event.pointerId);
-    });
-
-    const releasePointer = (event) => {
-      if (!pointerActive) return;
-      pointerActive = false;
-      viewport.classList.remove("is-dragging");
-      if (event?.pointerId !== undefined) {
-        viewport.releasePointerCapture?.(event.pointerId);
-      }
-      if (!dragged) return;
-      window.requestAnimationFrame(() => {
-        const nextIndex = getClosestIndexFromOffset(currentOffset);
-        updateActive(nextIndex);
-        animateOffsetTo(getTargetOffset(nextIndex));
-      });
-    };
-
-    viewport.addEventListener("pointermove", (event) => {
-      if (!pointerActive) return;
-      event.preventDefault();
-      const delta = event.clientX - startX;
-      if (Math.abs(delta) > 6) {
-        dragged = true;
-      }
-      applyOffset(startOffset + delta, false);
-    });
-
-    viewport.addEventListener("pointerup", releasePointer);
-    viewport.addEventListener("pointercancel", releasePointer);
-
-    slides.forEach((slide, index) => {
-      slide.addEventListener("click", () => {
-        if (dragged) return;
-        scrollToIndex(index);
-      });
-    });
-
-    window.addEventListener("resize", () => {
-      measure();
-    });
-
-    measure();
-  })();
-</script>
+<PortfolioCarouselScript />
 

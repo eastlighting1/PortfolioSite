@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check:build-output": "node scripts/verify-build.mjs",
+    "ci:verify": "npm run build && npm run check:build-output"
   },
   "dependencies": {
     "astro": "^5.5.5"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^3.7.2",
     "@vite-pwa/astro": "^1.2.0"
   }
 }

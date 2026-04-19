@@ -1,6 +1,6 @@
 ---
+import { entrySlug, getUiEntry } from "../../../lib/content";
 import { withBase } from "../../../lib/site";
-import { entrySlug } from "../../../lib/content";
 import { localizePath, type Locale } from "../../../lib/i18n";
 
 interface Props {
@@ -12,8 +12,10 @@ interface Props {
 const { item, dataReveal = "1", locale = "ko" } = Astro.props;
 const slug = entrySlug(item);
 const href = withBase(localizePath(`research/${slug}/`, locale));
+const uiEntry = await getUiEntry("labels", locale);
+const ui = uiEntry.data;
 const tags = item.data.tags ?? [];
-const visibleTags = tags.slice(0, 3);
+const visibleTags = tags.slice(0, 2);
 const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
 const normalizedType = String(item.data.type ?? "").toLowerCase();
 const researchVariant = normalizedType.includes("journal") || normalizedType.includes("저널")
@@ -23,15 +25,14 @@ const researchVariant = normalizedType.includes("journal") || normalizedType.inc
     : normalizedType.includes("technical") || normalizedType.includes("기술")
       ? "technical"
       : "other";
-const isTechnicalNote =
-  slug === "multimodal-evaluation-note" || researchVariant === "technical";
+const isTechnicalNote = slug === "multimodal-evaluation-note" || researchVariant === "technical";
 const ctaLabel = isTechnicalNote
   ? locale === "ko"
     ? "노트 보기"
     : "Open Note"
-  : locale === "ko"
-    ? "출판물 보기"
-    : "View Publication";
+  : ui.research.openDetailLabel;
+const keywordsLabel = locale === "ko" ? "핵심 키워드" : "Keywords";
+const summary = item.data.abstract.split(/(?<=[.!?])\s+/)[0] ?? item.data.abstract;
 ---
 
 <article
@@ -50,10 +51,10 @@ const ctaLabel = isTechnicalNote
     <p class="research-card__venue">{item.data.venue}</p>
     <h3>{item.data.title}</h3>
   </div>
-  <p class="muted research-card__summary">{item.data.abstract}</p>
+  <p class="muted research-card__summary">{summary}</p>
   {visibleTags.length > 0 && (
     <div class="research-card__keywords" style="margin-top: auto;">
-      <span class="small-label">Keywords</span>
+      <span class="small-label">{keywordsLabel}</span>
       <div class="tag-row research-card__tag-row">
         {visibleTags.map((tag: string) => (
           <span class="tag-chip">{tag}</span>

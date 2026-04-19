@@ -18,7 +18,7 @@ if (researchPage.data.pageType !== "research") {
 }
 
 const research = (await getLocalizedCollection("research", locale)).sort((a, b) => b.data.year - a.data.year);
-const entryCountLabel = locale === "ko" ? `${research.length} entries` : `${research.length} entries`;
+const entryCountLabel = locale === "ko" ? `연구 항목 ${research.length}건` : `${research.length} entries`;
 const heroMeta = [entryCountLabel, ...researchPage.data.hero.meta];
 ---
 

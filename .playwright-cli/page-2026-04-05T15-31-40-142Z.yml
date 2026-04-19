@@ -1,0 +1,178 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "김동현" [ref=e5] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e6]:
+        - link "홈" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - link "프로젝트" [ref=e8] [cursor=pointer]:
+          - /url: /projects/
+        - link "연구" [ref=e9] [cursor=pointer]:
+          - /url: /research/
+        - link "이력서" [ref=e10] [cursor=pointer]:
+          - /url: /resume/
+        - link "포트폴리오" [ref=e11] [cursor=pointer]:
+          - /url: /portfolio/
+        - link "소개" [ref=e12] [cursor=pointer]:
+          - /url: /about/
+        - link "연락처" [ref=e13] [cursor=pointer]:
+          - /url: /contact/
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - link "깃허브" [ref=e16] [cursor=pointer]:
+            - /url: https://github.com/eastlighting1
+          - link "링크드인" [ref=e17] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/동현-김-350b4b29b
+        - link "이력서" [ref=e18] [cursor=pointer]:
+          - /url: /resume/
+        - generic "Language switcher" [ref=e20]:
+          - link "KO" [ref=e21] [cursor=pointer]:
+            - /url: /projects/
+          - link "EN" [ref=e22] [cursor=pointer]:
+            - /url: /en/projects/
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: 프로젝트
+        - heading "응용 AI 프로젝트 카탈로그" [level=1] [ref=e28]
+        - paragraph [ref=e29]: 임상 의사결정 지원, 대화형 AI, LLM 프로토타이핑, 협업형 NLP 작업을 포함한 프로젝트들을 모아둔 페이지입니다. 각 항목은 문제 맥락, 역할, 결과를 중심으로 케이스 스터디 형식으로 정리했습니다.
+        - generic [ref=e30]:
+          - generic [ref=e31]: 5 projects
+          - generic [ref=e32]: 케이스 스터디 형식
+          - generic [ref=e33]: 실제 프로젝트 맥락
+      - generic [ref=e35]:
+        - article [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: 의료 AI 연구
+            - generic [ref=e39]: "2025"
+          - heading "EMR 기반 간호감시 자동 ICD 코딩 시스템" [level=3] [ref=e40]
+          - paragraph [ref=e41]: 대학원 연구원
+          - paragraph [ref=e42]: 복부수술 환자의 간호감시를 지원하기 위해 핵심 EMR 데이터만으로 자동 ICD 코딩 모델을 구축했다.
+          - generic [ref=e44]:
+            - generic [ref=e45]: Key Outcome
+            - strong [ref=e46]: 정확도 0.9245
+          - generic [ref=e48]:
+            - paragraph [ref=e49]: 가중 F1-score 0.9157
+            - paragraph [ref=e50]: 희소 클래스 높은 재현율
+          - generic [ref=e52]:
+            - generic [ref=e53]: Selected Stack
+            - generic [ref=e54]:
+              - generic [ref=e55]: 의료 AI
+              - generic [ref=e56]: 간호감시
+              - generic [ref=e57]: EMR
+              - generic [ref=e58]: "+4"
+          - generic [ref=e60]:
+            - link "케이스 스터디 열기" [ref=e61] [cursor=pointer]:
+              - /url: /projects/emr-nursing-surveillance/
+            - button "미리 보기" [ref=e62]
+        - article [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e65]: LLM 응용 프로토타입
+            - generic [ref=e66]: "2024"
+          - 'heading "Devridge: 개발자를 위한 LLM 기반 피드백 브리지" [level=3] [ref=e67]'
+          - paragraph [ref=e68]: 프롬프트 엔지니어
+          - paragraph [ref=e69]: 혼자 프로젝트를 진행하는 개발자가 다양한 역할의 관점에서 맥락화된 피드백을 받을 수 있도록 돕는 LLM 프로토타입을 만들었습니다.
+          - generic [ref=e71]:
+            - generic [ref=e72]: Key Outcome
+            - strong [ref=e73]: 해커톤 프로토타입
+          - generic [ref=e75]:
+            - paragraph [ref=e76]: 역할 제약 프롬프트
+            - paragraph [ref=e77]: 맥락화된 피드백
+          - generic [ref=e79]:
+            - generic [ref=e80]: Selected Stack
+            - generic [ref=e81]:
+              - generic [ref=e82]: LLM
+              - generic [ref=e83]: 프롬프트 엔지니어링
+              - generic [ref=e84]: 역할 기반 피드백
+              - generic [ref=e85]: "+3"
+          - generic [ref=e87]:
+            - link "케이스 스터디 열기" [ref=e88] [cursor=pointer]:
+              - /url: /projects/devridge-feedback-bridge/
+            - button "미리 보기" [ref=e89]
+        - article [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: 사내 커머스 플랫폼
+            - generic [ref=e93]: "2024"
+          - 'heading "Dalkom Shop: 임직원 전용 마일리지 커머스 플랫폼" [level=3] [ref=e94]'
+          - paragraph [ref=e95]: DevSecOps Engineer
+          - paragraph [ref=e96]: 임직원 전용 마일리지 쇼핑몰 프로젝트에서 DevSecOps 및 인프라/플랫폼 파트를 맡아, 배포·운영·보안·관측 가능성을 포함한 서비스 실행 기반을 구축했습니다.
+          - generic [ref=e98]:
+            - generic [ref=e99]: Key Outcome
+            - strong [ref=e100]: 사내 커머스 운영 기반
+          - generic [ref=e102]:
+            - paragraph [ref=e103]: CI/CD 및 클라우드 인프라
+            - paragraph [ref=e104]: 관측 가능성·보안 고려
+          - generic [ref=e106]:
+            - generic [ref=e107]: Selected Stack
+            - generic [ref=e108]:
+              - generic [ref=e109]: DevSecOps
+              - generic [ref=e110]: Infrastructure
+              - generic [ref=e111]: Platform Engineering
+              - generic [ref=e112]: "+6"
+          - generic [ref=e114]:
+            - link "케이스 스터디 열기" [ref=e115] [cursor=pointer]:
+              - /url: /projects/dalkom-shop-internal-commerce/
+            - button "미리 보기" [ref=e116]
+        - article [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]: 협업형 NLP 프로젝트
+            - generic [ref=e120]: "2023"
+          - 'heading "BloGeek: 블로그 프로젝트" [level=3] [ref=e121]'
+          - paragraph [ref=e122]: AI 엔지니어
+          - paragraph [ref=e123]: React + Spring 기반 블로그 프로젝트의 AI 파트에 참여했으며, 한국어 텍스트를 위한 감성 극성 분류와 스타일 변환 모델 구현에 집중했습니다.
+          - generic [ref=e125]:
+            - generic [ref=e126]: Key Outcome
+            - strong [ref=e127]: 극성 분류 모델 구현
+          - generic [ref=e129]:
+            - paragraph [ref=e130]: 스타일 변환 모델 구현
+            - paragraph [ref=e131]: 웹 AI 기여
+          - generic [ref=e133]:
+            - generic [ref=e134]: Selected Stack
+            - generic [ref=e135]:
+              - generic [ref=e136]: 감성 극성 분류
+              - generic [ref=e137]: 스타일 변환
+              - generic [ref=e138]: KoBERT
+              - generic [ref=e139]: "+3"
+          - generic [ref=e141]:
+            - link "케이스 스터디 열기" [ref=e142] [cursor=pointer]:
+              - /url: /projects/blogeek-ai-blog/
+            - button "미리 보기" [ref=e143]
+        - article [ref=e144]:
+          - generic [ref=e145]:
+            - generic [ref=e146]: 대화형 AI 프로젝트
+            - generic [ref=e147]: "2023"
+          - 'heading "FRIMO: 정서적 지원과 일기 생성을 위한 대화형 AI" [level=3] [ref=e148]'
+          - paragraph [ref=e149]: AI 엔지니어
+          - paragraph [ref=e150]: 대화형 일기 애플리케이션의 머신러닝 파트에 참여했으며, 특히 감정 인식 모델 구현과 한국어 NLP 모델 연동에 집중했습니다.
+          - generic [ref=e152]:
+            - generic [ref=e153]: Key Outcome
+            - strong [ref=e154]: 감정 인식 모델 구현
+          - generic [ref=e156]:
+            - paragraph [ref=e157]: 한국어 NLP 파이프라인
+            - paragraph [ref=e158]: MVP 기여
+          - generic [ref=e160]:
+            - generic [ref=e161]: Selected Stack
+            - generic [ref=e162]:
+              - generic [ref=e163]: 대화형 AI
+              - generic [ref=e164]: 감정 인식
+              - generic [ref=e165]: KoBERT
+              - generic [ref=e166]: "+3"
+          - generic [ref=e168]:
+            - link "케이스 스터디 열기" [ref=e169] [cursor=pointer]:
+              - /url: /projects/frimo-conversational-diary/
+            - button "미리 보기" [ref=e170]
+  - contentinfo [ref=e171]:
+    - generic [ref=e172]:
+      - generic [ref=e173]:
+        - generic [ref=e174]: 김동현
+        - paragraph [ref=e175]: 대화형 AI, 의료 AI, 그리고 실용적인 ML 전달을 다루는 응용 AI 연구자 겸 엔지니어
+      - generic [ref=e176]:
+        - link "깃허브" [ref=e177] [cursor=pointer]:
+          - /url: https://github.com/eastlighting1
+        - link "링크드인" [ref=e178] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/동현-김-350b4b29b
+        - link "Google Scholar" [ref=e179] [cursor=pointer]:
+          - /url: https://scholar.google.com/citations?user=3BpqnYYAAAAJ
+        - link "eastlighting1@gachon.ac.kr" [ref=e180] [cursor=pointer]:
+          - /url: mailto:eastlighting1@gachon.ac.kr

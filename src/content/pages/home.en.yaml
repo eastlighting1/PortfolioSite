@@ -1,30 +1,29 @@
 pageType: home
 sectionOrder:
   - hero
-  - pipeline
   - featuredProjects
-  - researchPreview
   - experienceSnapshot
   - capabilityMap
   - documents
+  - researchPreview
 hero:
   enabled: true
   eyebrow: AI Researcher & MLOps Engineer
-  summary: I am an AI researcher capable of leading work across diverse environments, from research to production. From conversational AI to medical data, I connect research and implementation across a wide range of applied domains.
+  summary: I am an applied AI researcher who connects research outcomes to working systems. My work spans conversational AI, healthcare AI, and MLOps-oriented delivery from problem framing to implementation and operation.
   actions:
     - label: Featured Projects
       href: /projects/
       variant: primary
-    - label: Explore Research
-      href: /research/
-      variant: secondary
     - label: View Resume
       href: /resume/
+      variant: secondary
+    - label: Explore Research
+      href: /research/
       variant: secondary
   focusCard:
     label: Current Focus
     title: At the Intersection of Research and Engineering
-    body: Beyond simply studying high-accuracy models,<br />I also focus on reproducible environments, observable systems, and efficient infrastructure.<br />I build AI that works in real business settings.
+    body: I care less about isolated model accuracy and more about reproducible experiments, observable systems, and delivery structures that survive real-world use. I focus on AI that does not stop at the prototype stage.
     items:
       - label: Core Domain
         value: Medical AI (NLP), MLOps
@@ -33,7 +32,7 @@ hero:
       - label: Key Values
         value: Code Reproducibility, System Observability, Automation
 pipeline:
-  enabled: true
+  enabled: false
   eyebrow: ML Lifecycle
   title: From Data Engineering to Model Serving
   lead: I lead the full workflow, from preprocessing complex unstructured data to PyTorch-based model training, as well as evaluation and architecture design with real deployment environments in mind.
@@ -41,19 +40,19 @@ featuredProjects:
   enabled: true
   eyebrow: Projects
   title: Applied AI Systems That Solved Real Data and Business Challenges
-  lead: This section introduces projects I have led across environments ranging from research to production. From conversational AI to medical data, I connect research and implementation across diverse applied domains.
-  count: 3
+  lead: This section highlights only the strongest projects so the problem, role, and outcome can be understood quickly.
+  count: 2
 researchPreview:
   enabled: true
   eyebrow: Publications
   title: Research Contributions in Natural Language Processing and Healthcare
-  count: 3
+  count: 2
   ctaLabel: Learn More
 experienceSnapshot:
   enabled: true
   eyebrow: Career Snapshot
-  title: Experience and Capabilities Spanning Research and Engineering
-  count: 4
+  title: Experience across research and implementation
+  count: 3
   ctaLabel: View Resume
 capabilityMap:
   enabled: true

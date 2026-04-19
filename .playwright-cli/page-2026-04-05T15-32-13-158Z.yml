@@ -1,0 +1,109 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "김동현" [ref=e5] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e6]:
+        - link "홈" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - link "프로젝트" [ref=e8] [cursor=pointer]:
+          - /url: /projects/
+        - link "연구" [ref=e9] [cursor=pointer]:
+          - /url: /research/
+        - link "이력서" [ref=e10] [cursor=pointer]:
+          - /url: /resume/
+        - link "포트폴리오" [ref=e11] [cursor=pointer]:
+          - /url: /portfolio/
+        - link "소개" [ref=e12] [cursor=pointer]:
+          - /url: /about/
+        - link "연락처" [ref=e13] [cursor=pointer]:
+          - /url: /contact/
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - link "깃허브" [ref=e16] [cursor=pointer]:
+            - /url: https://github.com/eastlighting1
+          - link "링크드인" [ref=e17] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/동현-김-350b4b29b
+        - link "이력서" [ref=e18] [cursor=pointer]:
+          - /url: /resume/
+        - generic "Language switcher" [ref=e20]:
+          - link "KO" [ref=e21] [cursor=pointer]:
+            - /url: /research/
+          - link "EN" [ref=e22] [cursor=pointer]:
+            - /url: /en/research/
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: 연구
+        - heading "연구 및 기술 문서" [level=1] [ref=e28]
+        - paragraph [ref=e29]: 공감 대화 생성, 의료 AI, 평가 중심 구현 작업을 반영한 논문과 기술 노트를 읽을 수 있는 공간입니다.
+        - generic [ref=e30]:
+          - generic [ref=e31]: 3 entries
+          - generic [ref=e32]: 논문과 노트
+          - generic [ref=e33]: 상세 읽기 페이지
+      - generic [ref=e35]:
+        - article [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: 저널 논문
+            - generic [ref=e39]: "2026"
+          - generic [ref=e40]:
+            - paragraph [ref=e41]: Mathematics (투고 중)
+            - heading "고도화된 임상 의사결정을 위한 문맥 적응형 게이트 임베딩 프레임워크" [level=3] [ref=e42]
+          - paragraph [ref=e43]: ICU 임상 의사결정 지원을 위해, 부분 라벨 기반 자동 ICD 코딩으로 추정한 진단 문맥을 불규칙 시계열과 결합하고, 문맥 적응형 게이팅을 통해 기계환기 전이 사건을 예측하는 계층형 프레임워크를 제안한 연구이다. 진단 문맥을 하위 시계열 해석에 재주입함으로써 희귀 전이 이벤트 탐지 성능을 크게 높였다.
+          - generic [ref=e44]:
+            - generic [ref=e45]: Keywords
+            - generic [ref=e46]:
+              - generic [ref=e47]: 임상 의사결정지원시스템
+              - generic [ref=e48]: 자동 ICD 코딩
+              - generic [ref=e49]: ICU 시계열
+              - generic [ref=e50]: "+6"
+          - link "출판물 보기" [ref=e52] [cursor=pointer]:
+            - /url: /research/context-adaptive-gated-embedding-framework/
+        - article [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: 학회 논문
+            - generic [ref=e56]: "2025"
+          - generic [ref=e57]:
+            - paragraph [ref=e58]: 한국컴퓨터종합학술대회
+            - heading "AI 피드백 기반 강화학습을 이용한 공감 대화 생성 모델" [level=3] [ref=e59]
+          - paragraph [ref=e60]: 기존 공감 대화 생성 모델의 낮은 다양성과 인간 피드백 의존 문제를 해결하기 위해, AI 기반 피드백(RLAIF)을 활용한 강화학습 공감 대화 생성 모델을 제안한 연구이다. LLM을 평가자로 활용하여 보상을 구성하고, EmpRL 구조에 통합함으로써 더 다양한 공감 응답 생성을 달성했다.
+          - generic [ref=e61]:
+            - generic [ref=e62]: Keywords
+            - generic [ref=e63]:
+              - generic [ref=e64]: 공감 대화
+              - generic [ref=e65]: 강화학습
+              - generic [ref=e66]: RLAIF
+              - generic [ref=e67]: "+5"
+          - link "출판물 보기" [ref=e69] [cursor=pointer]:
+            - /url: /research/empathetic-dialogue-rlaif/
+        - article [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: 저널 논문
+            - generic [ref=e73]: "2025"
+          - generic [ref=e74]:
+            - paragraph [ref=e75]: 한국컴퓨터정보학회논문지
+            - heading "복부수술 환자의 간호감시를 위한 딥러닝 기반 진단명 분류 모델" [level=3] [ref=e76]
+          - paragraph [ref=e77]: 복부수술 환자의 EMR에서 검사 데이터, 환자정보, 간호기록을 통합하여 간호감시를 지원하기 위한 자동 ICD 코딩 모델을 제안한 연구이다. KM-BERT 이중 앙상블과 XGBoost, PCA를 결합한 스태킹 구조를 통해 기존 단일 모델 및 단순 앙상블보다 더 높은 진단명 분류 성능을 보였다.
+          - generic [ref=e78]:
+            - generic [ref=e79]: Keywords
+            - generic [ref=e80]:
+              - generic [ref=e81]: 의료 AI
+              - generic [ref=e82]: 간호감시
+              - generic [ref=e83]: EMR
+              - generic [ref=e84]: "+6"
+          - link "출판물 보기" [ref=e86] [cursor=pointer]:
+            - /url: /research/deep-learning-icd-coding/
+  - contentinfo [ref=e87]:
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - generic [ref=e90]: 김동현
+        - paragraph [ref=e91]: 대화형 AI, 의료 AI, 그리고 실용적인 ML 전달을 다루는 응용 AI 연구자 겸 엔지니어
+      - generic [ref=e92]:
+        - link "깃허브" [ref=e93] [cursor=pointer]:
+          - /url: https://github.com/eastlighting1
+        - link "링크드인" [ref=e94] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/동현-김-350b4b29b
+        - link "Google Scholar" [ref=e95] [cursor=pointer]:
+          - /url: https://scholar.google.com/citations?user=3BpqnYYAAAAJ
+        - link "eastlighting1@gachon.ac.kr" [ref=e96] [cursor=pointer]:
+          - /url: mailto:eastlighting1@gachon.ac.kr

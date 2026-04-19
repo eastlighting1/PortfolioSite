@@ -1,6 +1,6 @@
 ---
 import { getGlobalEntry, getUiEntry } from "../lib/content";
-import { withBase } from "../lib/site";
+import { toAbsoluteUrl, withBase } from "../lib/site";
 import { localizePath, type Locale } from "../lib/i18n";
 import LocaleSwitch from "../components/common/LocaleSwitch.astro";
 
@@ -9,14 +9,17 @@ interface Props {
   description?: string;
   pathname?: string;
   locale?: Locale;
+  noindex?: boolean;
+  openGraphType?: "website" | "article" | "profile";
 }
 
-const { title, pathname = "/", locale = "ko" } = Astro.props;
+const { title, pathname = "/", locale = "ko", noindex = false, openGraphType = "website" } = Astro.props;
 const siteEntry = await getGlobalEntry("site", locale);
 const uiEntry = await getUiEntry("labels", locale);
 const siteConfig = siteEntry.data;
 const ui = uiEntry.data;
 const description = Astro.props.description ?? siteConfig.description;
+const canonicalUrl = toAbsoluteUrl(siteConfig.siteUrl, pathname);
 ---
 
 <!doctype html>
@@ -26,6 +29,16 @@ const description = Astro.props.description ?? siteConfig.description;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:type" content={openGraphType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
   </head>
   <body class="document-page">
@@ -53,6 +66,7 @@ const description = Astro.props.description ?? siteConfig.description;
 <style is:global>
   @import "../styles/global.css";
   @import "../styles/components.css";
+  @import "../styles/portfolio.css";
   @import "../styles/motion.css";
   @import "../styles/print.css";
 </style>

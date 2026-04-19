@@ -19,7 +19,7 @@ const projects = await getLocalizedCollection("projects", locale);
 const linkedProjects = projects.filter((project) => item.data.linkedProjects.includes(entrySlug(project)));
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
-const titleSuffix = locale === "ko" ? "Research" : "Research";
+const titleSuffix = locale === "ko" ? "연구" : "Research";
 ---
 
 <ReadingLayout
@@ -27,6 +27,7 @@ const titleSuffix = locale === "ko" ? "Research" : "Research";
   description={item.data.abstract}
   pathname={pathname}
   locale={locale}
+  openGraphType="article"
 >
   <div style="margin-bottom: 1rem;">
     <a class="button-link-secondary screen-only" href={withBase(localizePath("/research/", locale))}>{ui.research.backToListLabel}</a>
