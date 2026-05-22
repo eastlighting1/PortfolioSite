@@ -46,6 +46,18 @@ const canonicalUrl = toAbsoluteUrl(siteConfig.siteUrl, pathname);
     <link rel="preload" as="font" type="font/woff2" href="https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2" crossorigin />
     <script is:inline>
       document.documentElement.classList.add("js");
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+      
+      // Keep theme across Astro view transitions
+      document.addEventListener("astro:after-swap", () => {
+        const currentTheme = localStorage.getItem("theme");
+        if (currentTheme) {
+          document.documentElement.setAttribute("data-theme", currentTheme);
+        }
+      });
     </script>
   </head>
   <body>

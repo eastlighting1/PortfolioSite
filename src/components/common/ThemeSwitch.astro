@@ -1,0 +1,128 @@
+---
+// ThemeSwitch.astro
+---
+
+<div class="theme-switch" aria-label="Theme switcher">
+  <button data-theme-btn="paper" title="Paper Theme" aria-label="Paper Theme">
+    <span class="theme-dot paper"></span>
+    <span class="theme-label">Paper</span>
+  </button>
+  <button data-theme-btn="dark" title="Dark Theme" aria-label="Dark Theme">
+    <span class="theme-dot dark"></span>
+    <span class="theme-label">Dark</span>
+  </button>
+  <button data-theme-btn="ocean" title="Ocean Theme" aria-label="Ocean Theme">
+    <span class="theme-dot ocean"></span>
+    <span class="theme-label">Ocean</span>
+  </button>
+  <button data-theme-btn="mono" title="Mono Theme" aria-label="Mono Theme">
+    <span class="theme-dot mono"></span>
+    <span class="theme-label">Mono</span>
+  </button>
+</div>
+
+<style>
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.theme-switch button {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.theme-switch button:hover {
+  background: color-mix(in srgb, var(--border) 30%, transparent);
+  color: var(--text);
+}
+
+.theme-switch button.is-active {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.theme-dot {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.theme-dot.paper { background-color: #f4f1ea; }
+.theme-dot.dark { background-color: #0f172a; }
+.theme-dot.ocean { background-color: #0c4a6e; }
+.theme-dot.mono { background-color: #111827; }
+
+/* Active button dot border adjust */
+.theme-switch button.is-active .theme-dot {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Hide label on smaller headers to save space */
+@media (max-width: 1024px) {
+  .theme-label {
+    display: none;
+  }
+  .theme-switch button {
+    padding: 0.4rem;
+  }
+}
+</style>
+
+<script>
+  function initThemeSwitch() {
+    const buttons = document.querySelectorAll('[data-theme-btn]');
+    const currentTheme = localStorage.getItem('theme') || 'paper';
+
+    // Set initial active state
+    buttons.forEach(btn => {
+      const theme = btn.getAttribute('data-theme-btn');
+      if (theme === currentTheme) {
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        btn.classList.remove('is-active');
+        btn.setAttribute('aria-pressed', 'false');
+      }
+    });
+
+    // Attach click events
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-theme-btn');
+        if (!theme) return;
+
+        // Apply theme to document
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+
+        // Update buttons UI
+        buttons.forEach(b => {
+          const isSelected = b === btn;
+          b.classList.toggle('is-active', isSelected);
+          b.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+        });
+      });
+    });
+  }
+
+  // Run on page load and after Astro ViewTransitions swaps content
+  document.addEventListener('astro:page-load', initThemeSwitch);
+</script>

@@ -3,6 +3,8 @@ import { getGlobalEntry, getUiEntry } from "../../lib/content";
 import { withBase } from "../../lib/site";
 import { localizePath, type Locale } from "../../lib/i18n";
 import LocaleSwitch from "./LocaleSwitch.astro";
+import ThemeSwitch from "./ThemeSwitch.astro";
+import SocialIcon from "./SocialIcon.astro";
 
 interface Props {
   pathname?: string;
@@ -43,10 +45,16 @@ const isActive = (currentPath: string, itemHref: string) => {
     <div class="header-utility">
       <div class="utility-links">
         {externalProfiles.slice(0, 2).map((link) => (
-          <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+          <a href={link.href} target="_blank" rel="noreferrer" class="header-social-link">
+            <SocialIcon platform={link.label} size={15} />
+            <span>{link.label}</span>
+          </a>
         ))}
       </div>
       <a href={withBase(localizePath("/resume/", locale))}>{ui.header.resumeButtonLabel}</a>
+      <div class="header-theme">
+        <ThemeSwitch />
+      </div>
       <div class="header-locale">
         <LocaleSwitch locale={locale} pathname={pathname} />
       </div>
@@ -70,16 +78,38 @@ const isActive = (currentPath: string, itemHref: string) => {
           })}
         </nav>
         <div class="mobile-nav__meta">
+          <div class="mobile-nav__theme">
+            <ThemeSwitch />
+          </div>
           <div class="mobile-nav__locale">
             <LocaleSwitch locale={locale} pathname={pathname} />
           </div>
           {externalProfiles.slice(0, 2).map((link) => (
-            <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+            <a href={link.href} target="_blank" rel="noreferrer" class="header-social-link">
+              <SocialIcon platform={link.label} size={15} />
+              <span>{link.label}</span>
+            </a>
           ))}
         </div>
       </div>
     </details>
   </div>
 </header>
+
+<style>
+.header-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.header-social-link:hover {
+  color: var(--accent-strong);
+}
+.header-social-link span {
+  font-size: 0.9rem;
+}
+</style>
 
 
