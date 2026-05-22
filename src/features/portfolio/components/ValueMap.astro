@@ -1,0 +1,19 @@
+---
+const { items } = Astro.props;
+---
+
+<div class="portfolio-value-grid">
+  {items.map((item: { value?: string; title?: string; shortTitle?: string; outcome?: string; description?: string; evidence?: string; businessSignal?: string; skills: string[] }) => (
+    <article class="portfolio-value-card" data-reveal="1">
+      <span>{item.shortTitle ?? item.value}</span>
+      <h3>{item.title ?? item.outcome}</h3>
+      <p>{item.description ?? item.evidence}</p>
+      {item.businessSignal && <p class="portfolio-value-card__signal">{item.businessSignal}</p>}
+      <div class="tag-row">
+        {item.skills.slice(0, 4).map((skill) => (
+          <span class="tag-chip">{skill}</span>
+        ))}
+      </div>
+    </article>
+  ))}
+</div>

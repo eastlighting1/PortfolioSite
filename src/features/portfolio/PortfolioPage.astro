@@ -1,10 +1,20 @@
-﻿---
-import PrintLayout from "../../layouts/PrintLayout.astro";
-import ExternalLinks from "../../components/common/ExternalLinks.astro";
-import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry, getUiEntry } from "../../lib/content";
-import { type Locale } from "../../lib/i18n";
-import PortfolioCarouselScript from "./components/PortfolioCarouselScript.astro";
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
+import { localizePath, type Locale } from "../../lib/i18n";
+import { withBase } from "../../lib/site";
 import { buildPortfolioViewModel } from "./portfolio-data";
+import ContactPanel from "./components/ContactPanel.astro";
+import FeaturedCaseCard from "./components/FeaturedCaseCard.astro";
+import EvidenceLibrary from "./components/EvidenceLibrary.astro";
+import OutcomeMetricGrid from "./components/OutcomeMetricGrid.astro";
+import PortfolioHero from "./components/PortfolioHero.astro";
+import PortfolioSectionHead from "./components/PortfolioSectionHead.astro";
+import PortfolioSectionNav from "./components/PortfolioSectionNav.astro";
+import ProcessGrid from "./components/ProcessGrid.astro";
+import RecognitionGrid from "./components/RecognitionGrid.astro";
+import ResearchBridge from "./components/ResearchBridge.astro";
+import ValueMap from "./components/ValueMap.astro";
 
 interface Props {
   locale: Locale;
@@ -17,16 +27,12 @@ const portfolioPage = await getPageEntry("portfolio", locale);
 const profileEntry = await getGlobalEntry("profile", locale);
 const siteEntry = await getGlobalEntry("site", locale);
 const linksEntry = await getGlobalEntry("links", locale);
-const experienceEntry = await getGlobalEntry("experience", locale);
-const educationEntry = await getGlobalEntry("education", locale);
-const uiEntry = await getUiEntry("labels", locale);
+const recognitionEntry = await getGlobalEntry("recognition", locale);
 
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
 const links = linksEntry.data;
-const experiences = experienceEntry.data.items;
-const education = educationEntry.data.items;
-const ui = uiEntry.data;
+const recognition = recognitionEntry.data;
 
 if (portfolioPage.data.pageType !== "portfolio") {
   throw new Error("Missing portfolio page content configuration.");
@@ -37,709 +43,173 @@ const allProjects = (await getLocalizedCollection("projects", locale))
   .map((project) => ({ ...project, slug: entrySlug(project) }));
 const allResearch = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year);
+
 const {
-  cover,
-  overview,
-  recognition,
-  selection,
-  webPages,
-  recognitionPage,
-  projects,
-  research,
-  initials,
-  contactItems,
-  webExperiences,
-  webProjectsSummary,
-  webCaseStudyProjects,
-  webEducation,
-  webStudyItems,
+  hero,
+  roleThemes,
+  aidlcStages,
+  evidenceGroups,
+  featuredCases,
+  portfolioMetrics,
   recognitionEntries,
-  printRecognitionEntries,
-  recognitionPages,
-  printRecognitionPages,
-  topExperiences,
-  topProjects,
-  topEducation,
-  topStudyItems,
-  topCapabilities,
-  topResearch,
-  printKeywords,
-  certificatePlaceholder,
-  awardPlaceholder,
-  skillSeparator,
-  labels,
-  photoSource
+  researchLinks,
+  navigation,
+  contactItems,
+  process,
+  valueItems,
+  labels
 } = buildPortfolioViewModel({
   locale,
   profile,
   siteConfig,
   links,
-  experiences,
-  education,
+  recognition,
   portfolioPage,
   allProjects,
   allResearch
 });
+
+const resolveHref = (href: string) => {
+  if (href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto:")) return href;
+  return withBase(localizePath(href, locale));
+};
+
+const localizedProjectsHref = withBase(localizePath("/projects/", locale));
+const localizedResumeHref = withBase(localizePath("/resume/", locale));
+const resolvedHero = {
+  ...hero,
+  actions: hero.actions.map((action: { label: string; href: string; variant: "primary" | "secondary" }) => ({
+    ...action,
+    href: resolveHref(action.href)
+  }))
+};
+const sectionHeadings = portfolioPage.data.sectionHeadings ?? {};
+const getSectionHeading = (id: string, fallbackTitle: string) => ({
+  eyebrow: sectionHeadings[id]?.eyebrow ?? labels[id] ?? id,
+  title: sectionHeadings[id]?.title ?? fallbackTitle,
+  lead: sectionHeadings[id]?.lead
+});
 ---
 
-<PrintLayout
+<BaseLayout
   title={portfolioPage.data.documentTitle}
   description={portfolioPage.data.documentDescription}
   pathname={pathname}
   locale={locale}
 >
-  <section class="portfolio-carousel screen-only" data-portfolio-carousel>
-    <p class="portfolio-toolbar__label portfolio-toolbar__label--intro">{portfolioPage.data.printToolbarLabel}</p>
-    <div class="portfolio-carousel__viewport" data-portfolio-viewport>
-      <div class="portfolio-carousel__track" data-portfolio-track>
-      <article class="portfolio-carousel__slide" data-portfolio-slide>
-        <article class="portfolio-web-card portfolio-web-card--hero">
-          <div class="portfolio-web-cover">
-            <div class="portfolio-web-cover__rule"></div>
-            <div class="portfolio-web-cover__colophon">{cover.label}</div>
-            <div class="portfolio-web-cover__identity">
-              <p class="portfolio-web-card__eyebrow portfolio-web-card__eyebrow--cover">{siteConfig.primaryRole}</p>
-              <h2>{profile.name}</h2>
-              <p class="portfolio-web-cover__subhead">{cover.title}</p>
-            </div>
-            <div class="portfolio-web-cover__edition">Portfolio / 2026</div>
-            <div class="portfolio-web-cover__pull">
-              {profile.philosophy[0] ?? (overview.intro.enabled ? overview.intro.paragraphs[0] : profile.intro)}
-            </div>
-            <div class="portfolio-web-cover__meta">
-              <div class="portfolio-web-cover__meta-item">
-                <span>{labels.location}</span>
-                <strong>{siteConfig.location}</strong>
-              </div>
-              {contactItems.map((item) => (
-                <div class="portfolio-web-cover__meta-item">
-                  <span>{item.label}</span>
-                  <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                    {item.value}
-                  </a>
-                </div>
-              ))}
-            </div>
-            {photoSource && (
-              <div class="portfolio-web-cover__photo" aria-hidden="true">
-                <img src={photoSource} alt={profile.name} class="portfolio-web-hero__photo" draggable="false" />
-              </div>
-            )}
-          </div>
-        </article>
-      </article>
+  <section class="portfolio-showcase">
+    <PortfolioSectionNav
+      items={navigation}
+      ariaLabel={locale === "ko" ? "포트폴리오 섹션" : "Portfolio sections"}
+    />
 
-      {webPages.map((page) => {
-        if (page.kind === "philosophyCore") {
-          return (
-            <article class="portfolio-carousel__slide" data-portfolio-slide>
-              <article class="portfolio-web-card portfolio-web-card--sectioned">
-                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                <h2 class="portfolio-web-card__title">{page.title}</h2>
-                <section class="portfolio-web-card__section">
-                  <div class="portfolio-web-card__pillars">
-                    {profile.philosophy.map((item) => (
-                      <article class="portfolio-web-mini portfolio-web-mini--pillar">
-                        <p>{item}</p>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-                <section class="portfolio-web-card__section">
-                  <h3 class="portfolio-web-card__section-title">{page.coreDomainTitle}</h3>
-                  <div class="portfolio-web-stack portfolio-web-stack--two-column">
-                    {topCapabilities.map((group) => (
-                      <article class="portfolio-web-mini portfolio-web-mini--dense">
-                        <strong>{group.title}</strong>
-                        <p>{group.description}</p>
-                        <p>{group.skills.slice(0, 3).join(skillSeparator)}</p>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-              </article>
-            </article>
-          );
-        }
+    <PortfolioHero
+      hero={resolvedHero}
+      evidenceCases={featuredCases}
+      evidenceLabel={locale === "ko" ? "핵심 증거" : "Key evidence"}
+    />
 
-        if (page.kind === "experience") {
-          return (
-            <article class="portfolio-carousel__slide" data-portfolio-slide>
-              <article class="portfolio-web-card portfolio-web-card--feature portfolio-web-card--timeline">
-                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                <h2 class="portfolio-web-card__title">{page.title}</h2>
-                <div class="portfolio-web-stack portfolio-web-stack--feature">
-                  {webExperiences.map((item) => (
-                    <article class="portfolio-web-entry portfolio-web-entry--feature">
-                      <div class="portfolio-web-entry__header">
-                        <h3>{item.organization}</h3>
-                        <span>{item.period}</span>
-                      </div>
-                      <p>{item.role}</p>
-                      <ul class="portfolio-web-card__list portfolio-web-card__list--tight">
-                        {item.bullets.slice(0, 2).map((bullet) => (
-                          <li>{bullet}</li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </article>
-            </article>
-          );
-        }
-
-        if (page.kind === "projects") {
-          return (
-            <article class="portfolio-carousel__slide" data-portfolio-slide>
-              <article class="portfolio-web-card portfolio-web-card--feature portfolio-web-card--projects">
-                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                <h2 class="portfolio-web-card__title">{page.title}</h2>
-                <div class="portfolio-web-stack portfolio-web-stack--feature">
-                  {webProjectsSummary.map((project) => (
-                    <article class="portfolio-web-entry portfolio-web-entry--feature">
-                      <div class="portfolio-web-entry__header">
-                        <h3>{project.data.title}</h3>
-                        <span>{project.data.year}</span>
-                      </div>
-                      <p>{project.data.type} | {project.data.roles.join(", ")}</p>
-                      <p class="portfolio-web-entry__summary">{project.data.portfolioProblem ?? project.data.summary}</p>
-                      <div class="tag-row portfolio-web-entry__tags">
-                        {project.data.tags.slice(0, 4).map((tag: string) => (
-                          <span class="tag-chip">{tag}</span>
-                        ))}
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </article>
-            </article>
-          );
-        }
-
-        if (page.kind === "educationStudy") {
-          return (
-            <article class="portfolio-carousel__slide" data-portfolio-slide>
-              <article class="portfolio-web-card portfolio-web-card--sectioned portfolio-web-card--map">
-                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                <h2 class="portfolio-web-card__title">{page.title}</h2>
-                <section class="portfolio-web-card__section">
-                  <h3 class="portfolio-web-card__section-title">{page.educationTitle}</h3>
-                  <div class="portfolio-web-stack portfolio-web-stack--two-column">
-                    {webEducation.map((item) => (
-                      <article class="portfolio-web-mini portfolio-web-mini--education-card">
-                        <strong>{item.school}</strong>
-                        <p>{item.degree}</p>
-                        <p>{item.period}</p>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-                <section class="portfolio-web-card__section">
-                  <h3 class="portfolio-web-card__section-title">{page.studyTitle}</h3>
-                  <div class="portfolio-web-stack portfolio-web-stack--two-column portfolio-web-stack--study-cards">
-                    {webStudyItems.map((item) => (
-                      <article class:list={["portfolio-web-mini", "portfolio-web-mini--study-card"]}>
-                        <strong>{item.title}</strong>
-                        <p class="portfolio-web-mini__kicker">{item.emphasis}</p>
-                        <p>{item.description}</p>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-              </article>
-            </article>
-          );
-        }
-
-        if (page.kind === "research") {
-          return (
-            <article class="portfolio-carousel__slide" data-portfolio-slide>
-              <article class="portfolio-web-card portfolio-web-card--research-only">
-                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                <h2 class="portfolio-web-card__title">{page.title}</h2>
-                <div class="portfolio-web-stack">
-                  {research.slice(0, 3).map((item) => (
-                    <article class="portfolio-web-entry portfolio-web-entry--feature">
-                      <div class="portfolio-web-entry__header">
-                        <h3>{item.data.title}</h3>
-                        <span>{item.data.year}</span>
-                      </div>
-                      <p>{item.data.venue}</p>
-                      <p class="portfolio-web-entry__summary">{item.data.abstract}</p>
-                      <div class="tag-row portfolio-web-entry__tags">
-                        {item.data.tags.slice(0, 3).map((tag) => (
-                          <span class="tag-chip">{tag}</span>
-                        ))}
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </article>
-            </article>
-          );
-        }
-
-        return recognitionPages.length > 0
-          ? recognitionPages.map((entries) => {
-              return (
-                <article class="portfolio-carousel__slide" data-portfolio-slide>
-                  <article class="portfolio-web-card portfolio-web-card--sectioned portfolio-web-card--recognition">
-                    <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                    <h2 class="portfolio-web-card__title">{page.title}</h2>
-                    <div class="portfolio-web-stack portfolio-web-stack--feature">
-                      {entries.map((entry, entryIndex) => {
-                        const isCertificate = entry.kind === "certificate";
-                        const previousEntry = entryIndex > 0 ? entries[entryIndex - 1] : null;
-                        const shouldShowSectionTitle = !previousEntry || previousEntry.kind !== entry.kind;
-
-                        return (
-                          <>
-                            {shouldShowSectionTitle && (
-                              <div class="portfolio-web-flow-heading">
-                                <h3 class="portfolio-web-card__section-title">{isCertificate ? page.certificateTitle : page.awardTitle}</h3>
-                              </div>
-                            )}
-                            <article class="portfolio-web-entry portfolio-web-entry--feature">
-                              <div class="portfolio-web-entry__header">
-                                <h3>{entry.item.title}</h3>
-                                <span>{entry.item.date}</span>
-                              </div>
-                              <p>
-                                {entry.item.issuer}
-                                {entry.item.credentialUrl && (
-                                  <>
-                                    {" | "}
-                                    <a href={entry.item.credentialUrl} target="_blank" rel="noreferrer">
-                                      {entry.item.credentialLabel ??
-                                        (isCertificate
-                                          ? locale === "ko" ? "자격증 보기" : "View credential"
-                                          : locale === "ko" ? "증빙 보기" : "View details")}
-                                    </a>
-                                  </>
-                                )}
-                              </p>
-                              {entry.item.description && <p class="portfolio-web-entry__summary">{entry.item.description}</p>}
-                              {entry.item.bullets.length > 0 && (
-                                <ul class="portfolio-web-card__list portfolio-web-card__list--tight">
-                                  {entry.item.bullets.map((bullet) => (
-                                    <li>{bullet}</li>
-                                  ))}
-                                </ul>
-                              )}
-                            </article>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </article>
-                </article>
-              );
-            })
-          : (
-            <article class="portfolio-carousel__slide" data-portfolio-slide>
-              <article class="portfolio-web-card portfolio-web-card--sectioned portfolio-web-card--recognition">
-                <div class="portfolio-web-card__eyebrow">{page.eyebrow}</div>
-                <h2 class="portfolio-web-card__title">{page.title}</h2>
-                <section class="portfolio-web-card__section">
-                  <h3 class="portfolio-web-card__section-title">{page.certificateTitle}</h3>
-                  <article class="portfolio-web-entry portfolio-web-entry--feature">
-                    <p>{certificatePlaceholder}</p>
-                  </article>
-                </section>
-                <section class="portfolio-web-card__section">
-                  <h3 class="portfolio-web-card__section-title">{page.awardTitle}</h3>
-                  <article class="portfolio-web-entry portfolio-web-entry--feature">
-                    <p>{awardPlaceholder}</p>
-                  </article>
-                </section>
-              </article>
-            </article>
-          );
-      })}
-
-      {webCaseStudyProjects.map((project, index) => {
-        const projectLinks = [
-          { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
-          { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
-          { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
-          { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
-        ].filter((link) => link.href);
-        const caseStudyTags = project.data.tags.slice(0, 2);
-        const hiddenCaseStudyTagCount = Math.max(project.data.tags.length - caseStudyTags.length, 0);
-
+    {portfolioPage.data.sections.map((sectionId) => {
+      if (sectionId === "valueMap") {
+        const heading = getSectionHeading("valueMap", locale === "ko" ? "세 개의 역할이 같은 무게로 검토됩니다" : "Three role themes carry equal review weight");
         return (
-          <article class="portfolio-carousel__slide" data-portfolio-slide>
-            <article class="portfolio-web-card portfolio-web-card--case">
-              <div class="portfolio-web-card__eyebrow">{ui.project.caseStudyLabelPrefix} {index + 1}</div>
-              <div class="portfolio-web-entry__header">
-                <h2 class="portfolio-web-card__title">{project.data.title}</h2>
-                <span class="portfolio-web-card__year">{project.data.year}</span>
-              </div>
-              <p class="portfolio-web-card__lead">{project.data.summary}</p>
-              <div class="portfolio-web-case-grid">
-                <section class="portfolio-web-case-section">
-                  <h3>{ui.project.fieldLabels.problem}</h3>
-                  <p>{project.data.portfolioProblem ?? project.data.summary}</p>
-                </section>
-                <section class="portfolio-web-case-section">
-                  <h3>{ui.project.fieldLabels.approach}</h3>
-                  <p>{project.data.portfolioApproach ?? project.data.summary}</p>
-                </section>
-                <section class="portfolio-web-case-section portfolio-web-case-section--accent">
-                  <h3>{ui.project.fieldLabels.outcome}</h3>
-                  <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
-                  {project.data.metrics.length > 0 && (
-                    <div class="tag-row portfolio-web-case-metrics">
-                      {project.data.metrics.map((metric: string) => (
-                        <span class="metric-badge">{metric}</span>
-                      ))}
-                    </div>
-                  )}
-                </section>
-              </div>
-              <div class="portfolio-web-card__meta">
-                <div class="case-study__meta-group case-study__meta-group--keywords">
-                  <span class="small-label case-study__group-label">{labels.keywords}</span>
-                  <div class="tag-row case-study__tags">
-                    {caseStudyTags.map((tag: string) => (
-                      <span class="tag-chip"><span class="tag-chip__text">{tag}</span></span>
-                    ))}
-                    {hiddenCaseStudyTagCount > 0 && (
-                      <span class="tag-chip tag-chip--summary"><span class="tag-chip__text">+{hiddenCaseStudyTagCount}</span></span>
-                    )}
-                  </div>
-                </div>
-                <div
-                  class:list={[
-                    "case-study__meta-group",
-                    "case-study__meta-group--links",
-                    projectLinks.length === 0 && "case-study__meta-group--empty"
-                  ]}
-                  aria-hidden={projectLinks.length === 0 ? "true" : undefined}
-                >
-                  {projectLinks.length > 0 && (
-                    <>
-                    <span class="small-label case-study__group-label">{labels.links}</span>
-                    <ExternalLinks locale={locale} links={projectLinks} />
-                    </>
-                  )}
-                </div>
-              </div>
-            </article>
-          </article>
+          <section id="valueMap" class="portfolio-band portfolio-band--value">
+            <PortfolioSectionHead {...heading} />
+            <ValueMap items={roleThemes} />
+          </section>
         );
-      })}
-      </div>
-    </div>
+      }
 
-    <div class="portfolio-carousel__controls">
-      <button type="button" class="portfolio-sheet__print-button portfolio-carousel__print" onclick="window.print()">
-        {ui.printToolbar.printButtonLabel}
-      </button>
-      <button type="button" class="portfolio-carousel__button" data-portfolio-prev aria-label="Previous">
-        <span class="portfolio-carousel__button-icon">&#8249;</span>
-      </button>
-      <button type="button" class="portfolio-carousel__button" data-portfolio-next aria-label="Next">
-        <span class="portfolio-carousel__button-icon">&#8250;</span>
-      </button>
-    </div>
+      if (sectionId === "aidlc") {
+        const heading = getSectionHeading("aidlc", locale === "ko" ? "AI-Driven Development Life Cycle로 작업 흐름을 설명합니다" : "AI-Driven Development Life Cycle as the operating model");
+        return (
+          <section id="aidlc" class="portfolio-band">
+            <PortfolioSectionHead {...heading} />
+            <ProcessGrid items={aidlcStages} />
+          </section>
+        );
+      }
+
+      if (sectionId === "evidenceLibrary") {
+        const heading = getSectionHeading("evidenceLibrary", locale === "ko" ? "프로젝트는 역할별 증거로 읽힙니다" : "Projects are organized as role-based evidence");
+        return (
+          <section id="evidenceLibrary" class="portfolio-band portfolio-band--evidence">
+            <PortfolioSectionHead {...heading} />
+            <EvidenceLibrary groups={evidenceGroups} labels={labels} locale={locale} />
+          </section>
+        );
+      }
+
+      if (sectionId === "outcomes" && portfolioMetrics.length > 0) {
+        const heading = getSectionHeading("outcomes", locale === "ko" ? "주요 성과는 맥락과 함께 제시합니다" : "Outcomes stay close to their evidence");
+        return (
+          <section id="outcomes" class="portfolio-band">
+            <PortfolioSectionHead {...heading} />
+            <OutcomeMetricGrid metrics={portfolioMetrics} />
+          </section>
+        );
+      }
+
+      if (sectionId === "featuredCases") {
+        const heading = getSectionHeading("featuredCases", locale === "ko" ? "문제, 결정, 결과가 함께 보이는 대표 작업" : "Featured work framed by problem, decision, and outcome");
+        return (
+          <section id="featuredCases" class="portfolio-band portfolio-band--cases">
+            <PortfolioSectionHead {...heading} />
+            <div class="portfolio-case-stack">
+              {featuredCases.map((item, index) => (
+                <FeaturedCaseCard item={item} labels={labels} locale={locale} featured={index === 0} />
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      if (sectionId === "process") {
+        const heading = getSectionHeading("process", locale === "ko" ? "반복 가능한 작업 방식" : "A repeatable way of turning research into systems");
+        return (
+          <section id="process" class="portfolio-band">
+            <PortfolioSectionHead {...heading} />
+            <ProcessGrid items={process} />
+          </section>
+        );
+      }
+
+      if (sectionId === "researchBridge") {
+        const heading = getSectionHeading("researchBridge", locale === "ko" ? "연구는 별도 선반이 아니라 구현의 근거입니다" : "Research is evidence that feeds implementation");
+        return (
+          <section id="researchBridge" class="portfolio-band portfolio-band--research">
+            <PortfolioSectionHead {...heading} />
+            <ResearchBridge items={researchLinks} />
+          </section>
+        );
+      }
+
+      if (sectionId === "recognition" && recognitionEntries.length > 0) {
+        const heading = getSectionHeading("recognition", locale === "ko" ? "학습과 실무 기반을 보강한 이력" : "Learning and practice signals behind the work");
+        return (
+          <section id="recognition" class="portfolio-band">
+            <PortfolioSectionHead {...heading} />
+            <RecognitionGrid entries={recognitionEntries} locale={locale} />
+          </section>
+        );
+      }
+
+      if (sectionId === "contact") {
+        return (
+          <section id="contact" class="portfolio-band portfolio-band--contact">
+            <ContactPanel
+              labels={labels}
+              locale={locale}
+              profile={profile}
+              resumeHref={localizedResumeHref}
+              projectsHref={localizedProjectsHref}
+              contactItems={contactItems}
+            />
+          </section>
+        );
+      }
+
+      return null;
+    })}
   </section>
-
-    <div class="print-only">
-      <article class="portfolio-print-dump">
-        <header class="portfolio-print-dump__hero">
-          <div class="portfolio-print-dump__hero-photo" aria-hidden={photoSource ? undefined : "true"}>
-            {photoSource ? (
-              <img src={photoSource} alt={profile.name} class="portfolio-print-dump__hero-photo-image" />
-            ) : (
-              initials
-            )}
-          </div>
-          <div class="portfolio-print-dump__hero-main">
-            <p class="portfolio-print-dump__eyebrow">{siteConfig.primaryRole}</p>
-            <h1>{profile.name}</h1>
-            <p class="portfolio-print-dump__headline">{profile.headline}</p>
-            <div class="portfolio-print-dump__intro">
-              <p>{profile.intro}</p>
-              <p>{profile.summary}</p>
-            </div>
-          </div>
-          <aside class="portfolio-print-dump__hero-side">
-            <div class="portfolio-print-dump__meta">
-              <strong>{labels.locationWithPeriod}</strong>
-              <span>{siteConfig.location}</span>
-            </div>
-            {contactItems.map((item) => (
-              <div class="portfolio-print-dump__meta">
-                <strong>{item.label}.</strong>
-                <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                  {item.value}
-                </a>
-              </div>
-            ))}
-          </aside>
-          <div class="portfolio-print-dump__keywords">
-            {printKeywords.map((keyword) => (
-              <span>{keyword}</span>
-            ))}
-          </div>
-        </header>
-
-        {profile.philosophy.length > 0 && (
-          <section class="portfolio-print-dump__section">
-            <h2>{locale === "ko" ? "작업 원칙" : "Working Principles"}</h2>
-            <div class="portfolio-print-dump__principles">
-              {profile.philosophy.map((item) => (
-                <article class="portfolio-print-dump__principle-card">
-                  <h3>{item}</h3>
-                  <p>{locale === "ko" ? "연구와 구현을 연결하는 기준으로 일관되게 유지하는 작업 원칙입니다." : "A working principle that guides how research becomes implementation."}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <section class="portfolio-print-dump__section">
-          <h2>{locale === "ko" ? "이력 및 기반" : "Background & Foundations"}</h2>
-          {overview.intro.enabled && overview.intro.paragraphs.map((paragraph) => (
-            <p class="portfolio-print-dump__section-copy">{paragraph}</p>
-          ))}
-        </section>
-
-        <section class="portfolio-print-dump__section portfolio-print-dump__section--page-start">
-          <h2>{labels.experience}</h2>
-          <div class="portfolio-print-dump__list">
-            {topExperiences.map((item) => (
-              <article class="portfolio-print-dump__entry">
-                <div class="portfolio-print-dump__entry-head">
-                  <div>
-                    <h3>{item.organization}</h3>
-                    <p class="portfolio-print-dump__entry-meta">{item.role}</p>
-                  </div>
-                  <p class="portfolio-print-dump__entry-period">{item.period}</p>
-                </div>
-                <ul>
-                  {item.bullets.map((bullet) => (
-                    <li>{bullet}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section class="portfolio-print-dump__section">
-          <h2>{locale === "ko" ? "학업 및 성장 기반" : "Education & Learning Foundation"}</h2>
-          <div class="portfolio-print-dump__formation">
-            <div class="portfolio-print-dump__formation-block">
-              <h3>{labels.education}</h3>
-              {topEducation.map((item) => (
-                <article class="portfolio-print-dump__item">
-                  <div class="portfolio-print-dump__entry-head">
-                    <div>
-                      <h4>{item.school}</h4>
-                      <p class="portfolio-print-dump__entry-meta">{item.degree}</p>
-                    </div>
-                    <p class="portfolio-print-dump__entry-period">{item.period}</p>
-                  </div>
-                  <p>{item.detail}</p>
-                </article>
-              ))}
-            </div>
-
-            {topStudyItems.length > 0 && (
-              <div class="portfolio-print-dump__formation-block">
-                <h3>{labels.study}</h3>
-                <div class="portfolio-print-dump__study-grid">
-                  {topStudyItems.map((item) => (
-                    <article class="portfolio-print-dump__study-card">
-                      <h4>{item.title}</h4>
-                      <p class="portfolio-print-dump__entry-meta">{item.emphasis}</p>
-                      <p>{item.description}</p>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {topCapabilities.length > 0 && (
-          <section class="portfolio-print-dump__section portfolio-print-dump__section--capability">
-            <h2>{overview.capability.enabled ? overview.capability.title : labels.capability}</h2>
-            <div class="portfolio-print-dump__capability-grid">
-              {topCapabilities.map((group) => (
-                <article class="portfolio-print-dump__capability-card">
-                  <h3>{group.title}</h3>
-                  <p>{group.description}</p>
-                  <p class="portfolio-print-dump__tag-row">{group.skills.join(skillSeparator)}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {topResearch.length > 0 && (
-          <section class="portfolio-print-dump__section portfolio-print-dump__section--page-start">
-            <h2>{locale === "ko" ? "연구" : "Research"}</h2>
-            <div class="portfolio-print-dump__list">
-              {topResearch.map((item) => (
-                <article class="portfolio-print-dump__research-card">
-                  <div class="portfolio-print-dump__entry-head">
-                    <h3>{item.data.title}</h3>
-                    <p class="portfolio-print-dump__entry-period">{item.data.year}</p>
-                  </div>
-                  <p class="portfolio-print-dump__entry-meta">{item.data.venue}</p>
-                  <p>{item.data.abstract}</p>
-                  {item.data.tags.length > 0 && (
-                    <p class="portfolio-print-dump__tag-row">{item.data.tags.join(skillSeparator)}</p>
-                  )}
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {printRecognitionEntries.length > 0 && (
-          <section class="portfolio-print-dump__section">
-            <h2>{recognitionPage?.title ?? (locale === "ko" ? "수료와 수상" : "Certificates & Awards")}</h2>
-            <div class="portfolio-print-dump__recognition-grid">
-              {printRecognitionEntries.map((entry) => (
-                <article class="portfolio-print-dump__recognition-card">
-                  <p class="portfolio-print-dump__recognition-kind">
-                    {entry.kind === "certificate"
-                      ? recognitionPage?.kind === "recognition"
-                        ? recognitionPage.certificateTitle
-                        : labels.certificate
-                      : recognitionPage?.kind === "recognition"
-                        ? recognitionPage.awardTitle
-                        : labels.award}
-                  </p>
-                  <h3>{entry.item.title}</h3>
-                  <p class="portfolio-print-dump__entry-meta">{entry.item.issuer}</p>
-                  <p class="portfolio-print-dump__entry-period">{entry.item.date}</p>
-                  {entry.item.description && <p>{entry.item.description}</p>}
-                  {entry.item.bullets.length > 0 && (
-                    <ul>
-                      {entry.item.bullets.map((bullet) => (
-                        <li>{bullet}</li>
-                      ))}
-                    </ul>
-                  )}
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {topProjects.length > 0 && (
-          <section class="portfolio-print-dump__section">
-            <h2>{locale === "ko" ? "프로젝트 아카이브" : "Project Archive"}</h2>
-            <div class="portfolio-print-dump__project-archive-grid">
-              {topProjects.map((project, index) => {
-                return (
-                  <article class="portfolio-print-dump__project-archive-card">
-                    <p class="portfolio-print-dump__eyebrow">{ui.project.caseStudyLabelPrefix} {index + 1}</p>
-                    <h3>{project.data.title}</h3>
-                    <p>{project.data.summary}</p>
-                    <div class="portfolio-print-dump__project-meta-row">
-                      <span>{project.data.year}</span>
-                      <span>{project.data.type}</span>
-                    </div>
-                    <p class="portfolio-print-dump__tag-row">{project.data.roles.join(skillSeparator)}</p>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {topProjects.length > 0 && topProjects.map((project, index) => {
-          const projectLinks = [
-            { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
-            { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
-            { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
-            { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
-          ].filter((link) => link.href);
-
-          return (
-            <section class="portfolio-print-dump__case-study-page portfolio-print-dump__section--page-start">
-                <article class="portfolio-print-dump__project portfolio-print-dump__project--case">
-                  <div class="portfolio-print-dump__case-study-topline">
-                    <p class="portfolio-print-dump__eyebrow">{locale === "ko" ? "케이스 스터디" : "Case Study"} {index + 1}</p>
-                    <span>{project.data.year}</span>
-                  </div>
-                  <div class="portfolio-print-dump__project-head">
-                    <div class="portfolio-print-dump__project-titleblock">
-                      <h3>{project.data.title}</h3>
-                      <p>{project.data.summary}</p>
-                    </div>
-                    <div class="portfolio-print-dump__project-meta-row">
-                      <span>{project.data.type}</span>
-                      <span>{project.data.roles.join(", ")}</span>
-                    </div>
-                  </div>
-                  <div class="portfolio-print-dump__project-body">
-                    <article class="portfolio-print-dump__project-block">
-                      <h4>{ui.project.fieldLabels.problem}</h4>
-                      <p>{project.data.portfolioProblem ?? project.data.summary}</p>
-                    </article>
-                    <article class="portfolio-print-dump__project-block">
-                      <h4>{ui.project.fieldLabels.approach}</h4>
-                      <p>{project.data.portfolioApproach ?? project.data.summary}</p>
-                    </article>
-                    <article class="portfolio-print-dump__project-block">
-                      <h4>{ui.project.fieldLabels.outcome}</h4>
-                      <p>{project.data.portfolioOutcome ?? project.data.summary}</p>
-                    </article>
-                  </div>
-                  {(project.data.metrics.length > 0 || project.data.tags.length > 0 || projectLinks.length > 0) && (
-                    <aside class="portfolio-print-dump__project-aside">
-                      {project.data.metrics.length > 0 && (
-                        <div class="portfolio-print-dump__project-meta">
-                          <h4>{locale === "ko" ? "지표" : "Metrics"}</h4>
-                          <div class="portfolio-print-dump__metric-grid">
-                            {project.data.metrics.map((metric: string) => (
-                              <article class="portfolio-print-dump__metric-card">
-                                <span>{metric}</span>
-                              </article>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {project.data.tags.length > 0 && (
-                        <div class="portfolio-print-dump__project-meta">
-                          <h4>{locale === "ko" ? "기술 및 태그" : "Tech & Tags"}</h4>
-                          <div class="portfolio-print-dump__chip-row">
-                            {project.data.tags.map((tag: string) => (
-                              <span class="portfolio-print-dump__chip">{tag}</span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {projectLinks.length > 0 && (
-                        <div class="portfolio-print-dump__project-meta">
-                          <h4>{locale === "ko" ? "링크" : "Links"}</h4>
-                          <div class="portfolio-print-dump__link-stack">
-                            {projectLinks.map((link) => (
-                              <a class="portfolio-print-dump__link-card" href={link.href} target="_blank" rel="noreferrer">
-                                <strong>{link.label}</strong>
-                                <span>{link.href}</span>
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </aside>
-                  )}
-                </article>
-            </section>
-          );
-        })}
-      </article>
-    </div>
-</PrintLayout>
-
-<PortfolioCarouselScript />
-
+</BaseLayout>

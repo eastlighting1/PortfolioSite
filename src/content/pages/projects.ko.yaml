@@ -1,10 +1,11 @@
 pageType: projects
 documentTitle: 프로젝트 | 김동현
-documentDescription: 대화형 AI, 의료 AI, 응용 ML 구현 경험을 다루는 프로젝트 카탈로그입니다.
+documentDescription: 기업 제출용 AI Systems Engineer 포트폴리오의 프로젝트 증거 라이브러리입니다.
 hero:
-  eyebrow: 프로젝트
-  title: 응용 AI 프로젝트 카탈로그
-  description: 임상 의사결정 지원, 대화형 AI, LLM 프로토타이핑, 협업형 NLP 작업을 포함한 프로젝트들을 모아둔 페이지입니다. 각 항목은 문제 맥락, 역할, 결과를 중심으로 케이스 스터디 형식으로 정리했습니다.
+  eyebrow: Evidence Library
+  title: 역할별로 검토하는 프로젝트 증거
+  description: 프로젝트를 단순 목록이 아니라 Data + Graph, AI-DLC/MLOps, NLP/LLM 연구 역량의 증거로 정리했습니다. 각 항목은 Evidence Level, Disclosure Level, 데이터 표면, 워크플로우 단계와 함께 검토할 수 있습니다.
   meta:
-    - 케이스 스터디 형식
-    - 실제 프로젝트 맥락
+    - AI Systems Engineer
+    - 역할 기반 증거
+    - 공개 수준 표시

@@ -10,6 +10,40 @@ summary: "React + Spring 기반 블로그 프로젝트의 AI 파트에 참여했
 portfolioProblem: "서비스는 블로그 콘텐츠 흐름을 더 풍부하게 만들기 위해 텍스트의 감성 극성을 분류하고, 문장 스타일 변형을 생성할 수 있는 머신러닝 구성 요소가 필요했습니다."
 portfolioApproach: "KoBERT 기반 극성 분류 모델과 KoBART 기반 스타일 변환 파이프라인 구현에 집중했고, 데이터셋 처리와 학습·추론 코드, 반복 실험을 통해 모델 동작을 다듬었습니다."
 portfolioOutcome: "웹 서비스 맥락에서 활용 가능한 감성 분류 및 스타일 변환 AI 모듈을 제공했고, 한국어 분류·생성 모델을 제품형 프로젝트에 연결하는 경험을 쌓았습니다."
+evidence:
+  primaryTheme: nlp-llm
+  secondaryThemes:
+    - aidlc-mlops
+  dataSurfaces:
+    - text
+  workflowStages:
+    - data
+    - experiment
+    - training
+    - inference
+    - evaluation
+  evidenceLevel: Implemented
+  disclosureLevel: Public Summary Only
+  businessSignal: "분류와 생성 기반 한국어 NLP 모델을 제품형 웹 서비스 기능으로 연결한 증거입니다."
+  subtypes:
+    - Korean NLP
+    - Classification
+    - Generation
+portfolio:
+  thesis: "블로그 서비스 안에서 감성 분류와 스타일 변환 모델을 실제 콘텐츠 흐름에 연결한 한국어 NLP 프로젝트입니다."
+  value: "분류와 생성 모델을 제품형 웹 서비스 맥락에 맞게 실험하고 통합했습니다."
+  problem: "서비스는 블로그 콘텐츠 흐름을 더 풍부하게 만들기 위해 텍스트의 감성 극성을 분류하고, 문장 스타일 변형을 생성할 수 있는 머신러닝 구성 요소가 필요했습니다."
+  decisions:
+    - label: "KoBERT와 KoBART 분리"
+      description: "극성 분류는 KoBERT, 스타일 변환은 KoBART 파이프라인으로 나누어 구현했습니다."
+  outcome: "웹 서비스 맥락에서 활용 가능한 감성 분류 및 스타일 변환 AI 모듈을 제공했습니다."
+  metrics:
+    - label: "Model scope"
+      value: "Classification + Generation"
+      context: "감성 극성 분류와 문장 스타일 변환"
+resume:
+  include: true
+  priority: 70
 featured: false
 tags:
   - "감성 극성 분류"

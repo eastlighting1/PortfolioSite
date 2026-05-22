@@ -2,6 +2,8 @@
 import { getUiEntry } from "../../../lib/content";
 import ExternalLinks from "../../../components/common/ExternalLinks.astro";
 import { type Locale } from "../../../lib/i18n";
+import { entrySlug } from "../../../lib/content";
+import { normalizeEvidenceMetadata } from "../../portfolio/portfolio-data";
 
 interface Props {
   project: any;
@@ -11,6 +13,12 @@ interface Props {
 const { project, locale = "ko" } = Astro.props;
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
+const evidence = normalizeEvidenceMetadata({ project: { ...project, slug: entrySlug(project) }, locale });
+const themeLabels: Record<string, string> = {
+  "data-graph": locale === "ko" ? "Data + Graph" : "Data + Graph",
+  "aidlc-mlops": locale === "ko" ? "AI-DLC / MLOps" : "AI-DLC / MLOps",
+  "nlp-llm": locale === "ko" ? "NLP / LLM" : "NLP / LLM"
+};
 ---
 
 <section class="detail-hero" data-reveal="1">
@@ -36,8 +44,22 @@ const ui = uiEntry.data;
     </div>
   </div>
   <div class="tag-row" style="margin-top: 1rem;">
+    <span class="tag-chip">{themeLabels[evidence.primaryTheme]}</span>
+    <span class="tag-chip">{evidence.evidenceLevel}</span>
+    <span class="tag-chip tag-chip--muted">{evidence.disclosureLevel}</span>
     {project.data.tags.map((tag: string) => (
       <span class="tag-chip">{tag}</span>
+    ))}
+  </div>
+  <p class="section-lead" style="margin-top: 1rem;">{evidence.businessSignal}</p>
+  <div class="tag-row" style="margin-top: 1rem;" aria-label={locale === "ko" ? "데이터 표면" : "Data surfaces"}>
+    {evidence.dataSurfaces.map((surface: string) => (
+      <span class="tag-chip">{surface}</span>
+    ))}
+  </div>
+  <div class="tag-row" style="margin-top: 1rem;" aria-label={locale === "ko" ? "AI-DLC 적용 단계" : "AI-DLC coverage"}>
+    {evidence.workflowStages.map((stage: string) => (
+      <span class="metric-badge">{stage}</span>
     ))}
   </div>
   <div class="meta-row" style="margin-top: 1rem;">

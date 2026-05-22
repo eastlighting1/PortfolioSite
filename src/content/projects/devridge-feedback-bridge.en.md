@@ -10,6 +10,39 @@ summary: "Built an LLM prototype that helps solo developers receive contextualiz
 portfolioProblem: "Developers working alone often need UI, performance, or code quality feedback, but they rarely have an easy way to gather role-specific input at the right time."
 portfolioApproach: "I framed the service as a role-aware feedback bridge and focused on role constraints, and contextual input design so the generated responses would stay relevant and scoped."
 portfolioOutcome: "The prototype demonstrated how structured prompting and role-specific constraints could turn LLM output into more useful, contextualized project feedback."
+evidence:
+  primaryTheme: nlp-llm
+  secondaryThemes:
+    - aidlc-mlops
+  dataSurfaces:
+    - text
+  workflowStages:
+    - data
+    - experiment
+    - inference
+    - evaluation
+  evidenceLevel: Prototype
+  disclosureLevel: Public Summary Only
+  businessSignal: "Shows prompt and interaction design for making LLM output useful in role-based technical review."
+  subtypes:
+    - LLM Application
+    - Prompt Engineering
+    - Evaluation Support
+portfolio:
+  thesis: "A prototype that turns LLM feedback into more practical development review through role constraints and structured input."
+  value: "Helped solo developers separate UI, performance, and code quality feedback."
+  problem: "Developers working alone often need UI, performance, or code quality feedback, but they rarely have an easy way to gather role-specific input at the right time."
+  decisions:
+    - label: "Role-aware prompting"
+      description: "Separated role constraints and contextual input so responses stayed scoped instead of generic."
+  outcome: "The prototype showed how structured prompting can make LLM feedback more useful for project review."
+  metrics:
+    - label: "Feedback modes"
+      value: "Role-based"
+      context: "Separated UI, performance, and code quality perspectives"
+resume:
+  include: true
+  priority: 60
 featured: true
 tags:
   - "LLM"

@@ -139,6 +139,67 @@
     display: block;
   }
 
+  .paper-sheet--portfolio-print {
+    width: 100%;
+    max-width: none;
+    height: auto !important;
+    min-height: auto;
+    margin: 0;
+    padding: 0 4mm !important;
+    overflow: visible !important;
+    border: none !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  .portfolio-print {
+    display: block;
+    color: #111;
+    font-size: 9.4pt;
+    line-height: 1.35;
+  }
+
+  .portfolio-print__header {
+    border-bottom: 0.8pt solid #111;
+    margin-bottom: 6mm;
+    padding-bottom: 4mm;
+  }
+
+  .portfolio-print__header h1 {
+    font-size: 20pt;
+    line-height: 1.08;
+  }
+
+  .portfolio-print .document-section + .document-section {
+    margin-top: 6mm;
+  }
+
+  .portfolio-print .document-section h2 {
+    border-bottom: 0.6pt solid #111;
+    font-size: 12pt;
+    margin: 0 0 2.5mm;
+    padding-bottom: 0.8mm;
+  }
+
+  .portfolio-print__summary {
+    grid-template-columns: minmax(0, 1fr) minmax(46mm, 0.65fr);
+    padding: 3mm;
+  }
+
+  .portfolio-print__case,
+  .portfolio-print__research {
+    break-inside: avoid;
+    border-color: #d1d5db;
+    box-shadow: none;
+    padding: 2.8mm 0;
+  }
+
+  .portfolio-print__case dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.2mm;
+  }
+
   .paper-sheet--resume-cv .cv-print-stack > * + * {
     margin-top: 3.2mm;
   }

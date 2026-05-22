@@ -1,5 +1,97 @@
 import { defineCollection, z } from "astro:content";
 
+const recognitionItemSchema = z.object({
+  title: z.string(),
+  issuer: z.string(),
+  date: z.union([z.string(), z.number()]).transform((value) => String(value)),
+  description: z.string().optional(),
+  bullets: z.array(z.string()).default([]),
+  credentialLabel: z.string().optional(),
+  credentialUrl: z.string().url().optional()
+});
+
+const portfolioMetricSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  context: z.string().optional()
+});
+
+const portfolioArtifactSchema = z.object({
+  label: z.string(),
+  href: z.string().url(),
+  kind: z.enum(["repo", "demo", "paper", "slides", "doc", "image", "video"]),
+  description: z.string().optional()
+});
+
+const architectureNodeSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  description: z.string().optional(),
+  kind: z.enum(["data", "model", "service", "evaluation", "storage", "interface"]).default("service")
+});
+
+const architectureLinkSchema = z.object({
+  from: z.string(),
+  to: z.string(),
+  label: z.string().optional()
+});
+
+const portfolioProjectSchema = z.object({
+  thesis: z.string(),
+  value: z.string(),
+  problem: z.string(),
+  constraints: z.array(z.string()).default([]),
+  decisions: z.array(
+    z.object({
+      label: z.string(),
+      description: z.string(),
+      rationale: z.string().optional()
+    })
+  ).default([]),
+  architecture: z.object({
+    summary: z.string(),
+    nodes: z.array(architectureNodeSchema).default([]),
+    links: z.array(architectureLinkSchema).default([])
+  }).optional(),
+  process: z.array(
+    z.object({
+      label: z.string(),
+      description: z.string()
+    })
+  ).default([]),
+  outcome: z.string(),
+  metrics: z.array(portfolioMetricSchema).default([]),
+  artifacts: z.array(portfolioArtifactSchema).default([]),
+  reflection: z.string().optional(),
+  relatedResearch: z.array(z.string()).default([])
+});
+
+const evidenceThemeSchema = z.enum(["data-graph", "aidlc-mlops", "nlp-llm"]);
+const dataSurfaceSchema = z.enum(["structured", "text", "image", "graph", "hybrid"]);
+const workflowStageSchema = z.enum([
+  "data",
+  "experiment",
+  "training",
+  "evaluation",
+  "deployment",
+  "inference",
+  "observability",
+  "feedback-recovery"
+]);
+const evidenceLevelSchema = z.enum(["Published", "Implemented", "Prototype", "Study", "In Progress"]);
+const disclosureLevelSchema = z.enum(["Public", "Public Summary Only", "Sanitized", "Private / Mention Only"]);
+
+const evidenceMetadataSchema = z.object({
+  primaryTheme: evidenceThemeSchema.optional(),
+  secondaryThemes: z.array(evidenceThemeSchema).default([]),
+  dataSurfaces: z.array(dataSurfaceSchema).default([]),
+  workflowStages: z.array(workflowStageSchema).default([]),
+  evidenceLevel: evidenceLevelSchema.default("Implemented"),
+  disclosureLevel: disclosureLevelSchema.default("Public"),
+  businessSignal: z.string().optional(),
+  subtypes: z.array(z.string()).default([])
+}).default({});
+
 const projects = defineCollection({
   type: "content",
   schema: z.object({
@@ -12,6 +104,12 @@ const projects = defineCollection({
     portfolioProblem: z.string().optional(),
     portfolioApproach: z.string().optional(),
     portfolioOutcome: z.string().optional(),
+    portfolio: portfolioProjectSchema.optional(),
+    evidence: evidenceMetadataSchema,
+    resume: z.object({
+      include: z.boolean().default(true),
+      priority: z.number().int().default(100)
+    }).default({}),
     featured: z.boolean().default(false),
     tags: z.array(z.string()),
     metrics: z.array(z.string()).default([]),
@@ -62,6 +160,14 @@ const sectionHeadingSchema = z.object({
   eyebrow: z.string(),
   title: z.string(),
   lead: z.string().optional()
+});
+
+const textCardSchema = z.object({
+  title: z.string(),
+  body: z.string(),
+  label: z.string().optional(),
+  href: z.string().optional(),
+  ctaLabel: z.string().optional()
 });
 
 const pageHeroSchema = z.object({
@@ -145,6 +251,11 @@ const globals = defineCollection({
           detail: z.string()
         })
       )
+    }),
+    z.object({
+      globalType: z.literal("recognition"),
+      certificates: z.array(recognitionItemSchema).default([]),
+      awards: z.array(recognitionItemSchema).default([])
     })
   ])
 });
@@ -344,6 +455,50 @@ const pages = defineCollection({
       documentTitle: z.string(),
       documentDescription: z.string(),
       printToolbarLabel: z.string(),
+      hero: z.object({
+        eyebrow: z.string(),
+        title: z.string(),
+        lead: z.string(),
+        valueStatement: z.string(),
+        actions: z.array(actionSchema).min(1)
+      }).optional(),
+      sectionHeadings: z.object({
+        valueMap: sectionHeadingSchema.omit({ enabled: true }),
+        aidlc: sectionHeadingSchema.omit({ enabled: true }).optional(),
+        evidenceLibrary: sectionHeadingSchema.omit({ enabled: true }).optional(),
+        outcomes: sectionHeadingSchema.omit({ enabled: true }),
+        featuredCases: sectionHeadingSchema.omit({ enabled: true }),
+        process: sectionHeadingSchema.omit({ enabled: true }),
+        researchBridge: sectionHeadingSchema.omit({ enabled: true }),
+        recognition: sectionHeadingSchema.omit({ enabled: true }),
+        contact: sectionHeadingSchema.omit({ enabled: true })
+      }).optional(),
+      featuredCaseSlugs: z.array(z.string()).default([]),
+      sections: z.array(
+        z.enum([
+          "valueMap",
+          "aidlc",
+          "evidenceLibrary",
+          "outcomes",
+          "featuredCases",
+          "process",
+          "researchBridge",
+          "recognition",
+          "contact"
+        ])
+      ).default([
+        "valueMap",
+        "outcomes",
+        "featuredCases",
+        "process",
+        "researchBridge",
+        "recognition",
+        "contact"
+      ]),
+      print: z.object({
+        enabled: z.boolean().default(true),
+        label: z.string().default("Print Portfolio")
+      }).default({}),
       web: z.object({
         pages: z.array(
           z.discriminatedUnion("kind", [
@@ -412,29 +567,9 @@ const pages = defineCollection({
         })
       }),
       recognition: z.object({
-        certificates: z.array(
-          z.object({
-            title: z.string(),
-            issuer: z.string(),
-            date: z.union([z.string(), z.number()]).transform((value) => String(value)),
-            description: z.string().optional(),
-            bullets: z.array(z.string()).default([]),
-            credentialLabel: z.string().optional(),
-            credentialUrl: z.string().url().optional()
-          })
-        ).default([]),
-        awards: z.array(
-          z.object({
-            title: z.string(),
-            issuer: z.string(),
-            date: z.union([z.string(), z.number()]).transform((value) => String(value)),
-            description: z.string().optional(),
-            bullets: z.array(z.string()).default([]),
-            credentialLabel: z.string().optional(),
-            credentialUrl: z.string().url().optional()
-          })
-        ).default([])
-      }),
+        certificates: z.array(recognitionItemSchema).default([]),
+        awards: z.array(recognitionItemSchema).default([])
+      }).optional(),
       selection: z.object({
         projectCount: z.number().int().nonnegative().default(2),
         caseStudyCount: z.number().int().nonnegative().default(3),
@@ -463,10 +598,22 @@ const pages = defineCollection({
       pageType: z.literal("about"),
       documentTitle: z.string(),
       documentDescription: z.string(),
+      sectionOrder: z.array(z.enum(["hero", "positioning", "gallery"])).default(["hero", "positioning", "gallery"]),
       hero: pageHeroSchema.omit({ meta: true, className: true }),
+      positioning: sectionHeadingSchema.extend({
+        cards: z.array(textCardSchema).default([])
+      }).default({
+        enabled: true,
+        eyebrow: "Positioning",
+        title: "How to read this page",
+        cards: []
+      }),
       gallery: z.object({
+        enabled: z.boolean().default(true),
         title: z.string(),
         lead: z.string(),
+        count: z.number().int().positive().default(12),
+        types: z.array(z.enum(["event", "thought", "note"])).default(["event", "thought", "note"]),
         openEntryLabel: z.string().default("Open entry"),
         closeEntryLabel: z.string().default("Close")
       })
@@ -475,8 +622,19 @@ const pages = defineCollection({
       pageType: z.literal("contact"),
       documentTitle: z.string(),
       documentDescription: z.string(),
+      sectionOrder: z.array(z.enum(["hero", "intents", "response", "links"])).default(["hero", "intents", "response", "links"]),
       hero: pageHeroSchema.omit({ meta: true, className: true }),
+      intents: sectionHeadingSchema.extend({
+        cards: z.array(textCardSchema).min(1)
+      }),
+      response: z.object({
+        enabled: z.boolean().default(true),
+        title: z.string(),
+        body: z.string()
+      }),
       cards: z.object({
+        title: z.string().default("Contact Channels"),
+        lead: z.string().optional(),
         emailLabel: z.string(),
         externalValueMode: z.enum(["href", "label"]).default("href")
       })

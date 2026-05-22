@@ -1,0 +1,11 @@
+---
+const { items, ariaLabel } = Astro.props;
+---
+
+<div class="portfolio-showcase__nav-wrap">
+  <nav class="portfolio-section-nav" aria-label={ariaLabel}>
+    {items.map((item: { href: string; label: string }) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+  </nav>
+</div>

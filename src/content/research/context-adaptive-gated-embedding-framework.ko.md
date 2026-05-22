@@ -1,15 +1,16 @@
 ---
 title: "고도화된 임상 의사결정을 위한 문맥 적응형 게이트 임베딩 프레임워크"
 year: 2026
-venue: "Mathematics (투고 중)"
+venue: "Mathematics"
 type: "저널 논문"
 bibtex: |
-  @article{kim2026cage,
+  @article{math14081397,
     title={A Context-Adaptive Gated Embedding Framework for Advanced Clinical Decision-Making},
-    author={Donghyeon Kim and Daeho Kim and Okran Jeong},
+    author={Donghyeon Kim, Daeho Kim, Okran Jeong},
     journal={Mathematics},
-    year={2026},
-    note={{Submitted / under review}}
+    volume={14},
+    number={8},
+    year={2026}
   }
 abstract: "ICU 임상 의사결정 지원을 위해, 부분 라벨 기반 자동 ICD 코딩으로 추정한 진단 문맥을 불규칙 시계열과 결합하고, 문맥 적응형 게이팅을 통해 기계환기 전이 사건을 예측하는 계층형 프레임워크를 제안한 연구이다. 진단 문맥을 하위 시계열 해석에 재주입함으로써 희귀 전이 이벤트 탐지 성능을 크게 높였다."
 tags:

@@ -1,10 +1,39 @@
 pageType: contact
 documentTitle: Contact | Donghyeon Kim
 documentDescription: Contact options for collaboration, research conversation, and AI engineering opportunities.
+sectionOrder:
+  - hero
+  - intents
+  - links
+  - response
 hero:
   eyebrow: Contact
-  title: Open to research and applied AI conversations
-  description: Available for portfolio reviews, AI engineering opportunities, research collaboration, and conversations around conversational AI, healthcare AI, and ML systems.
+  title: Direct contact channels
+  description: Email is the primary channel, with GitHub, LinkedIn, and Google Scholar available for quick work context.
+intents:
+  enabled: true
+  eyebrow: Conversation Paths
+  title: Good reasons to reach out
+  lead: This page is not just a list of links. It helps visitors decide what kind of conversation to start.
+  cards:
+    - title: Hiring and Role Opportunities
+      body: I am open to roles that connect data systems, AI-DLC/MLOps, and NLP/LLM research experience into enterprise AI systems.
+      ctaLabel: Review resume
+      href: /resume/
+    - title: Research and Technical Collaboration
+      body: I welcome collaboration around NLP/LLM evaluation, alignment, graph-based data systems, and reproducible AI operating workflows.
+      ctaLabel: View research
+      href: /research/
+    - title: Portfolio and Project Conversation
+      body: Feedback or conversation about project structure, technical choices, and case-study communication is also welcome.
+      ctaLabel: View portfolio
+      href: /portfolio/
+response:
+  enabled: true
+  title: Email is the fastest way to reach me
+  body: GitHub, LinkedIn, and Google Scholar provide quick context on my work, but email is the most reliable path for concrete proposals or collaboration.
 cards:
+  title: Contact Channels
+  lead: Email and public profiles are placed first so the actual contact path is visible immediately.
   emailLabel: Email
   externalValueMode: href

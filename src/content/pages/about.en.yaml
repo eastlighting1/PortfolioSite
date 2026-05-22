@@ -1,12 +1,36 @@
 pageType: about
 documentTitle: About | Donghyeon Kim
 documentDescription: Gallery-style archive for event notes, personal thoughts, and working memos around applied AI systems.
+sectionOrder:
+  - hero
+  - gallery
 hero:
   eyebrow: About
   title: A gallery for notes, events, and working thoughts
   description: Instead of a long personal essay, this page works as a lightweight archive for event reflections, research notes, and system-oriented thoughts that sit between projects and journal entries.
+positioning:
+  enabled: true
+  eyebrow: Page Role
+  title: This page is neither a resume nor a project index
+  lead: The about page is looser than a formal career summary and more curated than a blog. It shows what I study, which communities I learn from, and how my technical perspective changes over time.
+  cards:
+    - label: Reading Mode
+      title: Context outside the project
+      body: Project pages hold deliverables and evidence; this page holds the thoughts, events, and notes around them.
+    - label: Editing Mode
+      title: Add cards without changing code
+      body: Add a new archive Markdown file, then tune count and visible types here in YAML.
+    - label: Difference from Portfolio
+      title: Perspective, not proof
+      body: The portfolio shows reviewable evidence. The about page shows the interests and direction behind that evidence.
 gallery:
+  enabled: true
   title: Archive Gallery
   lead: "This space is meant for short-form writing: conference impressions, community event notes, implementation reflections, and ideas that do not belong in a formal project case study."
+  count: 9
+  types:
+    - event
+    - thought
+    - note
   openEntryLabel: Open entry
   closeEntryLabel: Close

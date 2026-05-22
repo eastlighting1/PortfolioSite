@@ -1,12 +1,36 @@
 pageType: about
 documentTitle: 소개 | 김동현
 documentDescription: 행사 후기, 작업 메모, 그리고 AI 시스템에 대한 생각을 카드 형태로 정리하는 갤러리형 아카이브입니다.
+sectionOrder:
+  - hero
+  - gallery
 hero:
   eyebrow: 소개
   title: 기록과 생각을 쌓아두는 갤러리
   description: 행사 후기, 연구 메모, 시스템 관점에 대한 생각을 카드 단위로 정리해 두는 개인 아카이브입니다. 소개문보다 더 가볍고, 프로젝트보다 더 사적인 기록을 남기는 공간으로 사용합니다.
+positioning:
+  enabled: true
+  eyebrow: 페이지 역할
+  title: 이 페이지는 이력서도, 프로젝트 목록도 아닙니다
+  lead: 소개 페이지는 공식 경력 요약보다 느슨하고, 블로그보다 선별된 기록을 보여주는 공간입니다. 내가 무엇을 공부하고, 어떤 커뮤니티와 사건을 통해 관점이 바뀌었는지를 추적합니다.
+  cards:
+    - label: 읽는 방식
+      title: 프로젝트 바깥의 맥락
+      body: 프로젝트 페이지에는 결과물을 두고, 이곳에는 그 결과물을 만들기 전후의 생각, 행사, 메모를 둡니다.
+    - label: 운영 방식
+      title: 카드만 추가해도 흐름이 유지됨
+      body: 새 글은 archive Markdown 파일로 추가하고, 이 YAML에서 노출 개수와 유형만 조정하면 됩니다.
+    - label: 포트폴리오와 차이
+      title: 증거가 아니라 관점
+      body: 포트폴리오는 검토 가능한 evidence를 보여주고, 소개 페이지는 그 evidence를 만든 관심사와 방향성을 보여줍니다.
 gallery:
+  enabled: true
   title: 아카이브 갤러리
   lead: 세미나 후기, 커뮤니티 활동, 연구 중 떠오른 생각, AI 시스템 운영에 대한 메모를 이곳에 축적합니다. 나중에는 카드만 추가해서 흐름이 이어지도록 설계했습니다.
+  count: 9
+  types:
+    - event
+    - thought
+    - note
   openEntryLabel: 글 보기
   closeEntryLabel: 닫기

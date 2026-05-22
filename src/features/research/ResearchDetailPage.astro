@@ -20,6 +20,20 @@ const linkedProjects = projects.filter((project) => item.data.linkedProjects.inc
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 const titleSuffix = locale === "ko" ? "연구" : "Research";
+const bridgeLabels =
+  locale === "ko"
+    ? {
+        title: "포트폴리오 역할과의 연결",
+        modeling: "모델링/평가",
+        system: "시스템 판단",
+        domain: "적용 맥락"
+      }
+    : {
+        title: "Connection to Portfolio Roles",
+        modeling: "Modeling / Evaluation",
+        system: "System Judgment",
+        domain: "Application Context"
+      };
 ---
 
 <ReadingLayout
@@ -35,6 +49,23 @@ const titleSuffix = locale === "ko" ? "연구" : "Research";
   <ResearchDetailHero item={item} locale={locale} />
   <div style="padding-top: 2rem;">
     <AbstractBlock abstract={item.data.abstract} locale={locale} />
+    <section class="resume-section" style="margin-top: 2rem;">
+      <div class="eyebrow">{bridgeLabels.title}</div>
+      <div class="document-list" style="margin-top: 1rem;">
+        <div class="resume-item">
+          <strong>{bridgeLabels.modeling}</strong>
+          <p>{locale === "ko" ? "연구 항목을 NLP/LLM 모델링과 평가 설계의 근거로 해석합니다." : "This research is read as evidence for NLP/LLM modeling and evaluation design."}</p>
+        </div>
+        <div class="resume-item">
+          <strong>{bridgeLabels.system}</strong>
+          <p>{locale === "ko" ? "논문 결과를 프로젝트의 데이터 처리, 평가, 운영 판단과 연결합니다." : "The research result is connected to data, evaluation, and operating decisions in project evidence."}</p>
+        </div>
+        <div class="resume-item">
+          <strong>{bridgeLabels.domain}</strong>
+          <p>{locale === "ko" ? "의료, 금융, 추천 등 도메인은 상위 정체성이 아니라 적용 맥락으로 다룹니다." : "Domains such as medical, finance, and recommendation are treated as application contexts, not the top-level identity."}</p>
+        </div>
+      </div>
+    </section>
     <article class="prose" style="padding-top: 2rem;">
       <Content />
     </article>

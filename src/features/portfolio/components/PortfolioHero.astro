@@ -1,0 +1,27 @@
+---
+const { hero, evidenceCases, evidenceLabel } = Astro.props;
+---
+
+<section class="portfolio-hero" data-reveal="1">
+  <div class="portfolio-hero__content">
+    <p class="portfolio-hero__eyebrow">{hero.eyebrow}</p>
+    <h1>{hero.title}</h1>
+    <p class="portfolio-hero__lead">{hero.lead}</p>
+    <p class="portfolio-hero__value">{hero.valueStatement}</p>
+    <div class="portfolio-hero__actions">
+      {hero.actions.map((action: { label: string; href: string; variant: "primary" | "secondary" }) => (
+        <a class={action.variant === "primary" ? "button-link" : "button-link-secondary"} href={action.href}>
+          {action.label}
+        </a>
+      ))}
+    </div>
+  </div>
+  <aside class="portfolio-hero__evidence" aria-label={evidenceLabel}>
+    {evidenceCases.slice(0, 3).map((item: { href: string; type: string; value: string }) => (
+      <a class="portfolio-evidence-cue" href={item.href}>
+        <span>{item.type}</span>
+        <strong>{item.value}</strong>
+      </a>
+    ))}
+  </aside>
+</section>

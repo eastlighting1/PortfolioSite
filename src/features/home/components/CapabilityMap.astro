@@ -1,6 +1,7 @@
 ---
 import { getGlobalEntry } from "../../../lib/content";
 import { type Locale } from "../../../lib/i18n";
+import { getRoleThemes } from "../../portfolio/portfolio-data";
 
 interface Props {
   eyebrow: string;
@@ -11,6 +12,7 @@ interface Props {
 const { eyebrow, title, locale = "ko" } = Astro.props;
 const profileEntry = await getGlobalEntry("profile", locale);
 const profile = profileEntry.data;
+const roleThemes = getRoleThemes(locale);
 ---
 
 <section class="section">
@@ -20,11 +22,12 @@ const profile = profileEntry.data;
       <h2 class="section-title" set:html={title} />
     </div>
     <div class="capability-grid">
-      {profile.capabilityGroups.map((group, index) => (
+      {roleThemes.map((group, index) => (
         <article class="capability-card card-paper" data-reveal={`${(index % 4) + 1}`}>
           <div class="capability-card__content">
             <h3 class="capability-card__title">{group.title}</h3>
             <p class="capability-card__desc">{group.description}</p>
+            <p class="muted">{group.businessSignal}</p>
           </div>
           <div class="capability-card__tags">
             {group.skills.map((skill) => (

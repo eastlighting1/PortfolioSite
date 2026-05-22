@@ -1,0 +1,16 @@
+---
+const { items } = Astro.props;
+---
+
+<div class="portfolio-research-list">
+  {items.map(({ entry, linkedCases }: { entry: any; linkedCases: string[] }) => (
+    <article class="portfolio-research-item" data-reveal="1">
+      <span>{entry.data.venue} / {entry.data.year}</span>
+      <h3>{entry.data.title}</h3>
+      <p>{entry.data.abstract}</p>
+      {linkedCases.length > 0 && (
+        <p class="portfolio-research-item__case">{linkedCases.join(" · ")}</p>
+      )}
+    </article>
+  ))}
+</div>

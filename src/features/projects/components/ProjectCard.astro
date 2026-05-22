@@ -3,6 +3,7 @@ import { getUiEntry } from "../../../lib/content";
 import { withBase } from "../../../lib/site";
 import { entrySlug } from "../../../lib/content";
 import { localizePath, type Locale } from "../../../lib/i18n";
+import { normalizeEvidenceMetadata } from "../../portfolio/portfolio-data";
 
 interface Props {
   project: any;
@@ -16,12 +17,17 @@ const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 const metrics = project.data.metrics ?? [];
 const tags = project.data.tags ?? [];
-const primaryMetric = metrics[0];
+const portfolioMetrics = project.data.portfolio?.metrics?.map((metric: any) => `${metric.label} ${metric.value}`) ?? [];
+const primaryMetric = portfolioMetrics[0] ?? metrics[0];
 const visibleTags = tags.slice(0, 3);
 const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
 const outcomeLabel = locale === "ko" ? "핵심 결과" : "Key Outcome";
 const tagLabel = locale === "ko" ? "대표 태그" : "Selected Tags";
-const summary = project.data.portfolioProblem ?? project.data.summary;
+const summary = project.data.portfolio?.problem ?? project.data.portfolioProblem ?? project.data.summary;
+const evidence = normalizeEvidenceMetadata({ project: { ...project, slug: entrySlug(project) }, locale });
+const evidenceLabel = locale === "ko" ? "증거 등급" : "Evidence";
+const disclosureLabel = locale === "ko" ? "공개 범위" : "Disclosure";
+const surfaceLabel = locale === "ko" ? "데이터 표면" : "Data Surface";
 ---
 
 <article class="project-card" data-reveal={dataReveal}>
@@ -31,7 +37,19 @@ const summary = project.data.portfolioProblem ?? project.data.summary;
   </div>
   <h3 class="project-card__title">{project.data.title}</h3>
   <p class="project-card__role">{project.data.role}</p>
+  <div class="project-card__evidence-row" aria-label={locale === "ko" ? "프로젝트 증거 메타데이터" : "Project evidence metadata"}>
+    <span class="tag-chip">{evidenceLabel}: {evidence.evidenceLevel}</span>
+    <span class="tag-chip tag-chip--muted">{disclosureLabel}: {evidence.disclosureLevel}</span>
+  </div>
   <p class="project-card__summary">{summary}</p>
+  <div class="project-card__stack">
+    <span class="project-card__stack-label">{surfaceLabel}</span>
+    <div class="project-card__tag-row">
+      {evidence.dataSurfaces.slice(0, 4).map((surface: string) => (
+        <span class="tag-chip">{surface}</span>
+      ))}
+    </div>
+  </div>
   {primaryMetric && (
     <div class="project-card__highlight">
       <span class="project-card__highlight-label">{outcomeLabel}</span>

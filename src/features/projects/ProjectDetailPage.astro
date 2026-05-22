@@ -1,10 +1,12 @@
 ---
 import { render } from "astro:content";
 import ReadingLayout from "../../layouts/ReadingLayout.astro";
+import ExternalLinks from "../../components/common/ExternalLinks.astro";
 import ProjectDetailHero from "./components/ProjectDetailHero.astro";
 import { entrySlug, getUiEntry } from "../../lib/content";
 import { type Locale, localizePath } from "../../lib/i18n";
 import { withBase } from "../../lib/site";
+import { normalizeEvidenceMetadata } from "../portfolio/portfolio-data";
 
 interface Props {
   locale: Locale;
@@ -17,6 +19,24 @@ const { Content } = await render(project);
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 const titleSuffix = locale === "ko" ? "프로젝트" : "Projects";
+const portfolio = project.data.portfolio;
+const evidence = normalizeEvidenceMetadata({ project: { ...project, slug: entrySlug(project) }, locale });
+const problem = portfolio?.problem ?? project.data.portfolioProblem;
+const decision = portfolio?.decisions?.[0]?.description ?? project.data.portfolioApproach;
+const outcome = portfolio?.outcome ?? project.data.portfolioOutcome;
+const portfolioMetrics = portfolio?.metrics ?? project.data.metrics.map((metric: string) => ({
+  label: locale === "ko" ? "지표" : "Metric",
+  value: metric,
+  context: metric
+}));
+const portfolioArtifacts = [
+  ...(portfolio?.artifacts ?? []),
+  { label: ui.project.linkLabels.repo, href: project.data.repoUrl },
+  { label: ui.project.linkLabels.demo, href: project.data.demoUrl },
+  { label: ui.project.linkLabels.paper, href: project.data.paperUrl },
+  { label: ui.project.linkLabels.slides, href: project.data.slidesUrl }
+].filter((item) => item.href);
+const safePortfolioArtifacts = evidence.disclosureLevel === "Private / Mention Only" ? [] : portfolioArtifacts;
 ---
 
 <ReadingLayout
@@ -30,6 +50,70 @@ const titleSuffix = locale === "ko" ? "프로젝트" : "Projects";
     <a class="button-link-secondary screen-only" href={withBase(localizePath("/projects/", locale))}>{ui.project.backToListLabel}</a>
   </div>
   <ProjectDetailHero project={project} locale={locale} />
+  {(problem || decision || outcome) && (
+    <section class="project-detail-brief" aria-label={locale === "ko" ? "프로젝트 요약" : "Project brief"}>
+      {problem && (
+        <article>
+          <span>{ui.project.fieldLabels.problem}</span>
+          <p>{problem}</p>
+        </article>
+      )}
+      {decision && (
+        <article>
+          <span>{ui.project.fieldLabels.approach}</span>
+          <p>{decision}</p>
+        </article>
+      )}
+      {outcome && (
+        <article>
+          <span>{ui.project.fieldLabels.outcome}</span>
+          <p>{outcome}</p>
+        </article>
+      )}
+    </section>
+  )}
+  {(portfolio?.architecture || portfolioMetrics.length > 0 || safePortfolioArtifacts.length > 0) && (
+    <section class="project-detail-evidence">
+      {portfolio?.architecture && (
+        <article class="project-detail-evidence__architecture">
+          <span class="small-label">{locale === "ko" ? "아키텍처" : "Architecture"}</span>
+          <h2>{portfolio.architecture.summary}</h2>
+          {portfolio.architecture.nodes.length > 0 && (
+            <div class="project-detail-node-grid">
+              {portfolio.architecture.nodes.map((node: any) => (
+                <div>
+                  <strong>{node.label}</strong>
+                  {node.description && <p>{node.description}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+        </article>
+      )}
+      {portfolioMetrics.length > 0 && (
+        <article>
+          <span class="small-label">{locale === "ko" ? "성과 지표" : "Outcome Metrics"}</span>
+          <div class="project-detail-metric-grid">
+            {portfolioMetrics.map((metric: any) => (
+              <article>
+                <strong>{metric.value}</strong>
+                <span>{metric.context ?? metric.label}</span>
+              </article>
+            ))}
+          </div>
+        </article>
+      )}
+      {safePortfolioArtifacts.length > 0 && (
+        <article>
+          <span class="small-label">{locale === "ko" ? "관련 자료" : "Artifacts"}</span>
+          <ExternalLinks
+            locale={locale}
+            links={safePortfolioArtifacts.map((artifact: any) => ({ label: artifact.label, href: artifact.href }))}
+          />
+        </article>
+      )}
+    </section>
+  )}
   <article class="prose" style="padding-top: 2rem;">
     <Content />
   </article>

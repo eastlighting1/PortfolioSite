@@ -8,8 +8,8 @@ sectionOrder:
   - researchPreview
 hero:
   enabled: true
-  eyebrow: AI 연구자 · MLOps 엔지니어
-  summary: 연구 결과를 실제 시스템으로 연결하는 응용 AI 연구자입니다. 대화형 AI, 의료 AI, 그리고 MLOps 관점에서 문제 정의부터 구현과 운영까지 이어지는 작업을 수행합니다.
+  eyebrow: Company Review Portfolio
+  summary: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 기업 검토 가능한 AI 시스템 증거로 연결합니다.
   actions:
     - label: 핵심 프로젝트
       href: /projects/
@@ -17,20 +17,20 @@ hero:
     - label: 이력서 보기
       href: /resume/
       variant: secondary
-    - label: 연구 살펴보기
-      href: /research/
+    - label: 제출용 포트폴리오
+      href: /portfolio/
       variant: secondary
   focusCard:
-    label: 현재 집중 영역
-    title: 연구와 엔지니어링의 교차점
-    body: 정확도 높은 모델 자체보다도 재현 가능한 실험, 관측 가능한 시스템, 그리고 실제 운영까지 이어지는 구조를 중요하게 봅니다. 실험으로 끝나지 않는 AI를 만드는 데 집중합니다.
+    label: Review Signal
+    title: 세 개의 역할, 하나의 AI Systems 프로필
+    body: 정형·텍스트·이미지·그래프 데이터, AI-Driven Development Life Cycle, NLP/LLM 연구 경험을 서로 보조하는 직무 신호로 정리했습니다.
     items:
-      - label: 핵심 도메인
-        value: Medical AI (NLP), MLOps
-      - label: 연구 관심사
-        value: 대화형 AI, 의료 AI, 시스템 관점의 AI
-      - label: 핵심 가치
-        value: 코드 재현성, 시스템 관측 가능성, 자동화
+      - label: Data
+        value: 그래프를 핵심 강점으로 둔 데이터 시스템
+      - label: MLOps
+        value: AI-DLC, observability, CI/CD/CT
+      - label: NLP/LLM
+        value: 모델링, 평가, alignment 이해
 pipeline:
   enabled: false
   eyebrow: ML 라이프사이클
@@ -38,14 +38,14 @@ pipeline:
   lead: 복잡한 비정형 데이터의 전처리부터 PyTorch 기반의 모델 학습, 그리고 평가와 <br />실제 배포 환경을 고려한 아키텍처 설계까지 전체 흐름을 주도합니다.
 featuredProjects:
   enabled: true
-  eyebrow: 프로젝트
-  title: 실제 데이터와 요구사항을 해결한 응용 AI 시스템
-  lead: 가장 대표적인 프로젝트만 추려 문제 맥락, 역할, 결과가 빠르게 보이도록 정리했습니다.
+  eyebrow: Evidence
+  title: 역할별로 검토할 수 있는 프로젝트 증거
+  lead: 프로젝트는 단순 목록이 아니라 Data + Graph, AI-DLC/MLOps, NLP/LLM 연구 역량의 증거로 읽히도록 정리했습니다.
   count: 2
 researchPreview:
   enabled: true
-  eyebrow: 연구 성과
-  title: 자연어처리와 의료 분야에서 진행한 연구 성과
+  eyebrow: Research Bridge
+  title: 모델링, 평가, alignment 판단을 뒷받침하는 연구
   count: 2
   ctaLabel: 자세히 보기
 experienceSnapshot:
@@ -56,20 +56,20 @@ experienceSnapshot:
   ctaLabel: 이력서 보기
 capabilityMap:
   enabled: true
-  eyebrow: 역량 맵
-  title:  딥러닝 프로세스 관점에서 정리한 역량
+  eyebrow: Role Map
+  title: 기업 검토를 위한 세 개의 동등한 역할 축
 documents:
   enabled: true
   eyebrow: 문서
-  title: 채용 담당자, 협업자, 기술 검토자를 위한 인쇄형 문서
+  title: 채용 담당자와 기술 검토자를 위한 제출형 문서
   cards:
     - label: 이력서
       title: 한눈에 들어오는 이력서
-      body: AI 연구 성과, MLOps 관련 기술 스택, 그리고 핵심 프로젝트의 기여도를 압축적으로 담았습니다.
+      body: AI Systems Engineer 정체성, 핵심 역량, 프로젝트와 연구 증거를 압축적으로 담았습니다.
       href: /resume/
       ctaLabel: CV/Resume 열기
     - label: 포트폴리오
       title: 문제 해결 중심의 포트폴리오
-      body: 각 프로젝트의 문제 정의, 아키텍처 설계, 기술적 한계 극복 과정을 상세히 기록한 케이스 스터디입니다.
+      body: Role Map, AI-DLC 운영 모델, Evidence Library, 케이스 스터디를 포함한 기업 제출용 문서입니다.
       href: /portfolio/
       ctaLabel: 포트폴리오 열기

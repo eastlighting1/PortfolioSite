@@ -10,6 +10,40 @@ summary: "Contributed to the machine learning pipeline for a conversational diar
 portfolioProblem: "The product needed ML components that could recognize user emotion and support a diary-generation workflow from daily conversation logs."
 portfolioApproach: "I focused on the ML side by implementing and refining the emotion recognition and by helping connect chatbot and summarization models into the overall AI workflow."
 portfolioOutcome: "The project delivered an MVP-level conversational diary experience and gave me hands-on experience in integrating Korean NLP models for emotion-aware user interaction."
+evidence:
+  primaryTheme: nlp-llm
+  secondaryThemes:
+    - aidlc-mlops
+  dataSurfaces:
+    - text
+  workflowStages:
+    - data
+    - experiment
+    - training
+    - inference
+    - evaluation
+  evidenceLevel: Implemented
+  disclosureLevel: Public Summary Only
+  businessSignal: "Connects Korean NLP models into a user-facing AI pipeline for conversational product experience."
+  subtypes:
+    - Conversational AI
+    - NLP Pipeline
+    - Domain Application
+portfolio:
+  thesis: "A Korean conversational AI project connecting emotion recognition, chatbot, and summarization models to a diary-generation workflow."
+  value: "Placed individual NLP models inside a product flow for emotion-aware personal reflection."
+  problem: "The product needed ML components that could recognize user emotion and support a diary-generation workflow from daily conversation logs."
+  decisions:
+    - label: "Emotion-first ML pipeline"
+      description: "Centered the ML workflow around KoBERT-based emotion recognition and connected it to chatbot and summarization flows."
+  outcome: "The project delivered an MVP-level conversational diary experience with an emotion recognition pipeline."
+  metrics:
+    - label: "Pipeline"
+      value: "Korean NLP"
+      context: "Emotion recognition, chatbot, and summarization integration"
+resume:
+  include: true
+  priority: 50
 featured: true
 tags:
   - "Conversational AI"

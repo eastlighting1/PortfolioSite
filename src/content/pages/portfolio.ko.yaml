@@ -1,7 +1,76 @@
 pageType: portfolio
 documentTitle: 포트폴리오 | 김동현
-documentDescription: 데이터 분석부터 대화형 AI, 의료 AI까지의 다양한 경험을 담은 포트폴리오입니다.
-printToolbarLabel: 데이터 분석부터 대화형 AI, 의료 AI까지의 다양한 경험을 담은 포트폴리오입니다.
+documentDescription: 기업 제출용 AI Systems Engineer 포트폴리오입니다. 데이터, AI-DLC/MLOps, NLP/LLM 연구 경험을 검토 가능한 증거로 정리했습니다.
+printToolbarLabel: 기업 제출용 AI Systems Engineer 포트폴리오입니다. 데이터, AI-DLC/MLOps, NLP/LLM 연구 경험을 검토 가능한 증거로 정리했습니다.
+hero:
+  eyebrow: Company Review Portfolio
+  title: AI Systems Engineer
+  lead: 정형, 텍스트, 이미지, 그래프 데이터와 AI-DLC 운영 흐름, NLP/LLM 연구 경험을 기업 검토 가능한 증거로 연결합니다.
+  valueStatement: 도메인 연구자가 아니라 다양한 데이터 표면과 AI 운영 흐름을 구조화하고, 검토 가능한 산출물로 전달하는 시스템형 AI 엔지니어로 읽히도록 구성했습니다.
+  actions:
+    - label: 대표 케이스 보기
+      href: "#featuredCases"
+      variant: primary
+    - label: PDF로 저장하기
+      href: /portfolio/print/
+      variant: secondary
+    - label: 이력서 열기
+      href: /resume/
+      variant: secondary
+sectionHeadings:
+  valueMap:
+    eyebrow: Role Map
+    title: 세 개의 역할이 같은 무게로 검토됩니다
+    lead: 데이터, AI-DLC/MLOps, NLP/LLM 연구 역량을 서로 보조하는 동등한 직무 신호로 제시합니다.
+  aidlc:
+    eyebrow: AI-DLC
+    title: AI-Driven Development Life Cycle로 작업 흐름을 설명합니다
+    lead: 데이터 준비에서 실험, 학습, 평가, 배포, 관측, 복구까지 어떤 구간을 다뤘는지 명확히 보여줍니다.
+  evidenceLibrary:
+    eyebrow: Evidence
+    title: 프로젝트는 역할별 증거로 읽힙니다
+    lead: 프로젝트를 단순 목록이 아니라 Evidence Level, Disclosure Level, 데이터 표면, 워크플로우 단계로 분류합니다.
+  outcomes:
+    eyebrow: 성과
+    title: 주요 성과는 맥락과 함께 제시합니다
+    lead: 숫자와 키워드는 단독으로 두지 않고, 어떤 프로젝트에서 나온 증거인지 함께 보여줍니다.
+  featuredCases:
+    eyebrow: 케이스
+    title: 문제, 결정, 결과가 함께 보이는 대표 작업
+    lead: 포트폴리오의 핵심은 프로젝트 목록이 아니라 판단 과정과 결과의 연결입니다.
+  process:
+    eyebrow: 프로세스
+    title: 반복 가능한 작업 방식
+    lead: 연구, 실험, 구현, 전달을 어떤 순서로 엮는지 보여줍니다.
+  researchBridge:
+    eyebrow: 연구 연결
+    title: 연구는 별도 선반이 아니라 구현의 근거입니다
+    lead: 연구 페이지가 publication archive라면, 이 섹션은 프로젝트 판단을 뒷받침한 연구 맥락입니다.
+  recognition:
+    eyebrow: 수료와 수상
+    title: 학습과 실무 기반을 보강한 이력
+    lead: 자격과 수상은 주장이 아니라 프로젝트 근거를 보강하는 보조 신호입니다.
+  contact:
+    eyebrow: 연락
+    title: 공식 검토는 이력서로, 기술 검토는 케이스로 이어집니다
+    lead: 채용 검토는 이력서, 기술 검토는 프로젝트 케이스, 더 깊은 대화는 연락처로 이어지게 설계했습니다.
+featuredCaseSlugs:
+  - emr-nursing-surveillance
+  - contexta-portfolio
+  - lynxes-portfolio
+sections:
+  - valueMap
+  - aidlc
+  - evidenceLibrary
+  - outcomes
+  - featuredCases
+  - process
+  - researchBridge
+  - recognition
+  - contact
+print:
+  enabled: true
+  label: 브라우저 인쇄 또는 PDF 저장에 맞게 최적화된 포트폴리오입니다.
 web:
   pages:
     - kind: philosophyCore
@@ -56,37 +125,6 @@ overview:
   research:
     enabled: true
     title: 연구 하이라이트
-recognition:
-  certificates:
-    - title: 데브옵스 환경의 모니터링과 테스트 실전구현
-      issuer: LLOYDK
-      date: "2023.11"
-      description: Elastic 기반 DevOps 모니터링 및 테스트 실무 교육을 이수했습니다.
-      bullets:
-        - Elastic 사의 DevOps 관련 서비스와 운영 환경을 학습했습니다.
-        - 모니터링과 테스트 관점에서 실무 적용 가능한 DevOps 개념을 익혔습니다.
-    - title: Multi Cloud Orchestration Program
-      issuer: 5Works
-      date: "2023.12"
-      description: HashiCorp 기반 멀티 클라우드 오케스트레이션 및 IaC 교육을 이수했습니다.
-      bullets:
-        - Packer, Terraform 등 HashiCorp의 IaC 도구를 중심으로 학습했습니다.
-        - 멀티 클라우드 환경에서의 인프라 자동화와 오케스트레이션 개념을 익혔습니다.
-    - title: 기업주도 집중프로젝트 교육
-      issuer: 디케이테크인
-      date: "2024.02"
-      description: 보안 및 DevOps 엔지니어링 중심의 기업 연계 실무 교육에 참여했습니다.
-      bullets:
-        - 클라우드, CI/CD, 보안 관련 작업을 수행하며 실무형 프로젝트를 진행했습니다.
-        - 추천 시스템 구축 과정에서 숙련자로서 조언과 구축 보조 역할을 맡았습니다.
-    - title: 소프트웨어 전문인재 Micro Degree
-      issuer: 가천대학교
-      date: "2024.02"
-      description: 소프트웨어 전문인재 양성을 위한 마이크로디그리 과정을 이수했습니다.
-      bullets:
-        - 소프트웨어 및 실무형 디지털 역량 강화를 위한 과정을 수료했습니다.
-        - 학부 기반 교육과 실무형 프로젝트 경험을 연결하는 이수 이력을 갖추었습니다.
-  awards: []
 selection:
   projectCount: 2
   caseStudyCount: 3
@@ -100,3 +138,5 @@ selection:
     - emr-nursing-surveillance
     - frimo-conversational-diary
     - devridge-feedback-bridge
+    - contexta-portfolio
+    - lynxes-portfolio

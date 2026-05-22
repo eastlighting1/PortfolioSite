@@ -1,0 +1,13 @@
+---
+const { metrics } = Astro.props;
+---
+
+<div class="portfolio-metric-grid">
+  {metrics.map((metric: { source: string; value: string; context?: string; label: string }) => (
+    <article class="portfolio-metric-card" data-reveal="1">
+      <span>{metric.source}</span>
+      <strong>{metric.value}</strong>
+      <p>{metric.context ?? metric.label}</p>
+    </article>
+  ))}
+</div>

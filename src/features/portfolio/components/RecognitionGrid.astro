@@ -1,0 +1,14 @@
+---
+const { entries, locale } = Astro.props;
+---
+
+<div class="portfolio-recognition-grid">
+  {entries.map((entry: { kind: "certificate" | "award"; item: any }) => (
+    <article class="portfolio-recognition-card" data-reveal="1">
+      <span>{entry.kind === "certificate" ? (locale === "ko" ? "수료" : "Certificate") : (locale === "ko" ? "수상" : "Award")}</span>
+      <h3>{entry.item.title}</h3>
+      <p>{entry.item.issuer} / {entry.item.date}</p>
+      {entry.item.description && <p>{entry.item.description}</p>}
+    </article>
+  ))}
+</div>

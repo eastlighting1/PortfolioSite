@@ -6,6 +6,7 @@ import ResumeSection from "../../components/documents/ResumeSection.astro";
 import { formatPublicationCitation, getPublicationCitationFromBibtex } from "../../lib/bibtex";
 import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
+import { getRoleThemes } from "../portfolio/portfolio-data";
 
 interface Props {
   locale: Locale;
@@ -15,29 +16,30 @@ interface Props {
 const { locale, pathname } = Astro.props;
 
 const resumePage = await getPageEntry("resume", locale);
-const portfolioPage = await getPageEntry("portfolio", locale);
 const profileEntry = await getGlobalEntry("profile", locale);
 const siteEntry = await getGlobalEntry("site", locale);
 const linksEntry = await getGlobalEntry("links", locale);
 const experienceEntry = await getGlobalEntry("experience", locale);
 const educationEntry = await getGlobalEntry("education", locale);
+const recognitionEntry = await getGlobalEntry("recognition", locale);
 
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
 const links = linksEntry.data.externalProfiles;
 const experience = experienceEntry.data.items;
 const education = educationEntry.data.items;
+const recognitionData = recognitionEntry.data;
+const roleThemes = getRoleThemes(locale);
 
-if (resumePage.data.pageType !== "resume" || portfolioPage.data.pageType !== "portfolio") {
+if (resumePage.data.pageType !== "resume") {
   throw new Error("Missing resume content configuration.");
 }
 
 const allProjects = (await getLocalizedCollection("projects", locale))
-  .sort((a, b) => b.data.year - a.data.year);
+  .filter((project) => project.data.resume.include)
+  .sort((a, b) => a.data.resume.priority - b.data.resume.priority || b.data.year - a.data.year);
 
 const selectedProjects = allProjects
-  .filter((p) => !p.id.includes("emr-nursing-surveillance"))
-  .sort((a, b) => b.data.year - a.data.year)
   .slice(0, resumePage.data.sections.projects.count ?? 2);
 
 const selectedResearch = (await getLocalizedCollection("research", locale))
@@ -50,8 +52,8 @@ const allResearch = (await getLocalizedCollection("research", locale))
 const featuredExperience = experience.slice(0, resumePage.data.sections.experience.count ?? 2);
 const printExperience = experience;
 const printProjects = allProjects;
-const certificates = portfolioPage.data.recognition.certificates;
-const awards = portfolioPage.data.recognition.awards;
+const certificates = recognitionData.certificates;
+const awards = recognitionData.awards;
 const recognition = [...certificates, ...awards];
 
 function normalizeWhitespace(text: string) {
@@ -96,6 +98,23 @@ function getResumeResearchMeta(item: any) {
     authors: profile.name,
     ...formatResearchCitation(item.data.title, item.data.venue, item.data.year, item.data.type)
   };
+}
+
+function getProjectProblem(project: any) {
+  return project.data.portfolio?.problem ?? project.data.portfolioProblem;
+}
+
+function getProjectApproach(project: any) {
+  return project.data.portfolio?.decisions?.[0]?.description ?? project.data.portfolioApproach;
+}
+
+function getProjectOutcome(project: any) {
+  return project.data.portfolio?.outcome ?? project.data.portfolioOutcome;
+}
+
+function getProjectEvidence(project: any) {
+  const portfolioMetrics = project.data.portfolio?.metrics?.map((metric: any) => `${metric.label} ${metric.value}`) ?? [];
+  return portfolioMetrics.length > 0 ? portfolioMetrics : project.data.metrics;
 }
 
 const sectionLabels =
@@ -147,7 +166,7 @@ const cvAdditionalItems =
         },
         {
           label: sectionLabels.focusAreas,
-          value: profile.capabilityGroups.slice(0, 4).map((group) => group.title).join(" · ")
+          value: roleThemes.map((group) => group.shortTitle).join(" · ")
         },
         {
           label: locale === "ko" ? "위치" : "Location",
@@ -164,10 +183,27 @@ const cvAdditionalItems =
 >
   <PrintToolbar label={resumePage.data.printToolbarLabel} locale={locale} />
 
-  <div class="paper-sheet paper-sheet--resume document-shell screen-only">
-    <ResumeHeader locale={locale} />
-    <div class="resume-compact-grid">
-      <div class="document-list">
+  <div class="resume-showcase screen-only">
+    <section class="resume-showcase__hero">
+      <ResumeHeader locale={locale} />
+      <div class="resume-showcase__metrics">
+        <article>
+          <span>{sectionLabels.projects}</span>
+          <strong>{allProjects.length}</strong>
+        </article>
+        <article>
+          <span>{sectionLabels.publications}</span>
+          <strong>{allResearch.length}</strong>
+        </article>
+        <article>
+          <span>{sectionLabels.certifications}</span>
+          <strong>{recognition.length}</strong>
+        </article>
+      </div>
+    </section>
+
+    <div class="resume-showcase__grid">
+      <div class="resume-showcase__main">
         {resumePage.data.layout.leftColumn.map((sectionId) => {
           if (sectionId === "summary" && resumePage.data.sections.summary.enabled) {
             return (
@@ -219,13 +255,13 @@ const cvAdditionalItems =
           return null;
         })}
       </div>
-      <div class="document-list">
+      <aside class="resume-showcase__aside">
         {resumePage.data.layout.rightColumn.map((sectionId) => {
           if (sectionId === "skills" && resumePage.data.sections.skills.enabled) {
             return (
               <ResumeSection title={resumePage.data.sections.skills.title} className="resume-section--skills">
                 <div class="compact-skill-grid">
-                  {profile.capabilityGroups.map((group) => (
+                  {roleThemes.map((group) => (
                     <div class="resume-item resume-item--tight resume-skill-group">
                       <strong>{group.title}</strong>
                       <p>{compactText(group.description, 120)}</p>
@@ -265,7 +301,7 @@ const cvAdditionalItems =
           }
           return null;
         })}
-      </div>
+      </aside>
     </div>
   </div>
 
@@ -370,17 +406,17 @@ const cvAdditionalItems =
                   <span>{project.data.year}</span>
                 </div>
               </div>
-              {project.data.portfolioProblem ? (
+              {getProjectProblem(project) ? (
                 <ul class="cv-print-bullets cv-print-bullets--project">
-                  <li>{project.data.portfolioProblem}</li>
-                  <li>{project.data.portfolioApproach}</li>
-                  <li>{project.data.portfolioOutcome}</li>
+                  <li>{getProjectProblem(project)}</li>
+                  <li>{getProjectApproach(project)}</li>
+                  <li>{getProjectOutcome(project)}</li>
                 </ul>
               ) : (
                 <p class="cv-print-entry__detail">{project.data.summary}</p>
               )}
               <p class="cv-print-entry__detail cv-print-entry__detail--muted" style="margin-top: 1.25mm;">
-                {(project.data.metrics.length > 0 ? project.data.metrics : project.data.tags).slice(0, 3).join(" · ")}
+                {(getProjectEvidence(project).length > 0 ? getProjectEvidence(project) : project.data.tags).slice(0, 3).join(" · ")}
               </p>
             </article>
           ))}

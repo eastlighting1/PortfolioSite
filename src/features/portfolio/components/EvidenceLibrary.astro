@@ -1,0 +1,39 @@
+---
+const { groups, labels, locale } = Astro.props;
+const emptyLabel = locale === "ko" ? "검토 가능한 증거가 아직 없습니다." : "No reviewable evidence yet.";
+---
+
+<div class="portfolio-evidence-library">
+  {groups.map((group: any) => (
+    <section class="portfolio-evidence-group" data-reveal="1">
+      <div class="portfolio-evidence-group__head">
+        <span>{group.theme.shortTitle}</span>
+        <h3>{group.theme.title}</h3>
+        <p>{group.theme.businessSignal}</p>
+      </div>
+      <div class="portfolio-evidence-group__items">
+        {group.items.length > 0 ? (
+          group.items.slice(0, 4).map((item: any) => (
+            <article class="portfolio-evidence-item">
+              <div>
+                <span class="portfolio-evidence-item__meta">
+                  {item.evidence.evidenceLevel} / {item.evidence.disclosureLevel}
+                </span>
+                <h4>{item.title}</h4>
+                <p>{item.evidence.businessSignal}</p>
+              </div>
+              <div class="portfolio-evidence-item__tags">
+                {item.evidence.dataSurfaces.slice(0, 3).map((surface: string) => (
+                  <span class="tag-chip">{surface}</span>
+                ))}
+              </div>
+              <a href={item.href}>{labels.readCase}</a>
+            </article>
+          ))
+        ) : (
+          <p class="portfolio-evidence-group__empty">{emptyLabel}</p>
+        )}
+      </div>
+    </section>
+  ))}
+</div>

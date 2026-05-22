@@ -10,6 +10,40 @@ summary: "Contributed to the AI side of a React + Spring blog project, focusing 
 portfolioProblem: "The product needed ML components that could classify emotional polarity and generate stylistic variations of text to support richer blog content workflows."
 portfolioApproach: "I focused on the machine learning side by implementing a KoBERT-based polarity recognition model and a KoBART-based style transfer pipeline, along with dataset handling and repeated model experiments."
 portfolioOutcome: "The project gave the team practical AIs for blog-oriented text processing and strengthened my experience in integrating classification and generation models into a web product context."
+evidence:
+  primaryTheme: nlp-llm
+  secondaryThemes:
+    - aidlc-mlops
+  dataSurfaces:
+    - text
+  workflowStages:
+    - data
+    - experiment
+    - training
+    - inference
+    - evaluation
+  evidenceLevel: Implemented
+  disclosureLevel: Public Summary Only
+  businessSignal: "Connects Korean NLP classification and generation models to product-shaped web service features."
+  subtypes:
+    - Korean NLP
+    - Classification
+    - Generation
+portfolio:
+  thesis: "A Korean NLP project connecting emotion classification and style transfer models to a blog product workflow."
+  value: "Integrated classification and generation models in a product-shaped web service context."
+  problem: "The product needed ML components that could classify emotional polarity and generate stylistic variations of text to support richer blog content workflows."
+  decisions:
+    - label: "Separated KoBERT and KoBART roles"
+      description: "Used KoBERT for polarity recognition and KoBART for style transfer."
+  outcome: "The project gave the team practical AI modules for blog-oriented text processing."
+  metrics:
+    - label: "Model scope"
+      value: "Classification + Generation"
+      context: "Emotional polarity and style transfer"
+resume:
+  include: true
+  priority: 70
 featured: false
 tags:
   - "Polarity Recognition"

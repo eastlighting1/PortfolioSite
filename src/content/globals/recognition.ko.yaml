@@ -1,0 +1,31 @@
+globalType: recognition
+certificates:
+  - title: 데브옵스 환경의 모니터링과 테스트 실전구현
+    issuer: LLOYDK
+    date: "2023.11"
+    description: Elastic 기반 DevOps 모니터링 및 테스트 실무 교육을 이수했습니다.
+    bullets:
+      - Elastic 사의 DevOps 관련 서비스와 운영 환경을 학습했습니다.
+      - 모니터링과 테스트 관점에서 실무 적용 가능한 DevOps 개념을 익혔습니다.
+  - title: Multi Cloud Orchestration Program
+    issuer: 5Works
+    date: "2023.12"
+    description: HashiCorp 기반 멀티 클라우드 오케스트레이션 및 IaC 교육을 이수했습니다.
+    bullets:
+      - Packer, Terraform 등 HashiCorp의 IaC 도구를 중심으로 학습했습니다.
+      - 멀티 클라우드 환경에서의 인프라 자동화와 오케스트레이션 개념을 익혔습니다.
+  - title: 기업주도 집중프로젝트 교육
+    issuer: 디케이테크인
+    date: "2024.02"
+    description: 보안 및 DevOps 엔지니어링 중심의 기업 연계 실무 교육에 참여했습니다.
+    bullets:
+      - 클라우드, CI/CD, 보안 관련 작업을 수행하며 실무형 프로젝트를 진행했습니다.
+      - 추천 시스템 구축 과정에서 숙련자로서 조언과 구축 보조 역할을 맡았습니다.
+  - title: 소프트웨어 전문인재 Micro Degree
+    issuer: 가천대학교
+    date: "2024.02"
+    description: 소프트웨어 전문인재 양성을 위한 마이크로디그리 과정을 이수했습니다.
+    bullets:
+      - 소프트웨어 및 실무형 디지털 역량 강화를 위한 과정을 수료했습니다.
+      - 학부 기반 교육과 실무형 프로젝트 경험을 연결하는 이수 이력을 갖추었습니다.
+awards: []

@@ -2,6 +2,7 @@
 import { getGlobalEntry } from "../../../lib/content";
 import { withBase } from "../../../lib/site";
 import { localizePath, type Locale } from "../../../lib/i18n";
+import { getRoleThemes } from "../../portfolio/portfolio-data";
 
 interface Props {
   eyebrow: string;
@@ -28,6 +29,7 @@ const profileEntry = await getGlobalEntry("profile", locale);
 const siteEntry = await getGlobalEntry("site", locale);
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
+const roleThemes = getRoleThemes(locale);
 ---
 
 <section class="section">
@@ -35,13 +37,12 @@ const siteConfig = siteEntry.data;
     <div class="hero-panel card-paper card-paper--hero">
       <div>
         <div class="eyebrow" data-reveal="1">{eyebrow}</div>
-        <h1 class="hero-title" data-reveal="2">{profile.name}</h1>
+        <h1 class="hero-title" data-reveal="2">{siteConfig.primaryRole}</h1>
         <p class="hero-copy" data-reveal="3" set:html={summary} />
         <p class="hero-copy" data-reveal="4" set:html={profile.intro} />
         <div class="chip-row" data-reveal="4">
-          <span class="role-chip">{siteConfig.primaryRole}</span>
-          {siteConfig.secondaryRoles.map((role) => (
-            <span class="role-chip">{role}</span>
+          {roleThemes.map((role) => (
+            <span class="role-chip">{role.shortTitle}</span>
           ))}
         </div>
         <div class="hero-actions" data-reveal="4">

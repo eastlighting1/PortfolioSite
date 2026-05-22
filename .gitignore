@@ -6,5 +6,9 @@ Thumbs.db
 npm-debug.log*
 tmp/
 .tools
-docs
+docs/*
+!docs/
+!docs/architecture/
+docs/architecture/*
+!docs/architecture/portfolio-web-first-technical-product-spec.md
 .codex-temp

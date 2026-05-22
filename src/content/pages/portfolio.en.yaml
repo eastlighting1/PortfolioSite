@@ -1,7 +1,76 @@
 pageType: portfolio
 documentTitle: Portfolio | Donghyeon Kim
-documentDescription: This portfolio contains diverse experiences ranging from data analysis to conversational AI and medical AI.
-printToolbarLabel: This portfolio contains diverse experiences ranging from data analysis to conversational AI and medical AI.
+documentDescription: A company-submission AI Systems Engineer portfolio organized around data, AI-DLC/MLOps, and NLP/LLM evidence.
+printToolbarLabel: A company-submission AI Systems Engineer portfolio organized around data, AI-DLC/MLOps, and NLP/LLM evidence.
+hero:
+  eyebrow: Company Review Portfolio
+  title: AI Systems Engineer
+  lead: I connect structured, text, image, and graph data with AI-DLC operations and NLP/LLM research experience into company-reviewable evidence.
+  valueStatement: The portfolio is designed to read as an AI systems engineering profile, not a domain-only research archive.
+  actions:
+    - label: View Featured Cases
+      href: "#featuredCases"
+      variant: primary
+    - label: Save as PDF
+      href: /portfolio/print/
+      variant: secondary
+    - label: Open Resume
+      href: /resume/
+      variant: secondary
+sectionHeadings:
+  valueMap:
+    eyebrow: Role Map
+    title: Three role themes carry equal review weight
+    lead: Data, AI-DLC/MLOps, and NLP/LLM research are presented as equal signals that reinforce one AI systems profile.
+  aidlc:
+    eyebrow: AI-DLC
+    title: AI-Driven Development Life Cycle as the operating model
+    lead: The portfolio makes it clear which stages are covered from data and experiment through training, evaluation, deployment, observability, and recovery.
+  evidenceLibrary:
+    eyebrow: Evidence
+    title: Projects are organized as role-based evidence
+    lead: Projects are classified by evidence level, disclosure level, data surface, and workflow stage rather than shown as a flat list.
+  outcomes:
+    eyebrow: Outcomes
+    title: Outcomes stay close to their evidence
+    lead: Metrics and keywords appear with the project context that produced them.
+  featuredCases:
+    eyebrow: Cases
+    title: Featured work framed by problem, decision, and outcome
+    lead: The portfolio is not a project list; it is a map of judgment, tradeoffs, and results.
+  process:
+    eyebrow: Process
+    title: A repeatable way of turning research into systems
+    lead: This section shows how research, experimentation, implementation, and delivery connect.
+  researchBridge:
+    eyebrow: Research
+    title: Research is evidence that feeds implementation
+    lead: The research page is a publication archive; this section shows the research context behind project decisions.
+  recognition:
+    eyebrow: Recognition
+    title: Learning and practice signals behind the work
+    lead: Certificates and awards support the evidence rather than replacing it.
+  contact:
+    eyebrow: Contact
+    title: Use the resume for formal review and the cases for technical depth
+    lead: The page is designed to move from formal review to technical inspection to direct conversation.
+featuredCaseSlugs:
+  - emr-nursing-surveillance
+  - contexta-portfolio
+  - lynxes-portfolio
+sections:
+  - valueMap
+  - aidlc
+  - evidenceLibrary
+  - outcomes
+  - featuredCases
+  - process
+  - researchBridge
+  - recognition
+  - contact
+print:
+  enabled: true
+  label: Optimized for browser print and PDF export.
 web:
   pages:
     - kind: philosophyCore
@@ -56,37 +125,6 @@ overview:
   research:
     enabled: true
     title: Research Highlights
-recognition:
-  certificates:
-    - title: Practical Implementation of Monitoring and Testing in DevOps Environments
-      issuer: LLOYDK
-      date: "2023.11"
-      description: Completed practical training in Elastic-based DevOps monitoring and testing.
-      bullets:
-        - Studied DevOps-related services and operational environments provided by Elastic.
-        - Learned DevOps concepts applicable to practical work from monitoring and testing perspectives.
-    - title: Multi Cloud Orchestration Program
-      issuer: 5Works
-      date: "2023.12"
-      description: Completed HashiCorp-based multi-cloud orchestration and IaC training.
-      bullets:
-        - Studied mainly HashiCorp IaC tools such as Packer and Terraform.
-        - Learned the concepts of infrastructure automation and orchestration in multi-cloud environments.
-    - title: Company-Led Intensive Project Training
-      issuer: DK Techin
-      date: "2024.02"
-      description: Participated in industry-linked practical training focused on security and DevOps engineering.
-      bullets:
-        - Conducted practical projects while working on cloud, CI/CD, and security-related tasks.
-        - Took on the role of advisor and build assistant as an experienced member during the recommender system development process.
-    - title: Micro Degree in Software Specialist Training
-      issuer: Gachon University
-      date: "2024.02"
-      description: Completed a micro-degree program for training software specialists.
-      bullets:
-        - Completed a program aimed at strengthening software and practice-oriented digital capabilities.
-        - Built a record of completion that connects undergraduate-based education with practice-oriented project experience.
-  awards: []
 selection:
   projectCount: 2
   caseStudyCount: 3

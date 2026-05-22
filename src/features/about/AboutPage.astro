@@ -13,9 +13,10 @@ interface Props {
 const { locale, pathname } = Astro.props;
 const aboutPage = await getPageEntry("about", locale);
 const archiveEntries = (await getLocalizedCollection("archive", locale))
+  .filter((entry) => aboutPage.data.gallery.types.includes(entry.data.type))
   .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
 const renderedEntries = await Promise.all(
-  archiveEntries.map(async (entry) => ({
+  archiveEntries.slice(0, aboutPage.data.gallery.count).map(async (entry) => ({
     entry,
     slug: entrySlug(entry),
     ...(await render(entry))
@@ -28,68 +29,113 @@ if (aboutPage.data.pageType !== "about") {
 ---
 
 <BaseLayout title={aboutPage.data.documentTitle} description={aboutPage.data.documentDescription} pathname={pathname} locale={locale}>
-  <section class="section">
-    <div class="container">
-      <PageHero
-        eyebrow={aboutPage.data.hero.eyebrow}
-        title={aboutPage.data.hero.title}
-        description={aboutPage.data.hero.description}
-      />
-      <div class="section-tight">
-        <div class="about-gallery__intro">
-          <h2>{aboutPage.data.gallery.title}</h2>
-          <p class="section-lead">{aboutPage.data.gallery.lead}</p>
-        </div>
-        <div class="about-gallery">
-          {renderedEntries.map(({ entry, slug, Content }) => (
-            <article class="about-gallery__card" data-entry-type={entry.data.type}>
-              <div class="about-gallery__meta">
-                <span class="small-label">{entry.data.type}</span>
-                <span class="small-label">{entry.data.publishedAt}</span>
-              </div>
-              <h3>{entry.data.title}</h3>
-              {entry.data.context && <p class="about-gallery__context">{entry.data.context}</p>}
-              <p class="muted">{entry.data.summary}</p>
-              {entry.data.tags.length > 0 && (
-                <div class="tag-row about-gallery__tags">
-                  {entry.data.tags.map((tag) => (
-                    <span class="tag-chip">{tag}</span>
-                  ))}
-                </div>
-              )}
-              <div class="about-gallery__actions">
-                <button class="button-link-secondary about-gallery__trigger" type="button" data-dialog-open={`archive-entry-${slug}`}>
-                  {aboutPage.data.gallery.openEntryLabel}
-                </button>
-              </div>
-              <dialog id={`archive-entry-${slug}`} class="project-preview-dialog about-gallery__dialog">
-                <article class="project-preview-card about-gallery__dialog-card">
-                  <div class="doc-toolbar" style="margin-bottom: 0.5rem;">
+  {aboutPage.data.sectionOrder.map((sectionId) => {
+    if (sectionId === "hero") {
+      return (
+        <section class="section about-page-hero">
+          <div class="container">
+            <PageHero
+              eyebrow={aboutPage.data.hero.eyebrow}
+              title={aboutPage.data.hero.title}
+              description={aboutPage.data.hero.description}
+            />
+          </div>
+        </section>
+      );
+    }
+
+    if (sectionId === "positioning" && aboutPage.data.positioning.enabled) {
+      return (
+        <section class="section-tight">
+          <div class="container">
+            <div class="section-head">
+              <div class="eyebrow">{aboutPage.data.positioning.eyebrow}</div>
+              <h2 class="section-title">{aboutPage.data.positioning.title}</h2>
+              {aboutPage.data.positioning.lead && <p class="section-lead">{aboutPage.data.positioning.lead}</p>}
+            </div>
+            <div class="about-positioning-grid">
+              {aboutPage.data.positioning.cards.map((card) => (
+                <article class="about-positioning-card">
+                  {card.label && <span class="small-label">{card.label}</span>}
+                  <h3>{card.title}</h3>
+                  <p>{card.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (sectionId === "gallery" && aboutPage.data.gallery.enabled) {
+      return (
+        <section class="section-tight">
+          <div class="container">
+            <div class="about-gallery__intro">
+              <h2>{aboutPage.data.gallery.title}</h2>
+              <p class="section-lead">{aboutPage.data.gallery.lead}</p>
+            </div>
+            <div class="about-gallery">
+              {renderedEntries.map(({ entry, slug, Content }) => (
+                <article class="about-gallery__card" data-entry-type={entry.data.type}>
+                  <div class="about-gallery__meta">
                     <span class="small-label">{entry.data.type}</span>
-                    <button type="button" data-dialog-close={`archive-entry-${slug}`} aria-label={aboutPage.data.gallery.closeEntryLabel}>
-                      {aboutPage.data.gallery.closeEntryLabel}
-                    </button>
+                    <span class="small-label">{entry.data.publishedAt}</span>
                   </div>
                   <h3>{entry.data.title}</h3>
-                  <p class="muted">{entry.data.publishedAt}{entry.data.context ? ` | ${entry.data.context}` : ""}</p>
-                  <div class="prose about-gallery__prose">
-                    <Content />
-                  </div>
+                  {entry.data.context && <p class="about-gallery__context">{entry.data.context}</p>}
+                  <p class="muted">{entry.data.summary}</p>
                   {entry.data.tags.length > 0 && (
-                    <div class="tag-row" style="margin-top: 1rem;">
+                    <div class="tag-row about-gallery__tags">
                       {entry.data.tags.map((tag) => (
                         <span class="tag-chip">{tag}</span>
                       ))}
                     </div>
                   )}
+                  <div class="about-gallery__actions">
+                    <button class="button-link-secondary about-gallery__trigger" type="button" data-dialog-open={`archive-entry-${slug}`}>
+                      {aboutPage.data.gallery.openEntryLabel}
+                    </button>
+                  </div>
+                  <dialog id={`archive-entry-${slug}`} class="project-preview-dialog about-gallery__dialog">
+                    <article class="about-modal">
+                      <header class="about-modal__header">
+                        <div>
+                          <span class="small-label">{entry.data.type}</span>
+                          <h3>{entry.data.title}</h3>
+                          <p>{entry.data.publishedAt}{entry.data.context ? ` | ${entry.data.context}` : ""}</p>
+                        </div>
+                        <button type="button" data-dialog-close={`archive-entry-${slug}`} aria-label={aboutPage.data.gallery.closeEntryLabel}>
+                          {aboutPage.data.gallery.closeEntryLabel}
+                        </button>
+                      </header>
+                      <div class="about-modal__body">
+                        <aside class="about-modal__meta">
+                          <p>{entry.data.summary}</p>
+                          {entry.data.tags.length > 0 && (
+                            <div class="tag-row">
+                              {entry.data.tags.map((tag) => (
+                                <span class="tag-chip">{tag}</span>
+                              ))}
+                            </div>
+                          )}
+                        </aside>
+                        <div class="prose about-gallery__prose">
+                          <Content />
+                        </div>
+                      </div>
+                    </article>
+                  </dialog>
                 </article>
-              </dialog>
-            </article>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    return null;
+  })}
 </BaseLayout>
 
 <script>

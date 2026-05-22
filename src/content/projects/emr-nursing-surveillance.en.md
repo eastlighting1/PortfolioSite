@@ -11,6 +11,104 @@ summary: "Built an automatic ICD coding pipeline for nursing surveillance of abd
 portfolioProblem: "Nursing surveillance required diagnosis-related classification, but key clinical signals were fragmented across heterogeneous EMR sources."
 portfolioApproach: "I integrated structured EMR features and nursing text, then used a dual KM-BERT, PCA, and XGBoost stacking architecture for ICD prediction."
 portfolioOutcome: "The final model achieved 0.9245 accuracy and strong rare-class recall without depending on physician-centered post-hoc documents."
+evidence:
+  primaryTheme: nlp-llm
+  secondaryThemes:
+    - data-graph
+  dataSurfaces:
+    - structured
+    - text
+    - hybrid
+  workflowStages:
+    - data
+    - training
+    - evaluation
+  evidenceLevel: Published
+  disclosureLevel: Public Summary Only
+  businessSignal: "Combines heterogeneous structured EMR and Korean clinical text into an evaluable NLP pipeline."
+  subtypes:
+    - NLP Evaluation
+    - Domain Application
+    - Structured + Text Pipeline
+portfolio:
+  thesis: "A clinical AI study showing that core EMR data available during nursing work can support practical diagnosis-related classification."
+  value: "Built evidence for automatic ICD coding without depending on physician-centered post-hoc documents."
+  problem: "Nursing surveillance required diagnosis-related classification, but key clinical signals were fragmented across heterogeneous EMR sources."
+  constraints:
+    - "The model could not depend on discharge summaries or other post-event documents."
+    - "Rare classes still needed practically meaningful recall."
+    - "The pipeline had to combine structured EMR features with Korean clinical text."
+  decisions:
+    - label: "Dual KM-BERT representation"
+      description: "Trained two KM-BERT models independently and averaged raw logits to stabilize text representation."
+      rationale: "The ensemble reduced volatility in clinical text signals."
+    - label: "PCA and XGBoost stacking"
+      description: "Reduced BERT-derived representations with PCA and used XGBoost as the final ICD classifier."
+      rationale: "This made high-dimensional text signals and structured EMR features easier to combine."
+  architecture:
+    summary: "A clinical AI pipeline that processes structured EMR and nursing text in parallel before stacking them for ICD prediction."
+    nodes:
+      - id: "structured-emr"
+        label: "Structured EMR"
+        kind: "data"
+        description: "Laboratory results, IO, BST, vital signs, and patient information"
+      - id: "nursing-text"
+        label: "Nursing Text"
+        kind: "data"
+        description: "Nursing notes and PACU records"
+      - id: "dual-kmbert"
+        label: "Dual KM-BERT"
+        kind: "model"
+        description: "Korean clinical text representation"
+      - id: "stacking-classifier"
+        label: "PCA + XGBoost"
+        kind: "model"
+        description: "Dimensionality reduction and final ICD prediction"
+      - id: "evaluation"
+        label: "Rare-class Evaluation"
+        kind: "evaluation"
+        description: "Accuracy, weighted F1, and rare-class recall"
+    links:
+      - from: "structured-emr"
+        to: "stacking-classifier"
+        label: "scaled features"
+      - from: "nursing-text"
+        to: "dual-kmbert"
+        label: "tokenized notes"
+      - from: "dual-kmbert"
+        to: "stacking-classifier"
+        label: "logit ensemble"
+      - from: "stacking-classifier"
+        to: "evaluation"
+        label: "ICD predictions"
+  process:
+    - label: "Data integration"
+      description: "Joined heterogeneous EMR sources for 8,587 abdominal surgery patients by patient ID."
+    - label: "Representation learning"
+      description: "Converted structured signals and Korean nursing text into model-ready representations."
+    - label: "Stacked evaluation"
+      description: "Combined PCA, XGBoost, and imbalance handling to validate overall and rare-class performance."
+  outcome: "The final model achieved 0.9245 accuracy and 0.9157 weighted F1-score while retaining strong rare-class recall."
+  metrics:
+    - label: "Accuracy"
+      value: "0.9245"
+      context: "Final Double KM-BERT + XGBoost + PCA model"
+    - label: "Weighted F1-score"
+      value: "0.9157"
+      context: "Weighted F1 across classes"
+    - label: "Rare-class Recall"
+      value: "High"
+      context: "Practical recall on sparse classes"
+  artifacts:
+    - label: "Published paper"
+      href: "https://doi.org/10.9708/jksci.2025.30.05.021"
+      kind: "paper"
+  reflection: "The work clarified that clinical AI value depends not only on performance, but on which documents and signals are realistically available at the time of use."
+  relatedResearch:
+    - "deep-learning-icd-coding"
+resume:
+  include: true
+  priority: 10
 featured: true
 tags:
   - "Medical AI"

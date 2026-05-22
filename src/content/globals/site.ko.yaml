@@ -1,13 +1,13 @@
 globalType: site
 name: 김동현
 shortName: 동현
-title: 김동현 | AI 연구자 및 AI 엔지니어
-description: 대화형 AI, 의료 AI, 그리고 신뢰 가능한 ML 시스템 전달에 초점을 둔 응용 AI 연구자 및 엔지니어의 포트폴리오입니다.
-primaryRole: AI 연구자
+title: 김동현 | AI Systems Engineer
+description: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 기업 제출용 증거로 정리한 AI Systems Engineer 포트폴리오입니다.
+primaryRole: AI Systems Engineer
 secondaryRoles:
-  - MLOps 엔지니어
-  - 의료 AI 개발자
-  - 대화형 AI 개발자
+  - Data + Graph
+  - AI-DLC / MLOps
+  - NLP / LLM
 location: 인천, 대한민국
 email: eastlighting1@gachon.ac.kr
 siteUrl: https://eastlighting.github.io

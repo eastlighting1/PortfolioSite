@@ -1,10 +1,11 @@
 pageType: projects
 documentTitle: Projects | Donghyeon Kim
-documentDescription: Project catalogue covering conversational AI, clinical AI, and applied ML implementation.
+documentDescription: Project evidence library for a company-submission AI Systems Engineer portfolio.
 hero:
-  eyebrow: Projects
-  title: Applied AI project catalogue
-  description: A dedicated catalogue of projects spanning clinical decision support, conversational AI, LLM prototyping, and collaborative NLP work. Each entry is written as a case study with problem context, contribution, and outcome.
+  eyebrow: Evidence Library
+  title: Project evidence by review signal
+  description: Projects are presented as evidence for Data + Graph, AI-DLC/MLOps, and NLP/LLM research capability rather than as a flat catalogue. Each item can be reviewed with evidence level, disclosure level, data surface, and workflow coverage.
   meta:
-    - Case-study format
-    - Real project context
+    - AI Systems Engineer
+    - Role-based evidence
+    - Disclosure-aware

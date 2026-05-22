@@ -1,0 +1,23 @@
+---
+const { labels, locale, profile, resumeHref, projectsHref, contactItems } = Astro.props;
+---
+
+<div class="portfolio-contact-panel">
+  <div>
+    <p class="portfolio-section-head__eyebrow">{labels.contact}</p>
+    <h2>{locale === "ko" ? "공식 검토는 이력서로, 기술 검토는 케이스로 이어집니다" : "Use the resume for formal review and the cases for technical depth"}</h2>
+    <p>{profile.summary}</p>
+  </div>
+  <div class="portfolio-contact-panel__actions">
+    <a class="button-link" href={resumeHref}>{locale === "ko" ? "이력서 열기" : "Open Resume"}</a>
+    <a class="button-link-secondary" href={projectsHref}>{locale === "ko" ? "전체 프로젝트 보기" : "View All Projects"}</a>
+    <div class="portfolio-contact-panel__links">
+      {contactItems.map((item: { label: string; value: string; href: string }) => (
+        <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+          <span>{item.label}</span>
+          <strong>{item.value}</strong>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>

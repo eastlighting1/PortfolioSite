@@ -1,11 +1,12 @@
 pageType: research
 documentTitle: Research | Donghyeon Kim
-documentDescription: Papers and technical writing connected to conversational AI, clinical AI, and applied ML systems.
+documentDescription: Research bridge connecting NLP/LLM modeling, evaluation, and alignment judgment to portfolio evidence.
 hero:
-  eyebrow: Research
-  title: Research and technical writing
-  description: A reading surface for publications and technical notes that reflect my work across empathetic dialogue generation, healthcare AI, and evaluation-oriented implementation.
+  eyebrow: Research Bridge
+  title: Research as evidence for system judgment
+  description: Publications and research items are organized as support for NLP/LLM modeling, evaluation design, domain transfer, and alignment awareness rather than as a detached archive.
   className: page-hero--catalog
   meta:
-    - Publications and notes
-    - Long-form detail pages
+    - AI Systems Engineer
+    - Modeling and Evaluation
+    - Linked Evidence

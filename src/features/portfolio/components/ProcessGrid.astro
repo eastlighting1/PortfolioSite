@@ -1,0 +1,14 @@
+---
+const { items } = Astro.props;
+---
+
+<div class="portfolio-process-grid">
+  {items.map((item: { title?: string; label?: string; emphasis?: string; description: string }, index: number) => (
+    <article class="portfolio-process-step" data-reveal="1">
+      <span>{String(index + 1).padStart(2, "0")}</span>
+      <h3>{item.title ?? item.label}</h3>
+      {"emphasis" in item && <p class="portfolio-process-step__emphasis">{item.emphasis}</p>}
+      <p>{item.description}</p>
+    </article>
+  ))}
+</div>

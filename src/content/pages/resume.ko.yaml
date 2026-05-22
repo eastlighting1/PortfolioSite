@@ -1,24 +1,24 @@
 pageType: resume
 documentTitle: 이력서 | 김동현
-documentDescription: 대화형 AI, 의료 AI, ML 시스템 전반을 다루는 응용 AI 연구자 겸 엔지니어의 인쇄 친화형 이력서입니다.
+documentDescription: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 압축한 AI Systems Engineer 이력서입니다.
 printToolbarLabel: 브라우저 인쇄 및 PDF 저장에 맞게 최적화되었습니다.
 printCv:
   includeProjects: true
   keywords:
-    - 의료 AI
-    - 대화형 AI
-    - 시스템 관점의 AI
-    - 임상 NLP
+    - AI Systems Engineer
+    - Data + Graph
+    - AI-DLC
     - MLOps
-    - 응용 AI 시스템
-  objective: 대화형 AI와 의료 AI 과제를 모델링, 평가, 구현까지 연결해 실제로 작동하는 결과물로 만드는 응용 AI 연구자이자 엔지니어입니다.
+    - Observability
+    - NLP/LLM Evaluation
+  objective: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 검토 가능한 AI 시스템 산출물로 연결하는 엔지니어입니다.
   additionalItems:
     - label: 핵심 기술
       value: Python · PyTorch · HuggingFace · Docker · AWS
     - label: 관심 축
-      value: 의료 AI · 대화형 AI · MLOps
+      value: Data + Graph · AI-DLC/MLOps · NLP/LLM
     - label: 기술 강점
-      value: NLP 모델링 · EMR 텍스트 워크플로 · 코드 재현성 · 시스템 관측 가능성 · 자동화
+      value: 그래프 기반 데이터 시스템 · ML Observability · NLP/LLM 평가 · 코드 재현성 · 자동화
 layout:
   leftColumn:
     - summary
@@ -42,7 +42,7 @@ sections:
     count: 3
   skills:
     enabled: true
-    title: 기술
+    title: 핵심 역량
   research:
     enabled: true
     title: 연구 및 논문

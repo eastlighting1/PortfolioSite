@@ -1,12 +1,12 @@
 globalType: profile
 name: Donghyeon Kim
-headline: Applied AI researcher and AI engineer focused on deployable conversational AI and medical AI systems
-intro: I am interested in applied AI problems grounded in real-world data, and in connecting them to models, evaluation, and deliverables that collaborators can actually use. Recently, I have been working across conversational AI, medical AI, and ML systems with a focus on improving reproducibility and practical delivery.
-summary: I am a graduate researcher with experience in NLP, medical AI, deep learning, and end-to-end AI project implementation. I am particularly interested in turning experimental AI work into trustworthy systems through stronger evaluation, clear documentation, and a practical MLOps perspective.
+headline: AI Systems Engineer connecting data systems, AI-DLC/MLOps, and NLP/LLM research experience
+intro: I structure diverse data surfaces, including structured, text, image, and graph data, and connect them to AI systems that can be evaluated, observed, and delivered through the AI-Driven Development Life Cycle.
+summary: I am an AI Systems Engineer who connects data work with graph as a core strength, AI-DLC-based MLOps and observability, and NLP/LLM research experience into company-reviewable evidence and artifacts.
 philosophy:
-  - I build AI that is accurate, understandable, and reusable.
-  - I treat evaluation as part of the deliverable, not an appendix.
-  - I connect experimentation and delivery beyond individual ownership.
+  - I turn diverse data surfaces into reviewable structures and pipelines.
+  - I make AI experiments and operating workflows reproducible and observable.
+  - I connect NLP/LLM research experience to evaluable system decisions.
 
 capabilityGroups:
   - title: Data Science

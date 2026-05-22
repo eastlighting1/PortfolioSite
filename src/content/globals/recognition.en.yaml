@@ -1,0 +1,31 @@
+globalType: recognition
+certificates:
+  - title: Practical Implementation of Monitoring and Testing in DevOps Environments
+    issuer: LLOYDK
+    date: "2023.11"
+    description: Completed practical training in Elastic-based DevOps monitoring and testing.
+    bullets:
+      - Studied DevOps-related services and operational environments provided by Elastic.
+      - Learned DevOps concepts applicable to practical work from monitoring and testing perspectives.
+  - title: Multi Cloud Orchestration Program
+    issuer: 5Works
+    date: "2023.12"
+    description: Completed HashiCorp-based multi-cloud orchestration and IaC training.
+    bullets:
+      - Studied mainly HashiCorp IaC tools such as Packer and Terraform.
+      - Learned the concepts of infrastructure automation and orchestration in multi-cloud environments.
+  - title: Company-Led Intensive Project Training
+    issuer: DK Techin
+    date: "2024.02"
+    description: Participated in industry-linked practical training focused on security and DevOps engineering.
+    bullets:
+      - Conducted practical projects while working on cloud, CI/CD, and security-related tasks.
+      - Took on the role of advisor and build assistant as an experienced member during the recommender system development process.
+  - title: Micro Degree in Software Specialist Training
+    issuer: Gachon University
+    date: "2024.02"
+    description: Completed a micro-degree program for training software specialists.
+    bullets:
+      - Completed a program aimed at strengthening software and practice-oriented digital capabilities.
+      - Built a record of completion that connects undergraduate-based education with practice-oriented project experience.
+awards: []

@@ -11,6 +11,41 @@ summary: "Served as the DevSecOps lead for an internal employee-only commerce pl
 portfolioProblem: "The project needed more than frontend and backend implementation; it required cloud infrastructure and platform foundations that could reliably support search, notifications, admin workflows, and ongoing operations."
 portfolioApproach: "I focused on the DevSecOps and infrastructure/platform layer, organizing CI/CD, cloud deployment flow, operational setup, and security-aware service foundations for a React + Spring commerce system."
 portfolioOutcome: "The project demonstrated how infrastructure and platform engineering directly shape the reliability and readiness of a production-style internal commerce service."
+evidence:
+  primaryTheme: aidlc-mlops
+  secondaryThemes:
+    - data-graph
+  dataSurfaces:
+    - structured
+    - image
+    - hybrid
+  workflowStages:
+    - data
+    - deployment
+    - observability
+    - feedback-recovery
+  evidenceLevel: Implemented
+  disclosureLevel: Public Summary Only
+  businessSignal: "Shows delivery, security, and observability foundations for running service features in an operational environment."
+  subtypes:
+    - Platform Engineering
+    - CI/CD
+    - System Observability
+portfolio:
+  thesis: "A DevSecOps project that shaped the deployment, operations, security, and observability foundation behind an internal commerce platform."
+  value: "Designed the platform layer so application features could run like a production-style service."
+  problem: "The project needed cloud infrastructure and platform foundations that could reliably support search, notifications, admin workflows, and ongoing operations."
+  decisions:
+    - label: "Platform foundation"
+      description: "Organized CI/CD and cloud foundations so the React and Spring service could fit into a deployable, monitorable workflow."
+  outcome: "Built a practical service foundation for a closed internal mileage commerce platform."
+  metrics:
+    - label: "Foundation"
+      value: "CI/CD + Cloud"
+      context: "Delivery, operations, security, and observability"
+resume:
+  include: true
+  priority: 80
 featured: false
 tags:
   - "DevSecOps"
