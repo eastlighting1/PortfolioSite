@@ -118,6 +118,33 @@
   
   --black: #000000;
 
+  /* Semantic role and evidence tokens */
+  --role-data: #0f766e;
+  --role-aidlc: #1d4ed8;
+  --role-nlp: #7c3aed;
+  --evidence-published: #865f18;
+  --evidence-implemented: #0f766e;
+  --evidence-prototype: #325fdd;
+  --evidence-study: #6d54a8;
+  --evidence-in-progress: #475569;
+  --disclosure-public: #0f766e;
+  --disclosure-summary: #325fdd;
+  --disclosure-sanitized: #865f18;
+  --disclosure-private: #64748b;
+  --case-problem: #b45309;
+  --case-decision: #1d4ed8;
+  --case-outcome: #0f766e;
+  --print-a4-margin-x: 12mm;
+  --print-a4-margin-y: 10mm;
+  --density-scale: 1;
+  --density-padding: 1.5rem;
+  --density-gap: 1.5rem;
+  --density-line-height: 1.65;
+  --component-accent: var(--color-accent);
+  --component-padding: var(--density-padding);
+  --component-gap: var(--density-gap);
+  --component-border: var(--color-border);
+
   /* Other Base Variables */
   --max-width: 1180px;
   --reading-width: 760px;
@@ -131,6 +158,20 @@
   --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
   --font-display: "Pretendard", "Fraunces", "Georgia", serif;
   --font-mono: "IBM Plex Mono", "Consolas", monospace;
+}
+
+[data-density="workbench"] {
+  --density-scale: 0.88;
+  --density-padding: 1rem;
+  --density-gap: 0.9rem;
+  --density-line-height: 1.5;
+}
+
+[data-density="print-a4"] {
+  --density-scale: 0.74;
+  --density-padding: 0.65rem;
+  --density-gap: 0.55rem;
+  --density-line-height: 1.36;
 }
 
 /* Semantic Tokens (Paper - Default) */
@@ -173,15 +214,17 @@
   --spacing-100: 1rem;
   --spacing-150: 1.5rem;
   --spacing-200: 2rem;
+  --spacing-250: 2.5rem;
   --spacing-300: 3rem;
   --spacing-400: 4rem;
+  --spacing-500: 5rem;
   --spacing-600: 6rem;
   --spacing-800: 8rem;
   
-  --cat-note: #0f766e;
-  --cat-journal: #865f18;
+  --cat-note: var(--role-data);
+  --cat-journal: var(--evidence-published);
   --cat-conference: #294aa5;
-  --cat-other: #6d54a8;
+  --cat-other: var(--evidence-study);
   --bg-gradient-top: #fffdf8;
   --bg-gradient-bottom: #f4f1ea;
 }
@@ -206,6 +249,26 @@
   --bg-gradient-top: #0f172a;
   --bg-gradient-bottom: #020617;
   --shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --color-bg: rgb(7, 11, 18);
+  --color-surface: rgb(13, 20, 31);
+  --color-surface-muted: rgb(21, 29, 39);
+  --color-text: rgb(245, 248, 250);
+  --color-text-muted: rgb(204, 216, 226);
+  --color-border: rgb(48, 62, 77);
+  --color-border-strong: rgb(72, 90, 107);
+  --color-accent: rgb(111, 196, 187);
+  --color-accent-hover: rgb(166, 224, 216);
+  --color-link: rgb(176, 212, 251);
+  --color-link-hover: rgb(217, 234, 255);
+  --color-link-visited: rgb(247, 211, 132);
+  --color-focus-ring: rgb(124, 179, 240);
+  --color-selected-bg: rgb(8, 70, 69);
+  --color-selected-text: rgb(235, 250, 247);
+  --color-disabled-bg: rgb(31, 42, 55);
+  --color-disabled-text: rgb(164, 183, 198);
+  --color-overlay: rgba(0, 0, 0, 0.68);
+  --shadow-card: 0 18px 42px rgba(0, 0, 0, 0.42);
+  --shadow-card-hover: 0 24px 60px rgba(0, 0, 0, 0.52);
 }
 
 [data-theme="ocean"] {
@@ -221,10 +284,10 @@
   --accent-soft: rgba(37, 99, 235, 0.08);
   --ink: var(--ocean-950);
   
-  --cat-note: #0f766e;
+  --cat-note: var(--role-data);
   --cat-journal: #9a6700;
-  --cat-conference: #1d4ed8;
-  --cat-other: #6d54a8;
+  --cat-conference: var(--role-aidlc);
+  --cat-other: var(--evidence-study);
   --bg-gradient-top: #ffffff;
   --bg-gradient-bottom: #f0f9ff;
 }

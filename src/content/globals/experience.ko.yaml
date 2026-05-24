@@ -3,6 +3,9 @@ items:
   - role: 대학원생 연구원
     organization: Intelligent Data Analytics Lab., Gachon University
     period: 2024.03 - 2026.02
+    startDate: 2024-03
+    endDate: 2026-02
+    isCurrent: false
     bullets:
       - EMR 기반 간호감시 의사결정 지원과 진단 분류를 주제로 대학원 연구를 수행했습니다.
       - 정형 데이터와 텍스트 데이터를 함께 활용해 KM-BERT 앙상블과 XGBoost 기반 엔드투엔드 모델링 파이프라인을 구축했습니다.
@@ -10,6 +13,9 @@ items:
   - role: 연구과제 참여 연구원
     organization: 한국연구재단 (NRF)
     period: 2024.03 - 2025.12
+    startDate: 2024-03
+    endDate: 2025-12
+    isCurrent: false
     bullets:
       - EMR 데이터를 활용한 간호감시 의사결정 지원 연구과제에서 임상 AI 워크플로 구현에 참여했습니다.
       - 임상 텍스트 이해를 위해 키워드 추출, 의존구문 기반 전처리, 토픽 모델링, 유사도 분석 워크플로를 구현했습니다.
@@ -18,18 +24,27 @@ items:
   - role: 연구과제 참여 연구원
     organization: 정보통신기획평가원 (IITP)
     period: 2025.09 - 2025.12
+    startDate: 2025-09
+    endDate: 2025-12
+    isCurrent: false
     bullets:
       - 인간지향적 멀티모달 AI 프로젝트에서 평가 관련 코드를 구현했습니다.
       - 평가 요구사항을 실제 코드와 검토 가능한 산출물로 연결하는 작업을 수행했습니다.
   - role: 기업주도 집중프로그램 수료생
     organization: dktechin
     period: 2024.01 - 2024.02
+    startDate: 2024-01
+    endDate: 2024-02
+    isCurrent: false
     bullets:
       - 클라우드, CI/CD, 보안, DevOps 실무를 중심으로 한 기업주도 집중프로그램에 참여했습니다.
       - 프로젝트 기반 실습에서 보안 및 DevOps 지향 역할로 구현 작업에 참여했습니다.
   - role: 학생 리더 및 커뮤니티 운영자
     organization: Gachon University / Notion Community Program
     period: 2019.03 - 2025.02
+    startDate: 2019-03
+    endDate: 2025-02
+    isCurrent: false
     bullets:
       - 교내 공식 프로그래밍 동아리에서 여러 리더십 역할을 맡았고, 2022년에는 회장을 역임했습니다.
       - 머신러닝, 빅데이터, 금융 ML, GNN 관련 스터디 그룹을 직접 기획하고 운영했습니다.

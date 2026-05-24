@@ -10,7 +10,7 @@ type: "의료 AI 연구"
 summary: "복부수술 환자의 간호감시를 지원하기 위해 핵심 EMR 데이터만으로 자동 ICD 코딩 모델을 구축했다."
 portfolioProblem: "간호감시에 필요한 진단 관련 신호가 검사 데이터, 환자정보, 간호기록 등 이질적인 EMR 소스에 분산되어 있었다."
 portfolioApproach: "구조화 데이터와 간호 텍스트를 통합하고, 이중 KM-BERT와 PCA, XGBoost를 결합한 스태킹 구조로 ICD 예측을 설계했다."
-portfolioOutcome: "최종 모델은 정확도 0.9245와 높은 희소 클래스 재현율을 기록하며 사후 문서 없이도 실용적인 분류 성능을 보였다."
+portfolioOutcome: "최종 모델은 사후 문서 없이도 희소 클래스 재현율까지 고려한 실용적 분류 성능을 보였다."
 evidence:
   primaryTheme: nlp-llm
   secondaryThemes:
@@ -25,7 +25,42 @@ evidence:
     - evaluation
   evidenceLevel: Published
   disclosureLevel: Public Summary Only
-  businessSignal: "이질적인 구조화 EMR과 한국어 임상 텍스트를 평가 가능한 NLP 파이프라인으로 결합한 증거입니다."
+  businessSignal: "이질적인 구조화 EMR과 한국어 임상 텍스트를 평가 가능한 NLP 파이프라인으로 결합한 작업입니다."
+  proofSentence: "NLP/LLM 모델링과 평가 판단이 실제 기능 구현으로 이어지는 방식을 확인할 수 있습니다."
+  priority:
+    global: 50
+    home: 40
+    portfolio: 40
+    projects: 30
+    resume: 10
+    print: 40
+    role:
+      data-graph: 35
+      aidlc-mlops: 80
+      nlp-llm: 10
+  reviewerIntents:
+    recruiter: primary
+    technical-reviewer: supporting
+    data-systems-reviewer: supporting
+    mlops-reviewer: related
+    nlp-llm-reviewer: primary
+    research-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: supporting
+      rank: 35
+      signal: "Data Systems 관점을 보조하는 관련 프로젝트입니다."
+      reviewerReason: "이질적인 구조화 EMR과 한국어 임상 텍스트를 평가 가능한 NLP 파이프라인으로 결합한 작업입니다."
+    aidlc-mlops:
+      weight: related
+      rank: 80
+      signal: "AI-DLC / MLOps 관점에서는 배경 맥락으로 참고할 수 있습니다."
+      reviewerReason: "이질적인 구조화 EMR과 한국어 임상 텍스트를 평가 가능한 NLP 파이프라인으로 결합한 작업입니다."
+    nlp-llm:
+      weight: primary
+      rank: 10
+      signal: "NLP / LLM 관점에서 가장 먼저 확인할 핵심 프로젝트입니다."
+      reviewerReason: "이질적인 구조화 EMR과 한국어 임상 텍스트를 평가 가능한 NLP 파이프라인으로 결합한 작업입니다."
   subtypes:
     - NLP Evaluation
     - Domain Application
@@ -67,7 +102,7 @@ portfolio:
       - id: "evaluation"
         label: "Rare-class Evaluation"
         kind: "evaluation"
-        description: "정확도, weighted F1, 희소 클래스 재현율 평가"
+        description: "전체 성능, 클래스 균형, 희소 클래스 재현율 평가"
     links:
       - from: "structured-emr"
         to: "stacking-classifier"
@@ -88,14 +123,14 @@ portfolio:
       description: "구조화 피처와 한국어 간호 텍스트를 각각 모델링 가능한 형태로 변환했습니다."
     - label: "스태킹 평가"
       description: "PCA, XGBoost, class imbalance 대응을 결합해 성능과 희소 클래스 재현율을 검증했습니다."
-  outcome: "최종 모델은 정확도 0.9245와 weighted F1-score 0.9157을 기록했고, 희소 클래스에서도 높은 재현율을 보였습니다."
+  outcome: "최종 모델은 단순 전체 점수보다 희소 클래스 재현율과 실무 사용 가능성을 함께 확인할 수 있는 결과를 보였습니다."
   metrics:
-    - label: "Accuracy"
-      value: "0.9245"
-      context: "최종 Double KM-BERT + XGBoost + PCA 모델"
-    - label: "Weighted F1-score"
-      value: "0.9157"
-      context: "전체 클래스 기준 weighted F1"
+    - label: "Evaluation Scope"
+      value: "Balanced"
+      context: "전체 성능과 희소 클래스 재현율을 함께 검토"
+    - label: "Available Data"
+      value: "Core EMR"
+      context: "사후 문서 없이 간호 실무 중 접근 가능한 데이터 중심"
     - label: "Rare-class Recall"
       value: "High"
       context: "희소 클래스에서도 실용적인 재현율 확보"
@@ -119,8 +154,8 @@ tags:
   - "XGBoost"
   - "앙상블"
 metrics:
-  - "정확도 0.9245"
-  - "가중 F1-score 0.9157"
+  - "전체 성능과 희소 클래스 재현율 동시 검토"
+  - "사후 문서 없이 핵심 EMR 기반 분류"
   - "희소 클래스 높은 재현율"
 paperUrl: "https://doi.org/10.9708/jksci.2025.30.05.021"
 ---
@@ -139,4 +174,5 @@ paperUrl: "https://doi.org/10.9708/jksci.2025.30.05.021"
 
 ## 결과
 
-최종 제안 모델인 Double KM-BERT + XGBoost + PCA는 정확도 0.9245, 가중 정밀도 0.9107, 가중 F1-score 0.9157로 가장 높은 성능을 기록했다. 희소 클래스에서도 높은 재현율을 보여, 간호 현장에서 바로 활용 가능한 EMR 핵심 데이터만으로도 안정적인 자동 진단명 분류가 가능함을 확인했다.
+최종 제안 모델인 Double KM-BERT + XGBoost + PCA는 단일 모델 및 단순 앙상블보다 더 안정적인 분류 성능을 보였고, 희소 클래스에서도 의미 있는 재현율을 확보했다. 이를 통해 간호 현장에서 바로 활용 가능한 EMR 핵심 데이터만으로도 자동 진단명 분류를 실용적으로 검토할 수 있음을 확인했다.
+

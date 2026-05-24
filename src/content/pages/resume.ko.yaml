@@ -1,22 +1,40 @@
 pageType: resume
+contract:
+  userQuestion: "공식 기록으로 이 사람을 어떻게 검토할 수 있는가?"
+  pageAnswer: "경험, 교육, 연구, 프로젝트를 날짜와 evidence link로 정리하고 출력용 CV를 제공한다."
+  requiredEvidence:
+    - official-summary
+    - dated-experience
+    - structured-research-interests
+    - linked-evidence
+    - print-cv
+  nextPaths:
+    - label: "포트폴리오"
+      href: /portfolio/
+      reason: "공식 기록의 대표 evidence를 읽는다."
+    - label: "연락처"
+      href: /contact/
+      reason: "검토 목적에 맞춰 후속 대화를 시작한다."
+  doNotRepeat:
+    - "두 번째 포트폴리오처럼 장식적 케이스 서사를 반복하지 않는다."
 documentTitle: 이력서 | 김동현
-documentDescription: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 압축한 AI Systems Engineer 이력서입니다.
+documentDescription: 데이터와 응용 AI 작업을 검토하기 위한 인쇄 친화 이력서입니다.
 printToolbarLabel: 브라우저 인쇄 및 PDF 저장에 맞게 최적화되었습니다.
 printCv:
   includeProjects: true
   keywords:
-    - AI Systems Engineer
-    - Data + Graph
+    - Data & Applied AI
+    - Data Systems
     - AI-DLC
     - MLOps
     - Observability
     - NLP/LLM Evaluation
-  objective: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 검토 가능한 AI 시스템 산출물로 연결하는 엔지니어입니다.
+  objective: 데이터 구조화, AI 개발 흐름, NLP/LLM 평가 경험을 구현 가능한 작업으로 연결합니다.
   additionalItems:
     - label: 핵심 기술
       value: Python · PyTorch · HuggingFace · Docker · AWS
     - label: 관심 축
-      value: Data + Graph · AI-DLC/MLOps · NLP/LLM
+      value: Data Systems · AI-DLC/MLOps · NLP/LLM
     - label: 기술 강점
       value: 그래프 기반 데이터 시스템 · ML Observability · NLP/LLM 평가 · 코드 재현성 · 자동화
 layout:

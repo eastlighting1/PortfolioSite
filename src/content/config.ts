@@ -80,6 +80,27 @@ const workflowStageSchema = z.enum([
 ]);
 const evidenceLevelSchema = z.enum(["Published", "Implemented", "Prototype", "Study", "In Progress"]);
 const disclosureLevelSchema = z.enum(["Public", "Public Summary Only", "Sanitized", "Private / Mention Only"]);
+const reviewerIntentWeightSchema = z.enum(["primary", "supporting", "related", "not-relevant"]);
+const evidencePrioritySchema = z.object({
+  global: z.number().int().default(100),
+  home: z.number().int().optional(),
+  portfolio: z.number().int().optional(),
+  projects: z.number().int().optional(),
+  resume: z.number().int().optional(),
+  print: z.number().int().optional(),
+  role: z.object({
+    "data-graph": z.number().int().optional(),
+    "aidlc-mlops": z.number().int().optional(),
+    "nlp-llm": z.number().int().optional()
+  }).default({})
+}).default({});
+
+const roleEvidenceSignalSchema = z.object({
+  weight: z.enum(["primary", "supporting", "related", "not-relevant"]),
+  rank: z.number().int().default(100),
+  signal: z.string(),
+  reviewerReason: z.string()
+});
 
 const evidenceMetadataSchema = z.object({
   primaryTheme: evidenceThemeSchema.optional(),
@@ -89,7 +110,15 @@ const evidenceMetadataSchema = z.object({
   evidenceLevel: evidenceLevelSchema.default("Implemented"),
   disclosureLevel: disclosureLevelSchema.default("Public"),
   businessSignal: z.string().optional(),
-  subtypes: z.array(z.string()).default([])
+  subtypes: z.array(z.string()).default([]),
+  proofSentence: z.string().optional(),
+  priority: evidencePrioritySchema,
+  reviewerIntents: z.record(reviewerIntentWeightSchema).default({}),
+  roleSignals: z.object({
+    "data-graph": roleEvidenceSignalSchema.optional(),
+    "aidlc-mlops": roleEvidenceSignalSchema.optional(),
+    "nlp-llm": roleEvidenceSignalSchema.optional()
+  }).default({})
 }).default({});
 
 const projects = defineCollection({
@@ -127,6 +156,11 @@ const research = defineCollection({
     year: z.number(),
     venue: z.string(),
     type: z.string(),
+    contributionType: z.enum(["modeling", "evaluation", "alignment", "domain-nlp", "system-support", "literature-review"]).optional(),
+    contributionClaim: z.string().optional(),
+    methodSignal: z.string().optional(),
+    portfolioRelevance: z.string().optional(),
+    linkedRoles: z.array(evidenceThemeSchema).default([]),
     bibtex: z.string().optional(),
     abstract: z.string(),
     tags: z.array(z.string()),
@@ -177,6 +211,24 @@ const pageHeroSchema = z.object({
   meta: z.array(z.string()).default([]),
   className: z.string().optional()
 });
+
+const pageContractSchema = z.object({
+  userQuestion: z.string(),
+  pageAnswer: z.string(),
+  requiredEvidence: z.array(z.string()).default([]),
+  nextPaths: z.array(
+    z.object({
+      label: z.string(),
+      href: z.string(),
+      reason: z.string()
+    })
+  ).default([]),
+  doNotRepeat: z.array(z.string()).default([])
+});
+
+const pageContractField = {
+  contract: pageContractSchema.optional()
+};
 
 const globals = defineCollection({
   type: "data",
@@ -237,6 +289,11 @@ const globals = defineCollection({
           role: z.string(),
           organization: z.string(),
           period: z.string(),
+          startDate: z.string().optional(),
+          endDate: z.string().optional(),
+          isCurrent: z.boolean().default(false),
+          linkedEvidence: z.array(z.string()).default([]),
+          category: z.enum(["research", "industry", "training", "leadership"]).optional(),
           bullets: z.array(z.string())
         })
       )
@@ -248,6 +305,10 @@ const globals = defineCollection({
           school: z.string(),
           degree: z.string(),
           period: z.string(),
+          startDate: z.string().optional(),
+          endDate: z.string().optional(),
+          isCurrent: z.boolean().default(false),
+          linkedEvidence: z.array(z.string()).default([]),
           detail: z.string()
         })
       )
@@ -336,6 +397,7 @@ const pages = defineCollection({
   type: "data",
   schema: z.discriminatedUnion("pageType", [
     z.object({
+      ...pageContractField,
       pageType: z.literal("home"),
       sectionOrder: z
         .array(
@@ -401,6 +463,7 @@ const pages = defineCollection({
       })
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("resume"),
       documentTitle: z.string(),
       documentDescription: z.string(),
@@ -451,6 +514,7 @@ const pages = defineCollection({
       })
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("portfolio"),
       documentTitle: z.string(),
       documentDescription: z.string(),
@@ -583,18 +647,21 @@ const pages = defineCollection({
       })
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("projects"),
       documentTitle: z.string(),
       documentDescription: z.string(),
       hero: pageHeroSchema
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("research"),
       documentTitle: z.string(),
       documentDescription: z.string(),
       hero: pageHeroSchema
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("about"),
       documentTitle: z.string(),
       documentDescription: z.string(),
@@ -619,6 +686,7 @@ const pages = defineCollection({
       })
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("contact"),
       documentTitle: z.string(),
       documentDescription: z.string(),
@@ -640,6 +708,7 @@ const pages = defineCollection({
       })
     }),
     z.object({
+      ...pageContractField,
       pageType: z.literal("not-found"),
       documentTitle: z.string(),
       documentDescription: z.string(),

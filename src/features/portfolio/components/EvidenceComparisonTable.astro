@@ -1,0 +1,72 @@
+---
+import { getPublicDisclosureLabel, getPublicEvidenceLevelLabel } from "../portfolio-data";
+import { type Locale } from "../../../lib/i18n";
+
+interface Props {
+  cases: any[];
+  labels: Record<string, string>;
+  locale?: Locale;
+}
+
+const { cases, labels, locale = "ko" } = Astro.props;
+const copy =
+  locale === "ko"
+    ? {
+        eyebrow: "Project Comparison",
+        title: "대표 프로젝트를 같은 기준으로 비교합니다",
+        lead: "대표 프로젝트를 문제, 결정, 결과, 공개 범위 기준으로 먼저 비교한 뒤 상세 설명으로 이동합니다.",
+        case: "대표 케이스",
+        decision: "설계 판단",
+        outcome: "구현 결과",
+        status: "공개 범위",
+        open: "보기"
+      }
+    : {
+        eyebrow: "Project Comparison",
+        title: "Compare representative projects by the same criteria",
+        lead: "Review featured work by problem, decision, outcome, and availability before reading the full case.",
+        case: "Case",
+        decision: "Decision",
+        outcome: "Outcome",
+        status: "Availability",
+        open: "Open"
+      };
+---
+
+<section class="portfolio-evidence-compare" aria-labelledby="portfolio-evidence-compare-title">
+  <div class="eyebrow">{copy.eyebrow}</div>
+  <h2 id="portfolio-evidence-compare-title" class="section-title">{copy.title}</h2>
+  <p class="section-lead portfolio-evidence-compare__lead">{copy.lead}</p>
+  <div class="portfolio-evidence-compare__table-wrap">
+    <table class="portfolio-evidence-compare__table">
+      <thead>
+        <tr>
+          <th>{copy.case}</th>
+          <th>{labels.problem}</th>
+          <th>{copy.decision}</th>
+          <th>{copy.outcome}</th>
+          <th>{copy.status}</th>
+          <th><span class="sr-only">{copy.open}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {cases.map((item) => (
+          <tr data-portfolio-card data-primary-theme={item.evidence.primaryTheme} data-secondary-themes={item.evidence.secondaryThemes.join(" ")}>
+            <th scope="row">
+              <strong>{item.title}</strong>
+              <span>{item.type} / {item.year}</span>
+            </th>
+            <td>{item.problem}</td>
+            <td>{item.decisions[0]?.description}</td>
+            <td>{item.outcome}</td>
+            <td>
+              <span>{getPublicEvidenceLevelLabel(item.evidence.evidenceLevel, locale)}</span>
+              <span>{getPublicDisclosureLabel(item.evidence.disclosureLevel, locale)}</span>
+            </td>
+            <td><a class="button-link-secondary" href={item.href}>{copy.open}</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>

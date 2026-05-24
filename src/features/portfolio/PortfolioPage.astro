@@ -11,8 +11,11 @@ import OutcomeMetricGrid from "./components/OutcomeMetricGrid.astro";
 import PortfolioHero from "./components/PortfolioHero.astro";
 import PortfolioSectionHead from "./components/PortfolioSectionHead.astro";
 import PortfolioSectionNav from "./components/PortfolioSectionNav.astro";
+import AIDLCStageMap from "./components/AIDLCStageMap.astro";
 import ProcessGrid from "./components/ProcessGrid.astro";
 import RecognitionGrid from "./components/RecognitionGrid.astro";
+import ReviewerModeTabs from "./components/ReviewerModeTabs.astro";
+import EvidenceComparisonTable from "./components/EvidenceComparisonTable.astro";
 import ResearchBridge from "./components/ResearchBridge.astro";
 import ValueMap from "./components/ValueMap.astro";
 
@@ -57,7 +60,10 @@ const {
   contactItems,
   process,
   valueItems,
-  labels
+  labels,
+  evidenceMatrixRows,
+  dataSystemsConcepts,
+  nlpLlmConcepts
 } = buildPortfolioViewModel({
   locale,
   profile,
@@ -71,7 +77,12 @@ const {
 
 const resolveHref = (href: string) => {
   if (href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto:")) return href;
-  return withBase(localizePath(href, locale));
+  const hashIndex = href.indexOf("#");
+  const queryIndex = href.indexOf("?");
+  const splitIndex = [hashIndex, queryIndex].filter((index) => index >= 0).sort((a, b) => a - b)[0];
+  const path = splitIndex >= 0 ? href.slice(0, splitIndex) : href;
+  const suffix = splitIndex >= 0 ? href.slice(splitIndex) : "";
+  return `${withBase(localizePath(path, locale))}${suffix}`;
 };
 
 const localizedProjectsHref = withBase(localizePath("/projects/", locale));
@@ -106,16 +117,19 @@ const getSectionHeading = (id: string, fallbackTitle: string) => ({
     <PortfolioHero
       hero={resolvedHero}
       evidenceCases={featuredCases}
-      evidenceLabel={locale === "ko" ? "핵심 증거" : "Key evidence"}
+      evidenceLabel={locale === "ko" ? "검토 포인트" : "Review points"}
     />
+    <section id="reviewerMode" class="portfolio-band portfolio-band--reviewer-mode">
+      <ReviewerModeTabs locale={locale} />
+    </section>
 
     {portfolioPage.data.sections.map((sectionId) => {
       if (sectionId === "valueMap") {
-        const heading = getSectionHeading("valueMap", locale === "ko" ? "세 개의 역할이 같은 무게로 검토됩니다" : "Three role themes carry equal review weight");
+        const heading = getSectionHeading("valueMap", locale === "ko" ? "세 개의 검토 렌즈로 같은 작업을 비교합니다" : "Compare the same work through three review lenses");
         return (
           <section id="valueMap" class="portfolio-band portfolio-band--value">
             <PortfolioSectionHead {...heading} />
-            <ValueMap items={roleThemes} />
+            <ValueMap items={roleThemes} matrixRows={evidenceMatrixRows} locale={locale} />
           </section>
         );
       }
@@ -123,15 +137,21 @@ const getSectionHeading = (id: string, fallbackTitle: string) => ({
       if (sectionId === "aidlc") {
         const heading = getSectionHeading("aidlc", locale === "ko" ? "AI-Driven Development Life Cycle로 작업 흐름을 설명합니다" : "AI-Driven Development Life Cycle as the operating model");
         return (
-          <section id="aidlc" class="portfolio-band">
+          <section id="aidlc" class="portfolio-band portfolio-band--core-concepts">
             <PortfolioSectionHead {...heading} />
-            <ProcessGrid items={aidlcStages} />
+            <AIDLCStageMap
+              stages={aidlcStages}
+              dataSystemsConcepts={dataSystemsConcepts}
+              nlpLlmConcepts={nlpLlmConcepts}
+              cases={featuredCases}
+              locale={locale}
+            />
           </section>
         );
       }
 
       if (sectionId === "evidenceLibrary") {
-        const heading = getSectionHeading("evidenceLibrary", locale === "ko" ? "프로젝트는 역할별 증거로 읽힙니다" : "Projects are organized as role-based evidence");
+        const heading = getSectionHeading("evidenceLibrary", locale === "ko" ? "역할별로 다시 읽히는 작업 기록" : "Work records re-sorted by review lens");
         return (
           <section id="evidenceLibrary" class="portfolio-band portfolio-band--evidence">
             <PortfolioSectionHead {...heading} />
@@ -141,7 +161,7 @@ const getSectionHeading = (id: string, fallbackTitle: string) => ({
       }
 
       if (sectionId === "outcomes" && portfolioMetrics.length > 0) {
-        const heading = getSectionHeading("outcomes", locale === "ko" ? "주요 성과는 맥락과 함께 제시합니다" : "Outcomes stay close to their evidence");
+        const heading = getSectionHeading("outcomes", locale === "ko" ? "주요 성과는 맥락과 함께 제시합니다" : "Outcomes stay close to context");
         return (
           <section id="outcomes" class="portfolio-band">
             <PortfolioSectionHead {...heading} />
@@ -155,6 +175,7 @@ const getSectionHeading = (id: string, fallbackTitle: string) => ({
         return (
           <section id="featuredCases" class="portfolio-band portfolio-band--cases">
             <PortfolioSectionHead {...heading} />
+            <EvidenceComparisonTable cases={featuredCases} labels={labels} locale={locale} />
             <div class="portfolio-case-stack">
               {featuredCases.map((item, index) => (
                 <FeaturedCaseCard item={item} labels={labels} locale={locale} featured={index === 0} />
@@ -175,7 +196,7 @@ const getSectionHeading = (id: string, fallbackTitle: string) => ({
       }
 
       if (sectionId === "researchBridge") {
-        const heading = getSectionHeading("researchBridge", locale === "ko" ? "연구는 별도 선반이 아니라 구현의 근거입니다" : "Research is evidence that feeds implementation");
+        const heading = getSectionHeading("researchBridge", locale === "ko" ? "연구는 별도 선반이 아니라 구현의 근거입니다" : "Research feeds implementation judgment");
         return (
           <section id="researchBridge" class="portfolio-band portfolio-band--research">
             <PortfolioSectionHead {...heading} />
@@ -213,3 +234,40 @@ const getSectionHeading = (id: string, fallbackTitle: string) => ({
     })}
   </section>
 </BaseLayout>
+
+<script>
+  const bindPageWideRoleLensHighlight = () => {
+    const handleRoleLensChanged = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const selectedRole = customEvent.detail.role || "";
+      const cards = document.querySelectorAll("[data-portfolio-card]");
+
+      cards.forEach((card) => {
+        const htmlCard = card as HTMLElement;
+        const primary = htmlCard.dataset.primaryTheme || "";
+        const secondary = htmlCard.dataset.secondaryThemes || "";
+        const secondaryList = secondary.split(" ").filter(Boolean);
+
+        if (!selectedRole) {
+          // If no role is selected, restore everything
+          htmlCard.classList.remove("is-highlighted", "is-dimmed");
+        } else {
+          const isMatch = primary === selectedRole || secondaryList.includes(selectedRole);
+          if (isMatch) {
+            htmlCard.classList.add("is-highlighted");
+            htmlCard.classList.remove("is-dimmed");
+          } else {
+            htmlCard.classList.add("is-dimmed");
+            htmlCard.classList.remove("is-highlighted");
+          }
+        }
+      });
+    };
+
+    document.removeEventListener("role-lens-changed", handleRoleLensChanged);
+    document.addEventListener("role-lens-changed", handleRoleLensChanged);
+  };
+
+  bindPageWideRoleLensHighlight();
+  document.addEventListener("astro:page-load", bindPageWideRoleLensHighlight);
+</script>

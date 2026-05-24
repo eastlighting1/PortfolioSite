@@ -4,7 +4,7 @@ const { metrics } = Astro.props;
 
 <div class="portfolio-metric-grid">
   {metrics.map((metric: { source: string; value: string; context?: string; label: string }) => (
-    <article class="portfolio-metric-card" data-reveal="1">
+    <article class="portfolio-metric-card" data-reveal="1" data-portfolio-card data-primary-theme={metric.primaryTheme} data-secondary-themes={metric.secondaryThemes?.join(" ")}>
       <span>{metric.source}</span>
       <strong>{metric.value}</strong>
       <p>{metric.context ?? metric.label}</p>

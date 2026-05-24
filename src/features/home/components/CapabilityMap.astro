@@ -30,7 +30,7 @@ const roleThemes = getRoleThemes(locale);
             <p class="muted">{group.businessSignal}</p>
           </div>
           <div class="capability-card__tags">
-            {group.skills.map((skill) => (
+            {group.skills.slice(0, 4).map((skill) => (
               <span class="tag-chip">{skill}</span>
             ))}
           </div>
@@ -39,3 +39,33 @@ const roleThemes = getRoleThemes(locale);
     </div>
   </div>
 </section>
+
+<style>
+  .capability-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .capability-card {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  .capability-card__tags {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .capability-card__tags .tag-chip {
+    width: 100%;
+    min-height: 2.4rem;
+    padding-inline: 0.45rem;
+    white-space: normal;
+  }
+
+  @media (max-width: 980px) {
+    .capability-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

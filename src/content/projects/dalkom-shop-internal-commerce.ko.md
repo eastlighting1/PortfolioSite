@@ -26,7 +26,40 @@ evidence:
     - feedback-recovery
   evidenceLevel: Implemented
   disclosureLevel: Public Summary Only
-  businessSignal: "서비스 기능이 실제 운영 환경에서 동작할 수 있도록 배포, 보안, 관측 가능성 기반을 정리한 증거입니다."
+  businessSignal: "서비스 기능이 실제 운영 환경에서 동작할 수 있도록 배포, 보안, 관측 가능성 기반을 정리한 작업입니다."
+  proofSentence: "실험, 평가, 산출물 관리가 구현 흐름으로 이어지는 방식을 확인할 수 있습니다."
+  priority:
+    global: 80
+    home: 70
+    portfolio: 70
+    projects: 70
+    resume: 70
+    print: 80
+    role:
+      data-graph: 45
+      aidlc-mlops: 30
+      nlp-llm: 90
+  reviewerIntents:
+    recruiter: related
+    technical-reviewer: supporting
+    data-systems-reviewer: supporting
+    mlops-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: supporting
+      rank: 45
+      signal: "Data Systems 관점을 보조하는 관련 프로젝트입니다."
+      reviewerReason: "서비스 기능이 실제 운영 환경에서 동작할 수 있도록 배포, 보안, 관측 가능성 기반을 정리한 작업입니다."
+    aidlc-mlops:
+      weight: primary
+      rank: 30
+      signal: "AI-DLC / MLOps 관점에서 가장 먼저 확인할 핵심 프로젝트입니다."
+      reviewerReason: "서비스 기능이 실제 운영 환경에서 동작할 수 있도록 배포, 보안, 관측 가능성 기반을 정리한 작업입니다."
+    nlp-llm:
+      weight: related
+      rank: 90
+      signal: "NLP / LLM 관점에서는 배경 맥락으로 참고할 수 있습니다."
+      reviewerReason: "서비스 기능이 실제 운영 환경에서 동작할 수 있도록 배포, 보안, 관측 가능성 기반을 정리한 작업입니다."
   subtypes:
     - Platform Engineering
     - CI/CD
@@ -78,3 +111,4 @@ Dalkom Shop은 임직원만 사용할 수 있는 폐쇄형 사내 쇼핑몰로, 
 ## 결과
 
 프로젝트는 기획, 설계, 구현, 검증, 종료까지 비교적 체계적인 절차 속에서 진행되었고, Dalkom Shop은 사용자 경험과 관리자 운영 기능을 모두 갖춘 사내 마일리지 커머스 플랫폼 형태로 정리되었습니다. 제 관점에서는 특히 DevSecOps와 플랫폼 레이어가 단순 지원 역할이 아니라, 검색·알림·관리자 기능 같은 서비스 확장을 실제로 가능하게 만드는 기반이라는 점을 실감한 프로젝트였습니다.
+

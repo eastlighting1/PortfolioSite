@@ -1,19 +1,253 @@
 ---
-const { items } = Astro.props;
+const { items, matrixRows = [], locale = "ko" } = Astro.props;
+const labels = {
+  all: locale === "ko" ? "전체 보기" : "All lenses",
+  primary: locale === "ko" ? "주요 작업" : "Primary work",
+  supporting: locale === "ko" ? "연결 신호" : "Supporting signals",
+  related: locale === "ko" ? "관련 배경" : "Related background",
+  reset: locale === "ko" ? "렌즈 초기화" : "Reset lens",
+  statusAll: locale === "ko" ? "관점을 선택하면 관련 프로젝트가 먼저 보입니다." : "Choose a focus area to bring relevant projects forward.",
+  statusSelected: locale === "ko" ? "관련 프로젝트를 앞으로 정렬했습니다." : "selected. Relevant projects moved forward."
+};
+
+const cellForRole = (row: any, roleId: string) => row.cells.find((cell: any) => cell.role.id === roleId);
+const rowsForRole = (roleId: string, weight: string) =>
+  matrixRows
+    .filter((row: any) => cellForRole(row, roleId)?.weight === weight)
+    .sort((a: any, b: any) => (cellForRole(a, roleId)?.rank ?? 100) - (cellForRole(b, roleId)?.rank ?? 100));
 ---
 
-<div class="portfolio-value-grid">
-  {items.map((item: { value?: string; title?: string; shortTitle?: string; outcome?: string; description?: string; evidence?: string; businessSignal?: string; skills: string[] }) => (
-    <article class="portfolio-value-card" data-reveal="1">
-      <span>{item.shortTitle ?? item.value}</span>
-      <h3>{item.title ?? item.outcome}</h3>
-      <p>{item.description ?? item.evidence}</p>
-      {item.businessSignal && <p class="portfolio-value-card__signal">{item.businessSignal}</p>}
-      <div class="tag-row">
-        {item.skills.slice(0, 4).map((skill) => (
-          <span class="tag-chip">{skill}</span>
-        ))}
-      </div>
-    </article>
-  ))}
+<div
+  class="role-lens-workbench"
+  data-role-workbench
+  data-density="workbench"
+  data-status-all={labels.statusAll}
+  data-status-selected={labels.statusSelected}
+>
+  <div class="role-lens-workbench__toolbar">
+    <p>{locale === "ko" ? "관심 분야를 누르면 대표 프로젝트의 읽는 순서가 바뀝니다." : "Select a focus area to change the reading order of representative projects."}</p>
+    <button type="button" class="button-link-secondary" data-role-lens-reset>{labels.reset}</button>
+  </div>
+  <p class="role-lens-workbench__status" role="status" aria-live="polite" data-role-lens-status>{labels.statusAll}</p>
+
+  <div class="role-lens-board" aria-label={locale === "ko" ? "역할 렌즈 보드" : "Role lens board"}>
+    {items.map((role: any) => {
+      const primaryRows = rowsForRole(role.id, "primary");
+      const supportingRows = rowsForRole(role.id, "supporting");
+      const relatedRows = rowsForRole(role.id, "minor");
+      return (
+        <section class="role-lens-column" data-role-column={role.id}>
+          <button type="button" class="role-lens-column__head" data-role-lens={role.id} aria-pressed="false">
+            <span>{role.shortTitle}</span>
+            <strong>{role.title}</strong>
+            <p>{role.businessSignal}</p>
+          </button>
+          <details class="role-lens-column__detail" open>
+            <summary>{labels.primary}</summary>
+            <div class="role-lens-column__work">
+              {primaryRows.map((row: any) => (
+                <a href={row.href}>
+                  <strong>{row.title}</strong>
+                  <span>{row.type} · {row.year}</span>
+                  <p>{cellForRole(row, role.id)?.signal}</p>
+                  {cellForRole(row, role.id)?.reviewerReason && <small>{cellForRole(row, role.id)?.reviewerReason}</small>}
+                </a>
+              ))}
+            </div>
+          </details>
+          {supportingRows.length > 0 && (
+            <details class="role-lens-column__detail">
+              <summary>{labels.supporting}</summary>
+              <div class="role-lens-column__work role-lens-column__work--compact">
+                {supportingRows.map((row: any) => (
+                  <a href={row.href}>
+                    <strong>{row.title}</strong>
+                    <span>{row.type} · {row.year}</span>
+                    <p>{cellForRole(row, role.id)?.signal}</p>
+                  </a>
+                ))}
+              </div>
+            </details>
+          )}
+          {relatedRows.length > 0 && (
+            <details class="role-lens-column__detail role-lens-column__detail--related">
+              <summary>{labels.related}</summary>
+              <div class="role-lens-column__work role-lens-column__work--compact role-lens-column__work--related">
+                {relatedRows.map((row: any) => (
+                  <a href={row.href}>
+                    <strong>{row.title}</strong>
+                    <span>{row.type} · {row.year}</span>
+                    <p>{cellForRole(row, role.id)?.signal}</p>
+                  </a>
+                ))}
+              </div>
+            </details>
+          )}
+        </section>
+      );
+    })}
+  </div>
 </div>
+
+<style>
+  .role-lens-column {
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .role-lens-column.is-curated-primary {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .role-lens-column.is-curated-supporting {
+    opacity: 0.72;
+  }
+
+  .role-lens-column__detail--related {
+    opacity: 0.84;
+  }
+
+  .role-lens-column__work small {
+    color: var(--color-muted);
+    display: block;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    margin-top: 0.35rem;
+  }
+
+  .role-lens-column__work--related a {
+    background: var(--surface-muted);
+  }
+
+  @media (max-width: 980px) {
+    .role-lens-board {
+      grid-template-columns: 1fr !important;
+    }
+
+    .role-lens-column.is-curated-supporting {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  const bindRoleLensWorkbench = () => {
+    document.querySelectorAll("[data-role-workbench]").forEach((workbench) => {
+      if (workbench.dataset.bound === "true") return;
+      workbench.dataset.bound = "true";
+
+      const buttons = Array.from(workbench.querySelectorAll("[data-role-lens]"));
+      const columns = Array.from(workbench.querySelectorAll("[data-role-column]"));
+      const reset = workbench.querySelector("[data-role-lens-reset]");
+      const status = workbench.querySelector("[data-role-lens-status]");
+      const updateUrl = (role) => {
+        const url = new URL(window.location.href);
+        if (role) url.searchParams.set("lens", role);
+        else url.searchParams.delete("lens");
+        window.history.replaceState({}, "", url.toString());
+      };
+
+      const apply = (role, options = { updateUrl: true }) => {
+        workbench.dataset.activeRole = role;
+        const activeButton = buttons.find((button) => (button as HTMLElement).dataset.roleLens === role) as HTMLElement | undefined;
+
+        // Update column headers active state
+        buttons.forEach((button) => {
+          const htmlButton = button as HTMLElement;
+          const active = htmlButton.dataset.roleLens === role;
+          htmlButton.classList.toggle("is-active", active);
+          htmlButton.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+
+        // Update column curation order and visual weight. Do not hide non-matching
+        // columns: curation changes reading order while keeping supporting signals.
+        columns.forEach((column) => {
+          const htmlColumn = column as HTMLElement;
+          const active = role && htmlColumn.dataset.roleColumn === role;
+          if (active) {
+            htmlColumn.style.order = "0";
+            htmlColumn.classList.add("is-curated-primary");
+            htmlColumn.classList.remove("is-curated-supporting");
+          } else {
+            htmlColumn.style.order = role ? "1" : "";
+            htmlColumn.classList.toggle("is-curated-supporting", Boolean(role));
+            htmlColumn.classList.remove("is-curated-primary");
+          }
+        });
+
+        // Update the board's grid template depending on whether a role is active
+        const board = workbench.querySelector(".role-lens-board") as HTMLElement;
+        if (board) {
+          if (role) {
+            board.style.gridTemplateColumns = "minmax(0, 1.35fr) repeat(2, minmax(14rem, 0.82fr))";
+          } else {
+            board.style.gridTemplateColumns = ""; // Standard 3-column layout
+          }
+        }
+
+        if (status) {
+          status.textContent = role && activeButton
+            ? `${activeButton.querySelector("strong")?.textContent ?? activeButton.textContent} ${workbench.dataset.statusSelected ?? "lens selected."}`
+            : workbench.dataset.statusAll ?? "";
+        }
+
+        if (options.updateUrl) updateUrl(role);
+
+        // Dispatch custom event to coordinate page-wide non-linear highlight/filtering
+        const event = new CustomEvent("role-lens-changed", {
+          detail: { role },
+          bubbles: true,
+          composed: true
+        });
+        workbench.dispatchEvent(event);
+      };
+
+      // Column header clicks
+      buttons.forEach((button) => {
+        const htmlButton = button as HTMLElement;
+        htmlButton.addEventListener("click", () => {
+          const targetRole = htmlButton.dataset.roleLens || "";
+          // If already selected, clicking column head toggle off (goes back to empty/all)
+          apply(workbench.dataset.activeRole === targetRole ? "" : targetRole);
+        });
+      });
+
+      // Reset button click
+      reset?.addEventListener("click", () => {
+        apply("");
+      });
+
+      document.addEventListener("portfolio-set-role-lens", ((event: Event) => {
+        const customEvent = event as CustomEvent;
+        const role = customEvent.detail?.role || "";
+        apply(role);
+      }) as EventListener);
+
+      const modeToLens = {
+        technical: "aidlc-mlops",
+        data: "data-graph",
+        workflow: "aidlc-mlops",
+        mlops: "aidlc-mlops",
+        nlp: "nlp-llm"
+      };
+      const url = new URL(window.location.href);
+      const initialLens = url.searchParams.get("lens") || modeToLens[url.searchParams.get("mode") || ""] || "";
+      const hasInitialLens = buttons.some((button) => (button as HTMLElement).dataset.roleLens === initialLens);
+      apply(hasInitialLens ? initialLens : "", { updateUrl: false });
+    });
+  };
+
+  bindRoleLensWorkbench();
+  document.addEventListener("astro:page-load", bindRoleLensWorkbench);
+</script>

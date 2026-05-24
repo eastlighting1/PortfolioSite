@@ -48,6 +48,7 @@ for (const filePath of markdownFiles) {
   const evidenceLevel = lineValue(frontmatter, "  evidenceLevel");
   const disclosureLevel = lineValue(frontmatter, "  disclosureLevel");
   const businessSignal = lineValue(frontmatter, "  businessSignal");
+  const proofSentence = lineValue(frontmatter, "  proofSentence");
 
   if (!allowedThemes.has(primaryTheme)) {
     fail(`Invalid or missing primaryTheme in ${relative}: ${primaryTheme ?? "(missing)"}`);
@@ -65,6 +66,30 @@ for (const filePath of markdownFiles) {
     fail(`Missing or too-short businessSignal in ${relative}`);
   }
 
+  if (!proofSentence || proofSentence.length < 20) {
+    fail(`Missing or too-short proofSentence in ${relative}`);
+  }
+
+  if (!/^  priority:\s*$/m.test(frontmatter)) {
+    fail(`Missing evidence.priority in ${relative}`);
+  }
+
+  if (!frontmatter.includes("  reviewerIntents:")) {
+    fail(`Missing evidence.reviewerIntents in ${relative}`);
+  }
+
+  if (!frontmatter.includes("  roleSignals:")) {
+    fail(`Missing evidence.roleSignals in ${relative}`);
+  }
+
+  for (const role of allowedThemes) {
+    const roleBlock = frontmatter.match(new RegExp(`^    ${role}:\\s*\\r?\\n([\\s\\S]*?)(?=^    (?:data-graph|aidlc-mlops|nlp-llm):|^  subtypes:|^portfolio:|^resume:|^---)`, "m"))?.[1] ?? "";
+    if (!roleBlock.includes("weight:")) fail(`Missing roleSignals.${role}.weight in ${relative}`);
+    if (!roleBlock.includes("rank:")) fail(`Missing roleSignals.${role}.rank in ${relative}`);
+    if (!roleBlock.includes("signal:")) fail(`Missing roleSignals.${role}.signal in ${relative}`);
+    if (!roleBlock.includes("reviewerReason:")) fail(`Missing roleSignals.${role}.reviewerReason in ${relative}`);
+  }
+
   for (const requiredList of ["secondaryThemes", "dataSurfaces", "workflowStages", "subtypes"]) {
     if (!frontmatter.includes(`  ${requiredList}:\n`)) {
       fail(`Missing ${requiredList} list in ${relative}`);
@@ -72,9 +97,63 @@ for (const filePath of markdownFiles) {
   }
 }
 
+const researchDir = path.join(contentRoot, "research");
+const researchFiles = listFiles(researchDir, (filePath) => filePath.endsWith(".md"));
+const allowedContributionTypes = new Set(["modeling", "evaluation", "alignment", "domain-nlp", "system-support", "literature-review"]);
 const projectNames = markdownFiles.map((filePath) => path.basename(filePath));
 const koSlugs = new Set(projectNames.filter((name) => name.endsWith(".ko.md")).map((name) => name.replace(/\.ko\.md$/, "")));
 const enSlugs = new Set(projectNames.filter((name) => name.endsWith(".en.md")).map((name) => name.replace(/\.en\.md$/, "")));
+const projectSlugs = new Set([...koSlugs, ...enSlugs]);
+
+for (const filePath of researchFiles) {
+  const source = readText(filePath);
+  const frontmatter = frontmatterOf(source, filePath);
+  const relative = path.relative(root, filePath);
+  const contributionType = lineValue(frontmatter, "contributionType")?.replace(/^['"]|['"]$/g, "");
+  const portfolioRelevance = lineValue(frontmatter, "portfolioRelevance");
+
+  if (!allowedContributionTypes.has(contributionType)) {
+    fail(`Invalid or missing contributionType in ${relative}: ${contributionType ?? "(missing)"}`);
+  }
+
+  if (!portfolioRelevance || portfolioRelevance.length < 30) {
+    fail(`Missing or too-short portfolioRelevance in ${relative}`);
+  }
+
+  if (!frontmatter.includes("linkedRoles:\n")) {
+    fail(`Missing linkedRoles in ${relative}`);
+  }
+
+  const linkedProjectBlock = frontmatter.match(/linkedProjects:\s*\r?\n((?:\s+-\s+.+\r?\n?)*)/);
+  const linkedProjects = linkedProjectBlock?.[1]
+    ?.split(/\r?\n/)
+    .map((line) => line.match(/-\s+["']?([^"'\r\n]+)["']?/)?.[1]?.trim())
+    .filter(Boolean) ?? [];
+  for (const slug of linkedProjects) {
+    if (!projectSlugs.has(slug)) fail(`Unknown linked project "${slug}" in ${relative}`);
+  }
+}
+
+for (const fileName of ["experience.ko.yaml", "experience.en.yaml", "education.ko.yaml", "education.en.yaml"]) {
+  const source = readText(path.join(contentRoot, "globals", fileName));
+  const relative = path.join("src", "content", "globals", fileName);
+  const entries = source.split(/\r?\n(?=  - )/).filter((entry) => entry.startsWith("  - "));
+  for (const entry of entries) {
+    if (!entry.includes("startDate:")) fail(`Missing startDate in ${relative}`);
+    if (!entry.includes("endDate:") && !entry.includes("isCurrent: true")) fail(`Missing endDate or isCurrent in ${relative}`);
+    if (!entry.includes("isCurrent:")) fail(`Missing isCurrent in ${relative}`);
+  }
+}
+
+const pageFiles = listFiles(path.join(contentRoot, "pages"), (filePath) => filePath.endsWith(".yaml"));
+for (const filePath of pageFiles) {
+  const source = readText(filePath);
+  const relative = path.relative(root, filePath);
+  if (!/^contract:\s*$/m.test(source)) fail(`Missing page contract in ${relative}`);
+  for (const key of ["userQuestion", "pageAnswer", "requiredEvidence", "nextPaths", "doNotRepeat"]) {
+    if (!source.includes(`  ${key}:`)) fail(`Missing contract.${key} in ${relative}`);
+  }
+}
 
 for (const slug of koSlugs) {
   if (!enSlugs.has(slug)) fail(`Missing English project pair for ${slug}`);
@@ -101,12 +180,25 @@ for (const filePath of publicContentFiles) {
 const portfolioKo = readText(path.join(contentRoot, "pages", "portfolio.ko.yaml"));
 const portfolioEn = readText(path.join(contentRoot, "pages", "portfolio.en.yaml"));
 
-if (!portfolioKo.includes("AI-Driven Development Life Cycle")) {
-  fail("Korean portfolio page must define AI-DLC on first-page content.");
+if (!portfolioKo.includes("Development Flow")) {
+  fail("Korean portfolio page must define the development-flow section.");
 }
 
-if (!portfolioEn.includes("AI-Driven Development Life Cycle")) {
-  fail("English portfolio page must define AI-DLC on first-page content.");
+if (!portfolioEn.includes("Development Flow")) {
+  fail("English portfolio page must define the development-flow section.");
+}
+
+const firstFeaturedSlug = (source) => {
+  const match = source.match(/featuredCaseSlugs:\s*\r?\n\s*-\s*([^\r\n]+)/);
+  return match?.[1]?.trim();
+};
+
+if (firstFeaturedSlug(portfolioKo) === "emr-nursing-surveillance") {
+  fail("Korean portfolio must not promote the medical/EMR case as the first featured case.");
+}
+
+if (firstFeaturedSlug(portfolioEn) === "emr-nursing-surveillance") {
+  fail("English portfolio must not promote the medical/EMR case as the first featured case.");
 }
 
 console.log("Content validation passed.");

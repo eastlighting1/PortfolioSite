@@ -3,6 +3,13 @@ title: "복부수술 환자의 간호감시를 위한 딥러닝 기반 진단명
 year: 2025
 venue: "한국컴퓨터정보학회논문지"
 type: "저널 논문"
+contributionType: "evaluation"
+contributionClaim: "간호감시 맥락의 자동 ICD 코딩을 위해 EMR 정형 정보와 간호기록을 결합한 딥러닝 분류 모델을 제안했다."
+methodSignal: "KM-BERT 앙상블, PCA, XGBoost 스태킹을 통해 희소 진단명과 도메인 민감 label을 평가했다."
+portfolioRelevance: "NLP/LLM 시스템의 성능을 단순 정확도가 아니라 도메인 데이터 구조와 오류 분포까지 함께 판단해야 한다는 포트폴리오 주장을 보강한다."
+linkedRoles:
+  - "nlp-llm"
+  - "data-graph"
 bibtex: |
   @article{kim2025deep,
     title={Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abdominal Surgery Patients},

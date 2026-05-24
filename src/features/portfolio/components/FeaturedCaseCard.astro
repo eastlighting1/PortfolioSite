@@ -4,7 +4,7 @@ import ExternalLinks from "../../../components/common/ExternalLinks.astro";
 const { item, labels, locale, featured = false } = Astro.props;
 ---
 
-<article class:list={["portfolio-case-card", featured && "portfolio-case-card--hero"]} data-reveal="1">
+<article class:list={["portfolio-case-card", featured && "portfolio-case-card--hero"]} data-reveal="1" data-portfolio-card data-primary-theme={item.evidence.primaryTheme} data-secondary-themes={item.evidence.secondaryThemes.join(" ")}>
   <div class="portfolio-case-card__main">
     <p class="portfolio-case-card__kicker">{item.type} / {item.year}</p>
     <h3>{item.title}</h3>

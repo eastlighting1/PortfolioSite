@@ -24,12 +24,18 @@ const bridgeLabels =
   locale === "ko"
     ? {
         title: "포트폴리오 역할과의 연결",
+        contribution: "연구 기여",
+        relevance: "포트폴리오 의미",
+        method: "방법 / 판단 신호",
         modeling: "모델링/평가",
         system: "시스템 판단",
         domain: "적용 맥락"
       }
     : {
         title: "Connection to Portfolio Roles",
+        contribution: "Research Contribution",
+        relevance: "Portfolio Relevance",
+        method: "Method / Judgment Signal",
         modeling: "Modeling / Evaluation",
         system: "System Judgment",
         domain: "Application Context"
@@ -53,12 +59,32 @@ const bridgeLabels =
       <div class="eyebrow">{bridgeLabels.title}</div>
       <div class="document-list" style="margin-top: 1rem;">
         <div class="resume-item">
+          <strong>{bridgeLabels.contribution}</strong>
+          <p>{item.data.contributionClaim ?? item.data.contributionType ?? item.data.type}</p>
+        </div>
+        {(item.data.portfolioRelevance || item.data.methodSignal) && (
+          <>
+            {item.data.portfolioRelevance && (
+              <div class="resume-item">
+                <strong>{bridgeLabels.relevance}</strong>
+                <p>{item.data.portfolioRelevance}</p>
+              </div>
+            )}
+            {item.data.methodSignal && (
+              <div class="resume-item">
+                <strong>{bridgeLabels.method}</strong>
+                <p>{item.data.methodSignal}</p>
+              </div>
+            )}
+          </>
+        )}
+        <div class="resume-item">
           <strong>{bridgeLabels.modeling}</strong>
-          <p>{locale === "ko" ? "연구 항목을 NLP/LLM 모델링과 평가 설계의 근거로 해석합니다." : "This research is read as evidence for NLP/LLM modeling and evaluation design."}</p>
+          <p>{locale === "ko" ? "연구 항목을 NLP/LLM 모델링과 평가 설계의 판단 근거로 해석합니다." : "This research is read as a basis for NLP/LLM modeling and evaluation design."}</p>
         </div>
         <div class="resume-item">
           <strong>{bridgeLabels.system}</strong>
-          <p>{locale === "ko" ? "논문 결과를 프로젝트의 데이터 처리, 평가, 운영 판단과 연결합니다." : "The research result is connected to data, evaluation, and operating decisions in project evidence."}</p>
+          <p>{locale === "ko" ? "논문 결과를 프로젝트의 데이터 처리, 평가, 운영 판단과 연결합니다." : "The research result is connected to data, evaluation, and operating decisions in project work."}</p>
         </div>
         <div class="resume-item">
           <strong>{bridgeLabels.domain}</strong>
@@ -66,9 +92,6 @@ const bridgeLabels =
         </div>
       </div>
     </section>
-    <article class="prose" style="padding-top: 2rem;">
-      <Content />
-    </article>
     {linkedProjects.length > 0 && (
       <section class="resume-section" style="margin-top: 2rem;">
         <div class="eyebrow">{ui.research.relatedProjectsEyebrow}</div>
@@ -86,5 +109,8 @@ const bridgeLabels =
         </div>
       </section>
     )}
+    <article class="prose" style="padding-top: 2rem;">
+      <Content />
+    </article>
   </div>
 </ReadingLayout>

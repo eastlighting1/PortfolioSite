@@ -27,6 +27,39 @@ evidence:
   evidenceLevel: Implemented
   disclosureLevel: Public Summary Only
   businessSignal: "Shows delivery, security, and observability foundations for running service features in an operational environment."
+  proofSentence: "Evidence for reviewing reproducible, observable AI workflow decisions."
+  priority:
+    global: 80
+    home: 70
+    portfolio: 70
+    projects: 70
+    resume: 70
+    print: 80
+    role:
+      data-graph: 45
+      aidlc-mlops: 30
+      nlp-llm: 90
+  reviewerIntents:
+    recruiter: related
+    technical-reviewer: supporting
+    data-systems-reviewer: supporting
+    mlops-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: supporting
+      rank: 45
+      signal: "Supporting evidence for Data Systems review."
+      reviewerReason: "Shows delivery, security, and observability foundations for running service features in an operational environment."
+    aidlc-mlops:
+      weight: primary
+      rank: 30
+      signal: "Primary evidence for AI-DLC / MLOps review."
+      reviewerReason: "Shows delivery, security, and observability foundations for running service features in an operational environment."
+    nlp-llm:
+      weight: related
+      rank: 90
+      signal: "Related background evidence for NLP / LLM review."
+      reviewerReason: "Shows delivery, security, and observability foundations for running service features in an operational environment."
   subtypes:
     - Platform Engineering
     - CI/CD

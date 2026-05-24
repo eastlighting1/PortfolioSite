@@ -4,8 +4,9 @@ import PrintToolbar from "../../components/documents/PrintToolbar.astro";
 import ResumeHeader from "../../components/documents/ResumeHeader.astro";
 import ResumeSection from "../../components/documents/ResumeSection.astro";
 import { formatPublicationCitation, getPublicationCitationFromBibtex } from "../../lib/bibtex";
-import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
-import { type Locale } from "../../lib/i18n";
+import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
+import { localizePath, type Locale } from "../../lib/i18n";
+import { withBase } from "../../lib/site";
 import { getRoleThemes } from "../portfolio/portfolio-data";
 
 interface Props {
@@ -26,8 +27,16 @@ const recognitionEntry = await getGlobalEntry("recognition", locale);
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
 const links = linksEntry.data.externalProfiles;
-const experience = experienceEntry.data.items;
-const education = educationEntry.data.items;
+function compareDatedEntries(a: any, b: any) {
+  if (a.isCurrent !== b.isCurrent) return a.isCurrent ? -1 : 1;
+  const aEnd = a.endDate ?? "9999-12";
+  const bEnd = b.endDate ?? "9999-12";
+  if (aEnd !== bEnd) return String(bEnd).localeCompare(String(aEnd));
+  return String(b.startDate ?? "").localeCompare(String(a.startDate ?? ""));
+}
+
+const experience = [...experienceEntry.data.items].sort(compareDatedEntries);
+const education = [...educationEntry.data.items].sort(compareDatedEntries);
 const recognitionData = recognitionEntry.data;
 const roleThemes = getRoleThemes(locale);
 
@@ -125,7 +134,7 @@ const sectionLabels =
         objective: "요약",
         education: "학력",
         experience: "연구 및 실무 경험",
-        projects: "선별 프로젝트",
+        projects: "프로젝트",
         publications: "연구 및 발표",
         certifications: "수료 및 교육",
         additional: "추가 정보",
@@ -138,7 +147,7 @@ const sectionLabels =
         objective: "Objective",
         education: "Education",
         experience: "Research Experience",
-        projects: "Selected Projects",
+        projects: "Projects",
         publications: "Publications",
         certifications: "Training & Certifications",
         additional: "Additional Information",
@@ -148,13 +157,25 @@ const sectionLabels =
 
 const localizedKeywordFallback =
   locale === "ko"
-    ? ["의료 AI", "대화형 AI", "임상 NLP", "평가", "MLOps", "응용 AI 시스템"]
-    : ["Medical AI", "Conversational AI", "Clinical NLP", "Evaluation", "MLOps", "Applied AI Systems"];
+    ? ["데이터 시스템", "그래프 모델링", "AI-DLC", "MLOps", "NLP/LLM 평가", "응용 AI 시스템"]
+    : ["Data Systems", "Graph Modeling", "AI-DLC", "MLOps", "NLP/LLM Evaluation", "Applied AI Systems"];
 
 const researchKeywords =
   resumePage.data.printCv.keywords.length > 0
     ? resumePage.data.printCv.keywords
     : localizedKeywordFallback;
+const structuredResearchInterests =
+  locale === "ko"
+    ? [
+        { label: "Methods", value: "NLP/LLM 평가, 그래프 모델링, AI-DLC workflow" },
+        { label: "Application Areas", value: "의료 NLP, 추천 시스템, 대화형 AI" },
+        { label: "Systems Focus", value: "데이터 파이프라인, 관측 가능성, 재현 가능한 산출물" }
+      ]
+    : [
+        { label: "Methods", value: "NLP/LLM evaluation, graph modeling, AI-DLC workflows" },
+        { label: "Application Areas", value: "Healthcare NLP, recommendation, conversational systems" },
+        { label: "Systems Focus", value: "Data pipelines, observability, reproducible artifacts" }
+      ];
 
 const cvAdditionalItems =
   resumePage.data.printCv.additionalItems.length > 0
@@ -247,6 +268,9 @@ const cvAdditionalItems =
                         <li>{item}</li>
                       ))}
                     </ul>
+                    <a class="button-link-secondary" href={withBase(localizePath(`projects/${entrySlug(project)}/`, locale))}>
+                      {locale === "ko" ? "프로젝트 상세 보기" : "Open project"}
+                    </a>
                   </div>
                 ))}
               </ResumeSection>
@@ -281,6 +305,9 @@ const cvAdditionalItems =
                     <div class="muted">{item.data.venue} | {item.data.year} | {item.data.type}</div>
                     <p>{compactText(item.data.abstract, 155)}</p>
                     <p class="muted resume-inline-note">{item.data.tags.slice(0, 3).join(" · ")}</p>
+                    <a class="button-link-secondary" href={withBase(localizePath(`research/${entrySlug(item)}/`, locale))}>
+                      {locale === "ko" ? "연구 상세 보기" : "Open research"}
+                    </a>
                   </div>
                 ))}
               </ResumeSection>
@@ -324,6 +351,9 @@ const cvAdditionalItems =
     <section class="cv-print-section">
       <h2>{sectionLabels.interests}</h2>
       <div class="cv-print-copy">
+        {structuredResearchInterests.map((item) => (
+          <p><strong>{item.label}:</strong> {item.value}</p>
+        ))}
         <p><strong>{sectionLabels.keywords}:</strong> {researchKeywords.join(", ")}</p>
         <p><strong>{sectionLabels.objective}:</strong> {resumePage.data.printCv.objective ?? profile.summary}</p>
       </div>

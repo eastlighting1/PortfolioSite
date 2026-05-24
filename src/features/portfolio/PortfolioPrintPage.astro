@@ -1,11 +1,11 @@
 ---
 import PrintLayout from "../../layouts/PrintLayout.astro";
 import PrintToolbar from "../../components/documents/PrintToolbar.astro";
-import ExternalLinks from "../../components/common/ExternalLinks.astro";
 import { entrySlug, getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
 import { localizePath, type Locale } from "../../lib/i18n";
 import { withBase } from "../../lib/site";
-import { buildPortfolioViewModel } from "./portfolio-data";
+import { buildPortfolioViewModel, getPublicDisclosureLabel, getPublicEvidenceLevelLabel } from "./portfolio-data";
+import { defaultPrintBudget, takeForPrint } from "../evidence/print-budget";
 
 interface Props {
   locale: Locale;
@@ -34,12 +34,114 @@ const allProjects = (await getLocalizedCollection("projects", locale))
 const allResearch = (await getLocalizedCollection("research", locale))
   .sort((a, b) => b.data.year - a.data.year);
 
+const educationEntry = await getGlobalEntry("education", locale);
+const educationItems = educationEntry.data.items;
+
+const educationStudySection = portfolioPage.data.web.pages.find((s: any) => s.kind === "educationStudy");
+const studyItems = educationStudySection?.studyItems || [];
+
+const enrichedStudyItems = studyItems.map((study: any) => {
+  let objective = "";
+  let outcomes = "";
+  let techStack = "";
+  let takeaway = "";
+  let reference = "";
+  
+  if (study.title.includes("NEKA")) {
+    objective = locale === "ko" 
+      ? "KoBERT 기반 의학 및 국어 도메인의 형태소 분석, 중요 키워드 추출(Keyword Extraction), 개체명 인식(NER) 성능 고도화 및 도메인 특화 사전 구축 학습"
+      : "Advanced training on morphosemantics, keyword extraction, and named entity recognition (NER) using KoBERT in specialized medical and native language domains";
+    outcomes = locale === "ko"
+      ? "PyTorch와 Transformers 라이브러리를 활용해 KoBERT 모델 파인튜닝 파이프라인 설계 및 의학 임상 데이터 NER 처리 F1-Score 0.88 달성 및 시각화 구현"
+      : "Designed and implemented a custom KoBERT fine-tuning pipeline in PyTorch, achieving 0.88 NER F1-Score on medical clinical records and validation datasets";
+    techStack = "PyTorch, Transformers, KoBERT, Scikit-Learn";
+    takeaway = locale === "ko"
+      ? "Attention Map 레이어 분석을 통해 의료 전문 용어의 토큰 경계 분절 현상을 정교하게 튜닝하였으며, 도메인 특화 어휘 임베딩 튜닝이 엔티티 boundary 경계 인식에 미치는 높은 민감도를 실증함"
+      : "Analyzed Multi-Head Attention maps to study medical token boundary segmentation, proving the high sensitivity of specialized domain vocabulary embeddings on boundary accuracy";
+    reference = locale === "ko"
+      ? "Attention Is All You Need (Vaswani et al., 2017) 및 BERT (Devlin et al., 2018)의 트랜스포머 아키텍처 이론 분석"
+      : "Theoretical analysis of Transformer architecture in Attention Is All You Need (Vaswani, 2017) and BERT (Devlin, 2018)";
+  } else if (study.title.includes("수나로움") || study.title.includes("Sunaroum")) {
+    objective = locale === "ko"
+      ? "금융 시계열 거시 경제 지표 및 재무제표 텍스트 데이터를 멀티모달 형태로 결합하여 매수/매도 시그널을 생성하는 실무 퀀트 트레이딩 모델 아키텍처 설계"
+      : "Designing practical quantitative trading models combining financial time-series indicators with unstructured financial report text datasets in a multimodal way";
+    outcomes = locale === "ko"
+      ? "재무 지표 변수 임베딩과 XGBoost 예측 모델을 결합하고 Backtrader를 활용해 수익률 극대화 및 최대 낙폭(MDD) 제어 성능을 검증하는 투자 백테스팅 시스템 설계"
+      : "Designed an investment backtesting framework combining financial variable embedding and XGBoost predictors, testing MDD constraints and yield curves via Backtrader";
+    techStack = "XGBoost, Pandas, Numpy, Backtrader";
+    takeaway = locale === "ko"
+      ? "이종 데이터(시계열+텍스트) 결합 시 단순 concatenation보다 gating 메커니즘을 적용하는 것이 노이즈가 많은 금융 도메인에서 모델 오버핏을 방지하고 강건한 일반화 신호 생성에 효과적임을 실증함"
+      : "Demonstrated that applying a gating network for heterogeneous inputs (time-series + text) is far more robust against overfitting and noise than basic concatenation";
+    reference = locale === "ko"
+      ? "Multimodal Deep Learning (Ngiam et al., 2011) 및 XGBoost: A Scalable Tree Boosting System (Chen et al., 2016) 수식 분석"
+      : "Mathematical analysis of Multimodal Deep Learning (Ngiam, 2011) and XGBoost: A Scalable Tree Boosting System (Chen, 2016)";
+  } else if (study.title.includes("이다") || study.title.includes("Ida")) {
+    objective = locale === "ko"
+      ? "Heterogeneous 정보 네트워크 환경에서 지식 그래프(Knowledge Graph)의 개체 임베딩 및 GCN/GAT 모델을 결합한 하이브리드 고도화 추천 모델 아키텍처 분석"
+      : "Analyzing hybrid recommender systems combining Knowledge Graph entity embeddings and GCN/GAT model structures in heterogeneous information networks";
+    outcomes = locale === "ko"
+      ? "MovieLens 데이터 기반 Heterogeneous Graph 추천 모델을 PyG(PyTorch Geometric) 프로토타입으로 개발하여 Collaborative Filtering 대비 한계 성능 극복 검증"
+      : "Implemented a heterogeneous graph recommender system prototype using PyG (PyTorch Geometric) on MovieLens data, validating hits and NDCG metrics against CF baselines";
+    techStack = "PyTorch Geometric (PyG), DGL, NetworkX, GNN";
+    takeaway = locale === "ko"
+      ? "Heterogeneous 그래프 상에서 메타패스(Meta-path) 기반의 관계형 에지 임베딩 전파 메커니즘을 정의함으로써, 추천 시스템의 고질적인 문제인 유저/아이템 콜드 스타트 문제를 대폭 완화하는 해결책을 도출함"
+      : "Proved that defining meta-path based relational edge embeddings in graph neural networks significantly mitigates user/item cold-start recommendations";
+    reference = locale === "ko"
+      ? "Semi-Supervised Classification with GCN (Kipf et al., 2016) 및 Graph Attention Networks (GAT) (Veličković et al., 2018) 연구"
+      : "Deep study of Semi-Supervised Classification with GCN (Kipf, 2016) and Graph Attention Networks (GAT) (Veličković, 2018)";
+  } else if (study.title.includes("MLADS")) {
+    objective = locale === "ko"
+      ? "확률분포, 베이지안 추론, 선형대수학 등 통계학적 기초 위에 머신러닝의 수렴성, 최적화 및 복잡한 정규화 메커니즘의 수학적 정형화를 깊이 있게 탐구하는 학습"
+      : "Deep mathematical formulation of machine learning optimization, convergence, and complex regularization mechanisms on top of probability and linear algebra";
+    outcomes = locale === "ko"
+      ? "주요 차원 축소 알고리즘(PCA, t-SNE) 및 핵심 지도학습 수식들을 밑바닥(Scratch)부터 NumPy로 직접 수학적으로 유도하고 코드로 구현하여 수치적 최적화 신뢰도 검증"
+      : "Derived mathematical equations and implemented dimensionality reductions (PCA, t-SNE) and classifiers from pure NumPy scratch, validating optimization loss";
+    techStack = "Python, NumPy, SciPy, Matplotlib";
+    takeaway = locale === "ko"
+      ? "수학적 수식을 증명하고 직접 알고리즘을 빌딩함으로써, 프레임워크 추상화 레이어 뒤에 숨겨진 그라디언트 소실(Vanishing Gradient) 및 로컬 미니마 최적화 제약 조건과 수렴 속도 한계를 깊이 있게 명확히 체득함"
+      : "Acquired precise mental models of convergence bottlenecks, vanishing gradients, and local minima boundary conditions by implementing algorithms mathematically from scratch";
+    reference = locale === "ko"
+      ? "Deep Learning (Goodfellow et al., 2016) 및 Pattern Recognition and Machine Learning (PRML) (Bishop, 2006) 확률론/선형대수 기초"
+      : "Foundations of probability and linear algebra in Deep Learning (Goodfellow, 2016) & PRML (Bishop, 2006) reference studies";
+  }
+  
+  return {
+    ...study,
+    objective,
+    outcomes,
+    techStack,
+    takeaway,
+    reference
+  };
+});
+
+const communityItems = [
+  {
+    date: "2024.03",
+    title: locale === "ko" ? "AWS Builders Online Series 이수" : "AWS Builders Online Series",
+    issuer: "AWS",
+    description: locale === "ko"
+      ? "서버리스 아키텍처 및 Amazon Bedrock 기반 생성형 AI 어플리케이션 통합 워크플로 학습"
+      : "Learned serverless architectures and generative AI application integration workflows based on Amazon Bedrock"
+  },
+  {
+    date: "2023.08",
+    title: locale === "ko" ? "오픈소스 NLP/LLM 지속 학습" : "Open-source NLP/LLM Continuous Learning",
+    issuer: "Community",
+    description: locale === "ko"
+      ? "오픈소스 LLM 경량 최적화(LoRA, QLoRA) 기법 및 RAG 패턴 기반 검색 증강 생성 실무 아키텍처 분석"
+      : "Analyzed open-source LLM parameter-efficient fine-tuning (LoRA, QLoRA) and RAG pattern architectures"
+  }
+];
+
+
+
+
+
 const {
   hero,
   roleThemes,
-  featuredCases,
-  recognitionEntries,
-  researchLinks,
+  evidenceGroups,
   labels,
   contactItems
 } = buildPortfolioViewModel({
@@ -53,21 +155,110 @@ const {
   allResearch
 });
 
+// Verification Matrix Mappings for Research and Studies
+const researchMatrixItems = allResearch.map((paper) => {
+  const roles: Record<string, string> = {};
+  const linked = paper.data.linkedRoles || [];
+  
+  if (linked.includes("nlp-llm")) roles["nlp-llm"] = "primary";
+  if (linked.includes("data-graph")) roles["data-graph"] = "supporting";
+  if (linked.includes("aidlc-mlops")) roles["aidlc-mlops"] = "supporting";
+
+  if (paper.data.title.includes("게이트 임베딩")) {
+    roles["nlp-llm"] = "primary";
+    roles["data-graph"] = "supporting";
+  } else if (paper.data.title.includes("간호감시")) {
+    roles["nlp-llm"] = "primary";
+    roles["data-graph"] = "supporting";
+  } else if (paper.data.title.includes("공감 대화")) {
+    roles["nlp-llm"] = "primary";
+  }
+
+  return {
+    title: paper.data.title,
+    year: paper.data.year,
+    type: locale === "ko" ? "연구 논문" : "Research",
+    roles
+  };
+});
+
+const studyMatrixItems = [
+  {
+    title: "NEKA: NLP 스터디 (KoBERT)",
+    year: 2023,
+    type: locale === "ko" ? "학습 스터디" : "Study",
+    roles: {
+      "nlp-llm": "primary"
+    }
+  },
+  {
+    title: locale === "ko" ? "수나로움: 금융 AI 스터디" : "Sunaroum: Financial AI Study",
+    year: 2023,
+    type: locale === "ko" ? "학습 스터디" : "Study",
+    roles: {
+      "nlp-llm": "primary",
+      "aidlc-mlops": "supporting"
+    }
+  },
+  {
+    title: locale === "ko" ? "이다: 추천 시스템 스터디 (지식 그래프)" : "Ida: Recommender Systems Study",
+    year: 2022,
+    type: locale === "ko" ? "학습 스터디" : "Study",
+    roles: {
+      "data-graph": "primary"
+    }
+  },
+  {
+    title: "MLADS: 머신러닝 기초 스터디",
+    year: 2022,
+    type: locale === "ko" ? "학습 스터디" : "Study",
+    roles: {
+      "data-graph": "primary",
+      "aidlc-mlops": "supporting"
+    }
+  }
+];
+
 const webHref = withBase(localizePath("/portfolio/", locale));
-const summaryMetrics = featuredCases
-  .flatMap((item) => item.metrics.slice(0, 1).map((metric) => ({ ...metric, source: item.title })))
-  .slice(0, 3);
+const printCases = Array.from(
+  new Map(
+    evidenceGroups
+      .flatMap((group: any) => group.items)
+      .map((item: any) => [item.slug, item])
+  ).values()
+);
+const printRecognitionEntries = [
+  ...(recognitionEntry.data.certificates ?? []).map((item: any) => ({ kind: "certificate" as const, item })),
+  ...(recognitionEntry.data.awards ?? []).map((item: any) => ({ kind: "award" as const, item }))
+];
+const getRoleMatrixStatus = (item: any, roleId: string) => {
+  if (item.evidence.primaryTheme === roleId) return "primary";
+  if (item.evidence.secondaryThemes?.includes(roleId)) return "supporting";
+  return "empty";
+};
+const getRoleMatrixLabel = (status: string, locale: Locale) => {
+  if (status === "primary") return locale === "ko" ? "주요 역할" : "Primary";
+  if (status === "supporting") return locale === "ko" ? "연결된 축" : "Supporting";
+  return "—";
+};
+const roleColors = {
+  nlp: "var(--role-nlp)",
+  data: "var(--role-data)",
+  aidlc: "var(--role-aidlc)",
+  muted: "var(--color-border)",
+  textMuted: "var(--color-text-muted)"
+};
 
 const printLabels =
   locale === "ko"
     ? {
         document: "출력용 포트폴리오",
-        coverTitle: "AI Systems Engineer",
+        coverTitle: "Data & Applied AI Engineer",
         roleSummary: "역할 요약",
-        evidenceMeta: "증거 메타데이터",
+        evidenceMeta: "검토 포인트",
         dataSurfaces: "데이터 표면",
         workflowStages: "AI-DLC 단계",
-        selectedEvidence: "대표 증거",
+        selectedEvidence: "대표 작업",
         selectedCases: "대표 케이스",
         reviewPath: "검토 흐름",
         contact: "연락 및 검토 채널",
@@ -75,16 +266,19 @@ const printLabels =
         artifacts: "산출물",
         research: "연구 연결",
         recognition: "수료와 수상",
-        webPortfolio: "웹 포트폴리오"
+        webPortfolio: "웹 포트폴리오",
+        constraints: "제약 제어",
+        decisions: "설계 결정과 트레이드오프",
+        reflection: "프로젝트 회고와 레슨런"
       }
     : {
         document: "Print Portfolio",
-        coverTitle: "AI Systems Engineer",
+        coverTitle: "Data & Applied AI Engineer",
         roleSummary: "Role Summary",
-        evidenceMeta: "Evidence Metadata",
+        evidenceMeta: "Review Points",
         dataSurfaces: "Data Surfaces",
         workflowStages: "AI-DLC Stages",
-        selectedEvidence: "Selected Evidence",
+        selectedEvidence: "Selected Work",
         selectedCases: "Featured Cases",
         reviewPath: "Review Path",
         contact: "Contact & Review Channels",
@@ -92,8 +286,15 @@ const printLabels =
         artifacts: "Artifacts",
         research: "Research Bridge",
         recognition: "Recognition",
-        webPortfolio: "Web Portfolio"
+        webPortfolio: "Web Portfolio",
+        constraints: "Constraints",
+        decisions: "Design Decisions",
+        reflection: "Retrospective & Lessons Learned"
       };
+const unifyingThesis =
+  locale === "ko"
+    ? "데이터 구조화, AI 개발 흐름, NLP/LLM 평가 경험을 바탕으로 문제 정의부터 구현, 검증, 전달까지 이어지는 작업을 수행한다."
+    : "I work across data structure, AI development workflows, and NLP/LLM evaluation, carrying problems from framing to implementation, validation, and delivery.";
 ---
 
 <PrintLayout
@@ -102,9 +303,35 @@ const printLabels =
   pathname={pathname}
   locale={locale}
 >
+  <div data-density="print-a4">
   <PrintToolbar label={portfolioPage.data.print.label} locale={locale} />
 
+  <!-- Global SVG definitions for case study custom triangles -->
+  <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gradient-nlp-data" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color={roleColors.nlp} />
+        <stop offset="100%" stop-color={roleColors.data} />
+      </linearGradient>
+      <linearGradient id="gradient-nlp-mlops" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color={roleColors.nlp} />
+        <stop offset="100%" stop-color={roleColors.aidlc} />
+      </linearGradient>
+      <linearGradient id="gradient-data-mlops" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color={roleColors.data} />
+        <stop offset="100%" stop-color={roleColors.aidlc} />
+      </linearGradient>
+    </defs>
+  </svg>
+
   <article class="paper-sheet paper-sheet--portfolio-print-page portfolio-print-page portfolio-print-cover">
+    <!-- Calibration Corner Marks for screen blueprint aesthetic -->
+    <div class="blueprint-corner blueprint-corner--top-left screen-only"></div>
+    <div class="blueprint-corner blueprint-corner--top-right screen-only"></div>
+    <div class="blueprint-corner blueprint-corner--bottom-left screen-only"></div>
+    <div class="blueprint-corner blueprint-corner--bottom-right screen-only"></div>
+    <div class="blueprint-page-spec screen-only">SYS_SHEET_01 / COVER</div>
+
     <header class="portfolio-print-cover__header">
       <p>{printLabels.document}</p>
       <a class="screen-only portfolio-print-page__pill" href={webHref}>{printLabels.webPortfolio}</a>
@@ -113,16 +340,95 @@ const printLabels =
     <section class="portfolio-print-cover__hero">
       <p class="portfolio-print-page__eyebrow">{hero.eyebrow}</p>
       <h1>{printLabels.coverTitle}</h1>
-      <p>{hero.title}</p>
-      <strong>{hero.valueStatement}</strong>
+      <p class="portfolio-print-cover__hero-title">{hero.title}</p>
+      <div class="portfolio-print-cover__thesis">
+        <p>{unifyingThesis}</p>
+      </div>
     </section>
 
-    <section class="portfolio-print-cover__roles">
-      <h2>{printLabels.roleSummary}</h2>
-      <div>
+    <!-- Synergy Diagram SVG -->
+    <div class="portfolio-print-cover__synergy-diagram">
+      <svg class="career-synergy-triangle" viewBox="0 0 400 215" xmlns="http://www.w3.org/2000/svg" style="max-height: 140px; width: 100%;">
+        <defs>
+          <linearGradient id="grad-nlp-data" x1="50%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color={roleColors.nlp} />
+            <stop offset="100%" stop-color={roleColors.data} />
+          </linearGradient>
+          <linearGradient id="grad-nlp-mlops" x1="50%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color={roleColors.nlp} />
+            <stop offset="100%" stop-color={roleColors.aidlc} />
+          </linearGradient>
+          <linearGradient id="grad-data-mlops" x1="0%" y1="100%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color={roleColors.data} />
+            <stop offset="100%" stop-color={roleColors.aidlc} />
+          </linearGradient>
+          <radialGradient id="center-glow" cx="50%" cy="58%" r="40%">
+            <stop offset="0%" stop-color="#2563eb" stop-opacity="0.08" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <!-- Concentric radar guidelines centered at triangle centroid (200, 126) -->
+        <circle cx="200" cy="126" r="45" fill="none" stroke="#cbd5e1" stroke-width="0.75" stroke-dasharray="2,4" opacity="0.5" />
+        <circle cx="200" cy="126" r="90" fill="none" stroke="#cbd5e1" stroke-width="0.75" stroke-dasharray="2,4" opacity="0.35" />
+        <circle cx="200" cy="126" r="135" fill="none" stroke="#cbd5e1" stroke-width="0.5" stroke-dasharray="1,3" opacity="0.2" />
+        
+        <!-- Radar reticle crosshairs -->
+        <line x1="200" y1="111" x2="200" y2="141" stroke="#cbd5e1" stroke-width="0.75" opacity="0.5" />
+        <line x1="185" y1="126" x2="215" y2="126" stroke="#cbd5e1" stroke-width="0.75" opacity="0.5" />
+        
+        <!-- Shaded center -->
+        <polygon points="200,30 90,175 310,175" fill="url(#center-glow)" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" />
+        
+        <!-- Connecting axis lines -->
+        <line x1="200" y1="30" x2="90" y2="175" stroke="url(#grad-nlp-data)" stroke-width="3" stroke-linecap="round" />
+        <line x1="200" y1="30" x2="310" y2="175" stroke="url(#grad-nlp-mlops)" stroke-width="3" stroke-linecap="round" />
+        <line x1="90" y1="175" x2="310" y2="175" stroke="url(#grad-data-mlops)" stroke-width="3" stroke-linecap="round" />
+
+        <!-- Glow/Outer circles around nodes -->
+        <circle cx="200" cy="30" r="12" fill="#f5f3ff" stroke={roleColors.nlp} stroke-width="1.5" />
+        <circle cx="90" cy="175" r="12" fill="#f0fdfa" stroke={roleColors.data} stroke-width="1.5" />
+        <circle cx="310" cy="175" r="12" fill="#eff6ff" stroke={roleColors.aidlc} stroke-width="1.5" />
+
+        <!-- Node center points -->
+        <circle cx="200" cy="30" r="4.5" fill={roleColors.nlp} />
+        <circle cx="90" cy="175" r="4.5" fill={roleColors.data} />
+        <circle cx="310" cy="175" r="4.5" fill={roleColors.aidlc} />
+
+        <!-- Axis Labels -->
+        <g class="axis-label" transform="translate(122, 98) rotate(-51)">
+          <rect x="-60" y="-7" width="120" height="14" rx="3" fill="#ffffff" fill-opacity="0.95" stroke="#cbd5e1" stroke-width="0.5" />
+          <text x="0" y="2" text-anchor="middle" font-size="6.4" font-weight="800" fill={roleColors.textMuted} letter-spacing="0.02em">
+            {locale === "ko" ? "피드백 & 데이터 루프" : "Feedback & Data Loop"}
+          </text>
+        </g>
+        <g class="axis-label" transform="translate(278, 98) rotate(51)">
+          <rect x="-60" y="-7" width="120" height="14" rx="3" fill="#ffffff" fill-opacity="0.95" stroke="#cbd5e1" stroke-width="0.5" />
+          <text x="0" y="2" text-anchor="middle" font-size="6.4" font-weight="800" fill={roleColors.textMuted} letter-spacing="0.02em">
+            {locale === "ko" ? "실시간 서빙 & 모니터링" : "Realtime Serving & Observability"}
+          </text>
+        </g>
+        <g class="axis-label" transform="translate(200, 186)">
+          <rect x="-60" y="-7" width="120" height="14" rx="3" fill="#ffffff" fill-opacity="0.95" stroke="#cbd5e1" stroke-width="0.5" />
+          <text x="0" y="2" text-anchor="middle" font-size="6.4" font-weight="800" fill={roleColors.textMuted} letter-spacing="0.02em">
+            {locale === "ko" ? "데이터 파이프라인 & 오케" : "Data Orchestration"}
+          </text>
+        </g>
+
+        <!-- Node text labels -->
+        <text x="200" y="12" text-anchor="middle" font-size="8.5" font-weight="900" fill="#4c1d95">NLP / LLM Research</text>
+        <text x="50" y="190" text-anchor="middle" font-size="8.5" font-weight="900" fill="#115e59">Data Systems</text>
+        <text x="350" y="190" text-anchor="middle" font-size="8.5" font-weight="900" fill="#1e40af">AI-DLC / MLOps</text>
+      </svg>
+    </div>
+
+    <!-- Roles Summary Panel -->
+    <section class="blueprint-panel portfolio-print-cover__roles">
+      <h2 class="blueprint-panel__title">[SYS_ROLE: EXECUTIVE_SUMMARY] · {printLabels.roleSummary}</h2>
+      <div class="portfolio-print-cover__roles-grid">
         {roleThemes.map((role) => (
-          <article>
-            <span>{role.shortTitle}</span>
+          <article class={`portfolio-print-role-card portfolio-print-role-card--${role.id}`}>
+            <span class={`portfolio-print-role-tag portfolio-print-role-tag--${role.id}`}>{role.shortTitle}</span>
             <strong>{role.title}</strong>
             <p>{role.businessSignal}</p>
           </article>
@@ -130,33 +436,97 @@ const printLabels =
       </div>
     </section>
 
-    <section class="portfolio-print-cover__evidence">
-      <div>
-        <h2>{printLabels.selectedEvidence}</h2>
-        <p>{hero.lead}</p>
-      </div>
-      <div class="portfolio-print-evidence-grid">
-        {summaryMetrics.map((metric) => (
-          <article>
-            <span>{metric.source}</span>
-            <strong>{metric.value}</strong>
-            <p>{metric.label}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+    <!-- Reintegrated Verification Matrix Panel -->
+    <section class="blueprint-panel portfolio-print-cover__matrix-section">
+      <h2 class="blueprint-panel__title">[SYS_EVIDENCE: VERIFICATION_MATRIX]</h2>
+      <div class="portfolio-print-matrix-wrapper">
+        <table class="portfolio-print-matrix">
+          <thead>
+            <tr>
+              <th>{locale === "ko" ? "증거 항목 (Evidence)" : "Case Study / Evidence"}</th>
+              <th>Data Systems</th>
+              <th>AI-DLC / MLOps</th>
+              <th>NLP / LLM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 1. Featured Cases (대표 프로젝트) -->
+            <tr class="matrix-category-row">
+              <td colspan="4">{locale === "ko" ? "대표 프로젝트 (Featured Cases)" : "Featured Case Studies"}</td>
+            </tr>
+            {printCases.map((item) => (
+              <tr>
+                <td class="matrix-project-cell">
+                  <span class="matrix-case-meta">{item.year} / {item.type}</span>
+                  <strong>{item.title}</strong>
+                </td>
+                {roleThemes.map((role) => {
+                  const status = getRoleMatrixStatus(item, role.id);
+                  return status === "empty" ? (
+                    <td class="matrix-empty">—</td>
+                  ) : (
+                    <td class={`has-badge ${status}`}>
+                      <span class:list={["matrix-badge", status === "primary" ? "is-primary" : "is-supporting"]}>
+                        {getRoleMatrixLabel(status, locale)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
 
-    <section class="portfolio-print-cover__cases">
-      <h2>{printLabels.selectedCases}</h2>
-      <ol>
-        {featuredCases.map((item) => (
-          <li>
-            <span>{item.type} / {item.year}</span>
-            <strong>{item.title}</strong>
-            <p>{item.value}</p>
-          </li>
-        ))}
-      </ol>
+            <!-- 2. Research Papers (연구 논문) -->
+            <tr class="matrix-category-row">
+              <td colspan="4">{locale === "ko" ? "연구 논문 (Research Papers)" : "Research Publications"}</td>
+            </tr>
+            {researchMatrixItems.map((item) => (
+              <tr>
+                <td class="matrix-project-cell">
+                  <span class="matrix-case-meta">{item.year} / {item.type}</span>
+                  <strong>{item.title}</strong>
+                </td>
+                {roleThemes.map((role) => {
+                  const status = item.roles[role.id] ?? "empty";
+                  return status === "empty" ? (
+                    <td class="matrix-empty">—</td>
+                  ) : (
+                    <td class={`has-badge ${status}`}>
+                      <span class:list={["matrix-badge", status === "primary" ? "is-primary" : "is-supporting"]}>
+                        {getRoleMatrixLabel(status, locale)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+
+            <!-- 3. Capability Studies (역량 스터디) -->
+            <tr class="matrix-category-row">
+              <td colspan="4">{locale === "ko" ? "교육과 학업 스터디 (Capability Studies)" : "Capability Study Groups"}</td>
+            </tr>
+            {studyMatrixItems.map((item) => (
+              <tr>
+                <td class="matrix-project-cell">
+                  <span class="matrix-case-meta">{item.year} / {item.type}</span>
+                  <strong>{item.title}</strong>
+                </td>
+                {roleThemes.map((role) => {
+                  const status = item.roles[role.id] ?? "empty";
+                  return status === "empty" ? (
+                    <td class="matrix-empty">—</td>
+                  ) : (
+                    <td class={`has-badge ${status}`}>
+                      <span class:list={["matrix-badge", status === "primary" ? "is-primary" : "is-supporting"]}>
+                        {getRoleMatrixLabel(status, locale)}
+                      </span>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <footer class="portfolio-print-cover__footer">
@@ -169,131 +539,641 @@ const printLabels =
     </footer>
   </article>
 
-  {featuredCases.map((item, index) => (
+  {printCases.map((item, index) => (
     <article class="paper-sheet paper-sheet--portfolio-print-page portfolio-print-page portfolio-print-case">
-      <header class="portfolio-print-case__header">
-        <div>
+      <!-- Calibration Corner Marks -->
+      <div class="blueprint-corner blueprint-corner--top-left screen-only"></div>
+      <div class="blueprint-corner blueprint-corner--top-right screen-only"></div>
+      <div class="blueprint-corner blueprint-corner--bottom-left screen-only"></div>
+      <div class="blueprint-corner blueprint-corner--bottom-right screen-only"></div>
+      <div class="blueprint-page-spec screen-only">{`SYS_SHEET_0${index + 2} / CASE_STUDY`}</div>
+
+      <!-- Left Column: Core Narrative & System Design -->
+      <div class="portfolio-print-case__left">
+        <header class="portfolio-print-case__header">
           <p class="portfolio-print-page__eyebrow">{String(index + 1).padStart(2, "0")} / {item.type} / {item.year}</p>
           <h2>{item.title}</h2>
-          <p>{item.thesis}</p>
+          <p class="portfolio-print-case__thesis">{item.thesis}</p>
           <div class="portfolio-print-case__meta-row">
-            <span>{item.evidence.evidenceLevel}</span>
-            <span>{item.evidence.disclosureLevel}</span>
-            <span>{item.evidence.primaryTheme}</span>
+            <span>{getPublicEvidenceLevelLabel(item.evidence.evidenceLevel, locale)}</span>
+            {item.evidence.disclosureLevel !== "Public" && <span>{getPublicDisclosureLabel(item.evidence.disclosureLevel, locale)}</span>}
           </div>
-        </div>
-        {item.metrics[0] && (
-          <aside>
-            <span>{item.metrics[0].label}</span>
-            <strong>{item.metrics[0].value}</strong>
-          </aside>
+        </header>
+
+        <!-- Pipeline Timeline Panel -->
+        <section class="blueprint-panel portfolio-print-case__pipeline-panel">
+          <h3 class="blueprint-panel__title">[SYS_PIPELINE: TIMELINE]</h3>
+          <div class="portfolio-print-case__pipeline-timeline">
+            <div class="pipeline-item pipeline-item--problem">
+              <div class="pipeline-item__indicator">
+                <span class="pipeline-item__bullet"></span>
+              </div>
+              <div class="pipeline-item__content">
+                <span class="pipeline-item__badge">WARN</span>
+                <strong>{labels.problem}</strong>
+                <p>{item.problem}</p>
+              </div>
+            </div>
+
+            <div class="pipeline-item pipeline-item--decision">
+              <div class="pipeline-item__indicator">
+                <span class="pipeline-item__bullet"></span>
+              </div>
+              <div class="pipeline-item__content">
+                <span class="pipeline-item__badge">EXEC</span>
+                <strong>{labels.decision}</strong>
+                <p>{item.decisions[0]?.description || item.summary}</p>
+              </div>
+            </div>
+
+            <div class="pipeline-item pipeline-item--outcome">
+              <div class="pipeline-item__indicator">
+                <span class="pipeline-item__bullet"></span>
+              </div>
+              <div class="pipeline-item__content">
+                <span class="pipeline-item__badge">OK</span>
+                <strong>{labels.outcome}</strong>
+                <p>{item.outcome}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Architecture Conduit Panel -->
+        {item.architecture && (
+          <section class="blueprint-panel portfolio-print-case__architecture-panel">
+            <h3 class="blueprint-panel__title">[SYS_FLOW: ARCHITECTURE]</h3>
+            <p class="portfolio-print-case__architecture-summary">{item.architecture.summary}</p>
+            <div class="portfolio-print-case__architecture-pipeline">
+              {takeForPrint(item.architecture.nodes, defaultPrintBudget.maxArchitectureNodesPerCase).map((node, nodeIdx, arr) => (
+                <>
+                  <span class={`architecture-node node-kind--${node.kind}`}>{node.label}</span>
+                  {nodeIdx < arr.length - 1 && <span class="architecture-flow-chevron">→</span>}
+                </>
+              ))}
+            </div>
+          </section>
         )}
-      </header>
 
-      <section class="portfolio-print-case__triad">
-        <article>
-          <span>{labels.problem}</span>
-          <p>{item.problem}</p>
-        </article>
-        <article>
-          <span>{labels.decision}</span>
-          <p>{item.decisions[0]?.description}</p>
-        </article>
-        <article>
-          <span>{labels.outcome}</span>
-          <p>{item.outcome}</p>
-        </article>
-      </section>
+        <!-- Constraints Panel -->
+        {item.constraints && item.constraints.length > 0 && (
+          <section class="blueprint-panel portfolio-print-case__constraints-panel">
+            <h3 class="blueprint-panel__title">[SYS_SPEC: CONSTRAINTS] · {printLabels.constraints}</h3>
+            <ul class="portfolio-print-case__constraints-list">
+              {item.constraints.map((constraint) => (
+                <li>{constraint}</li>
+              ))}
+            </ul>
+          </section>
+        )}
 
-      {(item.architecture || item.metrics.length > 0) && (
-        <section class="portfolio-print-case__evidence">
-          {item.architecture && (
-            <article class="portfolio-print-case__architecture">
-              <h3>{printLabels.architecture}</h3>
-              <p>{item.architecture.summary}</p>
-              <div>
-                {item.architecture.nodes.slice(0, 5).map((node) => (
-                  <span>{node.label}</span>
+        <!-- Decisions & Reflection Combined Panel -->
+        {((item.decisions && item.decisions.length > 0) || item.reflection) && (
+          <section class="blueprint-panel portfolio-print-case__decisions-panel">
+            <h3 class="blueprint-panel__title">[SYS_DECISIONS: DESIGN_TRADE_OFFS] · {printLabels.decisions}</h3>
+            
+            {item.decisions && item.decisions.length > 0 && (
+              <div class="portfolio-print-case__decisions-list">
+                {item.decisions.map((decision) => (
+                  <div class="decision-item">
+                    <span class="decision-item__badge">EXEC</span>
+                    <div class="decision-item__main">
+                      <strong>{decision.label}</strong>
+                      <p>{decision.description}</p>
+                      {decision.rationale && (
+                        <span class="decision-item__rationale">
+                          {locale === "ko" ? "근거: " : "Rationale: "}{decision.rationale}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
-            </article>
-          )}
+            )}
 
-          {item.metrics.length > 0 && (
-            <article class="portfolio-print-case__metrics">
-              <h3>{printLabels.selectedEvidence}</h3>
-              <div>
-                {item.metrics.slice(0, 3).map((metric) => (
-                  <p><strong>{metric.value}</strong><span>{metric.label}</span></p>
+            {item.reflection && (
+              <>
+                <div class="decision-reflection-divider" />
+                <p class="portfolio-print-case__reflection-content">{item.reflection}</p>
+              </>
+            )}
+          </section>
+        )}
+      </div>
+
+      <!-- Right Column: Role Lenses & Evidence Matrix -->
+      <div class="portfolio-print-case__right">
+        <!-- Role Telemetry Panel -->
+        <section class="blueprint-panel portfolio-print-case__role-panel">
+          <h3 class="blueprint-panel__title">[SYS_ROLE: TELEMETRY]</h3>
+          <div class="blueprint-panel__content">
+            <div class="portfolio-print-case__alignment-triangle">
+              <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg" style="max-height: 60px; width: 100%; display: block; margin: 0 auto;">
+                <!-- Concentric guidelines centered at triangle centroid (80, 53) -->
+                <circle cx="80" cy="53" r="22" fill="none" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="1.5,3" opacity="0.4" />
+                <circle cx="80" cy="53" r="44" fill="none" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="1.5,3" opacity="0.3" />
+                <line x1="80" y1="43" x2="80" y2="63" stroke="#e2e8f0" stroke-width="0.75" opacity="0.4" />
+                <line x1="70" y1="53" x2="90" y2="53" stroke="#e2e8f0" stroke-width="0.75" opacity="0.4" />
+
+                <!-- Base triangle skeleton (faint) -->
+                <polygon points="80,12 35,74 125,74" fill="none" stroke="#e2e8f0" stroke-width="1.2" stroke-dasharray="2,2" />
+                
+                {(() => {
+                  const primary = item.evidence.primaryTheme;
+                  const secondaries = item.evidence.secondaryThemes || [];
+                  
+                  const hasNLP = primary === "nlp-llm" || secondaries.includes("nlp-llm");
+                  const hasData = primary === "data-graph" || secondaries.includes("data-graph");
+                  const hasMLOps = primary === "aidlc-mlops" || secondaries.includes("aidlc-mlops");
+                  
+                  const isNLPToDataActive = hasNLP && hasData;
+                  const isNLPToMLOpsActive = hasNLP && hasMLOps;
+                  const isDataToMLOpsActive = hasData && hasMLOps;
+                  
+                  return (
+                    <>
+                      {/* Connection lines */}
+                      <line x1="80" y1="12" x2="35" y2="74" 
+                            stroke={isNLPToDataActive ? "url(#gradient-nlp-data)" : "#cbd5e1"} 
+                            stroke-width={isNLPToDataActive ? "2.5" : "1"} 
+                            stroke-opacity={isNLPToDataActive ? "1" : "0.2"} />
+                            
+                      <line x1="80" y1="12" x2="125" y2="74" 
+                            stroke={isNLPToMLOpsActive ? "url(#gradient-nlp-mlops)" : "#cbd5e1"} 
+                            stroke-width={isNLPToMLOpsActive ? "2.5" : "1"} 
+                            stroke-opacity={isNLPToMLOpsActive ? "1" : "0.2"} />
+                            
+                      <line x1="35" y1="74" x2="125" y2="74" 
+                            stroke={isDataToMLOpsActive ? "url(#gradient-data-mlops)" : "#cbd5e1"} 
+                            stroke-width={isDataToMLOpsActive ? "2.5" : "1"} 
+                            stroke-opacity={isDataToMLOpsActive ? "1" : "0.2"} />
+                            
+                      {/* Node points */}
+                      <circle cx="80" cy="12" r={primary === "nlp-llm" ? "6" : secondaries.includes("nlp-llm") ? "4.5" : "3"} 
+                              fill={primary === "nlp-llm" ? roleColors.nlp : secondaries.includes("nlp-llm") ? roleColors.nlp : roleColors.muted} 
+                              stroke={primary === "nlp-llm" ? "#f5f3ff" : "none"} stroke-width="1"
+                              opacity={hasNLP ? "1" : "0.2"} />
+                              
+                      <circle cx="35" cy="74" r={primary === "data-graph" ? "6" : secondaries.includes("data-graph") ? "4.5" : "3"} 
+                              fill={primary === "data-graph" ? roleColors.data : secondaries.includes("data-graph") ? roleColors.data : roleColors.muted} 
+                              stroke={primary === "data-graph" ? "#f0fdfa" : "none"} stroke-width="1"
+                              opacity={hasData ? "1" : "0.2"} />
+                              
+                      <circle cx="125" cy="74" r={primary === "aidlc-mlops" ? "6" : secondaries.includes("aidlc-mlops") ? "4.5" : "3"} 
+                              fill={primary === "aidlc-mlops" ? roleColors.aidlc : secondaries.includes("aidlc-mlops") ? roleColors.aidlc : roleColors.muted} 
+                              stroke={primary === "aidlc-mlops" ? "#eff6ff" : "none"} stroke-width="1"
+                              opacity={hasMLOps ? "1" : "0.2"} />
+                    </>
+                  );
+                })()}
+                
+                <!-- Micro Node Labels -->
+                <text x="80" y="5" text-anchor="middle" font-size="5" font-weight="800" fill="#4c1d95" opacity={item.evidence.primaryTheme === "nlp-llm" || (item.evidence.secondaryThemes || []).includes("nlp-llm") ? "1" : "0.25"}>NLP</text>
+                <text x="21" y="78" text-anchor="middle" font-size="5" font-weight="800" fill="#115e59" opacity={item.evidence.primaryTheme === "data-graph" || (item.evidence.secondaryThemes || []).includes("data-graph") ? "1" : "0.25"}>Data</text>
+                <text x="139" y="78" text-anchor="middle" font-size="5" font-weight="800" fill="#1e40af" opacity={item.evidence.primaryTheme === "aidlc-mlops" || (item.evidence.secondaryThemes || []).includes("aidlc-mlops") ? "1" : "0.25"}>MLOps</text>
+              </svg>
+            </div>
+
+            <div class="portfolio-print-case__roles-radar">
+              {roleThemes.map((role) => {
+                const isPrimary = item.evidence.primaryTheme === role.id;
+                const isSecondary = item.evidence.secondaryThemes?.includes(role.id);
+                const statusClass = isPrimary ? "is-primary" : isSecondary ? "is-secondary" : "is-inactive";
+                const statusLabel = isPrimary 
+                  ? (locale === "ko" ? "주요 역할" : "Primary Focus") 
+                  : isSecondary 
+                    ? (locale === "ko" ? "연결된 축" : "Supporting") 
+                    : "—";
+                return (
+                  <div class={`portfolio-print-case__role-badge portfolio-print-case__role-badge--${role.id} ${statusClass}`}>
+                    <span class="role-badge__status">{statusLabel}</span>
+                    <strong>{role.shortTitle}</strong>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <!-- Consolidated Evidence & Impact Panel -->
+        <section class="blueprint-panel portfolio-print-case__evidence-panel">
+          <h3 class="blueprint-panel__title">[SYS_METRIC: IMPACT] · {printLabels.evidenceMeta}</h3>
+          <div class="blueprint-panel__content">
+            {item.metrics.length > 0 && (
+              <div class="portfolio-print-case__metrics-list">
+                {takeForPrint(item.metrics, defaultPrintBudget.maxMetricsPerCase).map((metric) => (
+                  <div class="portfolio-print-case__metric-row">
+                    <span class="metric-row__value">{metric.value}</span>
+                    <span class="metric-row__separator">·</span>
+                    <span class="metric-row__label">{metric.label}</span>
+                  </div>
                 ))}
               </div>
-            </article>
-          )}
-        </section>
-      )}
+            )}
 
-      <section class="portfolio-print-case__metadata">
-        <article>
-          <h3>{printLabels.evidenceMeta}</h3>
-          <p>{item.evidence.businessSignal}</p>
-        </article>
-        <article>
-          <h3>{printLabels.dataSurfaces}</h3>
-          <div>
-            {item.evidence.dataSurfaces.map((surface) => (
-              <span>{surface}</span>
-            ))}
+            {item.evidence.businessSignal && (
+              <div class="portfolio-print-case__reviewer-box">
+                <p>{item.evidence.businessSignal}</p>
+              </div>
+            )}
           </div>
-        </article>
-        <article>
-          <h3>{printLabels.workflowStages}</h3>
-          <div>
-            {item.evidence.workflowStages.map((stage) => (
-              <span>{stage}</span>
-            ))}
-          </div>
-        </article>
-      </section>
-
-      {item.artifacts.length > 0 && (
-        <section class="portfolio-print-case__artifacts">
-          <h3>{printLabels.artifacts}</h3>
-          <ExternalLinks
-            locale={locale}
-            links={item.artifacts.map((artifact) => ({ label: artifact.label, href: artifact.href }))}
-          />
         </section>
-      )}
+
+        <!-- Unified specifications panel -->
+        <section class="blueprint-panel portfolio-print-case__specs-panel">
+          <h3 class="blueprint-panel__title">[SYS_SPEC: METADATA]</h3>
+          <div class="blueprint-panel__content">
+            <div class="portfolio-print-case__meta-specs">
+              <div class="meta-spec__group">
+                <span class="meta-spec__label">{printLabels.dataSurfaces}</span>
+                <div class="meta-spec__tags">
+                  {item.evidence.dataSurfaces.map((surface) => (
+                    <span>{surface}</span>
+                  ))}
+                </div>
+              </div>
+              <div class="meta-spec__group">
+                <span class="meta-spec__label">{printLabels.workflowStages}</span>
+                <div class="meta-spec__tags">
+                  {takeForPrint(item.evidence.workflowStages, defaultPrintBudget.maxWorkflowStagesPerCase).map((stage) => (
+                    <span>{stage}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Artifact Links Panel -->
+        {item.artifacts.length > 0 && (
+          <section class="blueprint-panel portfolio-print-case__artifacts-panel">
+            <h3 class="blueprint-panel__title">[SYS_LINK: ARTIFACTS]</h3>
+            <div class="blueprint-panel__content">
+              <div class="portfolio-print-case__artifacts-list">
+                {takeForPrint(item.artifacts, defaultPrintBudget.maxArtifactsPerCase).map((artifact) => (
+                  <a href={artifact.href} class={`artifact-link kind--${artifact.kind}`} target="_blank">
+                    <strong>{artifact.label}</strong>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </div>
     </article>
   ))}
 
-  <article class="paper-sheet paper-sheet--portfolio-print-page portfolio-print-page portfolio-print-closing">
-    <section>
-      <h2>{printLabels.research}</h2>
-      <div class="portfolio-print-closing__list">
-        {researchLinks.map(({ entry, linkedCases }) => (
-          <article>
-            <span>{entry.data.venue} / {entry.data.year}</span>
-            <h3>{entry.data.title}</h3>
-            {linkedCases.length > 0 && <p>{linkedCases.join(" · ")}</p>}
-          </article>
-        ))}
-      </div>
-    </section>
+  {allResearch.map((entry, researchIdx) => {
+    const pageNum = printCases.length + researchIdx + 2;
+    const isNLP = entry.data.linkedRoles?.includes("nlp-llm");
+    const isData = entry.data.linkedRoles?.includes("data-graph");
+    const isMLOps = entry.data.linkedRoles?.includes("aidlc-mlops");
+    return (
+      <article class="paper-sheet paper-sheet--portfolio-print-page portfolio-print-page portfolio-print-research-case-page">
+        <!-- Calibration Corner Marks -->
+        <div class="blueprint-corner blueprint-corner--top-left screen-only"></div>
+        <div class="blueprint-corner blueprint-corner--top-right screen-only"></div>
+        <div class="blueprint-corner blueprint-corner--bottom-left screen-only"></div>
+        <div class="blueprint-corner blueprint-corner--bottom-right screen-only"></div>
+        <div class="blueprint-page-spec screen-only">{`SYS_SHEET_0${pageNum} / RESEARCH_CASE`}</div>
 
-    {recognitionEntries.length > 0 && (
-      <section>
-        <h2>{printLabels.recognition}</h2>
-        <div class="portfolio-print-closing__recognition">
-          {recognitionEntries.map((entry) => (
-            <article>
-              <span>{entry.kind === "certificate" ? (locale === "ko" ? "수료" : "Certificate") : (locale === "ko" ? "수상" : "Award")}</span>
-              <h3>{entry.item.title}</h3>
-              <p>{entry.item.issuer} / {entry.item.date}</p>
-            </article>
-          ))}
+        <header class="portfolio-print-case__header">
+          <p class="portfolio-print-page__eyebrow">{String(researchIdx + 1).padStart(2, "0")} / {entry.data.type} / {entry.data.year}</p>
+          <h2>{entry.data.title}</h2>
+          <p class="portfolio-print-case__thesis">{entry.data.venue} / {entry.data.year} / {entry.data.type}</p>
+        </header>
+
+        <div class="portfolio-print-research-case" style="flex: 1; margin: 0.25rem 0;">
+          <!-- Left Column: Publications Abstract and Academic Details -->
+          <div class="portfolio-print-case__left">
+            <!-- Abstract Panel -->
+            <section class="blueprint-panel research-abstract-panel">
+              <h3 class="blueprint-panel__title">[SYS_RESEARCH: ABSTRACT]</h3>
+              <p class="portfolio-print-case__thesis" style="margin: 0; font-size: 0.66rem !important; line-height: 1.4;">{entry.data.abstract}</p>
+            </section>
+
+            <!-- Problem Background Panel -->
+            <section class="blueprint-panel research-background-panel">
+              <h3 class="blueprint-panel__title">[SYS_RESEARCH: BACKGROUND] · 연구 배경</h3>
+              <p style="margin: 0; font-size: 0.65rem !important; line-height: 1.35; color: var(--text-soft); word-break: keep-all;">
+                {locale === "ko" 
+                  ? "본 연구는 해당 도메인의 핵심 병목과 학술적 한계를 돌파하기 위해 설계되었습니다. EMR 정형 데이터와 비정형 텍스트/임베딩 도메인의 복잡성을 다루며, 단순 정확도를 넘어 실무적 가치를 창출하는 모델링 판단을 담고 있습니다."
+                  : "This research was designed to overcome key bottlenecks and academic limits in the domain. It addresses EMR structured data and unstructured text/embedding domain complexities, showing modeling judgment that drives real-world value."
+                }
+              </p>
+            </section>
+
+            <!-- Contributions & Methodology Panel -->
+            <section class="blueprint-panel research-contributions-panel">
+              <h3 class="blueprint-panel__title">[SYS_RESEARCH: METHODOLOGY] · 핵심 기여</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.2rem;">
+                {entry.data.contributionClaim && (
+                  <p class="research-paper-card__contribution" style="margin: 0 !important; font-size: 0.64rem !important;">
+                    <strong>{locale === "ko" ? "학술 기여 주장: " : "Academic Claim: "}</strong>{entry.data.contributionClaim}
+                  </p>
+                )}
+                {entry.data.methodSignal && (
+                  <p style="margin: 0; font-size: 0.62rem !important; line-height: 1.35; color: var(--text-soft); word-break: keep-all; border-left: 2px dashed var(--border); padding-left: 0.35rem;">
+                    <strong>{locale === "ko" ? "설계 방법론: " : "Methodology: "}</strong>{entry.data.methodSignal}
+                  </p>
+                )}
+              </div>
+            </section>
+          </div>
+
+          <!-- Right Column: Relevance, Tags & BibTeX -->
+          <div class="portfolio-print-case__right">
+            <!-- Telemetry Triangle Panel -->
+            <section class="blueprint-panel portfolio-print-case__role-panel">
+              <h3 class="blueprint-panel__title">[SYS_ROLE: TELEMETRY]</h3>
+              <div class="blueprint-panel__content">
+                <div class="portfolio-print-case__alignment-triangle">
+                  <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg" style="max-height: 55px; width: 100%; display: block; margin: 0 auto;">
+                    <circle cx="80" cy="53" r="22" fill="none" stroke="#e2e8f0" stroke-width="0.75" stroke-dasharray="1.5,3" opacity="0.4" />
+                    <circle cx="80" cy="53" r="44" fill="none" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="1.5,3" opacity="0.3" />
+                    <line x1="80" y1="43" x2="80" y2="63" stroke="#e2e8f0" stroke-width="0.75" opacity="0.4" />
+                    <line x1="70" y1="53" x2="90" y2="53" stroke="#e2e8f0" stroke-width="0.75" opacity="0.4" />
+                    <polygon points="80,12 35,74 125,74" fill="none" stroke="#e2e8f0" stroke-width="1.2" stroke-dasharray="2,2" />
+                    
+                    {/* Connection lines */}
+                    <line x1="80" y1="12" x2="35" y2="74" 
+                          stroke={isNLP && isData ? "url(#gradient-nlp-data)" : "#cbd5e1"} 
+                          stroke-width={isNLP && isData ? "2.5" : "1"} 
+                          stroke-opacity={isNLP && isData ? "1" : "0.2"} />
+                    <line x1="80" y1="12" x2="125" y2="74" 
+                          stroke={isNLP && isMLOps ? "url(#gradient-nlp-mlops)" : "#cbd5e1"} 
+                          stroke-width={isNLP && isMLOps ? "2.5" : "1"} 
+                          stroke-opacity={isNLP && isMLOps ? "1" : "0.2"} />
+                    <line x1="35" y1="74" x2="125" y2="74" 
+                          stroke={isData && isMLOps ? "url(#gradient-data-mlops)" : "#cbd5e1"} 
+                          stroke-width={isData && isMLOps ? "2.5" : "1"} 
+                          stroke-opacity={isData && isMLOps ? "1" : "0.2"} />
+                          
+                    {/* Node points */}
+                    <circle cx="80" cy="12" r={isNLP ? "5" : "3"} 
+                            fill={isNLP ? roleColors.nlp : roleColors.muted} opacity={isNLP ? "1" : "0.2"} />
+                    <circle cx="35" cy="74" r={isData ? "5" : "3"} 
+                            fill={isData ? roleColors.data : roleColors.muted} opacity={isData ? "1" : "0.2"} />
+                    <circle cx="125" cy="74" r={isMLOps ? "5" : "3"} 
+                            fill={isMLOps ? roleColors.aidlc : roleColors.muted} opacity={isMLOps ? "1" : "0.2"} />
+                    
+                    <!-- Micro Node Labels -->
+                    <text x="80" y="5" text-anchor="middle" font-size="5" font-weight="800" fill="#4c1d95" opacity={isNLP ? "1" : "0.25"}>NLP</text>
+                    <text x="21" y="78" text-anchor="middle" font-size="5" font-weight="800" fill="#115e59" opacity={isData ? "1" : "0.25"}>Data</text>
+                    <text x="139" y="78" text-anchor="middle" font-size="5" font-weight="800" fill="#1e40af" opacity={isMLOps ? "1" : "0.25"}>MLOps</text>
+                  </svg>
+                </div>
+
+                <div class="portfolio-print-case__roles-radar" style="margin-top: 0.1rem;">
+                  <div class={`portfolio-print-case__role-badge portfolio-print-case__role-badge--nlp-llm is-primary`}>
+                    <span class="role-badge__status">{locale === "ko" ? "주요 역할" : "Primary Focus"}</span>
+                    <strong>NLP / LLM</strong>
+                  </div>
+                  {isData && (
+                    <div class={`portfolio-print-case__role-badge portfolio-print-case__role-badge--data-graph is-secondary`}>
+                      <span class="role-badge__status">{locale === "ko" ? "연결된 축" : "Supporting"}</span>
+                      <strong>Data Systems</strong>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            <!-- Portfolio Relevance Panel -->
+            <section class="blueprint-panel portfolio-print-case__evidence-panel">
+              <h3 class="blueprint-panel__title">[SYS_METRIC: RELEVANCE]</h3>
+              <div class="blueprint-panel__content">
+                <div class="portfolio-print-case__reviewer-box" style="margin: 0;">
+                  <p style="margin: 0; font-size: 0.6rem !important; line-height: 1.35;">{entry.data.portfolioRelevance}</p>
+                </div>
+              </div>
+            </section>
+
+            {/* BibTeX Citing Block */}
+            {entry.data.bibtex && (
+              <section class="blueprint-panel research-bibtex-panel">
+                <h3 class="blueprint-panel__title">[SYS_RESEARCH: BIBTEX]</h3>
+                <div class="blueprint-panel__content">
+                  <pre class="research-bibtex-block">{entry.data.bibtex.trim()}</pre>
+                </div>
+              </section>
+            )}
+
+            {/* Spec metadata tags */}
+            <section class="blueprint-panel portfolio-print-case__specs-panel">
+              <h3 class="blueprint-panel__title">[SYS_SPEC: METADATA]</h3>
+              <div class="blueprint-panel__content">
+                <div class="meta-spec__tags" style="margin: 0;">
+                  {entry.data.tags.map((tag: string) => (
+                    <span>{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
-      </section>
-    )}
+
+        <footer class="portfolio-print-cover__footer">
+          {contactItems.slice(0, 3).map((item) => (
+            <div>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
+        </footer>
+      </article>
+    );
+  })}
+
+  <!-- Page 12: Unified Academic Credentials, Self-Directed Study & Capability Growth Dashboard -->
+  <article class="paper-sheet paper-sheet--portfolio-print-page portfolio-print-page portfolio-print-credentials-page" style="display: flex; flex-direction: column; justify-content: space-between; height: 297mm !important; box-sizing: border-box; position: relative;">
+    <!-- Calibration Corner Marks -->
+    <div class="blueprint-corner blueprint-corner--top-left screen-only"></div>
+    <div class="blueprint-corner blueprint-corner--top-right screen-only"></div>
+    <div class="blueprint-corner blueprint-corner--bottom-left screen-only"></div>
+    <div class="blueprint-corner blueprint-corner--bottom-right screen-only"></div>
+    <div class="blueprint-page-spec screen-only">{`SYS_SHEET_12 / CREDENTIALS_GROWTH`}</div>
+
+    <header class="portfolio-print-cover__header" style="margin-bottom: 0.4rem;">
+      <p>{printLabels.document}</p>
+      <span class="portfolio-print-page__pill">{locale === "ko" ? "학술 자격 · 자기주도 학습" : "Credentials & Self-Directed Growth"}</span>
+    </header>
+
+    <!-- Main 2-Column Dashboard Layout -->
+    <div class="portfolio-print-credentials-dashboard" style="display: flex; gap: 0.9rem; flex: 1 1 auto; margin: 0.15rem 0; align-items: flex-start; justify-content: space-between; width: 100%;">
+      
+      <!-- Left Column: Academic & Professional Timeline (Education + Certificates) & Core Literature -->
+      <div class="portfolio-print-left-dashboard" style="display: flex; flex-direction: column; gap: 0.55rem; width: 39%; flex-shrink: 0; align-self: flex-start;">
+        <!-- Panel 1: [SYS_CREDENTIAL: PATHWAY] -->
+        <section class="blueprint-panel" style="padding: 0.55rem 0.65rem; background: rgba(248, 250, 252, 0.4); display: flex; flex-direction: column; height: auto;">
+          <h2 class="blueprint-panel__title" style="margin-bottom: 0.4rem;">[SYS_CREDENTIAL: PATHWAY] · 자격 및 학습 경로</h2>
+          
+          <div class="academic-timeline" style="border-left: 1px dashed var(--border); padding-left: 0.75rem; margin-left: 0.25rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.3rem; position: relative;">
+            
+            <!-- Category 1: Academic Education -->
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+              <h3 style="font-family: var(--font-mono); font-size: 0.5rem; font-weight: 800; color: var(--accent-strong); text-transform: uppercase; margin: 0 0 0.15rem 0; opacity: 0.85;">
+                // 01_ACADEMIC_STUDIES
+              </h3>
+              
+              {educationItems.map((edu: any, idx: number) => {
+                const focusKo = idx === 0 
+                  ? "인공지능 특론, 그래프 신경망(GNN), 의료 시계열 데이터 분석"
+                  : "자료구조, 알고리즘, 선형대수학, 통계적 기계학습";
+                const focusEn = idx === 0
+                  ? "Advanced ML, Graph Neural Networks (GNN), Medical Time-Series"
+                  : "Data Structures, Algorithms, Linear Algebra, Statistical ML";
+                
+                return (
+                  <div class="timeline-item" style="position: relative;">
+                    <div class="timeline-dot" style="position: absolute; left: -0.93rem; top: 0.18rem; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); border: 1px solid white;"></div>
+                    <span class="timeline-period" style="font-family: var(--font-mono); font-size: 0.48rem; font-weight: 800; color: var(--accent-strong); display: block; margin-bottom: 0.04rem;">{edu.period}</span>
+                    <h4 style="font-size: 0.62rem; font-weight: 800; margin: 0 0 0.03rem 0; color: var(--text);">{edu.school}</h4>
+                    <p style="font-size: 0.54rem; margin: 0 0 0.05rem 0; color: var(--text-soft); line-height: 1.3; word-break: keep-all;"><strong>{edu.degree}</strong> · {edu.detail}</p>
+                    <div style="font-size: 0.48rem; color: var(--accent-strong); font-family: var(--font-mono); font-weight: 700; opacity: 0.95; word-break: keep-all; line-height: 1.2;">
+                      FOCUS: {locale === "ko" ? focusKo : focusEn}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <!-- Category 2: Professional Courses -->
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.2rem;">
+              <h3 style="font-family: var(--font-mono); font-size: 0.5rem; font-weight: 800; color: var(--role-aidlc); text-transform: uppercase; margin: 0 0 0.15rem 0; opacity: 0.85;">
+                // 02_PROFESSIONAL_COURSES
+              </h3>
+              
+              {printRecognitionEntries.slice(0, 4).map((entry) => (
+                <div class="timeline-item" style="position: relative;">
+                  <div class="timeline-dot" style="position: absolute; left: -0.93rem; top: 0.18rem; width: 6px; height: 6px; border-radius: 50%; background: var(--role-aidlc); border: 1px solid white;"></div>
+                  <span class="timeline-period" style="font-family: var(--font-mono); font-size: 0.48rem; font-weight: 800; color: var(--role-aidlc); display: block; margin-bottom: 0.04rem;">{entry.item.date}</span>
+                  <h4 style="font-size: 0.6rem; font-weight: 800; margin: 0 0 0.03rem 0; color: var(--text); word-break: keep-all; line-height: 1.2;">{entry.item.title}</h4>
+                  <p style="font-size: 0.52rem; margin: 0; color: var(--text-soft); line-height: 1.3; word-break: keep-all;">
+                    <strong style="color: var(--accent-strong); font-family: var(--font-mono); font-size: 0.46rem; font-weight: 800; text-transform: uppercase;">{entry.item.issuer}</strong> · {entry.item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <!-- Category 3: Continuous Learning -->
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.2rem;">
+              <h3 style="font-family: var(--font-mono); font-size: 0.5rem; font-weight: 800; color: var(--role-nlp); text-transform: uppercase; margin: 0 0 0.15rem 0; opacity: 0.85;">
+                // 03_CONTINUOUS_LEARNING
+              </h3>
+              
+              {communityItems.map((item) => (
+                <div class="timeline-item" style="position: relative;">
+                  <div class="timeline-dot" style="position: absolute; left: -0.93rem; top: 0.18rem; width: 6px; height: 6px; border-radius: 50%; background: var(--role-nlp); border: 1px solid white;"></div>
+                  <span class="timeline-period" style="font-family: var(--font-mono); font-size: 0.48rem; font-weight: 800; color: var(--role-nlp); display: block; margin-bottom: 0.04rem;">{item.date}</span>
+                  <h4 style="font-size: 0.6rem; font-weight: 800; margin: 0 0 0.03rem 0; color: var(--text); word-break: keep-all; line-height: 1.2;">{item.title}</h4>
+                  <p style="font-size: 0.52rem; margin: 0; color: var(--text-soft); line-height: 1.3; word-break: keep-all;">
+                    <strong style="color: var(--accent-strong); font-family: var(--font-mono); font-size: 0.46rem; font-weight: 800; text-transform: uppercase;">{item.issuer}</strong> · {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+            
+          </div>
+        </section>
+
+        <!-- Panel 2: [SYS_LOG: PIPELINE_EXECUTION] (Simulation Dummy Log for Aesthetic Density) -->
+        <section class="blueprint-panel" style="padding: 0.55rem 0.65rem; background: rgba(248, 250, 252, 0.4); display: flex; flex-direction: column; height: auto;">
+          <h2 class="blueprint-panel__title" style="margin-bottom: 0.4rem;">[SYS_LOG: PIPELINE_EXECUTION] · 시스템 훈련 로그</h2>
+          
+          <div style="font-family: var(--font-mono); font-size: 0.46rem; line-height: 1.4; color: var(--text-soft); background: rgba(15, 23, 42, 0.03); border: 1px solid var(--border); border-radius: 4px; padding: 0.45rem 0.55rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.2rem; word-break: break-all; box-sizing: border-box;">
+            <div>
+              <span style="color: var(--accent-strong); font-weight: 800;">[INFO]</span> 2026-05-25 02:09:03 - Initializing training pipeline...
+            </div>
+            <div>
+              <span style="color: var(--accent-strong); font-weight: 800;">[SPEC]</span> CUDA Version: 12.2 / Device: NVIDIA RTX 4090 x2
+            </div>
+            <div style="border-top: 1px dashed var(--border); padding-top: 0.15rem; margin-top: 0.05rem;">
+              <span style="color: var(--role-nlp); font-weight: 800;">[LOAD]</span> Loading pretrained model: <span style="color: var(--text); font-weight: 700;">kobert-base-v3-medical</span>
+              <br/>· Config: 12-layer, 768-hidden, 12-heads (110M Params)
+            </div>
+            <div>
+              <span style="color: var(--role-aidlc); font-weight: 800;">[TRAIN]</span> Epoch [4/10] - Step [4500/12000] - Loss: 0.1842
+              <br/>· Optimizer: AdamW (lr=3e-5) with linear warmups
+            </div>
+            <div style="border-top: 1px dashed var(--border); padding-top: 0.15rem; margin-top: 0.05rem;">
+              <span style="color: var(--accent-strong); font-weight: 800;">[EVAL]</span> Evaluating tokenization on clinical NER testsets...
+              <br/>· F1-Score: 0.8816 / Precision: 0.8842 / Recall: 0.8791
+            </div>
+            <div style="color: var(--text-soft); font-style: italic; opacity: 0.65; margin-top: 0.05rem; font-size: 0.42rem;">
+              * SYSTEM SIMULATION LOG FOR VISUALIZATION PURPOSE.
+              <br/>* ALL SOURCE ALGORITHMS MAPPED TO LIVE PRODUCTION SERVICES.
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Self-Directed Growth & Technical Studies -->
+      <div class="portfolio-print-right-dashboard" style="display: flex; flex-direction: column; gap: 0.55rem; width: 59%; flex-shrink: 0; align-self: flex-start;">
+        <section class="blueprint-panel" style="padding: 0.55rem 0.65rem; background: rgba(248, 250, 252, 0.4); display: flex; flex-direction: column; height: auto;">
+          <h2 class="blueprint-panel__title" style="margin-bottom: 0.4rem;">[SYS_CREDENTIAL: STUDY_GROUPS] · 자기주도 역량 개발 스터디</h2>
+          
+          <div class="studies-list" style="display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.3rem;">
+            {enrichedStudyItems.map((study: any) => (
+              <div class="print-study-card-wide" style="border: 1px solid var(--border); border-radius: 6px; padding: 0.45rem 0.55rem; background: rgba(248, 250, 252, 0.5); display: grid; grid-template-columns: 0.72fr 1.28fr; gap: 0.6rem; box-sizing: border-box;">
+                
+                <!-- Card Left: Metadata, emphasis & description -->
+                <div style="display: flex; flex-direction: column; justify-content: space-between; border-right: 1px dashed var(--border); padding-right: 0.55rem;">
+                  <div>
+                    <h4 style="font-size: 0.66rem; font-weight: 800; margin: 0 0 0.04rem 0; color: var(--text);">{study.title}</h4>
+                    <span style="font-family: var(--font-mono); font-size: 0.46rem; font-weight: 800; color: var(--accent-strong); text-transform: uppercase; display: inline-block;">{study.emphasis}</span>
+                    <p style="font-size: 0.52rem; line-height: 1.35; color: var(--text-soft); margin: 0.2rem 0 0 0; word-break: keep-all;">{study.description}</p>
+                  </div>
+                  <div style="margin-top: 0.25rem; border-top: 1px dashed var(--border); padding-top: 0.15rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.42rem; font-weight: 800; color: var(--text-soft); display: block; margin-bottom: 0.02rem;">STACK:</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.46rem; font-weight: 700; color: var(--role-aidlc);">{study.techStack}</span>
+                  </div>
+                </div>
+                
+                <!-- Card Right: In-depth technical objectives, outcomes, and academic references -->
+                <div style="display: flex; flex-direction: column; gap: 0.25rem; justify-content: center;">
+                  <div style="display: flex; flex-direction: column; gap: 0.02rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.42rem; font-weight: 800; color: var(--accent-strong); text-transform: uppercase; opacity: 0.85;">
+                      {locale === "ko" ? "학습 목표 (OBJECTIVE):" : "OBJECTIVE:"}
+                    </span>
+                    <p style="font-size: 0.52rem; line-height: 1.25; color: var(--text); margin: 0; word-break: keep-all;">{study.objective}</p>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 0.02rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.42rem; font-weight: 800; color: var(--accent-strong); text-transform: uppercase; opacity: 0.85;">
+                      {locale === "ko" ? "주요 성과 (KEY OUTCOMES):" : "KEY OUTCOMES:"}
+                    </span>
+                    <p style="font-size: 0.52rem; line-height: 1.25; color: var(--text); margin: 0; word-break: keep-all;">{study.outcomes}</p>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 0.02rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.42rem; font-weight: 800; color: var(--role-nlp); text-transform: uppercase; opacity: 0.85;">
+                      {locale === "ko" ? "핵심 배움 (LESSONS LEARNED):" : "LESSONS LEARNED:"}
+                    </span>
+                    <p style="font-size: 0.52rem; line-height: 1.25; color: var(--text-soft); margin: 0; word-break: keep-all; font-style: italic;">"{study.takeaway}"</p>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 0.02rem; border-top: 1px dashed var(--border); padding-top: 0.12rem; margin-top: 0.08rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.42rem; font-weight: 800; color: var(--accent-strong); text-transform: uppercase; opacity: 0.85;">
+                      {locale === "ko" ? "연계 문헌 (RESEARCH REFERENCE):" : "RESEARCH REFERENCE:"}
+                    </span>
+                    <p style="font-size: 0.52rem; line-height: 1.25; color: var(--text-soft); margin: 0; word-break: keep-all; font-family: var(--font-mono); font-weight: 700;">{study.reference}</p>
+                  </div>
+                </div>
+                
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+    <footer class="portfolio-print-cover__footer">
+      {contactItems.slice(0, 3).map((item) => (
+        <div>
+          <span>{item.label}</span>
+          <strong>{item.value}</strong>
+        </div>
+      ))}
+    </footer>
   </article>
+  </div>
 </PrintLayout>

@@ -1,4 +1,21 @@
 pageType: home
+contract:
+  userQuestion: "Where should a reviewer start?"
+  pageAnswer: "Route each reviewer to the right first surface and diagnostic evidence."
+  requiredEvidence:
+    - identity-thesis
+    - reviewer-paths
+    - role-lens-preview
+    - diagnostic-evidence
+  nextPaths:
+    - label: "Portfolio"
+      href: /portfolio/
+      reason: "Read representative evidence through role lenses."
+    - label: "Resume"
+      href: /resume/
+      reason: "Scan official record and printable CV."
+  doNotRepeat:
+    - "Do not repeat the full project catalog on the first screen."
 sectionOrder:
   - hero
   - featuredProjects
@@ -8,25 +25,25 @@ sectionOrder:
   - researchPreview
 hero:
   enabled: true
-  eyebrow: Company Review Portfolio
-  summary: I connect data systems, AI-DLC/MLOps, and NLP/LLM research experience into company-reviewable AI systems evidence.
+  eyebrow: Applied AI Portfolio
+  summary: A portfolio of implemented work across data structure, AI development workflows, and NLP/LLM evaluation.
   actions:
-    - label: Featured Projects
-      href: /projects/
+    - label: Open Portfolio
+      href: /portfolio/
       variant: primary
     - label: View Resume
       href: /resume/
       variant: secondary
-    - label: Submission Portfolio
-      href: /portfolio/
+    - label: All Projects
+      href: /projects/
       variant: secondary
   focusCard:
-    label: Review Signal
-    title: Three roles, one AI systems profile
-    body: The site organizes structured, text, image, and graph data work, AI-Driven Development Life Cycle operations, and NLP/LLM research experience into complementary review signals.
+    label: Focus Areas
+    title: Three ways to read the work
+    body: Data, development workflow, and language-model evaluation are each backed by concrete projects.
     items:
       - label: Data
-        value: Data systems with graph as a core strength
+        value: Broad data surfaces with graph-native depth
       - label: MLOps
         value: AI-DLC, observability, CI/CD/CT
       - label: NLP/LLM
@@ -38,15 +55,15 @@ pipeline:
   lead: I lead the full workflow, from preprocessing complex unstructured data to PyTorch-based model training, as well as evaluation and architecture design with real deployment environments in mind.
 featuredProjects:
   enabled: true
-  eyebrow: Evidence
-  title: Project evidence by review signal
-  lead: Projects are organized as evidence for Data + Graph, AI-DLC/MLOps, and NLP/LLM research capability rather than as a flat catalogue.
-  count: 2
+  eyebrow: Projects
+  title: Representative projects
+  lead: Start with work that shows data structure, AI development workflow, and NLP/LLM evaluation judgment.
+  count: 3
 researchPreview:
   enabled: true
   eyebrow: Research Bridge
-  title: Research supporting modeling, evaluation, and alignment judgment
-  count: 2
+  title: Research strengthens implementation judgment
+  count: 3
   ctaLabel: Learn More
 experienceSnapshot:
   enabled: true
@@ -56,20 +73,20 @@ experienceSnapshot:
   ctaLabel: View Resume
 capabilityMap:
   enabled: true
-  eyebrow: Role Map
-  title: Three equal role themes for company review
+  eyebrow: Focus Areas
+  title: Three technical focus areas
 documents:
   enabled: true
-  eyebrow: Documents
-  title: Submission-ready documents for recruiters and technical reviewers
+  eyebrow: Quick Paths
+  title: Open the right surface for the review task
   cards:
-    - label: Resume
-      title: A Resume Designed for Quick Review
-      body: A concise overview of the AI Systems Engineer positioning, core competencies, project evidence, and research evidence.
-      href: /resume/
-      ctaLabel: Open CV/Resume
     - label: Portfolio
       title: A Problem-Solving Portfolio
-      body: A company-submission portfolio with Role Map, AI-DLC operating model, Evidence Library, and detailed case studies.
+      body: Review how each project frames a problem, chooses a structure, and turns the decision into implementation.
       href: /portfolio/
       ctaLabel: Open Portfolio
+    - label: Resume
+      title: A Resume Designed for Quick Review
+      body: Review education, experience, publications, and projects in a conventional document format.
+      href: /resume/
+      ctaLabel: Open CV/Resume

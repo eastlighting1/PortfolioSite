@@ -1,0 +1,95 @@
+---
+import { type Locale } from "../../../lib/i18n";
+import { getContributionTypeLabel } from "../../evidence/evidence-labels";
+
+interface Props {
+  research: any[];
+  locale?: Locale;
+}
+
+const { research, locale = "ko" } = Astro.props;
+const labels =
+  locale === "ko"
+    ? {
+        eyebrow: "Research Areas",
+        title: "연구 주제별 요약",
+        lead: "연구 목록을 연도순으로만 보지 않고, 모델링 · 평가 · alignment · 도메인 판단처럼 어떤 기술 판단을 다뤘는지 함께 보여줍니다.",
+        items: "항목"
+      }
+    : {
+        eyebrow: "Research Areas",
+        title: "Research grouped by technical question",
+        lead: "Read publications by modeling, evaluation, alignment, and domain judgment before browsing by date.",
+        items: "items"
+      };
+
+const clusters = Array.from(
+  research.reduce((map: Map<string, any[]>, item) => {
+    const key = item.data.contributionType ?? "system-support";
+    map.set(key, [...(map.get(key) ?? []), item]);
+    return map;
+  }, new Map())
+).map(([type, items]) => ({ type, items }));
+---
+
+<section class="research-contribution-clusters" aria-labelledby="research-contribution-clusters-title">
+  <div class="eyebrow">{labels.eyebrow}</div>
+  <h2 id="research-contribution-clusters-title" class="section-title">{labels.title}</h2>
+  <p class="section-lead research-contribution-clusters__lead">{labels.lead}</p>
+  <div class="research-contribution-clusters__grid">
+    {clusters.map((cluster) => (
+      <article class="research-contribution-cluster">
+        <span>{getContributionTypeLabel(cluster.type, locale)}</span>
+        <strong>{cluster.items.length}</strong>
+        <small>{labels.items}</small>
+        <ul>
+          {cluster.items.map((item) => <li>{item.data.title}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .research-contribution-clusters {
+    margin-top: 2rem;
+  }
+
+  .research-contribution-clusters__lead {
+    max-width: 82ch;
+  }
+
+  .research-contribution-clusters__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1.35rem;
+  }
+
+  .research-contribution-cluster {
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .research-contribution-cluster span,
+  .research-contribution-cluster small {
+    color: var(--color-text-muted);
+  }
+
+  .research-contribution-cluster strong {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 2rem;
+  }
+
+  .research-contribution-cluster ul {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0.85rem 0 0;
+    padding-left: 1rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+</style>

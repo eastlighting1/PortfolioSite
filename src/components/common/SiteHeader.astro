@@ -43,15 +43,6 @@ const isActive = (currentPath: string, itemHref: string) => {
       })}
     </nav>
     <div class="header-utility">
-      <div class="utility-links">
-        {externalProfiles.slice(0, 2).map((link) => (
-          <a href={link.href} target="_blank" rel="noreferrer" class="header-social-link">
-            <SocialIcon platform={link.label} size={15} />
-            <span>{link.label}</span>
-          </a>
-        ))}
-      </div>
-      <a href={withBase(localizePath("/resume/", locale))}>{ui.header.resumeButtonLabel}</a>
       <div class="header-theme">
         <ThemeSwitch />
       </div>

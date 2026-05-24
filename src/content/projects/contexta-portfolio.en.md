@@ -26,6 +26,40 @@ evidence:
   evidenceLevel: Implemented
   disclosureLevel: Public
   businessSignal: "Shows operational observability design for tracing, comparing, and recovering AI execution records and artifacts."
+  proofSentence: "Evidence for reviewing reproducible, observable AI workflow decisions."
+  priority:
+    global: 30
+    home: 20
+    portfolio: 20
+    projects: 20
+    resume: 20
+    print: 20
+    role:
+      data-graph: 35
+      aidlc-mlops: 10
+      nlp-llm: 90
+  reviewerIntents:
+    recruiter: primary
+    technical-reviewer: primary
+    data-systems-reviewer: supporting
+    mlops-reviewer: primary
+    nlp-llm-reviewer: related
+  roleSignals:
+    data-graph:
+      weight: supporting
+      rank: 35
+      signal: "Supporting evidence for Data Systems review."
+      reviewerReason: "Shows operational observability design for tracing, comparing, and recovering AI execution records and artifacts."
+    aidlc-mlops:
+      weight: primary
+      rank: 10
+      signal: "Primary evidence for AI-DLC / MLOps review."
+      reviewerReason: "Shows operational observability design for tracing, comparing, and recovering AI execution records and artifacts."
+    nlp-llm:
+      weight: related
+      rank: 90
+      signal: "Related background evidence for NLP / LLM review."
+      reviewerReason: "Shows operational observability design for tracing, comparing, and recovering AI execution records and artifacts."
   subtypes:
     - ML Observability
     - Experiment Tracking

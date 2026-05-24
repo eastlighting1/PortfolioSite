@@ -17,3 +17,14 @@ const { label = ui.printToolbar.defaultLabel } = Astro.props;
   <span class="muted">{label}</span>
   <button type="button" onclick="window.print()">{ui.printToolbar.printButtonLabel}</button>
 </div>
+
+<script>
+  const autoPrintWhenRequested = () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("print") !== "1" && window.location.hash !== "#print") return;
+    window.setTimeout(() => window.print(), 250);
+  };
+
+  autoPrintWhenRequested();
+  document.addEventListener("astro:page-load", autoPrintWhenRequested);
+</script>

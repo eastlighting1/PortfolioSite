@@ -1,22 +1,40 @@
 pageType: resume
+contract:
+  userQuestion: "How can this person be reviewed through official record?"
+  pageAnswer: "Organize experience, education, research, and projects with dates and evidence links, plus printable CV."
+  requiredEvidence:
+    - official-summary
+    - dated-experience
+    - structured-research-interests
+    - linked-evidence
+    - print-cv
+  nextPaths:
+    - label: "Portfolio"
+      href: /portfolio/
+      reason: "Read representative evidence behind the official record."
+    - label: "Contact"
+      href: /contact/
+      reason: "Start follow-up by review intent."
+  doNotRepeat:
+    - "Do not repeat decorative portfolio case narrative."
 documentTitle: Resume | Donghyeon Kim
-documentDescription: Print-safe resume for an AI Systems Engineer connecting data systems, AI-DLC/MLOps, and NLP/LLM research evidence.
+documentDescription: Print-safe resume for reviewing data and applied AI work.
 printToolbarLabel: Optimized for browser print and PDF export.
 printCv:
   includeProjects: true
   keywords:
-    - AI Systems Engineer
-    - Data + Graph
+    - Data & Applied AI
+    - Data Systems
     - AI-DLC
     - MLOps
     - Observability
     - NLP/LLM Evaluation
-  objective: AI Systems Engineer connecting data systems, AI-DLC/MLOps, and NLP/LLM research experience into reviewable AI system artifacts.
+  objective: Connect data structure, AI development workflows, and NLP/LLM evaluation into implemented work.
   additionalItems:
     - label: Tech Stack
       value: Python · PyTorch · HuggingFace · Docker · AWS
     - label: Focus Areas
-      value: Data + Graph · AI-DLC/MLOps · NLP/LLM
+      value: Data Systems · AI-DLC/MLOps · NLP/LLM
     - label: Technical Strengths
       value: Graph-based Data Systems · ML Observability · NLP/LLM Evaluation · Code Reproducibility · Automation
 layout:
@@ -38,7 +56,7 @@ sections:
     count: 4
   projects:
     enabled: true
-    title: Selected Projects
+    title: Projects
     count: 3
   skills:
     enabled: true

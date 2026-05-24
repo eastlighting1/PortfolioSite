@@ -1,0 +1,94 @@
+---
+import { type Locale } from "../../../lib/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "ko" } = Astro.props;
+const modes =
+  locale === "ko"
+    ? [
+        { id: "recruiter", label: "Recruiter", lens: "", copy: "공식 기록과 역할 적합성을 먼저 보고, 대표 케이스로 기술 판단을 보강합니다." },
+        { id: "data", label: "Data", lens: "data-graph", copy: "데이터 표면과 그래프 네이티브 모델링 깊이를 먼저 봅니다." },
+        { id: "workflow", label: "Workflow", lens: "aidlc-mlops", copy: "실험, 평가, 배포, 기록 관리가 어떻게 구현으로 이어졌는지 봅니다." },
+        { id: "nlp", label: "NLP/LLM", lens: "nlp-llm", copy: "모델링, 평가, alignment 판단과 연구 연결을 먼저 확인합니다." }
+      ]
+    : [
+        { id: "recruiter", label: "Recruiter", lens: "", copy: "Start with official record and role fit, then use cases for technical support." },
+        { id: "data", label: "Data", lens: "data-graph", copy: "Start with data surfaces and graph-native modeling depth." },
+        { id: "workflow", label: "Workflow", lens: "aidlc-mlops", copy: "Focus on experiment, evaluation, deployment, and reviewable work records." },
+        { id: "nlp", label: "NLP/LLM", lens: "nlp-llm", copy: "Inspect modeling, evaluation, alignment judgment, and research links." }
+      ];
+
+const labels =
+  locale === "ko"
+    ? { eyebrow: "Review Mode", title: "먼저 볼 관점 선택", status: "검토 모드" }
+    : { eyebrow: "Review Mode", title: "Choose a first reading angle", status: "Review mode" };
+---
+
+<section class="reviewer-mode" aria-labelledby="reviewer-mode-title" data-reviewer-mode>
+  <div class="eyebrow">{labels.eyebrow}</div>
+  <h2 id="reviewer-mode-title" class="section-title">{labels.title}</h2>
+  <div class="reviewer-mode__tabs" role="group" aria-label={labels.status}>
+    {modes.map((mode, index) => (
+      <button
+        type="button"
+        class:list={["reviewer-mode__tab", index === 0 && "is-active"]}
+        data-reviewer-mode-tab={mode.id}
+        data-reviewer-mode-lens={mode.lens}
+        data-reviewer-mode-copy={mode.copy}
+        aria-pressed={index === 0 ? "true" : "false"}
+      >
+        {mode.label}
+      </button>
+    ))}
+  </div>
+  <p class="reviewer-mode__copy" role="status" aria-live="polite" data-reviewer-mode-copy-live>{modes[0].copy}</p>
+</section>
+
+<script>
+  const bindReviewerMode = () => {
+    document.querySelectorAll("[data-reviewer-mode]").forEach((modeRoot) => {
+      if (modeRoot.dataset.bound === "true") return;
+      modeRoot.dataset.bound = "true";
+
+      const tabs = Array.from(modeRoot.querySelectorAll("[data-reviewer-mode-tab]"));
+      const copy = modeRoot.querySelector("[data-reviewer-mode-copy-live]");
+      const updateUrl = (mode) => {
+        const url = new URL(window.location.href);
+        if (mode) url.searchParams.set("mode", mode);
+        else url.searchParams.delete("mode");
+        window.history.replaceState({}, "", url.toString());
+      };
+
+      const apply = (tab, options = { updateUrl: true }) => {
+        const htmlTab = tab as HTMLElement;
+        const lens = htmlTab.dataset.reviewerModeLens || "";
+        tabs.forEach((item) => {
+          const button = item as HTMLElement;
+          const active = button === htmlTab;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        if (copy) copy.textContent = htmlTab.dataset.reviewerModeCopy || "";
+
+        document.dispatchEvent(new CustomEvent("portfolio-set-role-lens", {
+          detail: { role: lens },
+          bubbles: true,
+          composed: true
+        }));
+        if (options.updateUrl) updateUrl(htmlTab.dataset.reviewerModeTab || "");
+      };
+
+      tabs.forEach((tab) => tab.addEventListener("click", () => apply(tab)));
+
+      const mode = new URL(window.location.href).searchParams.get("mode");
+      const initial = tabs.find((tab) => (tab as HTMLElement).dataset.reviewerModeTab === mode);
+      if (initial) apply(initial, { updateUrl: false });
+    });
+  };
+
+  bindReviewerMode();
+  document.addEventListener("astro:page-load", bindReviewerMode);
+</script>

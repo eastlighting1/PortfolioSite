@@ -16,12 +16,14 @@ const archiveEntries = (await getLocalizedCollection("archive", locale))
   .filter((entry) => aboutPage.data.gallery.types.includes(entry.data.type))
   .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
 const renderedEntries = await Promise.all(
-  archiveEntries.slice(0, aboutPage.data.gallery.count).map(async (entry) => ({
+  archiveEntries.map(async (entry) => ({
     entry,
     slug: entrySlug(entry),
     ...(await render(entry))
   }))
 );
+const archiveTypes = [...new Set(archiveEntries.map((entry) => entry.data.type))];
+const archiveYears = [...new Set(archiveEntries.map((entry) => entry.data.publishedAt.slice(0, 4)))].sort((a, b) => b.localeCompare(a));
 
 if (aboutPage.data.pageType !== "about") {
   throw new Error("Missing about page content configuration.");
@@ -75,59 +77,247 @@ if (aboutPage.data.pageType !== "about") {
               <h2>{aboutPage.data.gallery.title}</h2>
               <p class="section-lead">{aboutPage.data.gallery.lead}</p>
             </div>
-            <div class="about-gallery">
-              {renderedEntries.map(({ entry, slug, Content }) => (
-                <article class="about-gallery__card" data-entry-type={entry.data.type}>
-                  <div class="about-gallery__meta">
-                    <span class="small-label">{entry.data.type}</span>
-                    <span class="small-label">{entry.data.publishedAt}</span>
-                  </div>
-                  <h3>{entry.data.title}</h3>
-                  {entry.data.context && <p class="about-gallery__context">{entry.data.context}</p>}
-                  <p class="muted">{entry.data.summary}</p>
-                  {entry.data.tags.length > 0 && (
-                    <div class="tag-row about-gallery__tags">
-                      {entry.data.tags.map((tag) => (
-                        <span class="tag-chip">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                  <div class="about-gallery__actions">
-                    <button class="button-link-secondary about-gallery__trigger" type="button" data-dialog-open={`archive-entry-${slug}`}>
-                      {aboutPage.data.gallery.openEntryLabel}
+            <div class="archive-browser" data-archive-browser>
+              <div class="archive-browser__search-row">
+                <div class="archive-browser__search">
+                  <span>{locale === "ko" ? "검색" : "Search"}</span>
+                  <div class="archive-browser__search-input-group">
+                    <input type="search" placeholder={locale === "ko" ? "활동, 태그, 주제 검색" : "Search activities, tags, topics"} data-archive-search />
+                    <button type="button" class="tag-chip archive-browser__filter-toggle" data-filter-toggle>
+                      <span class="icon">≡</span>
+                      <span class="label" data-filter-label>{locale === "ko" ? "필터: 모두" : "Filter: All"}</span>
                     </button>
                   </div>
-                  <dialog id={`archive-entry-${slug}`} class="project-preview-dialog about-gallery__dialog">
-                    <article class="about-modal">
-                      <header class="about-modal__header">
-                        <div>
-                          <span class="small-label">{entry.data.type}</span>
-                          <h3>{entry.data.title}</h3>
-                          <p>{entry.data.publishedAt}{entry.data.context ? ` | ${entry.data.context}` : ""}</p>
+                </div>
+              </div>
+
+              <div class="archive-browser__filters-collapse" data-filters-collapse>
+                <div class="archive-browser__filters-collapse-inner">
+                  <div class="filters-grid">
+                    <div class="filter-group">
+                      <h4>{locale === "ko" ? "태그 (다중)" : "Tags (multi)"}</h4>
+                      <div class="filter-group-chips" data-filter-group="tag">
+                        {[...new Set(archiveEntries.flatMap((entry) => entry.data.tags))].map((tag) => (
+                          <button type="button" class="tag-chip" data-archive-tag={tag} data-filter-item>{tag}</button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div class="filter-group">
+                      <h4>{locale === "ko" ? "유형 (다중)" : "Types (multi)"}</h4>
+                      <div class="filter-group-chips" data-filter-group="type">
+                        {archiveTypes.map((type) => (
+                          <button type="button" class="tag-chip" data-archive-type={type} data-filter-item>{type}</button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div class="filter-group">
+                      <h4>{locale === "ko" ? "연도 (다중)" : "Years (multi)"}</h4>
+                      <div class="filter-group-chips" data-filter-group="year">
+                        {archiveYears.map((year) => (
+                          <button type="button" class="tag-chip" data-archive-year={year} data-filter-item>{year}</button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="filters-actions">
+                    <button type="button" class="button-link-secondary" data-filter-clear>
+                      {locale === "ko" ? "필터 초기화" : "Clear Filters"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p class="archive-browser__count" data-archive-count>{locale === "ko" ? `${renderedEntries.length}개 항목` : `${renderedEntries.length} entries`}</p>
+            </div>
+            <div class="about-gallery" data-archive-list>
+              {renderedEntries.map(({ entry, slug, Content }, index) => {
+                const total = renderedEntries.length;
+                const prevEntry = renderedEntries[(index - 1 + total) % total];
+                const nextEntry = renderedEntries[(index + 1) % total];
+                const relatedEntries = renderedEntries
+                  .filter((_, idx) => idx !== index)
+                  .map((other) => {
+                    const currentTags = entry.data.tags || [];
+                    const otherTags = other.entry.data.tags || [];
+                    const sharedTags = otherTags.filter((t) => currentTags.includes(t)).length;
+                    const sharedType = other.entry.data.type === entry.data.type ? 1 : 0;
+                    // Score: 10 points per shared tag, 2 points for type match
+                    const score = (sharedTags * 10) + (sharedType * 2);
+                    return { other, score };
+                  })
+                  .sort((a, b) => b.score - a.score)
+                  .slice(0, 2)
+                  .map((item) => item.other);
+
+                // SSR estimated read time calculation
+                const text = entry.body || "";
+                const wordCount = text.trim().split(/\s+/).length;
+                const charCount = text.replace(/\s+/g, "").length;
+                const isKo = locale === "ko";
+                const isNote = entry.data.type === "note" || charCount < 1000;
+                const cpm = isNote ? 1400 : 900;
+                const wpm = isNote ? 350 : 220;
+                const totalSeconds = isKo 
+                  ? Math.ceil((charCount / cpm) * 60)
+                  : Math.ceil((wordCount / wpm) * 60);
+                
+                let ssrReadTime = "";
+                if (totalSeconds < 60) {
+                  const rounded = Math.max(10, Math.round(totalSeconds / 10) * 10);
+                  ssrReadTime = isKo ? `약 ${rounded}초 읽기` : `${rounded} sec read`;
+                } else {
+                  const minutes = Math.round(totalSeconds / 60);
+                  ssrReadTime = isKo ? `약 ${minutes}분 읽기` : `${minutes} min read`;
+                }
+
+                return (
+                  <article
+                    class="about-gallery__card"
+                    data-entry-type={entry.data.type}
+                    data-archive-item
+                    data-tags={entry.data.tags.join(" ").toLowerCase()}
+                    data-type={entry.data.type}
+                    data-year={entry.data.publishedAt.slice(0, 4)}
+                    data-search={[entry.data.title, entry.data.summary, entry.data.context, ...entry.data.tags].filter(Boolean).join(" ").toLowerCase()}
+                  >
+                    <div class="about-gallery__meta">
+                      <span class="small-label">{entry.data.type}</span>
+                      <span class="small-label">{entry.data.publishedAt}</span>
+                    </div>
+                    <h3>{entry.data.title}</h3>
+                    {entry.data.context && <p class="about-gallery__context">{entry.data.context}</p>}
+                    <p class="muted">{entry.data.summary}</p>
+                    {entry.data.tags.length > 0 && (
+                      <div class="tag-row about-gallery__tags">
+                        {entry.data.tags.map((tag) => (
+                          <span class="tag-chip">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      class="button-link-secondary about-gallery__open"
+                      data-about-modal-open={`archive-${slug}`}
+                    >
+                      {aboutPage.data.gallery.openEntryLabel}
+                    </button>
+                    
+                    <dialog class="about-entry-modal" id={`archive-${slug}`} data-about-modal data-entry-slug={slug}>
+                      {/* Premium Header: Title and reading statistics progress */}
+                      <div class="about-entry-modal__header">
+                        <div class="about-entry-modal__header-left">
+                          <span class="small-label uppercase">{entry.data.type} · {entry.data.publishedAt}</span>
+                          <h2>{entry.data.title}</h2>
+                          {entry.data.context && <p class="about-entry-modal__context">{entry.data.context}</p>}
                         </div>
-                        <button type="button" data-dialog-close={`archive-entry-${slug}`} aria-label={aboutPage.data.gallery.closeEntryLabel}>
-                          {aboutPage.data.gallery.closeEntryLabel}
-                        </button>
-                      </header>
-                      <div class="about-modal__body">
-                        <aside class="about-modal__meta">
-                          <p>{entry.data.summary}</p>
+                        
+                        <div class="about-entry-modal__header-actions">
+                          <button type="button" class="button-link-secondary about-entry-modal__copy" data-copy-link href={`/about/#archive-${slug}`}>
+                            <svg class="icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                            <span>{locale === "ko" ? "링크 복사" : "Copy Link"}</span>
+                          </button>
+                          <form method="dialog" style="display: contents;">
+                            <button type="submit" class="button-link-secondary about-entry-modal__close-btn" aria-label="Close">
+                              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                              <span>{aboutPage.data.gallery.closeEntryLabel}</span>
+                            </button>
+                          </form>
+                        </div>
+                        
+                        {/* Reading Progress Indicator */}
+                        <div class="about-entry-modal__progress-container">
+                          <div class="about-entry-modal__progress-bar" data-progress-bar></div>
+                          <div class="about-entry-modal__progress-info">
+                            <span data-read-time>{ssrReadTime}</span>
+                            <span data-progress-text>0% 읽음</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Modal Body: 2-Column Sidebar + Content */}
+                      <div class="about-entry-modal__body" data-modal-body>
+                        {/* Left Sidebar */}
+                        <aside class="about-entry-modal__sidebar">
+                          {/* 요약 card */}
+                          <div class="about-entry-modal__sidebar-card">
+                            <h4>
+                              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                              {locale === "ko" ? "요약" : "Summary"}
+                            </h4>
+                            <p>{entry.data.summary}</p>
+                          </div>
+
+                          {/* 태그 card */}
                           {entry.data.tags.length > 0 && (
-                            <div class="tag-row">
-                              {entry.data.tags.map((tag) => (
-                                <span class="tag-chip">{tag}</span>
-                              ))}
+                            <div class="about-entry-modal__sidebar-card">
+                              <h4>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                                {locale === "ko" ? "태그" : "Tags"}
+                              </h4>
+                              <div class="about-entry-modal__tags-row">
+                                {entry.data.tags.map((tag) => (
+                                  <span class="tag-chip">{tag}</span>
+                                ))}
+                              </div>
                             </div>
                           )}
+
+                          {/* 목차 (TOC) card */}
+                          <div class="about-entry-modal__sidebar-card about-entry-modal__toc-card" data-toc-card>
+                            <h4>
+                              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                              {locale === "ko" ? "목차" : "Table of Contents"}
+                            </h4>
+                            <nav class="about-entry-modal__toc-nav" data-toc-nav>
+                              {/* Filled by JS dynamically */}
+                            </nav>
+                          </div>
                         </aside>
-                        <div class="prose about-gallery__prose">
+
+                        {/* Right Main Prose Content */}
+                        <div class="prose about-gallery__prose" data-prose-container>
                           <Content />
                         </div>
                       </div>
-                    </article>
-                  </dialog>
-                </article>
-              ))}
+
+                      {/* Modal Footer: Prev/Next/Related posts list */}
+                      <div class="about-entry-modal__footer">
+                        <form method="dialog" style="display: contents;">
+                          <button type="submit" class="button-link-secondary about-entry-modal__list-btn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            <span>{locale === "ko" ? "목록으로" : "Back to list"}</span>
+                          </button>
+                        </form>
+                        
+                        <div class="about-entry-modal__related">
+                          <span class="about-entry-modal__related-label">{locale === "ko" ? "관련 글" : "Related"}</span>
+                          <div class="about-entry-modal__related-list">
+                            {relatedEntries.map((related) => (
+                              <button type="button" class="about-entry-modal__related-card" data-open-other-modal={`archive-${related.slug}`}>
+                                <span class="small-label">{related.entry.data.publishedAt}</span>
+                                <strong>{related.entry.data.title}</strong>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div class="about-entry-modal__nav-buttons">
+                          <button type="button" class="button-link-secondary" data-nav-modal={`archive-${prevEntry.slug}`}>
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            <span>{locale === "ko" ? "이전 글" : "Prev"}</span>
+                          </button>
+                          <button type="button" class="button-link-primary" data-nav-modal={`archive-${nextEntry.slug}`}>
+                            <span>{locale === "ko" ? "다음 글" : "Next"}</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                          </button>
+                        </div>
+                      </div>
+                    </dialog>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -139,48 +329,391 @@ if (aboutPage.data.pageType !== "about") {
 </BaseLayout>
 
 <script>
-  const bindArchiveDialogs = () => {
-    document.querySelectorAll("[data-dialog-open]").forEach((button) => {
-      if (button.dataset.bound === "true") return;
-      button.dataset.bound = "true";
-      button.addEventListener("click", () => {
-        const id = button.getAttribute("data-dialog-open");
-        const dialog = id ? document.getElementById(id) : null;
-        if (dialog instanceof HTMLDialogElement) {
-          dialog.showModal();
-        }
-      });
-    });
+  const bindArchiveBrowser = () => {
+    document.querySelectorAll("[data-archive-browser]").forEach((browser) => {
+      if (browser.dataset.bound === "true") return;
+      browser.dataset.bound = "true";
 
-    document.querySelectorAll("[data-dialog-close]").forEach((button) => {
-      if (button.dataset.bound === "true") return;
-      button.dataset.bound = "true";
-      button.addEventListener("click", () => {
-        const id = button.getAttribute("data-dialog-close");
-        const dialog = id ? document.getElementById(id) : null;
-        if (dialog instanceof HTMLDialogElement) {
-          dialog.close();
-        }
-      });
-    });
+      const search = browser.querySelector("[data-archive-search]");
+      const filterToggle = browser.querySelector("[data-filter-toggle]");
+      const filterLabel = browser.querySelector("[data-filter-label]");
+      const collapsePanel = browser.querySelector("[data-filters-collapse]");
+      const clearBtn = browser.querySelector("[data-filter-clear]");
 
-    document.querySelectorAll(".about-gallery__dialog").forEach((dialog) => {
-      if (dialog.dataset.bound === "true") return;
-      dialog.dataset.bound = "true";
-      dialog.addEventListener("click", (event) => {
-        const rect = dialog.getBoundingClientRect();
-        const inside =
-          rect.top <= event.clientY &&
-          event.clientY <= rect.top + rect.height &&
-          rect.left <= event.clientX &&
-          event.clientX <= rect.left + rect.width;
-        if (!inside) {
-          dialog.close();
+      const tagButtons = Array.from(browser.querySelectorAll("[data-archive-tag]"));
+      const typeButtons = Array.from(browser.querySelectorAll("[data-archive-type]"));
+      const yearButtons = Array.from(browser.querySelectorAll("[data-archive-year]"));
+
+      const section = browser.closest("section");
+      const items = Array.from(section?.querySelectorAll("[data-archive-item]") ?? []);
+      const count = browser.querySelector("[data-archive-count]");
+
+      // Active state (applied filters)
+      let activeTag = "";
+      let activeType = "";
+      let activeYear = "";
+
+      const updateList = () => {
+        const query = (search?.value ?? "").trim().toLowerCase();
+        let visible = 0;
+        items.forEach((item) => {
+          const matchesQuery = !query || item.dataset.search.includes(query);
+          const matchesTag = !activeTag || item.dataset.tags.includes(activeTag.toLowerCase());
+          const matchesType = !activeType || item.dataset.type === activeType;
+          const matchesYear = !activeYear || item.dataset.year === activeYear;
+          const show = matchesQuery && matchesTag && matchesType && matchesYear;
+          item.hidden = !show;
+          if (show) visible += 1;
+        });
+        if (count) count.textContent = document.documentElement.lang === "ko" ? `${visible}개 항목` : `${visible} entries`;
+      };
+
+      const syncUI = () => {
+        tagButtons.forEach((btn) => btn.classList.toggle("is-active", btn.dataset.archiveTag === activeTag));
+        typeButtons.forEach((btn) => btn.classList.toggle("is-active", btn.dataset.archiveType === activeType));
+        yearButtons.forEach((btn) => btn.classList.toggle("is-active", btn.dataset.archiveYear === activeYear));
+
+        let selectedCount = 0;
+        if (activeTag) selectedCount++;
+        if (activeType) selectedCount++;
+        if (activeYear) selectedCount++;
+
+        if (filterLabel) {
+          if (selectedCount === 0) {
+            filterLabel.textContent = document.documentElement.lang === "ko" ? "필터: 모두" : "Filter: All";
+            filterToggle.classList.remove("is-active");
+          } else {
+            filterLabel.textContent = document.documentElement.lang === "ko" 
+              ? `필터: ${selectedCount}개 적용됨` 
+              : `Filter: ${selectedCount} active`;
+            filterToggle.classList.add("is-active");
+          }
         }
+      };
+
+      filterToggle?.addEventListener("click", () => {
+        const isOpen = collapsePanel?.classList.toggle("is-open");
+        filterToggle.setAttribute("aria-expanded", String(isOpen));
       });
+
+      // Filter Item Clicks (Update State & Apply Instantly)
+      tagButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.archiveTag ?? "";
+          activeTag = activeTag === val ? "" : val;
+          syncUI();
+          updateList();
+        });
+      });
+
+      typeButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.archiveType ?? "";
+          activeType = activeType === val ? "" : val;
+          syncUI();
+          updateList();
+        });
+      });
+
+      yearButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.archiveYear ?? "";
+          activeYear = activeYear === val ? "" : val;
+          syncUI();
+          updateList();
+        });
+      });
+
+      // Clear Filters
+      clearBtn?.addEventListener("click", () => {
+        activeTag = "";
+        activeType = "";
+        activeYear = "";
+        syncUI();
+        updateList();
+      });
+
+      search?.addEventListener("input", updateList);
+
+      updateList();
+      syncUI();
     });
   };
 
-  bindArchiveDialogs();
-  document.addEventListener("astro:page-load", bindArchiveDialogs);
+  bindArchiveBrowser();
+  document.addEventListener("astro:page-load", bindArchiveBrowser);
+
+  const openModalFromHash = () => {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith("#archive-")) {
+      const id = hash.substring(1);
+      const modal = document.getElementById(id);
+      if (modal && typeof modal.showModal === "function") {
+        modal.showModal();
+        const body = modal.querySelector("[data-modal-body]");
+        if (body) body.scrollTop = 0;
+      }
+    }
+  };
+
+  const setupModalFeatures = (modal) => {
+    const body = modal.querySelector("[data-modal-body]");
+    const prose = modal.querySelector("[data-prose-container]");
+    const tocNav = modal.querySelector("[data-toc-nav]");
+    const progressBar = modal.querySelector("[data-progress-bar]");
+    const progressText = modal.querySelector("[data-progress-text]");
+    const readTimeSpan = modal.querySelector("[data-read-time]");
+    const copyBtn = modal.querySelector("[data-copy-link]");
+
+    if (!prose || !body) return;
+
+    // 1. Calculate reading time
+    if (readTimeSpan) {
+      const text = prose.textContent || "";
+      const wordCount = text.trim().split(/\s+/).length;
+      const charCount = text.replace(/\s+/g, "").length;
+      const isKo = document.documentElement.lang === "ko" || document.documentElement.lang.startsWith("ko");
+      const isNote = modal.id.includes("note") || charCount < 1000;
+      const cpm = isNote ? 1400 : 900;
+      const wpm = isNote ? 350 : 220;
+      
+      const totalSeconds = isKo 
+        ? Math.ceil((charCount / cpm) * 60)
+        : Math.ceil((wordCount / wpm) * 60);
+
+      let timeText = "";
+      if (totalSeconds < 60) {
+        const roundedSeconds = Math.max(10, Math.round(totalSeconds / 10) * 10);
+        timeText = isKo ? `약 ${roundedSeconds}초 읽기` : `${roundedSeconds} sec read`;
+      } else {
+        const minutes = Math.round(totalSeconds / 60);
+        timeText = isKo ? `약 ${minutes}분 읽기` : `${minutes} min read`;
+      }
+      readTimeSpan.textContent = timeText;
+    }
+
+    // 2. Generate TOC
+    if (tocNav) {
+      tocNav.innerHTML = "";
+      const headings = prose.querySelectorAll("h2, h3");
+      const slug = modal.getAttribute("data-entry-slug") || "entry";
+
+      if (headings.length === 0) {
+        const tocCard = modal.querySelector("[data-toc-card]");
+        if (tocCard) tocCard.style.display = "none";
+      } else {
+        headings.forEach((heading, idx) => {
+          const headingId = `heading-${slug}-${idx}`;
+          heading.id = headingId;
+
+          const link = document.createElement("a");
+          link.href = `#${headingId}`;
+          link.className = heading.tagName.toLowerCase() === "h3" ? "toc-h3" : "toc-h2";
+          link.textContent = heading.textContent;
+
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const containerRect = body.getBoundingClientRect();
+            const elemRect = heading.getBoundingClientRect();
+            const relativeTop = elemRect.top - containerRect.top + body.scrollTop;
+
+            body.scrollTo({
+              top: relativeTop - 12,
+              behavior: "smooth"
+            });
+          });
+
+          tocNav.appendChild(link);
+        });
+      }
+    }
+
+    // 3. Scroll sync: progress indicator and active TOC spy
+    body.addEventListener("scroll", () => {
+      const scrollTop = body.scrollTop;
+      const scrollHeight = body.scrollHeight - body.clientHeight;
+      const percent = scrollHeight > 0 ? Math.round((scrollTop / scrollHeight) * 100) : 0;
+
+      if (progressBar) {
+        progressBar.style.setProperty("--progress", `${percent}%`);
+      }
+      if (progressText) {
+        const isKo = document.documentElement.lang === "ko" || document.documentElement.lang.startsWith("ko");
+        progressText.textContent = isKo ? `${percent}% 읽음` : `${percent}% read`;
+      }
+
+      if (tocNav) {
+        const headings = prose.querySelectorAll("h2, h3");
+        const containerRect = body.getBoundingClientRect();
+        let activeHeadingId = null;
+
+        for (const heading of headings) {
+          const elemRect = heading.getBoundingClientRect();
+          const relativeTop = elemRect.top - containerRect.top;
+          if (relativeTop <= 40) {
+            activeHeadingId = heading.id;
+          } else {
+            break;
+          }
+        }
+
+        if (!activeHeadingId && headings.length > 0) {
+          activeHeadingId = headings[0].id;
+        }
+
+        tocNav.querySelectorAll("a").forEach((link) => {
+          const isActive = link.getAttribute("href") === `#${activeHeadingId}`;
+          link.classList.toggle("is-active", isActive);
+        });
+      }
+    });
+
+    // 4. Clipboard copying helper
+    if (copyBtn) {
+      copyBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const path = copyBtn.getAttribute("href") || `/about/#archive-${modal.id}`;
+        const fullUrl = window.location.origin + path;
+        
+        navigator.clipboard.writeText(fullUrl).then(() => {
+          const labelSpan = copyBtn.querySelector("span");
+          const originalText = labelSpan ? labelSpan.textContent : "";
+          const isKo = document.documentElement.lang === "ko" || document.documentElement.lang.startsWith("ko");
+          
+          if (labelSpan) {
+            labelSpan.textContent = isKo ? "복사 완료!" : "Copied!";
+            copyBtn.classList.add("is-copied");
+            
+            setTimeout(() => {
+              labelSpan.textContent = originalText;
+              copyBtn.classList.remove("is-copied");
+            }, 2000);
+          }
+        }).catch((err) => {
+          console.error("Clipboard copy failed: ", err);
+        });
+      });
+    }
+  };
+
+  const closeModalWithAnimation = (modal, callback) => {
+    if (!modal || !modal.open || modal.classList.contains("is-closing")) {
+      if (callback) callback();
+      return;
+    }
+    
+    modal.classList.add("is-closing");
+    
+    const handleAnimationEnd = (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("is-closing");
+        modal.close();
+        modal.removeEventListener("animationend", handleAnimationEnd);
+        if (callback) callback();
+      }
+    };
+    
+    modal.addEventListener("animationend", handleAnimationEnd);
+    
+    // Safety fallback
+    setTimeout(() => {
+      if (modal.classList.contains("is-closing")) {
+        modal.classList.remove("is-closing");
+        modal.close();
+        if (callback) callback();
+      }
+    }, 450);
+  };
+
+  const bindAboutModals = () => {
+    // Open buttons
+    document.querySelectorAll("[data-about-modal-open]").forEach((button) => {
+      if (button.dataset.bound === "true") return;
+      button.dataset.bound = "true";
+      button.addEventListener("click", () => {
+        const modalId = button.getAttribute("data-about-modal-open");
+        const modal = document.getElementById(modalId);
+        if (modal && typeof modal.showModal === "function") {
+          modal.showModal();
+          const body = modal.querySelector("[data-modal-body]");
+          if (body) body.scrollTop = 0;
+          history.pushState(null, "", `#${modalId}`);
+        }
+      });
+    });
+
+    // Close buttons inside modals (intercept to add animation)
+    document.querySelectorAll(".about-entry-modal__close-btn, .about-entry-modal__list-btn").forEach((button) => {
+      if (button.dataset.closeBound === "true") return;
+      button.dataset.closeBound = "true";
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const modal = button.closest("dialog");
+        if (modal) {
+          closeModalWithAnimation(modal);
+        }
+      });
+    });
+
+    // Backdrop click close & escape cancel intercept
+    document.querySelectorAll("[data-about-modal]").forEach((modal) => {
+      if (modal.dataset.backdropBound === "true") return;
+      modal.dataset.backdropBound = "true";
+      modal.addEventListener("click", (event) => {
+        const rect = modal.getBoundingClientRect();
+        const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+        if (!inside) {
+          closeModalWithAnimation(modal);
+        }
+      });
+
+      modal.addEventListener("cancel", (e) => {
+        e.preventDefault();
+        closeModalWithAnimation(modal);
+      });
+
+      // Clear hash on close
+      modal.addEventListener("close", () => {
+        if (window.location.hash === `#${modal.id}`) {
+          history.pushState(null, "", window.location.pathname + window.location.search);
+        }
+      });
+
+      setupModalFeatures(modal);
+    });
+
+    // Modal navigation buttons inside modals (Prev, Next, Related)
+    document.querySelectorAll("[data-nav-modal], [data-open-other-modal]").forEach((button) => {
+      if (button.dataset.navBound === "true") return;
+      button.dataset.navBound = "true";
+      button.addEventListener("click", () => {
+        const targetId = button.getAttribute("data-nav-modal") || button.getAttribute("data-open-other-modal");
+        const currentModal = button.closest("dialog");
+        const targetModal = document.getElementById(targetId);
+        if (currentModal && targetModal) {
+          closeModalWithAnimation(currentModal, () => {
+            if (typeof targetModal.showModal === "function") {
+              targetModal.showModal();
+              const body = targetModal.querySelector("[data-modal-body]");
+              if (body) body.scrollTop = 0;
+              history.pushState(null, "", `#${targetId}`);
+            }
+          });
+        } else if (targetModal) {
+          if (typeof targetModal.showModal === "function") {
+            targetModal.showModal();
+            const body = targetModal.querySelector("[data-modal-body]");
+            if (body) body.scrollTop = 0;
+            history.pushState(null, "", `#${targetId}`);
+          }
+        }
+      });
+    });
+
+    // Initial hash router on load
+    openModalFromHash();
+  };
+
+  bindAboutModals();
+  document.addEventListener("astro:page-load", bindAboutModals);
 </script>

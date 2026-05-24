@@ -3,25 +3,52 @@
   margin: 16mm 18mm;
 }
 
+@page portfolio-page {
+  size: A4;
+  margin: 0;
+}
+
+
 @media print {
+  .section-tight {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .document-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .portfolio-print-page {
+    padding: 8mm 10mm !important;
+    box-sizing: border-box !important;
+  }
+
   .portfolio-doc {
     display: block !important;
   }
 
-  :root {
-    --bg: white;
-    --surface: white;
-    --surface-strong: white;
-    --surface-muted: #f3f4f6;
-    --text: #111827;
-    --text-soft: #374151;
-    --border: #d1d5db;
-    --shadow: none;
+  :root, [data-theme="dark"], [data-theme="paper"] {
+    --bg: white !important;
+    --surface: white !important;
+    --surface-strong: white !important;
+    --surface-muted: #f3f4f6 !important;
+    --text: #0f172a !important;
+    --text-soft: #334155 !important;
+    --border: #cbd5e1 !important;
+    --accent: #2563eb !important;
+    --accent-strong: var(--role-aidlc) !important;
+    --accent-soft: rgba(37, 99, 235, 0.1) !important;
+    --ink: #0f172a !important;
+    --shadow: none !important;
   }
 
   body {
     background: white !important;
-    color: var(--text);
+    color: var(--text) !important;
     font-size: 9.6pt;
   }
 
@@ -139,18 +166,65 @@
     display: block;
   }
 
-  .paper-sheet--portfolio-print {
-    width: 100%;
-    max-width: none;
-    height: auto !important;
-    min-height: auto;
-    margin: 0;
-    padding: 0 4mm !important;
-    overflow: visible !important;
+  .paper-sheet--portfolio-print-page {
+    page: portfolio-page !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 297mm !important;
+    max-height: 297mm !important;
+    margin: 0 !important;
+    padding: 10mm 12mm !important;
+    overflow: hidden !important;
     border: none !important;
-    border-radius: 0;
+    border-radius: 0 !important;
     box-shadow: none !important;
     background: white !important;
+    color: var(--text) !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Case study page layout overrides for print */
+  .portfolio-doc > .paper-sheet.portfolio-print-cover {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .portfolio-doc > .paper-sheet.portfolio-print-case {
+    display: grid !important;
+    grid-template-columns: 2.15fr 1fr !important;
+    gap: 0.65rem !important;
+    align-items: start !important;
+  }
+
+  .portfolio-doc > .paper-sheet.portfolio-print-research-case-page {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .portfolio-doc > .paper-sheet.portfolio-print-credentials-page {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .portfolio-doc > .paper-sheet.portfolio-print-studies-page {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .portfolio-print-case__left,
+  .portfolio-print-case__right {
+    height: 100% !important;
   }
 
   .portfolio-print {
@@ -579,7 +653,7 @@
 
   .paper-sheet--portfolio .case-study__group-label {
     margin-bottom: 3.6mm;
-    color: #325fdd;
+    color: var(--evidence-prototype);
     font-weight: 700;
   }
 
@@ -1119,7 +1193,7 @@
   }
 
   .portfolio-print-dump__study-card .portfolio-print-dump__entry-meta {
-    color: #64748b;
+    color: var(--disclosure-private);
   }
 
   .portfolio-print-dump__capability-card {
@@ -1195,13 +1269,13 @@
   }
 
   .portfolio-print-dump__entry-meta {
-    color: #475569;
+    color: var(--evidence-in-progress);
     font-size: 9.1pt;
   }
 
   .portfolio-print-dump__entry-period,
   .portfolio-print-dump__recognition-kind {
-    color: #64748b;
+    color: var(--disclosure-private);
     font-size: 8.9pt;
     font-weight: 700;
   }
@@ -1291,7 +1365,7 @@
     flex-wrap: wrap;
     gap: 1.2mm;
     margin-top: 1.8mm;
-    color: #475569;
+    color: var(--evidence-in-progress);
     font-size: 8.4pt;
   }
 
@@ -1314,7 +1388,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #64748b;
+    color: var(--disclosure-private);
     font-size: 8.6pt;
     font-weight: 700;
     margin-bottom: 2.2mm;
@@ -1416,7 +1490,7 @@
     width: 2.4mm;
     height: 2.4mm;
     border-radius: 50%;
-    background: linear-gradient(180deg, #1d4ed8 0%, #93c5fd 100%);
+    background: linear-gradient(180deg, var(--role-aidlc) 0%, #93c5fd 100%);
   }
 
   .portfolio-print-dump__project--case .portfolio-print-dump__project-block:nth-child(1) {
@@ -1577,7 +1651,7 @@
   }
 
   .portfolio-print-dump__link-card strong {
-    color: #1d4ed8;
+    color: var(--role-aidlc);
     font-size: 8.4pt;
   }
 

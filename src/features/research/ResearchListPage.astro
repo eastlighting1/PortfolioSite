@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/common/PageHero.astro";
+import ResearchBridgeOverview from "./components/ResearchBridgeOverview.astro";
+import ResearchContributionClusters from "./components/ResearchContributionClusters.astro";
 import ResearchList from "./components/ResearchList.astro";
 import { getLocalizedCollection, getPageEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
@@ -37,6 +39,8 @@ const heroMeta = [entryCountLabel, ...researchPage.data.hero.meta];
         description={researchPage.data.hero.description}
         meta={heroMeta}
       />
+      <ResearchBridgeOverview research={research} locale={locale} />
+      <ResearchContributionClusters research={research} locale={locale} />
       <div class="section-tight">
         <ResearchList research={research} locale={locale} />
       </div>

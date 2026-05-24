@@ -1,4 +1,17 @@
 pageType: not-found
+contract:
+  userQuestion: "Where should a lost visitor return?"
+  pageAnswer: "Send the visitor safely back to major review paths."
+  requiredEvidence:
+    - home-link
+    - projects-link
+    - resume-link
+  nextPaths:
+    - label: "Home"
+      href: /
+      reason: "Return to the review router."
+  doNotRepeat:
+    - "Do not introduce new evidence narrative."
 documentTitle: Not Found | Donghyeon Kim
 documentDescription: The requested page could not be found.
 hero:

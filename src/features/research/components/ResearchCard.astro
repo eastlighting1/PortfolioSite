@@ -33,6 +33,10 @@ const ctaLabel = isTechnicalNote
   : ui.research.openDetailLabel;
 const keywordsLabel = locale === "ko" ? "핵심 키워드" : "Keywords";
 const summary = item.data.abstract.split(/(?<=[.!?])\s+/)[0] ?? item.data.abstract;
+const contributionLabel = locale === "ko" ? "주요 관점" : "Focus";
+const relevanceLabel = locale === "ko" ? "포트폴리오 의미" : "Portfolio relevance";
+const contribution = item.data.contributionType ?? item.data.type;
+const relevance = item.data.portfolioRelevance ?? item.data.contributionClaim;
 ---
 
 <article
@@ -51,7 +55,12 @@ const summary = item.data.abstract.split(/(?<=[.!?])\s+/)[0] ?? item.data.abstra
     <p class="research-card__venue">{item.data.venue}</p>
     <h3>{item.data.title}</h3>
   </div>
-  <p class="muted research-card__summary">{summary}</p>
+  <div class="research-card__bridge">
+    <span class="small-label">{contributionLabel}</span>
+    <strong>{contribution}</strong>
+    <span class="small-label">{relevance ? relevanceLabel : ui.research.abstractPreviewLabel}</span>
+    <p class="muted research-card__summary">{relevance ?? summary}</p>
+  </div>
   {visibleTags.length > 0 && (
     <div class="research-card__keywords" style="margin-top: auto;">
       <span class="small-label">{keywordsLabel}</span>

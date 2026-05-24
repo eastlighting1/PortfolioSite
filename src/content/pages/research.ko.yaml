@@ -1,12 +1,29 @@
 pageType: research
+contract:
+  userQuestion: "연구는 어떤 구현 판단을 보강하는가?"
+  pageAnswer: "연구 주제, 방법, 관련 프로젝트를 통해 publication을 시스템 판단으로 번역한다."
+  requiredEvidence:
+    - contribution-clusters
+    - research-to-system-map
+    - research-cards
+    - linked-projects
+  nextPaths:
+    - label: "프로젝트"
+      href: /projects/emr-nursing-surveillance/
+      reason: "연구가 연결된 프로젝트 판단을 확인한다."
+    - label: "이력서"
+      href: /resume/
+      reason: "공식 연구 기록을 확인한다."
+  doNotRepeat:
+    - "논문 초록 목록으로만 보이지 않게 한다."
 documentTitle: 연구 | 김동현
-documentDescription: NLP/LLM 모델링, 평가, alignment 판단을 포트폴리오 증거와 연결하는 연구 브리지입니다.
+documentDescription: NLP/LLM 모델링, 평가, alignment 판단이 프로젝트 결정과 어떻게 연결되는지 보여주는 연구 페이지입니다.
 hero:
   eyebrow: Research Bridge
-  title: 연구는 시스템 판단을 뒷받침하는 증거입니다
-  description: 논문과 연구 항목을 단순 목록이 아니라 NLP/LLM 모델링, 평가 설계, 도메인 전이, alignment 이해를 설명하는 근거로 정리했습니다.
+  title: 연구 기록
+  description: 논문은 기술적 배경으로 정리합니다. 의료 등 특정 도메인은 전체 AI 시스템 프로필을 보조하는 맥락으로 둡니다.
   className: page-hero--catalog
   meta:
-    - AI Systems Engineer
+    - Data & Applied AI
     - Modeling and Evaluation
-    - Linked Evidence
+    - Linked Work

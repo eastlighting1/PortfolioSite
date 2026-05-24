@@ -3,6 +3,13 @@ title: "A Context-Adaptive Gated Embedding Framework for Advanced Clinical Decis
 year: 2026
 venue: "Mathematics (submitted)"
 type: "Journal Paper"
+contributionType: "modeling"
+contributionClaim: "Proposed a context-adaptive gated embedding framework that reinjects diagnostic context from automated ICD coding into ICU time-series prediction."
+methodSignal: "Combines partial-label diagnostic context, TCN temporal representations, and gating to strengthen rare transition-event prediction."
+portfolioRelevance: "Shows modeling judgment that connects diagnostic context and time-series signals hierarchically instead of treating data surfaces as isolated inputs."
+linkedRoles:
+  - "nlp-llm"
+  - "data-graph"
 bibtex: |
   @article{kim2026cage,
     title={A Context-Adaptive Gated Embedding Framework for Advanced Clinical Decision-Making},

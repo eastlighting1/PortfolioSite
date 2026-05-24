@@ -1,6 +1,7 @@
 ---
 import ProjectCard from "./ProjectCard.astro";
 import { type Locale } from "../../../lib/i18n";
+import { normalizeEvidenceMetadata } from "../../portfolio/portfolio-data";
 
 interface Props {
   projects: any[];
@@ -8,10 +9,371 @@ interface Props {
 }
 
 const { projects, locale = "ko" } = Astro.props;
+const roleFilters = [
+  { id: "all", label: locale === "ko" ? "전체" : "All" },
+  { id: "data-graph", label: "Data Systems" },
+  { id: "aidlc-mlops", label: "AI-DLC / MLOps" },
+  { id: "nlp-llm", label: "NLP / LLM" }
+];
+const surfaceFilters = [
+  { id: "structured", label: locale === "ko" ? "정형" : "Structured" },
+  { id: "text", label: locale === "ko" ? "텍스트" : "Text" },
+  { id: "image", label: locale === "ko" ? "이미지" : "Image" },
+  { id: "graph", label: locale === "ko" ? "그래프" : "Graph" },
+  { id: "hybrid", label: locale === "ko" ? "하이브리드" : "Hybrid" }
+];
+const maturityFilters = [
+  { id: "Published", label: locale === "ko" ? "논문 기반" : "Published" },
+  { id: "Implemented", label: locale === "ko" ? "구현 완료" : "Implemented" },
+  { id: "Prototype", label: locale === "ko" ? "프로토타입" : "Prototype" },
+  { id: "Study", label: locale === "ko" ? "스터디" : "Study" },
+  { id: "In Progress", label: locale === "ko" ? "진행 중" : "In Progress" }
+];
+const artifactFilters = [
+  { id: "repo", label: locale === "ko" ? "저장소" : "Repository" },
+  { id: "demo", label: locale === "ko" ? "데모" : "Demo" },
+  { id: "paper", label: locale === "ko" ? "논문" : "Paper" },
+  { id: "slides", label: locale === "ko" ? "발표자료" : "Slides" }
+];
+const disclosureFilters = [
+  { id: "public", value: "Public", label: locale === "ko" ? "공개" : "Public" },
+  { id: "summary", value: "Public Summary Only", label: locale === "ko" ? "요약 공개" : "Summary" },
+  { id: "safe-summary", value: "Sanitized", label: locale === "ko" ? "안전 요약" : "Sanitized" },
+  { id: "request", value: "Private / Mention Only", label: locale === "ko" ? "문의 필요" : "On request" }
+];
+const disclosureTokenByLevel = Object.fromEntries(disclosureFilters.map((filter) => [filter.value, filter.id]));
+const workflowFilters = [
+  { id: "data", label: "Data" },
+  { id: "experiment", label: "Experiment" },
+  { id: "training", label: "Training" },
+  { id: "evaluation", label: "Evaluation" },
+  { id: "deployment", label: "Deployment" },
+  { id: "inference", label: "Inference" },
+  { id: "observability", label: "Observability" },
+  { id: "feedback-recovery", label: locale === "ko" ? "Feedback/Recovery" : "Feedback/Recovery" }
+];
 ---
 
-<div class="catalog-grid">
-  {projects.map((project, index) => (
-    <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} locale={locale} />
-  ))}
-</div>
+<section id="project-browser" class="project-browser" data-project-browser data-density="workbench">
+  <div class="project-browser__search-row">
+    <div class="project-browser__search">
+      <span>{locale === "ko" ? "검색" : "Search"}</span>
+      <div class="project-browser__search-input-group">
+        <input type="search" placeholder={locale === "ko" ? "프로젝트, 기술, 역할 신호 검색" : "Search projects, stack, or role signal"} data-project-search />
+        <button type="button" class="tag-chip project-browser__filter-toggle" data-filter-toggle>
+          <span class="icon">≡</span>
+          <span class="label" data-filter-label>{locale === "ko" ? "필터: 모두" : "Filter: All"}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-browser__filters-collapse" data-filters-collapse>
+    <div class="project-browser__filters-collapse-inner">
+      <div class="filters-grid">
+        <div class="filter-group">
+          <h4>{locale === "ko" ? "역할 렌즈 (단일)" : "Role Lens (single)"}</h4>
+          <div class="filter-group-chips" data-filter-group="role">
+            {roleFilters.map((filter) => (
+              <button type="button" class:list={["tag-chip", filter.id === "all" && "is-active"]} data-project-role={filter.id} data-filter-item aria-pressed={filter.id === "all" ? "true" : "false"}>
+                {filter.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>{locale === "ko" ? "데이터 표면 (다중)" : "Data Surfaces (multi)"}</h4>
+          <div class="filter-group-chips" data-filter-group="surface">
+            {surfaceFilters.map((filter) => (
+              <button type="button" class="tag-chip" data-project-surface={filter.id} data-filter-item aria-pressed="false">{filter.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>{locale === "ko" ? "완성도 (다중)" : "Maturity (multi)"}</h4>
+          <div class="filter-group-chips" data-filter-group="maturity">
+            {maturityFilters.map((filter) => (
+              <button type="button" class="tag-chip" data-project-maturity={filter.id} data-filter-item aria-pressed="false">{filter.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>{locale === "ko" ? "자료 유형 (다중)" : "Artifacts (multi)"}</h4>
+          <div class="filter-group-chips" data-filter-group="artifact">
+            {artifactFilters.map((filter) => (
+              <button type="button" class="tag-chip" data-project-artifact={filter.id} data-filter-item aria-pressed="false">{filter.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>{locale === "ko" ? "공개 범위 (다중)" : "Disclosure (multi)"}</h4>
+          <div class="filter-group-chips" data-filter-group="disclosure">
+            {disclosureFilters.map((filter) => (
+              <button type="button" class="tag-chip" data-project-disclosure={filter.id} data-filter-item aria-pressed="false">{filter.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>{locale === "ko" ? "AI-DLC 단계 (다중)" : "AI-DLC Stages (multi)"}</h4>
+          <div class="filter-group-chips" data-filter-group="workflow">
+            {workflowFilters.map((filter) => (
+              <button type="button" class="tag-chip" data-project-workflow={filter.id} data-filter-item aria-pressed="false">{filter.label}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="filters-actions">
+        <button type="button" class="button-link-secondary" data-filter-clear>
+          {locale === "ko" ? "필터 초기화" : "Clear Filters"}
+        </button>
+      </div>
+    </div>
+  </div>
+  <p class="project-browser__count" data-project-count role="status" aria-live="polite">{locale === "ko" ? `전체 ${projects.length}개 프로젝트` : `${projects.length} projects shown`}</p>
+  <div class="project-browser__empty" data-project-empty hidden>
+    <strong>{locale === "ko" ? "이 조합에 맞는 프로젝트가 없습니다." : "No projects match this filter combination."}</strong>
+    <p>{locale === "ko" ? "필터를 초기화하거나 다른 분야를 선택해 보세요." : "Clear filters or try another focus area."}</p>
+  </div>
+
+  <div class="catalog-grid" data-project-list>
+    {projects.map((project, index) => {
+      const evidence = normalizeEvidenceMetadata({ project, locale });
+      const searchText = [
+        project.data.title,
+        project.data.type,
+        project.data.role,
+        project.data.summary,
+        ...(project.data.tags ?? []),
+        ...(project.data.portfolio?.artifacts ?? []).map((artifact: any) => artifact.kind),
+        evidence.primaryTheme,
+        ...evidence.secondaryThemes,
+        ...evidence.dataSurfaces,
+        ...evidence.workflowStages
+      ].join(" ").toLowerCase();
+      return (
+        <div
+          data-project-item
+          data-search={searchText}
+          data-role={[evidence.primaryTheme, ...evidence.secondaryThemes].join(" ")}
+          data-surface={evidence.dataSurfaces.join(" ")}
+          data-maturity={evidence.evidenceLevel}
+          data-disclosure={disclosureTokenByLevel[evidence.disclosureLevel] ?? "public"}
+          data-workflow={evidence.workflowStages.join(" ")}
+          data-artifact={(project.data.portfolio?.artifacts ?? []).map((artifact: any) => artifact.kind).join(" ")}
+        >
+          <ProjectCard project={project} dataReveal={`${(index % 4) + 1}`} locale={locale} />
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+<script>
+  const bindProjectBrowser = () => {
+    document.querySelectorAll("[data-project-browser]").forEach((browser) => {
+      if (browser.dataset.bound === "true") return;
+      browser.dataset.bound = "true";
+
+      const search = browser.querySelector("[data-project-search]");
+      const filterToggle = browser.querySelector("[data-filter-toggle]");
+      const filterLabel = browser.querySelector("[data-filter-label]");
+      const collapsePanel = browser.querySelector("[data-filters-collapse]");
+      const clearBtn = browser.querySelector("[data-filter-clear]");
+
+      const roleButtons = Array.from(browser.querySelectorAll("[data-project-role]"));
+      const surfaceButtons = Array.from(browser.querySelectorAll("[data-project-surface]"));
+      const maturityButtons = Array.from(browser.querySelectorAll("[data-project-maturity]"));
+      const artifactButtons = Array.from(browser.querySelectorAll("[data-project-artifact]"));
+      const disclosureButtons = Array.from(browser.querySelectorAll("[data-project-disclosure]"));
+      const workflowButtons = Array.from(browser.querySelectorAll("[data-project-workflow]"));
+
+      const items = Array.from(browser.querySelectorAll("[data-project-item]"));
+      const count = browser.querySelector("[data-project-count]");
+
+      // Active state (applied filters)
+      let activeRole = "all";
+      let activeSurfaces = new Set();
+      let activeMaturity = new Set();
+      let activeArtifacts = new Set();
+      let activeDisclosure = new Set();
+      let activeWorkflow = new Set();
+      const emptyState = browser.querySelector("[data-project-empty]");
+
+      const updateUrl = () => {
+        const url = new URL(window.location.href);
+        if (activeRole !== "all") url.searchParams.set("lens", activeRole);
+        else url.searchParams.delete("lens");
+        window.history.replaceState({}, "", url.toString());
+      };
+
+      const updateList = () => {
+        const query = (search?.value ?? "").trim().toLowerCase();
+        let visible = 0;
+        items.forEach((item) => {
+          const matchesQuery = !query || item.dataset.search.includes(query);
+          const matchesRole = activeRole === "all" || item.dataset.role.includes(activeRole);
+          const matchesSurface = activeSurfaces.size === 0 || Array.from(activeSurfaces).some((surface) => item.dataset.surface.includes(surface));
+          const matchesMaturity = activeMaturity.size === 0 || activeMaturity.has(item.dataset.maturity);
+          const matchesArtifact = activeArtifacts.size === 0 || Array.from(activeArtifacts).some((artifact) => item.dataset.artifact.includes(artifact));
+          const matchesDisclosure = activeDisclosure.size === 0 || activeDisclosure.has(item.dataset.disclosure);
+          const matchesWorkflow = activeWorkflow.size === 0 || Array.from(activeWorkflow).some((stage) => item.dataset.workflow.includes(stage));
+          const show = matchesQuery && matchesRole && matchesSurface && matchesMaturity && matchesArtifact && matchesDisclosure && matchesWorkflow;
+          item.hidden = !show;
+          if (show) visible += 1;
+        });
+        if (count) count.textContent = document.documentElement.lang === "ko" ? `전체 ${visible}개 프로젝트 표시 중` : `${visible} projects shown`;
+        if (emptyState) emptyState.hidden = visible !== 0;
+      };
+
+      const syncUI = () => {
+        const setPressed = (btn, active) => {
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-pressed", active ? "true" : "false");
+        };
+        roleButtons.forEach((btn) => setPressed(btn, btn.dataset.projectRole === activeRole));
+        surfaceButtons.forEach((btn) => setPressed(btn, activeSurfaces.has(btn.dataset.projectSurface)));
+        maturityButtons.forEach((btn) => setPressed(btn, activeMaturity.has(btn.dataset.projectMaturity)));
+        artifactButtons.forEach((btn) => setPressed(btn, activeArtifacts.has(btn.dataset.projectArtifact)));
+        disclosureButtons.forEach((btn) => setPressed(btn, activeDisclosure.has(btn.dataset.projectDisclosure)));
+        workflowButtons.forEach((btn) => setPressed(btn, activeWorkflow.has(btn.dataset.projectWorkflow)));
+
+        let selectedCount = 0;
+        if (activeRole !== "all") selectedCount++;
+        selectedCount += activeSurfaces.size;
+        selectedCount += activeMaturity.size;
+        selectedCount += activeArtifacts.size;
+        selectedCount += activeDisclosure.size;
+        selectedCount += activeWorkflow.size;
+
+        if (filterLabel) {
+          if (selectedCount === 0) {
+            filterLabel.textContent = document.documentElement.lang === "ko" ? "필터: 모두" : "Filter: All";
+            filterToggle.classList.remove("is-active");
+          } else {
+            filterLabel.textContent = document.documentElement.lang === "ko" 
+              ? `필터: ${selectedCount}개 적용됨` 
+              : `Filter: ${selectedCount} active`;
+            filterToggle.classList.add("is-active");
+          }
+        }
+      };
+
+      filterToggle?.addEventListener("click", () => {
+        const isOpen = collapsePanel?.classList.toggle("is-open");
+        filterToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      // Filter Clicks (Update State & Apply Instantly)
+      roleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeRole = btn.dataset.projectRole;
+          syncUI();
+          updateList();
+          updateUrl();
+        });
+      });
+
+      surfaceButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.projectSurface;
+          if (activeSurfaces.has(id)) activeSurfaces.delete(id);
+          else activeSurfaces.add(id);
+          syncUI();
+          updateList();
+        });
+      });
+
+      maturityButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.projectMaturity;
+          if (activeMaturity.has(id)) activeMaturity.delete(id);
+          else activeMaturity.add(id);
+          syncUI();
+          updateList();
+        });
+      });
+
+      artifactButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.projectArtifact;
+          if (activeArtifacts.has(id)) activeArtifacts.delete(id);
+          else activeArtifacts.add(id);
+          syncUI();
+          updateList();
+        });
+      });
+
+      disclosureButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.projectDisclosure;
+          if (activeDisclosure.has(id)) activeDisclosure.delete(id);
+          else activeDisclosure.add(id);
+          syncUI();
+          updateList();
+        });
+      });
+
+      workflowButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.projectWorkflow;
+          if (activeWorkflow.has(id)) activeWorkflow.delete(id);
+          else activeWorkflow.add(id);
+          syncUI();
+          updateList();
+        });
+      });
+
+      // Clear Filters
+      clearBtn?.addEventListener("click", () => {
+        activeRole = "all";
+        activeSurfaces.clear();
+        activeMaturity.clear();
+        activeArtifacts.clear();
+        activeDisclosure.clear();
+        activeWorkflow.clear();
+        syncUI();
+        updateList();
+        updateUrl();
+      });
+
+      search?.addEventListener("input", updateList);
+
+      const initialLens = new URL(window.location.href).searchParams.get("lens");
+      if (initialLens && roleButtons.some((btn) => btn.dataset.projectRole === initialLens)) {
+        activeRole = initialLens;
+      }
+      updateList();
+      syncUI();
+    });
+  };
+
+  bindProjectBrowser();
+  document.addEventListener("astro:page-load", bindProjectBrowser);
+</script>
+
+<style>
+  .project-browser__empty {
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-muted);
+    color: var(--color-text-muted);
+  }
+
+  .project-browser__empty strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--color-text);
+  }
+
+  .project-browser__empty p {
+    margin: 0;
+  }
+</style>

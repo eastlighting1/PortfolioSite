@@ -1,11 +1,29 @@
 pageType: projects
+contract:
+  userQuestion: "How should all work be reviewed?"
+  pageAnswer: "Show representative comparison and evidence map before search, filtering, and verification."
+  requiredEvidence:
+    - featured-comparison
+    - evidence-map
+    - project-browser
+    - disclosure-filter
+    - workflow-filter
+  nextPaths:
+    - label: "Project detail"
+      href: /projects/lynxes-portfolio/
+      reason: "Read problem, decision, architecture, and outcome as a case."
+    - label: "Portfolio"
+      href: /portfolio/
+      reason: "See curated representative evidence order."
+  doNotRepeat:
+    - "Do not repeat the portfolio persuasion narrative."
 documentTitle: Projects | Donghyeon Kim
-documentDescription: Project evidence library for a company-submission AI Systems Engineer portfolio.
+documentDescription: Search and compare every project through Data Systems, AI-DLC/MLOps, and NLP/LLM review lenses.
 hero:
-  eyebrow: Evidence Library
-  title: Project evidence by review signal
-  description: Projects are presented as evidence for Data + Graph, AI-DLC/MLOps, and NLP/LLM research capability rather than as a flat catalogue. Each item can be reviewed with evidence level, disclosure level, data surface, and workflow coverage.
+  eyebrow: Project Records
+  title: Compare all projects through role lenses
+  description: Search the full project set and re-sort it by Data Systems, AI-DLC/MLOps, and NLP/LLM review perspectives.
   meta:
-    - AI Systems Engineer
-    - Role-based evidence
-    - Disclosure-aware
+    - Data & Applied AI
+    - Full project index
+    - Search and filters

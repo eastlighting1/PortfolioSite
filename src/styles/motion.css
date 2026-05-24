@@ -1,9 +1,9 @@
 .js [data-reveal] {
-  opacity: 0;
-  transform: translateY(18px);
+  opacity: 1;
+  transform: translateY(0);
   transition:
-    opacity 600ms ease,
-    transform 600ms ease;
+    opacity 220ms ease,
+    transform 220ms ease;
 }
 
 .js [data-reveal="2"] {

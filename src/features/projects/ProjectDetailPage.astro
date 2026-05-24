@@ -3,7 +3,7 @@ import { render } from "astro:content";
 import ReadingLayout from "../../layouts/ReadingLayout.astro";
 import ExternalLinks from "../../components/common/ExternalLinks.astro";
 import ProjectDetailHero from "./components/ProjectDetailHero.astro";
-import { entrySlug, getUiEntry } from "../../lib/content";
+import { entrySlug, getLocalizedCollection, getUiEntry } from "../../lib/content";
 import { type Locale, localizePath } from "../../lib/i18n";
 import { withBase } from "../../lib/site";
 import { normalizeEvidenceMetadata } from "../portfolio/portfolio-data";
@@ -18,6 +18,8 @@ const { locale, pathname, project } = Astro.props;
 const { Content } = await render(project);
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
+const allResearch = await getLocalizedCollection("research", locale);
+const linkedResearch = allResearch.filter((entry) => (entry.data.linkedProjects ?? []).includes(entrySlug(project)));
 const titleSuffix = locale === "ko" ? "프로젝트" : "Projects";
 const portfolio = project.data.portfolio;
 const evidence = normalizeEvidenceMetadata({ project: { ...project, slug: entrySlug(project) }, locale });
@@ -112,6 +114,23 @@ const safePortfolioArtifacts = evidence.disclosureLevel === "Private / Mention O
           />
         </article>
       )}
+    </section>
+  )}
+  {linkedResearch.length > 0 && (
+    <section class="resume-section" style="margin-top: 2rem;">
+      <div class="eyebrow">{locale === "ko" ? "연구 근거" : "Research Support"}</div>
+      <div class="document-list" style="margin-top: 1rem;">
+        {linkedResearch.map((entry) => (
+          <div class="resume-item">
+            <strong>{entry.data.title}</strong>
+            <div class="muted">{entry.data.venue} | {entry.data.year}</div>
+            <p>{entry.data.portfolioRelevance ?? entry.data.contributionClaim ?? entry.data.abstract}</p>
+            <a class="button-link-secondary" href={withBase(localizePath(`research/${entrySlug(entry)}/`, locale))}>
+              {locale === "ko" ? "연구 상세 보기" : "Open research detail"}
+            </a>
+          </div>
+        ))}
+      </div>
     </section>
   )}
   <article class="prose" style="padding-top: 2rem;">

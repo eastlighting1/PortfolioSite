@@ -30,6 +30,12 @@ const siteEntry = await getGlobalEntry("site", locale);
 const profile = profileEntry.data;
 const siteConfig = siteEntry.data;
 const roleThemes = getRoleThemes(locale);
+const localizeHref = (href: string) => {
+  const [withoutHash, hash = ""] = href.split("#");
+  const [path, query = ""] = withoutHash.split("?");
+  return withBase(`${localizePath(path, locale)}${query ? `?${query}` : ""}${hash ? `#${hash}` : ""}`);
+};
+const roleLensHref = (roleId: string) => localizeHref(`/portfolio/?lens=${roleId}#valueMap`);
 ---
 
 <section class="section">
@@ -49,25 +55,21 @@ const roleThemes = getRoleThemes(locale);
           {actions.map((action) => (
             <a
               class={action.variant === "primary" ? "button-link" : "button-link-secondary"}
-              href={withBase(localizePath(action.href, locale))}
+              href={localizeHref(action.href)}
             >
               {action.label}
             </a>
           ))}
         </div>
       </div>
-      <aside class="hero-focus" data-reveal="4">
-        <span class="hero-focus__label">{focusCard.label}</span>
-        <h2 class="hero-focus__title" set:html={focusCard.title} />
-        <p class="hero-focus__body" set:html={focusCard.body} />
-        <dl class="hero-focus__list">
-          {focusCard.items.map((item) => (
-            <div class="hero-focus__item">
-              <dt>{item.label}</dt>
-              <dd>{item.value}</dd>
-            </div>
-          ))}
-        </dl>
+      <aside class="hero-role-map" data-reveal="4" aria-label={focusCard.label}>
+        {roleThemes.map((role) => (
+          <a class="hero-role-map__item" href={roleLensHref(role.id)}>
+            <span>{role.shortTitle}</span>
+            <strong>{role.title}</strong>
+            <p>{role.businessSignal}</p>
+          </a>
+        ))}
       </aside>
     </div>
   </div>

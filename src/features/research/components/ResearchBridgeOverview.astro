@@ -1,0 +1,158 @@
+---
+import { entrySlug, getLocalizedCollection } from "../../../lib/content";
+import { withBase } from "../../../lib/site";
+import { localizePath, type Locale } from "../../../lib/i18n";
+import { getRoleThemes } from "../../portfolio/portfolio-data";
+
+interface Props {
+  research: any[];
+  locale?: Locale;
+}
+
+const { research, locale = "ko" } = Astro.props;
+const projects = await getLocalizedCollection("projects", locale);
+const roleThemes = getRoleThemes(locale);
+const labels =
+  locale === "ko"
+    ? {
+        eyebrow: "Research-to-System Map",
+        title: "연구를 구현 판단으로 읽기",
+        lead: "각 연구를 논문 목록이 아니라 모델링, 평가, 적용 판단이 어떤 프로젝트와 연결되는지로 먼저 봅니다.",
+        contribution: "기여",
+        relevance: "포트폴리오 의미",
+        linked: "관련 프로젝트",
+        unlinked: "관련 프로젝트 정리 중"
+      }
+    : {
+        eyebrow: "Research-to-System Map",
+        title: "Read research as implementation judgment",
+        lead: "Research entries are framed by contribution type, portfolio relevance, and the project decisions they support.",
+        contribution: "Contribution",
+        relevance: "Portfolio relevance",
+        linked: "Linked project",
+        unlinked: "Mapping in progress"
+      };
+
+const featured = research.slice(0, 3).map((item) => {
+  const linkedProject = projects.find((project) => item.data.linkedProjects?.includes(entrySlug(project)));
+  const linkedRoles = item.data.linkedRoles?.length ? item.data.linkedRoles : ["nlp-llm"];
+  return { item, linkedProject, linkedRoles };
+});
+---
+
+<section class="research-bridge-overview" aria-labelledby="research-bridge-overview-title">
+  <div class="eyebrow">{labels.eyebrow}</div>
+  <h2 id="research-bridge-overview-title" class="section-title">{labels.title}</h2>
+  <p class="section-lead research-bridge-overview__lead">{labels.lead}</p>
+  <div class="research-bridge-overview__grid">
+    {featured.map(({ item, linkedProject, linkedRoles }) => {
+      const roles = roleThemes.filter((role) => linkedRoles.includes(role.id));
+      const contribution = item.data.contributionType ?? item.data.type;
+      const relevance = item.data.portfolioRelevance ?? item.data.contributionClaim ?? item.data.abstract.split(/(?<=[.!?])\s+/)[0];
+
+      return (
+        <article class="research-bridge-card">
+          <div class="research-bridge-card__topline">
+            <span>{contribution}</span>
+            <small>{item.data.year}</small>
+          </div>
+          <h3>{item.data.title}</h3>
+          <dl>
+            <div>
+              <dt>{labels.relevance}</dt>
+              <dd>{relevance}</dd>
+            </div>
+            <div>
+              <dt>{labels.linked}</dt>
+              <dd>
+                {linkedProject ? (
+                  <a href={withBase(localizePath(`projects/${entrySlug(linkedProject)}/`, locale))}>{linkedProject.data.title}</a>
+                ) : (
+                  labels.unlinked
+                )}
+              </dd>
+            </div>
+          </dl>
+          <div class="research-bridge-card__roles">
+            {roles.map((role) => <span class="tag-chip">{role.shortTitle}</span>)}
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .research-bridge-overview {
+    margin-top: 2rem;
+  }
+
+  .research-bridge-overview__lead {
+    max-width: 82ch;
+  }
+
+  .research-bridge-overview__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .research-bridge-card {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.9rem;
+    padding: 1.1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .research-bridge-card__topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .research-bridge-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.35;
+  }
+
+  .research-bridge-card dl {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .research-bridge-card dt {
+    color: var(--color-text);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .research-bridge-card dd {
+    margin: 0.25rem 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+  }
+
+  .research-bridge-card__roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  @media (max-width: 980px) {
+    .research-bridge-overview__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

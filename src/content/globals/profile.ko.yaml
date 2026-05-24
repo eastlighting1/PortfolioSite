@@ -1,26 +1,26 @@
 globalType: profile
 name: 김동현
-headline: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 연결하는 AI Systems Engineer
-intro: 저는 정형, 텍스트, 이미지, 그래프 데이터를 모델링 가능한 구조로 만들고, AI-Driven Development Life Cycle 관점에서 실험, 평가, 관측, 전달이 이어지는 AI 시스템을 만드는 데 관심이 있습니다.
-summary: 그래프를 핵심 강점으로 둔 데이터 처리, AI-DLC 기반 MLOps와 observability, NLP/LLM 연구 경험을 기업 검토 가능한 증거와 산출물로 연결하는 AI Systems Engineer입니다.
+headline: 데이터 구조화와 NLP/LLM 평가를 시스템 구현으로 연결하는 엔지니어
+intro: 정형 데이터, 텍스트, 이미지, 그래프처럼 서로 다른 데이터 형태를 모델이 활용할 수 있는 구조로 정리하고, 실험·평가·배포 과정에서 남는 기술 판단을 구현 결과로 연결하는 데 관심이 있습니다.
+summary: 데이터 구조화, AI 개발 흐름, NLP/LLM 평가 경험을 바탕으로 문제 정의부터 구현, 검증, 전달까지 이어지는 작업을 수행합니다.
 philosophy:
-  - 다양한 데이터 표면을 검토 가능한 구조와 파이프라인으로 바꾸는 일을 중요하게 생각합니다.
+  - 다양한 데이터 표면을 모델링과 운영에 연결 가능한 구조와 파이프라인으로 바꾸는 일을 중요하게 생각합니다.
   - AI 실험과 운영 흐름을 재현 가능하고 관측 가능하게 만드는 데 집중합니다.
   - NLP/LLM 연구 경험을 평가 가능한 시스템 판단으로 연결하고자 합니다.
 
 capabilityGroups:
-  - title: Data Science
-    description: 실제 데이터의 품질과 구조를 다듬고, 분석과 전처리를 통해 모델링 가능한 기반을 만드는 역량
+  - title: Data Systems
+    description: 정형, 텍스트, 이미지, 그래프형 데이터를 모델링과 운영에 이어지는 구조로 만드는 역량
     skills:
       - Data Preparation
-      - Feature Engineering
-      - Data Wrangling
-      - Data Manipulation
-  - title: Applied AI
-    description: 도메인 NLP 문제를 여러 태스크로 구체화하고, 실험과 구현을 통해 검토 가능한 결과로 연결하는 역량
+      - Graph-native Modeling
+      - Data Pipelines
+      - Hybrid Representation
+  - title: Applied NLP/LLM
+    description: NLP/LLM 문제를 모델링, 평가 설계, 적용 맥락 판단으로 구체화하는 역량
     skills:
       - Conversational AI
-      - Medical AI
+      - Evaluation Design
       - Knowledge Graph
       - Logic-based AI
   - title: MLOps
@@ -47,7 +47,7 @@ pipeline:
     description: 코드와 환경을 철저히 통제하여 모델을 학습시키고, 체계적으로 추적하여 언제든 재현 가능한 실험 환경을 구축합니다.
   - title: 강건한 평가
     emphasis: 검증하고 평가하기
-    description: 단순한 정확도를 넘어 모델의 강건성, 오류 사례, 그리고 의료 및 대화 도메인의 요구사항을 다각도로 검증하여 프로덕션 도입 전 신뢰성을 확보합니다.
+    description: 단순한 정확도를 넘어 모델의 강건성, 오류 사례, 적용 맥락의 요구사항을 다각도로 검토하여 실제 사용 전 신뢰성을 확인합니다.
   - title: 데브옵스
     emphasis: 인프라와 배포
     description: AWS 혹은 Docker 환경에서 모델을 배포하고, 지속적인 통합과 자동화를 통해 모델이 실제 환경에서 안정적으로 운영될 수 있도록 합니다.

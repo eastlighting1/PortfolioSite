@@ -1,4 +1,20 @@
 pageType: about
+contract:
+  userQuestion: "What context exists outside the projects?"
+  pageAnswer: "Archive events, notes, and perspective shifts to show the learning path."
+  requiredEvidence:
+    - context-positioning
+    - archive-gallery
+    - activity-notes
+  nextPaths:
+    - label: "Home"
+      href: /
+      reason: "Return to review routing."
+    - label: "Portfolio"
+      href: /portfolio/
+      reason: "Inspect core evidence."
+  doNotRepeat:
+    - "Do not compete with resume or project catalog."
 documentTitle: About | Donghyeon Kim
 documentDescription: Gallery-style archive for event notes, personal thoughts, and working memos around applied AI systems.
 sectionOrder:
@@ -6,27 +22,27 @@ sectionOrder:
   - gallery
 hero:
   eyebrow: About
-  title: A gallery for notes, events, and working thoughts
-  description: Instead of a long personal essay, this page works as a lightweight archive for event reflections, research notes, and system-oriented thoughts that sit between projects and journal entries.
+  title: Activity notes and technical perspective
+  description: Events, communities, and research notes are searchable by tag and type. Longer writing expands inside the card when needed.
 positioning:
-  enabled: true
+  enabled: false
   eyebrow: Page Role
   title: This page is neither a resume nor a project index
   lead: The about page is looser than a formal career summary and more curated than a blog. It shows what I study, which communities I learn from, and how my technical perspective changes over time.
   cards:
     - label: Reading Mode
       title: Context outside the project
-      body: Project pages hold deliverables and evidence; this page holds the thoughts, events, and notes around them.
+      body: Project pages hold deliverables and technical decisions; this page holds the thoughts, events, and notes around them.
     - label: Editing Mode
       title: Add cards without changing code
       body: Add a new archive Markdown file, then tune count and visible types here in YAML.
     - label: Difference from Portfolio
       title: Perspective, not proof
-      body: The portfolio shows reviewable evidence. The about page shows the interests and direction behind that evidence.
+      body: The portfolio shows work outcomes and technical judgment. The about page shows the interests and direction behind that judgment.
 gallery:
   enabled: true
-  title: Archive Gallery
-  lead: "This space is meant for short-form writing: conference impressions, community event notes, implementation reflections, and ideas that do not belong in a formal project case study."
+  title: Activity Archive
+  lead: Filter first, then expand only the notes that matter for the review.
   count: 9
   types:
     - event

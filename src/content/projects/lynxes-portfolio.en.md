@@ -25,6 +25,40 @@ evidence:
   evidenceLevel: Implemented
   disclosureLevel: Public
   businessSignal: "Shows system design and implementation depth for treating graph data as a first-class execution model."
+  proofSentence: "Evidence for inspecting data structure and graph-native judgment first."
+  priority:
+    global: 20
+    home: 10
+    portfolio: 10
+    projects: 10
+    resume: 30
+    print: 10
+    role:
+      data-graph: 10
+      aidlc-mlops: 45
+      nlp-llm: 90
+  reviewerIntents:
+    recruiter: supporting
+    technical-reviewer: primary
+    data-systems-reviewer: primary
+    mlops-reviewer: supporting
+    nlp-llm-reviewer: related
+  roleSignals:
+    data-graph:
+      weight: primary
+      rank: 10
+      signal: "Primary evidence for Data Systems review."
+      reviewerReason: "Shows system design and implementation depth for treating graph data as a first-class execution model."
+    aidlc-mlops:
+      weight: supporting
+      rank: 45
+      signal: "Supporting evidence for AI-DLC / MLOps review."
+      reviewerReason: "Shows system design and implementation depth for treating graph data as a first-class execution model."
+    nlp-llm:
+      weight: related
+      rank: 90
+      signal: "Related background evidence for NLP / LLM review."
+      reviewerReason: "Shows system design and implementation depth for treating graph data as a first-class execution model."
   subtypes:
     - Graph Engine
     - Graph Pipeline

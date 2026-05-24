@@ -1,11 +1,11 @@
 globalType: site
 name: Donghyeon Kim
 shortName: Donghyeon
-title: Donghyeon Kim | AI Systems Engineer
-description: Company-submission portfolio for an AI Systems Engineer connecting data systems, AI-DLC/MLOps, and NLP/LLM research evidence.
-primaryRole: AI Systems Engineer
+title: Donghyeon Kim | Data & Applied AI Engineer
+description: Portfolio covering data structure, AI development workflows, and NLP/LLM evaluation.
+primaryRole: Data & Applied AI Engineer
 secondaryRoles:
-  - Data + Graph
+  - Data Systems
   - AI-DLC / MLOps
   - NLP / LLM
 location: Incheon, South Korea
@@ -14,14 +14,14 @@ siteUrl: https://eastlighting1.github.io
 nav:
   - href: /
     label: Home
+  - href: /portfolio/
+    label: Portfolio
   - href: /projects/
     label: Projects
   - href: /research/
     label: Research
   - href: /resume/
     label: Resume
-  - href: /portfolio/
-    label: Portfolio
   - href: /about/
     label: About
   - href: /contact/

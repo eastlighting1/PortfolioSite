@@ -1,26 +1,26 @@
 globalType: profile
 name: Donghyeon Kim
-headline: AI Systems Engineer connecting data systems, AI-DLC/MLOps, and NLP/LLM research experience
-intro: I structure diverse data surfaces, including structured, text, image, and graph data, and connect them to AI systems that can be evaluated, observed, and delivered through the AI-Driven Development Life Cycle.
-summary: I am an AI Systems Engineer who connects data work with graph as a core strength, AI-DLC-based MLOps and observability, and NLP/LLM research experience into company-reviewable evidence and artifacts.
+headline: Data and applied AI engineer connecting data structure, NLP/LLM evaluation, and implementation
+intro: I organize structured, text, image, and graph data into model-usable forms, then connect experimentation, evaluation, deployment, and review decisions into implemented work.
+summary: I work across data structure, AI development workflows, and NLP/LLM evaluation, carrying problems from framing to implementation, validation, and delivery.
 philosophy:
-  - I turn diverse data surfaces into reviewable structures and pipelines.
+  - I turn diverse data surfaces into structures and pipelines that can carry into modeling and operations.
   - I make AI experiments and operating workflows reproducible and observable.
   - I connect NLP/LLM research experience to evaluable system decisions.
 
 capabilityGroups:
-  - title: Data Science
-    description: The ability to refine real-world data for reliable modeling through analysis and preprocessing
+  - title: Data Systems
+    description: The ability to shape structured, text, image, and graph-shaped data into modeling and operating surfaces
     skills:
       - Data Preparation
-      - Feature Engineering
-      - Data Wrangling
-      - Data Manipulation
-  - title: Applied AI
-    description: The ability to turn domain-specific NLP into concrete tasks through experimentation and implementation
+      - Graph-native Modeling
+      - Data Pipelines
+      - Hybrid Representation
+  - title: Applied NLP/LLM
+    description: The ability to turn NLP/LLM problems into modeling, evaluation, and applied-system decisions
     skills:
       - Conversational AI
-      - Medical AI
+      - Evaluation Design
       - Knowledge Graph
       - Logic-based AI
   - title: MLOps
@@ -47,7 +47,7 @@ pipeline:
     description: I train models under carefully controlled code and environment settings, and track them systematically to build experiments that can be reproduced at any time.
   - title: Robust Evaluation
     emphasis: Validation and assessment
-    description: Going beyond simple accuracy, I examine robustness, error cases, and the demands of medical and conversational domains from multiple angles to establish reliability before production use.
+    description: Going beyond simple accuracy, I examine robustness, error cases, and application-context requirements from multiple angles before practical use.
   - title: DevOps
     emphasis: Infrastructure and deployment
     description: I deploy models in AWS or Docker environments and support reliable operation in real-world settings through continuous integration and automation.

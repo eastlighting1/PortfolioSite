@@ -3,6 +3,12 @@ title: "Empathetic Dialogue Generation Model Using Reinforcement Learning with A
 year: 2025
 venue: "Korea Computer Congress (KCC)"
 type: "Conference Paper"
+contributionType: "alignment"
+contributionClaim: "Proposed an RLAIF-based reinforcement learning structure to reduce reliance on human feedback in empathetic dialogue generation."
+methodSignal: "Used an LLM evaluator as a reward signal and PPO-based policy updates to improve response diversity and empathy alignment."
+portfolioRelevance: "Supports the view that LLM response quality should be treated as an evaluation, reward, and policy-update system rather than a prompt-only outcome."
+linkedRoles:
+  - "nlp-llm"
 bibtex: |
   @inproceedings{joo2025empathetic,
     title={Empathetic Dialogue Generation Model Using Reinforcement Learning with AI-Based Feedback},

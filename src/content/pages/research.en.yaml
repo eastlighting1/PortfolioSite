@@ -1,12 +1,29 @@
 pageType: research
+contract:
+  userQuestion: "Which implementation judgment does the research support?"
+  pageAnswer: "Translate publications into system judgment through contribution type, method signal, and linked projects."
+  requiredEvidence:
+    - contribution-clusters
+    - research-to-system-map
+    - research-cards
+    - linked-projects
+  nextPaths:
+    - label: "Projects"
+      href: /projects/emr-nursing-surveillance/
+      reason: "Inspect project decisions connected to research."
+    - label: "Resume"
+      href: /resume/
+      reason: "Confirm official publication record."
+  doNotRepeat:
+    - "Do not present research as a plain abstract list."
 documentTitle: Research | Donghyeon Kim
-documentDescription: Research bridge connecting NLP/LLM modeling, evaluation, and alignment judgment to portfolio evidence.
+documentDescription: Research page connecting NLP/LLM modeling, evaluation, and alignment judgment to project decisions.
 hero:
   eyebrow: Research Bridge
-  title: Research as evidence for system judgment
-  description: Publications and research items are organized as support for NLP/LLM modeling, evaluation design, domain transfer, and alignment awareness rather than as a detached archive.
+  title: Research record
+  description: Publications are kept here as technical background. Domain-specific work stays secondary to the broader AI systems profile.
   className: page-hero--catalog
   meta:
-    - AI Systems Engineer
+    - Data & Applied AI
     - Modeling and Evaluation
-    - Linked Evidence
+    - Linked Work

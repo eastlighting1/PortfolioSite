@@ -25,6 +25,39 @@ evidence:
   evidenceLevel: Implemented
   disclosureLevel: Public Summary Only
   businessSignal: "Connects Korean NLP models into a user-facing AI pipeline for conversational product experience."
+  proofSentence: "Evidence for checking how NLP/LLM modeling and evaluation judgment turns into implementation."
+  priority:
+    global: 60
+    home: 50
+    portfolio: 50
+    projects: 50
+    resume: 50
+    print: 60
+    role:
+      data-graph: 90
+      aidlc-mlops: 40
+      nlp-llm: 15
+  reviewerIntents:
+    recruiter: related
+    technical-reviewer: supporting
+    mlops-reviewer: supporting
+    nlp-llm-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: related
+      rank: 90
+      signal: "Related background evidence for Data Systems review."
+      reviewerReason: "Connects Korean NLP models into a user-facing AI pipeline for conversational product experience."
+    aidlc-mlops:
+      weight: supporting
+      rank: 40
+      signal: "Supporting evidence for AI-DLC / MLOps review."
+      reviewerReason: "Connects Korean NLP models into a user-facing AI pipeline for conversational product experience."
+    nlp-llm:
+      weight: primary
+      rank: 15
+      signal: "Primary evidence for NLP / LLM review."
+      reviewerReason: "Connects Korean NLP models into a user-facing AI pipeline for conversational product experience."
   subtypes:
     - Conversational AI
     - NLP Pipeline

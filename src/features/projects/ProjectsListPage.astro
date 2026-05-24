@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/common/PageHero.astro";
+import ProjectEvidenceOverview from "./components/ProjectEvidenceOverview.astro";
 import ProjectGrid from "./components/ProjectGrid.astro";
 import { getLocalizedCollection, getPageEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
@@ -36,6 +37,7 @@ const heroMeta = [projectCountLabel, ...projectsPage.data.hero.meta];
         description={projectsPage.data.hero.description}
         meta={heroMeta}
       />
+      <ProjectEvidenceOverview projects={projects} locale={locale} />
       <div class="section-tight">
         <ProjectGrid projects={projects} locale={locale} />
       </div>

@@ -1,0 +1,243 @@
+---
+import { entrySlug } from "../../../lib/content";
+import { withBase } from "../../../lib/site";
+import { localizePath, type Locale } from "../../../lib/i18n";
+import {
+  getPublicDisclosureLabel,
+  getPublicEvidenceLevelLabel,
+  getRoleThemes,
+  getThemeById,
+  normalizeEvidenceMetadata
+} from "../../portfolio/portfolio-data";
+import { sortProjectsForSurface } from "../../evidence/evidence-priority";
+
+interface Props {
+  projects: any[];
+  locale?: Locale;
+}
+
+const { projects, locale = "ko" } = Astro.props;
+const roleThemes = getRoleThemes(locale);
+const featured = sortProjectsForSurface(projects, "projects", locale).slice(0, 3);
+const labels =
+  locale === "ko"
+    ? {
+        eyebrow: "Project Overview",
+        title: "먼저 비교하고, 그 다음 검색합니다",
+        lead: "전체 목록을 보기 전에 대표 프로젝트의 문제, 결정, 결과, 공개 범위를 먼저 비교합니다.",
+        comparison: "대표 비교",
+        map: "분야별 프로젝트 수",
+        problem: "문제",
+        decision: "핵심 결정",
+        outcome: "결과",
+        open: "상세 보기",
+        items: "개"
+      }
+    : {
+        eyebrow: "Evidence Map",
+        title: "Compare first, then browse",
+        lead: "Before filtering the full database, compare representative evidence by problem, decision, outcome, and disclosure.",
+        comparison: "Representative comparison",
+        map: "Evidence distribution by role",
+        problem: "Problem",
+        decision: "Key decision",
+        outcome: "Outcome",
+        open: "Open detail",
+        items: "items"
+      };
+
+const roleCounts = roleThemes.map((role) => {
+  const matching = projects.filter((project) => {
+    const evidence = normalizeEvidenceMetadata({ project, locale });
+    return evidence.primaryTheme === role.id || evidence.secondaryThemes.includes(role.id);
+  });
+  return { role, count: matching.length };
+});
+
+const getProblem = (project: any) => project.data.portfolio?.problem ?? project.data.portfolioProblem ?? project.data.summary;
+const getDecision = (project: any) => project.data.portfolio?.decisions?.[0]?.description ?? project.data.portfolioApproach ?? project.data.summary;
+const getOutcome = (project: any) => project.data.portfolio?.outcome ?? project.data.portfolioOutcome ?? project.data.summary;
+---
+
+<section class="project-evidence-overview" aria-labelledby="project-evidence-overview-title">
+  <div class="eyebrow">{labels.eyebrow}</div>
+  <h2 id="project-evidence-overview-title" class="section-title">{labels.title}</h2>
+  <p class="section-lead project-evidence-overview__lead">{labels.lead}</p>
+
+  <div class="project-evidence-overview__layout">
+    <section class="project-evidence-panel" aria-labelledby="project-comparison-title">
+      <h3 id="project-comparison-title">{labels.comparison}</h3>
+      <div class="project-comparison-list">
+        {featured.map((project) => {
+          const slug = entrySlug(project);
+          const evidence = normalizeEvidenceMetadata({ project: { ...project, slug }, locale });
+          const theme = getThemeById(evidence.primaryTheme, locale);
+          const disclosure = getPublicDisclosureLabel(evidence.disclosureLevel, locale);
+          const maturity = getPublicEvidenceLevelLabel(evidence.evidenceLevel, locale);
+
+          return (
+            <article class="project-comparison-card" data-primary-theme={evidence.primaryTheme}>
+              <div class="project-comparison-card__head">
+                <span>{theme.shortTitle}</span>
+                <strong>{project.data.title}</strong>
+                <small>{project.data.year} / {maturity} / {disclosure}</small>
+              </div>
+              <dl>
+                <div>
+                  <dt>{labels.problem}</dt>
+                  <dd>{getProblem(project)}</dd>
+                </div>
+                <div>
+                  <dt>{labels.decision}</dt>
+                  <dd>{getDecision(project)}</dd>
+                </div>
+                <div>
+                  <dt>{labels.outcome}</dt>
+                  <dd>{getOutcome(project)}</dd>
+                </div>
+              </dl>
+              <a class="button-link-secondary" href={withBase(localizePath(`projects/${slug}/`, locale))}>{labels.open}</a>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="project-evidence-panel project-evidence-panel--map" aria-labelledby="project-map-title">
+      <h3 id="project-map-title">{labels.map}</h3>
+      <div class="project-role-map">
+        {roleCounts.map(({ role, count }) => (
+          <a class="project-role-map__item" href={`#project-browser`} data-role={role.id}>
+            <span>{role.shortTitle}</span>
+            <strong>{count}<small>{labels.items}</small></strong>
+            <p>{role.reviewerQuestion}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</section>
+
+<style>
+  .project-evidence-overview {
+    margin-top: 2rem;
+  }
+
+  .project-evidence-overview__lead {
+    max-width: 82ch;
+  }
+
+  .project-evidence-overview__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.8fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .project-evidence-panel {
+    padding: 1.15rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .project-evidence-panel h3 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+  }
+
+  .project-comparison-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .project-comparison-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.9rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+  }
+
+  .project-comparison-card__head {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .project-comparison-card__head span,
+  .project-comparison-card__head small,
+  .project-role-map__item small {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .project-comparison-card__head strong {
+    line-height: 1.3;
+  }
+
+  .project-comparison-card dl {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .project-comparison-card dt {
+    color: var(--color-accent);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .project-comparison-card dd {
+    margin: 0.25rem 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+  }
+
+  .project-role-map {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .project-role-map__item {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.9rem;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+  }
+
+  .project-role-map__item strong {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .project-role-map__item strong small {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .project-role-map__item p {
+    margin: 0.35rem 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  @media (max-width: 1080px) {
+    .project-evidence-overview__layout,
+    .project-comparison-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

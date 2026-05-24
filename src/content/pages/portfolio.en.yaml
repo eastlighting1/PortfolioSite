@@ -1,41 +1,59 @@
 pageType: portfolio
+contract:
+  userQuestion: "Why should this Data & Applied AI profile be trusted?"
+  pageAnswer: "Reorder and explain representative evidence by reviewer mode and role lens."
+  requiredEvidence:
+    - reviewer-mode
+    - role-lens-workbench
+    - aidlc-stage-map
+    - case-comparison
+    - research-proof
+  nextPaths:
+    - label: "Projects"
+      href: /projects/
+      reason: "Search and filter the full evidence database."
+    - label: "Research"
+      href: /research/
+      reason: "Inspect modeling and evaluation judgment."
+  doNotRepeat:
+    - "Do not reduce portfolio to a prettier project grid."
 documentTitle: Portfolio | Donghyeon Kim
-documentDescription: A company-submission AI Systems Engineer portfolio organized around data, AI-DLC/MLOps, and NLP/LLM evidence.
-printToolbarLabel: A company-submission AI Systems Engineer portfolio organized around data, AI-DLC/MLOps, and NLP/LLM evidence.
+documentDescription: A Data & Applied AI portfolio for reviewing projects, research, and implementation judgment.
+printToolbarLabel: Data & Applied AI portfolio optimized for print or PDF export.
 hero:
-  eyebrow: Company Review Portfolio
-  title: AI Systems Engineer
-  lead: I connect structured, text, image, and graph data with AI-DLC operations and NLP/LLM research experience into company-reviewable evidence.
-  valueStatement: The portfolio is designed to read as an AI systems engineering profile, not a domain-only research archive.
+  eyebrow: Portfolio for Technical Review
+  title: Data & Applied AI Engineer
+  lead: Projects and research records across data structure, AI development workflows, and NLP/LLM evaluation.
+  valueStatement: Each project is framed by its problem, design decision, implementation result, and available artifacts.
   actions:
     - label: View Featured Cases
       href: "#featuredCases"
       variant: primary
-    - label: Save as PDF
-      href: /portfolio/print/
+    - label: Print / Save PDF
+      href: /portfolio/print/#print
       variant: secondary
     - label: Open Resume
       href: /resume/
       variant: secondary
 sectionHeadings:
   valueMap:
-    eyebrow: Role Map
-    title: Three role themes carry equal review weight
-    lead: Data, AI-DLC/MLOps, and NLP/LLM research are presented as equal signals that reinforce one AI systems profile.
+    eyebrow: Focus Areas
+    title: Reorder representative work by focus area
+    lead: Choose data, AI workflow, or NLP/LLM to bring the most relevant projects forward.
   aidlc:
-    eyebrow: AI-DLC
-    title: AI-Driven Development Life Cycle as the operating model
-    lead: The portfolio makes it clear which stages are covered from data and experiment through training, evaluation, deployment, observability, and recovery.
+    eyebrow: Development Flow
+    title: Recurring development flow across AI projects
+    lead: This summarizes recurring work patterns across projects, not a click-by-click stage diagram for one project.
   evidenceLibrary:
-    eyebrow: Evidence
-    title: Projects are organized as role-based evidence
-    lead: Projects are classified by evidence level, disclosure level, data surface, and workflow stage rather than shown as a flat list.
+    eyebrow: Project Records
+    title: Project records
+    lead: Project title and explanation stay separate from metadata such as data surfaces and availability.
   outcomes:
     eyebrow: Outcomes
-    title: Outcomes stay close to their evidence
-    lead: Metrics and keywords appear with the project context that produced them.
+    title: Results only inside their work context
+    lead: Absolute metrics are not promoted as standalone cards; they are kept inside the relevant case when they explain a decision.
   featuredCases:
-    eyebrow: Cases
+    eyebrow: Project Comparison
     title: Featured work framed by problem, decision, and outcome
     lead: The portfolio is not a project list; it is a map of judgment, tradeoffs, and results.
   process:
@@ -44,25 +62,24 @@ sectionHeadings:
     lead: This section shows how research, experimentation, implementation, and delivery connect.
   researchBridge:
     eyebrow: Research
-    title: Research is evidence that feeds implementation
-    lead: The research page is a publication archive; this section shows the research context behind project decisions.
+    title: Research records
+    lead: Research is connected as modeling and evaluation background behind project decisions.
   recognition:
     eyebrow: Recognition
     title: Learning and practice signals behind the work
-    lead: Certificates and awards support the evidence rather than replacing it.
+    lead: Certificates and awards support the work record rather than replacing it.
   contact:
-    eyebrow: Contact
+    eyebrow: ""
     title: Use the resume for formal review and the cases for technical depth
     lead: The page is designed to move from formal review to technical inspection to direct conversation.
 featuredCaseSlugs:
-  - emr-nursing-surveillance
-  - contexta-portfolio
   - lynxes-portfolio
+  - contexta-portfolio
+  - blogeek-ai-blog
 sections:
   - valueMap
   - aidlc
   - evidenceLibrary
-  - outcomes
   - featuredCases
   - process
   - researchBridge

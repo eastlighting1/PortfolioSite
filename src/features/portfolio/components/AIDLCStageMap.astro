@@ -1,0 +1,216 @@
+---
+import { type Locale } from "../../../lib/i18n";
+
+interface Props {
+  stages: any[];
+  dataSystemsConcepts: any[];
+  nlpLlmConcepts: any[];
+  cases: any[];
+  locale?: Locale;
+}
+
+const { stages, dataSystemsConcepts, nlpLlmConcepts, locale = "ko" } = Astro.props;
+
+// 1. AI-DLC stage view preps
+const stageIds = ["data", "experiment", "training", "evaluation", "deployment", "inference", "observability", "feedback-recovery"];
+const stageViews = stages.map((stage, index) => {
+  const id = stageIds[index] ?? stage.title.toLowerCase();
+  return { ...stage, id };
+});
+
+// 2. Data Systems view preps
+const dsViews = dataSystemsConcepts.map((item) => {
+  return { ...item };
+});
+
+// 3. NLP / LLM view preps
+const nlpViews = nlpLlmConcepts.map((item) => {
+  return { ...item };
+});
+
+const labels = {
+  ko: {
+    data: "Data Systems",
+    mlops: "AI-DLC / MLOps",
+    nlp: "NLP / LLM",
+    tabLabel: "핵심 개념 살펴보기"
+  },
+  en: {
+    data: "Data Systems",
+    mlops: "AI-DLC / MLOps",
+    nlp: "NLP / LLM",
+    tabLabel: "Explore Core Concepts"
+  }
+}[locale];
+
+const headings = {
+  ko: {
+    default: {
+      title: "AI 프로젝트 핵심 역량과 수명 주기",
+      lead: "데이터 아키텍처, MLOps 수명 주기, 언어 모델 응용 등 분야별 핵심 개념과 관련 프로젝트의 대응 방식을 시각화합니다."
+    },
+    "data-graph": {
+      title: "Data Systems 핵심 설계 개념",
+      lead: "정형, 비구조화 텍스트, 지식 그래프 등 이질적인 데이터 소스들을 통합하여 모델 및 시스템에 안정적으로 연동하기 위한 핵심 파이프라인 방식을 요약합니다."
+    },
+    "aidlc-mlops": {
+      title: "AI-DLC / MLOps 수명 주기",
+      lead: "AI 프로젝트 전반에서 반복적으로 수립하고 개선해온 데이터 준비, 실험 추적, 재현성 관리, 평가 설계 및 배포와 관측 수명 주기를 설명합니다."
+    },
+    "nlp-llm": {
+      title: "응용 NLP & LLM 핵심 역량 개념",
+      lead: "도메인 특화 언어 모델링, 다차원 평가 벤치마크 설계, AI 선호도 정렬 및 논문 연구 성과를 실제 시스템으로 안전하게 통합하는 가교 역량을 보여줍니다."
+    }
+  },
+  en: {
+    default: {
+      title: "AI Project Core Concepts & Lifecycle",
+      lead: "Visualizing key conceptual maps across data architecture, MLOps lifecycles, and language model integration, paired with project proof."
+    },
+    "data-graph": {
+      title: "Data Systems Design Concepts",
+      lead: "Summarizing structured, unstructured text, and graph representations built to feed modeling and optimized runtime infrastructures."
+    },
+    "aidlc-mlops": {
+      title: "AI-DLC / MLOps Work Lifecycle",
+      lead: "Summarizing repeatable, reviewable stages established across experiments, tracking, multi-dimensional evaluations, and observability."
+    },
+    "nlp-llm": {
+      title: "Applied NLP & LLM Core Concepts",
+      lead: "Summarizing domain adaptions, robust benchmark evaluations, instruct preference alignment, and bridging academic models to web APIs."
+    }
+  }
+}[locale];
+---
+
+<div class="concepts-visualizer" data-concepts-visualizer data-headings={JSON.stringify(headings)}>
+  <nav class="concepts-tabs" role="tablist" aria-label={labels.tabLabel}>
+    <button type="button" class="concept-tab is-active" data-concept-tab="data-graph" role="tab" aria-selected="true">
+      {labels.data}
+    </button>
+    <button type="button" class="concept-tab" data-concept-tab="aidlc-mlops" role="tab" aria-selected="false">
+      {labels.mlops}
+    </button>
+    <button type="button" class="concept-tab" data-concept-tab="nlp-llm" role="tab" aria-selected="false">
+      {labels.nlp}
+    </button>
+  </nav>
+
+  <!-- Data Systems Panel -->
+  <div class="aidlc-stage-map is-active" data-concept-panel="data-graph" role="tabpanel" aria-label={labels.data}>
+    {dsViews.map((stage) => (
+      <article class="aidlc-stage-card" data-concept-id={stage.id}>
+        <div class="aidlc-stage-card__head">
+          <span>{stage.title}</span>
+          <strong>{stage.emphasis}</strong>
+        </div>
+        <p>{stage.description}</p>
+      </article>
+    ))}
+  </div>
+
+  <!-- AI-DLC / MLOps Panel -->
+  <div class="aidlc-stage-map" data-concept-panel="aidlc-mlops" role="tabpanel" aria-label={labels.mlops}>
+    {stageViews.map((stage) => (
+      <article class="aidlc-stage-card" data-concept-id={stage.id}>
+        <div class="aidlc-stage-card__head">
+          <span>{stage.title}</span>
+          <strong>{stage.emphasis}</strong>
+        </div>
+        <p>{stage.description}</p>
+      </article>
+    ))}
+  </div>
+
+  <!-- NLP / LLM Panel -->
+  <div class="aidlc-stage-map" data-concept-panel="nlp-llm" role="tabpanel" aria-label={labels.nlp}>
+    {nlpViews.map((stage) => (
+      <article class="aidlc-stage-card" data-concept-id={stage.id}>
+        <div class="aidlc-stage-card__head">
+          <span>{stage.title}</span>
+          <strong>{stage.emphasis}</strong>
+        </div>
+        <p>{stage.description}</p>
+      </article>
+    ))}
+  </div>
+</div>
+
+<script>
+  const bindConceptsVisualizer = () => {
+    document.querySelectorAll("[data-concepts-visualizer]").forEach((root) => {
+      if (root.dataset.bound === "true") return;
+      root.dataset.bound = "true";
+
+      const tabsContainer = root.querySelector(".concepts-tabs") as HTMLElement | null;
+      const tabs = Array.from(root.querySelectorAll("[data-concept-tab]"));
+      const panels = Array.from(root.querySelectorAll("[data-concept-panel]"));
+      const headings = JSON.parse(root.dataset.headings || "{}");
+
+      // Find outer section header h2 and p
+      const section = root.closest("section");
+      const h2 = section?.querySelector("h2");
+      const p = section?.querySelector("p");
+
+      let manualActiveRole = "data-graph";
+
+      const updateHeader = (role: string) => {
+        const textKey = role || "default";
+        const text = headings[textKey];
+        if (text) {
+          if (h2) h2.textContent = text.title;
+          if (p) p.textContent = text.lead;
+        }
+      };
+
+      const selectPanel = (role: string) => {
+        panels.forEach((panel) => {
+          const htmlPanel = panel as HTMLElement;
+          const active = htmlPanel.dataset.conceptPanel === role;
+          htmlPanel.classList.toggle("is-active", active);
+        });
+
+        tabs.forEach((tab) => {
+          const htmlTab = tab as HTMLElement;
+          const active = htmlTab.dataset.conceptTab === role;
+          htmlTab.classList.toggle("is-active", active);
+          htmlTab.setAttribute("aria-selected", active ? "true" : "false");
+        });
+      };
+
+      // Apply initial header
+      updateHeader("");
+
+      // Watch for page-wide role changes
+      document.addEventListener("role-lens-changed", ((event: Event) => {
+        const customEvent = event as CustomEvent;
+        const selectedRole = customEvent.detail.role || "";
+
+        if (selectedRole) {
+          // Locked in specific role: Hide tabs container, show corresponding panel
+          if (tabsContainer) tabsContainer.style.display = "none";
+          selectPanel(selectedRole);
+          updateHeader(selectedRole);
+        } else {
+          // Recruiter / All mode: Show tabs container, restore manually active tab
+          if (tabsContainer) tabsContainer.style.display = "";
+          selectPanel(manualActiveRole);
+          updateHeader("");
+        }
+      }) as EventListener);
+
+      // Manual clicks in Recruiter / All mode
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const htmlTab = tab as HTMLElement;
+          const target = htmlTab.dataset.conceptTab || "data-graph";
+          manualActiveRole = target;
+          selectPanel(target);
+        });
+      });
+    });
+  };
+
+  bindConceptsVisualizer();
+  document.addEventListener("astro:page-load", bindConceptsVisualizer);
+</script>

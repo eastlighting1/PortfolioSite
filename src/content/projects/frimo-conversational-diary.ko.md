@@ -24,7 +24,40 @@ evidence:
     - evaluation
   evidenceLevel: Implemented
   disclosureLevel: Public Summary Only
-  businessSignal: "한국어 NLP 모델을 사용자 흐름 안에서 동작하는 서비스형 AI 파이프라인으로 연결한 증거입니다."
+  businessSignal: "한국어 NLP 모델을 사용자 흐름 안에서 동작하는 서비스형 AI 파이프라인으로 연결한 작업입니다."
+  proofSentence: "NLP/LLM 모델링과 평가 판단이 실제 기능 구현으로 이어지는 방식을 확인할 수 있습니다."
+  priority:
+    global: 60
+    home: 50
+    portfolio: 50
+    projects: 50
+    resume: 50
+    print: 60
+    role:
+      data-graph: 90
+      aidlc-mlops: 40
+      nlp-llm: 15
+  reviewerIntents:
+    recruiter: related
+    technical-reviewer: supporting
+    mlops-reviewer: supporting
+    nlp-llm-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: related
+      rank: 90
+      signal: "Data Systems 관점에서는 배경 맥락으로 참고할 수 있습니다."
+      reviewerReason: "한국어 NLP 모델을 사용자 흐름 안에서 동작하는 서비스형 AI 파이프라인으로 연결한 작업입니다."
+    aidlc-mlops:
+      weight: supporting
+      rank: 40
+      signal: "AI-DLC / MLOps 관점을 보조하는 관련 프로젝트입니다."
+      reviewerReason: "한국어 NLP 모델을 사용자 흐름 안에서 동작하는 서비스형 AI 파이프라인으로 연결한 작업입니다."
+    nlp-llm:
+      weight: primary
+      rank: 15
+      signal: "NLP / LLM 관점에서 가장 먼저 확인할 핵심 프로젝트입니다."
+      reviewerReason: "한국어 NLP 모델을 사용자 흐름 안에서 동작하는 서비스형 AI 파이프라인으로 연결한 작업입니다."
   subtypes:
     - Conversational AI
     - NLP Pipeline
@@ -73,3 +106,4 @@ FRIMO는 Friend for Modern People의 약자로, 사용자가 AI 친구와 대화
 ## 결과
 
 프로젝트는 감정 인식 기반 상호작용과 일기 생성 흐름을 포함한 MVP 단계까지 구현되었습니다. 개인적으로는 한국어 NLP 모델을 실제 사용자 흐름 안에 연결해보면서, 감정 인식 모델 구현과 서비스형 AI 파이프라인 통합 경험을 쌓은 프로젝트였습니다.
+

@@ -1,31 +1,48 @@
 pageType: contact
+contract:
+  userQuestion: "What should be opened or sent next?"
+  pageAnswer: "Pair contact channels with review-intent paths and response expectations."
+  requiredEvidence:
+    - contact-intents
+    - channels
+    - response-expectation
+    - review-paths
+  nextPaths:
+    - label: "Resume"
+      href: /resume/
+      reason: "Open official record for fast screening."
+    - label: "Portfolio"
+      href: /portfolio/
+      reason: "Open representative evidence for technical review."
+  doNotRepeat:
+    - "Do not become a bare contact list."
 documentTitle: Contact | Donghyeon Kim
-documentDescription: Contact options for collaboration, research conversation, and AI engineering opportunities.
+documentDescription: Follow-up paths for role screening, technical review, implementation review, and direct conversation.
 sectionOrder:
   - hero
-  - intents
   - links
+  - intents
   - response
 hero:
   eyebrow: Contact
-  title: Direct contact channels
-  description: Email is the primary channel, with GitHub, LinkedIn, and Google Scholar available for quick work context.
+  title: Choose the next review path
+  description: Use the resume for fast screening, the portfolio and projects for technical review, and email for concrete follow-up.
 intents:
   enabled: true
   eyebrow: Conversation Paths
-  title: Good reasons to reach out
-  lead: This page is not just a list of links. It helps visitors decide what kind of conversation to start.
+  title: Continue with the right review surface
+  lead: Open the artifact that matches your review task first, then follow up directly when useful.
   cards:
     - title: Hiring and Role Opportunities
-      body: I am open to roles that connect data systems, AI-DLC/MLOps, and NLP/LLM research experience into enterprise AI systems.
+      body: Start here to scan role fit, official experience, publications, and selected implementation work.
       ctaLabel: Review resume
       href: /resume/
     - title: Research and Technical Collaboration
-      body: I welcome collaboration around NLP/LLM evaluation, alignment, graph-based data systems, and reproducible AI operating workflows.
+      body: Use the research page with linked projects to inspect how modeling and evaluation judgment connect to systems work.
       ctaLabel: View research
       href: /research/
     - title: Portfolio and Project Conversation
-      body: Feedback or conversation about project structure, technical choices, and case-study communication is also welcome.
+      body: Use the portfolio and project details when the review needs decisions, system structure, outcomes, and artifacts.
       ctaLabel: View portfolio
       href: /portfolio/
 response:

@@ -1,4 +1,17 @@
 pageType: not-found
+contract:
+  userQuestion: "잘못 들어온 방문자를 어디로 돌려보내야 하는가?"
+  pageAnswer: "주요 검토 경로로 안전하게 복귀시킨다."
+  requiredEvidence:
+    - home-link
+    - projects-link
+    - resume-link
+  nextPaths:
+    - label: "홈"
+      href: /
+      reason: "검토 라우터로 돌아간다."
+  doNotRepeat:
+    - "추가 evidence 서사를 만들지 않는다."
 documentTitle: 페이지를 찾을 수 없음 | 김동현
 documentDescription: 요청한 페이지를 찾을 수 없습니다.
 hero:

@@ -3,6 +3,9 @@ items:
   - role: Graduate Researcher  
     organization: Intelligent Data Analytics Lab., Gachon University  
     period: 2024.03 - 2026.02  
+    startDate: 2024-03
+    endDate: 2026-02
+    isCurrent: false
     bullets:  
       - Led graduate research on EMR-based nursing surveillance decision support and diagnostic classification.  
       - Built end-to-end modeling pipelines using KM-BERT ensembles, XGBoost, and both structured and text data.  
@@ -11,6 +14,9 @@ items:
   - role: Research Project Participant  
     organization: National Research Foundation of Korea (NRF)  
     period: 2024.03 - 2025.12  
+    startDate: 2024-03
+    endDate: 2025-12
+    isCurrent: false
     bullets:  
       - Contributed to an NRF-funded clinical AI project centered on nursing surveillance decision support using EMR data.  
       - Implemented workflows for clinical text understanding, including keyword extraction, dependency parsing-based preprocessing, topic modeling, and similarity analysis.  
@@ -20,6 +26,9 @@ items:
   - role: Research Project Participant  
     organization: Institute of Information & Communications Technology Planning & Evaluation (IITP)  
     period: 2025.09 - 2025.12  
+    startDate: 2025-09
+    endDate: 2025-12
+    isCurrent: false
     bullets:  
       - Implemented evaluation-related code in a human-centered multimodal AI project.  
       - Bridged evaluation requirements with actual code and reviewable deliverables.  
@@ -27,6 +36,9 @@ items:
   - role: Industry-led Intensive Program Trainee  
     organization: dktechin  
     period: 2024.01 - 2024.02  
+    startDate: 2024-01
+    endDate: 2024-02
+    isCurrent: false
     bullets:  
       - Participated in an industry-led intensive program focused on cloud, CI/CD, security, and DevOps practices.  
       - Contributed to implementation tasks with a focus on security and DevOps roles in project-based training.  
@@ -34,6 +46,9 @@ items:
   - role: Student Leader and Community Organizer  
     organization: Gachon University / Notion Community Program  
     period: 2019.03 - 2025.02  
+    startDate: 2019-03
+    endDate: 2025-02
+    isCurrent: false
     bullets:  
       - Held multiple leadership roles in the official university programming club and served as president in 2022.  
       - Planned and led study groups on machine learning, big data, financial ML, and GNNs.  

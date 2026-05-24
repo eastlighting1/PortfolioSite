@@ -24,6 +24,39 @@ evidence:
   evidenceLevel: Prototype
   disclosureLevel: Public Summary Only
   businessSignal: "Shows prompt and interaction design for making LLM output useful in role-based technical review."
+  proofSentence: "Evidence for checking how NLP/LLM modeling and evaluation judgment turns into implementation."
+  priority:
+    global: 70
+    home: 60
+    portfolio: 60
+    projects: 60
+    resume: 60
+    print: 70
+    role:
+      data-graph: 90
+      aidlc-mlops: 40
+      nlp-llm: 35
+  reviewerIntents:
+    technical-reviewer: supporting
+    mlops-reviewer: supporting
+    nlp-llm-reviewer: supporting
+    collaboration: primary
+  roleSignals:
+    data-graph:
+      weight: related
+      rank: 90
+      signal: "Related background evidence for Data Systems review."
+      reviewerReason: "Shows prompt and interaction design for making LLM output useful in role-based technical review."
+    aidlc-mlops:
+      weight: supporting
+      rank: 40
+      signal: "Supporting evidence for AI-DLC / MLOps review."
+      reviewerReason: "Shows prompt and interaction design for making LLM output useful in role-based technical review."
+    nlp-llm:
+      weight: primary
+      rank: 35
+      signal: "Primary evidence for NLP / LLM review."
+      reviewerReason: "Shows prompt and interaction design for making LLM output useful in role-based technical review."
   subtypes:
     - LLM Application
     - Prompt Engineering

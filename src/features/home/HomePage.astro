@@ -1,14 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import HeroBlock from "./components/HeroBlock.astro";
+import ReviewerPathSelector from "./components/ReviewerPathSelector.astro";
 import AnimatedPipeline from "./components/AnimatedPipeline.astro";
-import FeaturedProjects from "./components/FeaturedProjects.astro";
+import DiagnosticEvidenceStrip from "./components/DiagnosticEvidenceStrip.astro";
 import ResearchPreview from "./components/ResearchPreview.astro";
 import ExperienceSnapshot from "./components/ExperienceSnapshot.astro";
 import CapabilityMap from "./components/CapabilityMap.astro";
 import DocumentCTA from "./components/DocumentCTA.astro";
 import { getGlobalEntry, getLocalizedCollection, getPageEntry } from "../../lib/content";
 import { type Locale } from "../../lib/i18n";
+import { sortProjectsForSurface } from "../evidence/evidence-priority";
 
 interface Props {
   locale: Locale;
@@ -25,9 +27,7 @@ if (homePage.data.pageType !== "home") {
   throw new Error("Missing home page content configuration.");
 }
 
-const projects = (await getLocalizedCollection("projects", locale))
-  .sort((a, b) => b.data.year - a.data.year)
-  .filter((project) => project.data.featured)
+const projects = sortProjectsForSurface(await getLocalizedCollection("projects", locale), "home", locale)
   .slice(0, homePage.data.featuredProjects.count);
 
 const research = (await getLocalizedCollection("research", locale))
@@ -38,14 +38,19 @@ const research = (await getLocalizedCollection("research", locale))
 <BaseLayout title={siteConfig.title} description={siteConfig.description} pathname={pathname} locale={locale}>
   {homePage.data.sectionOrder.map((sectionId) => {
     if (sectionId === "hero" && homePage.data.hero.enabled) {
-      return <HeroBlock {...homePage.data.hero} locale={locale} />;
+      return (
+        <>
+          <HeroBlock {...homePage.data.hero} locale={locale} />
+          <ReviewerPathSelector locale={locale} />
+        </>
+      );
     }
     if (sectionId === "pipeline" && homePage.data.pipeline.enabled) {
       return <AnimatedPipeline {...homePage.data.pipeline} locale={locale} />;
     }
     if (sectionId === "featuredProjects" && homePage.data.featuredProjects.enabled) {
       return (
-        <FeaturedProjects
+        <DiagnosticEvidenceStrip
           projects={projects}
           locale={locale}
           eyebrow={homePage.data.featuredProjects.eyebrow}

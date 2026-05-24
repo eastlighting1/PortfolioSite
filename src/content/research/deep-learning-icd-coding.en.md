@@ -3,6 +3,13 @@ title: "Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abd
 year: 2025
 venue: "Journal of The Korea Society of Computer and Information"
 type: "Journal Paper"
+contributionType: "evaluation"
+contributionClaim: "Proposed a deep-learning ICD coding model that combines structured EMR information and nursing notes for nursing surveillance."
+methodSignal: "Used dual KM-BERT, PCA, and XGBoost stacking to evaluate sparse and domain-sensitive diagnosis labels."
+portfolioRelevance: "Supports the portfolio claim that NLP/LLM systems should be judged through domain data structure and error distribution, not only headline accuracy."
+linkedRoles:
+  - "nlp-llm"
+  - "data-graph"
 bibtex: |
   @article{kim2025deep,
     title={Deep Learning based Automatic ICD Coding for Nursing Surveillance of Abdominal Surgery Patients},

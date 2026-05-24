@@ -10,7 +10,7 @@ type: "Clinical AI Research"
 summary: "Built an automatic ICD coding pipeline for nursing surveillance of abdominal surgery patients using core EMR data."
 portfolioProblem: "Nursing surveillance required diagnosis-related classification, but key clinical signals were fragmented across heterogeneous EMR sources."
 portfolioApproach: "I integrated structured EMR features and nursing text, then used a dual KM-BERT, PCA, and XGBoost stacking architecture for ICD prediction."
-portfolioOutcome: "The final model achieved 0.9245 accuracy and strong rare-class recall without depending on physician-centered post-hoc documents."
+portfolioOutcome: "The final model showed practical classification behavior, including rare-class recall, without depending on physician-centered post-hoc documents."
 evidence:
   primaryTheme: nlp-llm
   secondaryThemes:
@@ -26,13 +26,48 @@ evidence:
   evidenceLevel: Published
   disclosureLevel: Public Summary Only
   businessSignal: "Combines heterogeneous structured EMR and Korean clinical text into an evaluable NLP pipeline."
+  proofSentence: "Evidence for checking how NLP/LLM modeling and evaluation judgment turns into implementation."
+  priority:
+    global: 50
+    home: 40
+    portfolio: 40
+    projects: 30
+    resume: 10
+    print: 40
+    role:
+      data-graph: 35
+      aidlc-mlops: 80
+      nlp-llm: 10
+  reviewerIntents:
+    recruiter: primary
+    technical-reviewer: supporting
+    data-systems-reviewer: supporting
+    mlops-reviewer: related
+    nlp-llm-reviewer: primary
+    research-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: supporting
+      rank: 35
+      signal: "Supporting evidence for Data Systems review."
+      reviewerReason: "Combines heterogeneous structured EMR and Korean clinical text into an evaluable NLP pipeline."
+    aidlc-mlops:
+      weight: related
+      rank: 80
+      signal: "Related background evidence for AI-DLC / MLOps review."
+      reviewerReason: "Combines heterogeneous structured EMR and Korean clinical text into an evaluable NLP pipeline."
+    nlp-llm:
+      weight: primary
+      rank: 10
+      signal: "Primary evidence for NLP / LLM review."
+      reviewerReason: "Combines heterogeneous structured EMR and Korean clinical text into an evaluable NLP pipeline."
   subtypes:
     - NLP Evaluation
     - Domain Application
     - Structured + Text Pipeline
 portfolio:
   thesis: "A clinical AI study showing that core EMR data available during nursing work can support practical diagnosis-related classification."
-  value: "Built evidence for automatic ICD coding without depending on physician-centered post-hoc documents."
+  value: "Built a practical basis for automatic ICD coding without depending on physician-centered post-hoc documents."
   problem: "Nursing surveillance required diagnosis-related classification, but key clinical signals were fragmented across heterogeneous EMR sources."
   constraints:
     - "The model could not depend on discharge summaries or other post-event documents."
@@ -67,7 +102,7 @@ portfolio:
       - id: "evaluation"
         label: "Rare-class Evaluation"
         kind: "evaluation"
-        description: "Accuracy, weighted F1, and rare-class recall"
+        description: "Overall behavior, class balance, and rare-class recall"
     links:
       - from: "structured-emr"
         to: "stacking-classifier"
@@ -88,14 +123,14 @@ portfolio:
       description: "Converted structured signals and Korean nursing text into model-ready representations."
     - label: "Stacked evaluation"
       description: "Combined PCA, XGBoost, and imbalance handling to validate overall and rare-class performance."
-  outcome: "The final model achieved 0.9245 accuracy and 0.9157 weighted F1-score while retaining strong rare-class recall."
+  outcome: "The final model was reviewed for practical classification behavior rather than a single standalone score, including rare-class recall and available-data constraints."
   metrics:
-    - label: "Accuracy"
-      value: "0.9245"
-      context: "Final Double KM-BERT + XGBoost + PCA model"
-    - label: "Weighted F1-score"
-      value: "0.9157"
-      context: "Weighted F1 across classes"
+    - label: "Evaluation Scope"
+      value: "Balanced"
+      context: "Reviewed overall behavior together with rare-class recall"
+    - label: "Available Data"
+      value: "Core EMR"
+      context: "Focused on data available during nursing work rather than post-hoc documents"
     - label: "Rare-class Recall"
       value: "High"
       context: "Practical recall on sparse classes"
@@ -119,8 +154,8 @@ tags:
   - "XGBoost"
   - "Ensemble"
 metrics:
-  - "0.9245 Accuracy"
-  - "0.9157 Weighted F1"
+  - "Reviewed overall behavior and rare-class recall together"
+  - "Core EMR classification without post-hoc documents"
   - "Strong Rare-class Recall"
 paperUrl: "https://doi.org/10.9708/jksci.2025.30.05.021"
 ---
@@ -139,4 +174,4 @@ I worked on integrating heterogeneous EMR sources for 8,587 abdominal surgery pa
 
 ## Outcome
 
-The final Double KM-BERT + XGBoost + PCA model achieved the best overall performance with 0.9245 accuracy, 0.9107 weighted precision, and 0.9157 weighted F1-score. It also showed strong recall on rare classes, suggesting that meaningful nursing-surveillance-oriented diagnosis classification is possible using only core EMR data available in practice.
+The final Double KM-BERT + XGBoost + PCA model showed more stable classification behavior than the single-model and simple-ensemble baselines, while retaining meaningful recall on rare classes. This suggested that nursing-surveillance-oriented diagnosis classification can be practically reviewed using only core EMR data available during care.

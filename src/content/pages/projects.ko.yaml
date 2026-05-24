@@ -1,11 +1,29 @@
 pageType: projects
+contract:
+  userQuestion: "전체 작업을 어떤 기준으로 검토해야 하는가?"
+  pageAnswer: "대표 비교와 evidence map 이후 전체 프로젝트를 검색, 필터, 검증하게 한다."
+  requiredEvidence:
+    - featured-comparison
+    - evidence-map
+    - project-browser
+    - disclosure-filter
+    - workflow-filter
+  nextPaths:
+    - label: "프로젝트 상세"
+      href: /projects/lynxes-portfolio/
+      reason: "문제, 결정, 구조, 결과를 케이스로 읽는다."
+    - label: "포트폴리오"
+      href: /portfolio/
+      reason: "대표 evidence의 큐레이션 순서를 본다."
+  doNotRepeat:
+    - "포트폴리오의 설득 서사를 그대로 반복하지 않는다."
 documentTitle: 프로젝트 | 김동현
-documentDescription: 기업 제출용 AI Systems Engineer 포트폴리오의 프로젝트 증거 라이브러리입니다.
+documentDescription: Data Systems, AI-DLC/MLOps, NLP/LLM 렌즈로 전체 프로젝트를 검색하고 비교하는 페이지입니다.
 hero:
-  eyebrow: Evidence Library
-  title: 역할별로 검토하는 프로젝트 증거
-  description: 프로젝트를 단순 목록이 아니라 Data + Graph, AI-DLC/MLOps, NLP/LLM 연구 역량의 증거로 정리했습니다. 각 항목은 Evidence Level, Disclosure Level, 데이터 표면, 워크플로우 단계와 함께 검토할 수 있습니다.
+  eyebrow: Project Records
+  title: 전체 프로젝트를 역할 렌즈로 비교하기
+  description: 모든 프로젝트를 한 화면에서 검색하고, Data Systems, AI-DLC/MLOps, NLP/LLM 관점으로 다시 정렬해 볼 수 있습니다.
   meta:
-    - AI Systems Engineer
-    - 역할 기반 증거
-    - 공개 수준 표시
+    - Data & Applied AI
+    - 전체 프로젝트
+    - 검색과 필터

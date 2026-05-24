@@ -1,4 +1,21 @@
 pageType: home
+contract:
+  userQuestion: "방문자는 어디서 검토를 시작해야 하는가?"
+  pageAnswer: "검토 목적별 경로와 먼저 볼 diagnostic evidence를 제시한다."
+  requiredEvidence:
+    - identity-thesis
+    - reviewer-paths
+    - role-lens-preview
+    - diagnostic-evidence
+  nextPaths:
+    - label: "포트폴리오"
+      href: /portfolio/
+      reason: "대표 evidence를 역할 렌즈로 다시 읽는다."
+    - label: "이력서"
+      href: /resume/
+      reason: "공식 이력과 출력용 CV로 빠르게 선별한다."
+  doNotRepeat:
+    - "프로젝트 전체 목록을 첫 화면에서 반복하지 않는다."
 sectionOrder:
   - hero
   - featuredProjects
@@ -8,25 +25,25 @@ sectionOrder:
   - researchPreview
 hero:
   enabled: true
-  eyebrow: Company Review Portfolio
-  summary: 데이터 시스템, AI-DLC/MLOps, NLP/LLM 연구 경험을 기업 검토 가능한 AI 시스템 증거로 연결합니다.
+  eyebrow: Applied AI Portfolio
+  summary: 데이터 구조화, AI 개발 흐름, NLP/LLM 평가 경험을 실제 구현 사례로 정리했습니다.
   actions:
-    - label: 핵심 프로젝트
-      href: /projects/
+    - label: 포트폴리오 보기
+      href: /portfolio/
       variant: primary
     - label: 이력서 보기
       href: /resume/
       variant: secondary
-    - label: 제출용 포트폴리오
-      href: /portfolio/
+    - label: 전체 프로젝트
+      href: /projects/
       variant: secondary
   focusCard:
-    label: Review Signal
-    title: 세 개의 역할, 하나의 AI Systems 프로필
-    body: 정형·텍스트·이미지·그래프 데이터, AI-Driven Development Life Cycle, NLP/LLM 연구 경험을 서로 보조하는 직무 신호로 정리했습니다.
+    label: Focus Areas
+    title: 세 가지 관점으로 보는 작업 범위
+    body: 데이터, 개발 흐름, 언어 모델 평가 경험을 각각 확인할 수 있습니다.
     items:
       - label: Data
-        value: 그래프를 핵심 강점으로 둔 데이터 시스템
+        value: 다양한 데이터 표면과 그래프 네이티브 깊이
       - label: MLOps
         value: AI-DLC, observability, CI/CD/CT
       - label: NLP/LLM
@@ -38,15 +55,15 @@ pipeline:
   lead: 복잡한 비정형 데이터의 전처리부터 PyTorch 기반의 모델 학습, 그리고 평가와 <br />실제 배포 환경을 고려한 아키텍처 설계까지 전체 흐름을 주도합니다.
 featuredProjects:
   enabled: true
-  eyebrow: Evidence
-  title: 역할별로 검토할 수 있는 프로젝트 증거
-  lead: 프로젝트는 단순 목록이 아니라 Data + Graph, AI-DLC/MLOps, NLP/LLM 연구 역량의 증거로 읽히도록 정리했습니다.
-  count: 2
+  eyebrow: Projects
+  title: 대표 프로젝트
+  lead: 데이터 구조화, AI 개발 흐름, NLP/LLM 평가 관점이 드러나는 작업을 먼저 배치했습니다.
+  count: 3
 researchPreview:
   enabled: true
   eyebrow: Research Bridge
-  title: 모델링, 평가, alignment 판단을 뒷받침하는 연구
-  count: 2
+  title: 연구 경험은 구현 판단을 보강합니다
+  count: 3
   ctaLabel: 자세히 보기
 experienceSnapshot:
   enabled: true
@@ -56,20 +73,20 @@ experienceSnapshot:
   ctaLabel: 이력서 보기
 capabilityMap:
   enabled: true
-  eyebrow: Role Map
-  title: 기업 검토를 위한 세 개의 동등한 역할 축
+  eyebrow: Focus Areas
+  title: 세 가지 기술 관점
 documents:
   enabled: true
-  eyebrow: 문서
-  title: 채용 담당자와 기술 검토자를 위한 제출형 문서
+  eyebrow: Quick Paths
+  title: 검토 목적에 맞춰 바로 열 수 있는 경로
   cards:
-    - label: 이력서
-      title: 한눈에 들어오는 이력서
-      body: AI Systems Engineer 정체성, 핵심 역량, 프로젝트와 연구 증거를 압축적으로 담았습니다.
-      href: /resume/
-      ctaLabel: CV/Resume 열기
     - label: 포트폴리오
       title: 문제 해결 중심의 포트폴리오
-      body: Role Map, AI-DLC 운영 모델, Evidence Library, 케이스 스터디를 포함한 기업 제출용 문서입니다.
+      body: 각 프로젝트에서 어떤 문제를 정의했고, 어떤 구조와 판단으로 구현했는지 순서대로 확인할 수 있습니다.
       href: /portfolio/
       ctaLabel: 포트폴리오 열기
+    - label: 이력서
+      title: 한눈에 들어오는 이력서
+      body: 학력, 경험, 연구, 프로젝트를 공식 문서 형식으로 빠르게 확인할 수 있습니다.
+      href: /resume/
+      ctaLabel: CV/Resume 열기

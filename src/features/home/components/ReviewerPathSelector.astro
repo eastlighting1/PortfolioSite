@@ -1,0 +1,173 @@
+---
+import { withBase } from "../../../lib/site";
+import { localizePath, type Locale } from "../../../lib/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "ko" } = Astro.props;
+const paths =
+  locale === "ko"
+    ? [
+        {
+          label: "채용 검토",
+          question: "이력과 프로젝트 요약을 먼저 확인하려면",
+          evidence: "이력서, 연구 기록, 대표 프로젝트",
+          href: "/resume/",
+          secondaryHref: "/portfolio/?mode=recruiter"
+        },
+        {
+          label: "기술 검토",
+          question: "문제 해결 방식과 구현 결과를 확인하려면",
+          evidence: "프로젝트 설명, 설계 판단, 산출물",
+          href: "/portfolio/?mode=technical",
+          secondaryHref: "/projects/"
+        },
+        {
+          label: "연구 검토",
+          question: "모델링과 평가 경험을 확인하려면",
+          evidence: "논문, 연구 요약, 관련 프로젝트",
+          href: "/research/",
+          secondaryHref: "/portfolio/?lens=nlp-llm"
+        }
+      ]
+    : [
+        {
+          label: "Recruiting Review",
+          question: "Need role fit and official record first?",
+          evidence: "Experience, publications, selected work",
+          href: "/resume/",
+          secondaryHref: "/portfolio/?mode=recruiter"
+        },
+        {
+          label: "Technical Review",
+          question: "Need problems, decisions, architecture, and outcomes?",
+          evidence: "Case comparison, architecture, artifacts",
+          href: "/portfolio/?mode=technical",
+          secondaryHref: "/projects/"
+        },
+        {
+          label: "Research Review",
+          question: "Need modeling and evaluation judgment first?",
+          evidence: "Contribution type, linked projects, evaluation judgment",
+          href: "/research/",
+          secondaryHref: "/portfolio/?lens=nlp-llm"
+        }
+      ];
+
+const copy =
+  locale === "ko"
+    ? {
+        eyebrow: "Review Router",
+        title: "검토 목적에 맞는 첫 경로",
+        lead: "필요한 정보가 다르면 시작 위치도 달라집니다. 아래 경로 중 하나에서 바로 확인할 수 있습니다.",
+        primary: "열기",
+        secondary: "함께 보기"
+      }
+    : {
+        eyebrow: "Review Router",
+        title: "Start with the right review path",
+        lead: "Different reviewers need different first evidence, so the site routes by review task.",
+        primary: "Open first",
+        secondary: "Support path"
+    };
+const localizeHref = (href: string) => {
+  const [withoutHash, hash = ""] = href.split("#");
+  const [path, query = ""] = withoutHash.split("?");
+  return withBase(`${localizePath(path, locale)}${query ? `?${query}` : ""}${hash ? `#${hash}` : ""}`);
+};
+---
+
+<section class="section review-router" aria-labelledby="review-router-title">
+  <div class="container">
+    <div class="eyebrow">{copy.eyebrow}</div>
+    <h2 id="review-router-title" class="section-title">{copy.title}</h2>
+    <p class="section-lead review-router__lead">{copy.lead}</p>
+    <div class="review-router__grid">
+      {paths.map((path) => (
+        <article class="review-path-card">
+          <div>
+            <span class="review-path-card__label">{path.label}</span>
+            <h3>{path.question}</h3>
+            <p>{path.evidence}</p>
+          </div>
+          <div class="review-path-card__actions">
+            <a class="button-link" href={localizeHref(path.href)}>{copy.primary}</a>
+            <a class="button-link-secondary" href={localizeHref(path.secondaryHref)}>{copy.secondary}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .review-router {
+    padding-top: 0;
+  }
+
+  .review-router__lead {
+    max-width: 74ch;
+  }
+
+  .review-router__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .review-path-card {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 1.25rem;
+    min-height: 14rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+
+  .review-path-card__label {
+    display: inline-flex;
+    margin-bottom: 0.8rem;
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  .review-path-card h3 {
+    margin: 0;
+    font-size: clamp(1.05rem, 1rem + 0.2vw, 1.25rem);
+    line-height: 1.35;
+  }
+
+  .review-path-card p {
+    margin: 0.85rem 0 0;
+    color: var(--color-text-muted);
+  }
+
+  .review-path-card__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .review-path-card__actions a {
+    width: 100%;
+  }
+
+  @media (max-width: 920px) {
+    .review-router__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .review-path-card {
+      min-height: 0;
+    }
+  }
+</style>

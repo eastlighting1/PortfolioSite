@@ -25,6 +25,40 @@ evidence:
   evidenceLevel: Implemented
   disclosureLevel: Public Summary Only
   businessSignal: "Connects Korean NLP classification and generation models to product-shaped web service features."
+  proofSentence: "Evidence for checking how NLP/LLM modeling and evaluation judgment turns into implementation."
+  priority:
+    global: 40
+    home: 30
+    portfolio: 30
+    projects: 40
+    resume: 40
+    print: 30
+    role:
+      data-graph: 90
+      aidlc-mlops: 45
+      nlp-llm: 20
+  reviewerIntents:
+    recruiter: supporting
+    technical-reviewer: supporting
+    data-systems-reviewer: related
+    mlops-reviewer: supporting
+    nlp-llm-reviewer: primary
+  roleSignals:
+    data-graph:
+      weight: related
+      rank: 90
+      signal: "Related background evidence for Data Systems review."
+      reviewerReason: "Connects Korean NLP classification and generation models to product-shaped web service features."
+    aidlc-mlops:
+      weight: supporting
+      rank: 45
+      signal: "Supporting evidence for AI-DLC / MLOps review."
+      reviewerReason: "Connects Korean NLP classification and generation models to product-shaped web service features."
+    nlp-llm:
+      weight: primary
+      rank: 20
+      signal: "Primary evidence for NLP / LLM review."
+      reviewerReason: "Connects Korean NLP classification and generation models to product-shaped web service features."
   subtypes:
     - Korean NLP
     - Classification

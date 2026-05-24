@@ -3,7 +3,12 @@ import { getUiEntry } from "../../../lib/content";
 import { withBase } from "../../../lib/site";
 import { entrySlug } from "../../../lib/content";
 import { localizePath, type Locale } from "../../../lib/i18n";
-import { normalizeEvidenceMetadata } from "../../portfolio/portfolio-data";
+import {
+  getPublicDisclosureLabel,
+  getPublicEvidenceLevelLabel,
+  getThemeById,
+  normalizeEvidenceMetadata
+} from "../../portfolio/portfolio-data";
 
 interface Props {
   project: any;
@@ -16,18 +21,16 @@ const href = withBase(localizePath(`projects/${entrySlug(project)}/`, locale));
 const uiEntry = await getUiEntry("labels", locale);
 const ui = uiEntry.data;
 const metrics = project.data.metrics ?? [];
-const tags = project.data.tags ?? [];
-const portfolioMetrics = project.data.portfolio?.metrics?.map((metric: any) => `${metric.label} ${metric.value}`) ?? [];
-const primaryMetric = portfolioMetrics[0] ?? metrics[0];
-const visibleTags = tags.slice(0, 3);
-const hiddenTagCount = Math.max(0, tags.length - visibleTags.length);
-const outcomeLabel = locale === "ko" ? "핵심 결과" : "Key Outcome";
-const tagLabel = locale === "ko" ? "대표 태그" : "Selected Tags";
+const keyDecision = project.data.portfolio?.decisions?.[0]?.description ?? project.data.portfolioApproach;
+const reviewHighlight = project.data.portfolio?.outcome ?? project.data.portfolioOutcome ?? metrics[0];
+const decisionLabel = locale === "ko" ? "핵심 결정" : "Key decision";
+const outcomeLabel = locale === "ko" ? "결과 / 검토 신호" : "Outcome / review signal";
 const summary = project.data.portfolio?.problem ?? project.data.portfolioProblem ?? project.data.summary;
 const evidence = normalizeEvidenceMetadata({ project: { ...project, slug: entrySlug(project) }, locale });
-const evidenceLabel = locale === "ko" ? "증거 등급" : "Evidence";
-const disclosureLabel = locale === "ko" ? "공개 범위" : "Disclosure";
 const surfaceLabel = locale === "ko" ? "데이터 표면" : "Data Surface";
+const theme = getThemeById(evidence.primaryTheme, locale);
+const statusLabel = getPublicEvidenceLevelLabel(evidence.evidenceLevel, locale);
+const availabilityLabel = evidence.disclosureLevel === "Public" ? "" : getPublicDisclosureLabel(evidence.disclosureLevel, locale);
 ---
 
 <article class="project-card" data-reveal={dataReveal}>
@@ -36,12 +39,18 @@ const surfaceLabel = locale === "ko" ? "데이터 표면" : "Data Surface";
     <span class="project-card__year">{project.data.year}</span>
   </div>
   <h3 class="project-card__title">{project.data.title}</h3>
-  <p class="project-card__role">{project.data.role}</p>
-  <div class="project-card__evidence-row" aria-label={locale === "ko" ? "프로젝트 증거 메타데이터" : "Project evidence metadata"}>
-    <span class="tag-chip">{evidenceLabel}: {evidence.evidenceLevel}</span>
-    <span class="tag-chip tag-chip--muted">{disclosureLabel}: {evidence.disclosureLevel}</span>
+  <p class="project-card__role">{theme.shortTitle} · {statusLabel}</p>
+  <div class="project-card__evidence-row" aria-label={locale === "ko" ? "프로젝트 검토 정보" : "Project review metadata"}>
+    <span class="tag-chip">{theme.title}</span>
+    {availabilityLabel && <span class="tag-chip tag-chip--muted">{availabilityLabel}</span>}
   </div>
   <p class="project-card__summary">{summary}</p>
+  {keyDecision && (
+    <div class="project-card__highlight project-card__highlight--decision">
+      <span class="project-card__highlight-label">{decisionLabel}</span>
+      <strong>{keyDecision}</strong>
+    </div>
+  )}
   <div class="project-card__stack">
     <span class="project-card__stack-label">{surfaceLabel}</span>
     <div class="project-card__tag-row">
@@ -50,24 +59,12 @@ const surfaceLabel = locale === "ko" ? "데이터 표면" : "Data Surface";
       ))}
     </div>
   </div>
-  {primaryMetric && (
+  {reviewHighlight && (
     <div class="project-card__highlight">
       <span class="project-card__highlight-label">{outcomeLabel}</span>
-      <strong>{primaryMetric}</strong>
+      <strong>{reviewHighlight}</strong>
     </div>
   )}
-  {visibleTags.length > 0 && (
-    <div class="project-card__stack">
-      <span class="project-card__stack-label">{tagLabel}</span>
-      <div class="project-card__tag-row">
-        {visibleTags.map((tag: string) => (
-          <span class="tag-chip">{tag}</span>
-        ))}
-        {hiddenTagCount > 0 && <span class="tag-chip tag-chip--muted">+{hiddenTagCount}</span>}
-      </div>
-    </div>
-  )}
-
   <div class="project-card__footer">
     <div class="project-card__actions">
       <a class="button-link" href={href}>{ui.project.openCaseStudyLabel}</a>

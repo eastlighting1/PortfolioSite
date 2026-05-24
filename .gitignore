@@ -12,3 +12,5 @@ docs/*
 docs/architecture/*
 !docs/architecture/portfolio-web-first-technical-product-spec.md
 .codex-temp
+
+refactoringDocs/
